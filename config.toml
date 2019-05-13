@@ -2,6 +2,7 @@ baseURL = "http://www.garfcat.github.io"
 languageCode = "en-us"
 title = "garfcat"
 theme = "maupassant"
+publishDir = "docs"
 
 [author]
   name = "grafcat"
