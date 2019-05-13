@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on garfcat</title>
+    <link>http://www.garfcat.github.io/posts/</link>
+    <description>Recent content in Posts on garfcat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate>
+    
+	<atom:link href="http://www.garfcat.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>mac  sed 报错</title>
+      <link>http://www.garfcat.github.io/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
+      <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
+      
+      <guid>http://www.garfcat.github.io/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
+      <description>mac 下使用sed -i 替换命令时 会报错
+$sed -i &#39;s/xxxx/yyy/g&#39; test sed: 1: &amp;quot;test&amp;quot;: extra characters at the end of p command  解决方法
+sed -i &amp;quot;&amp;quot; &amp;quot;s/XX/YY/g&amp;quot; test  ============================================
+sed 用法
+sed: illegal option -- - usage: sed script [-Ealn] [-i extension] [file ...] sed [-Ealn] [-i extension] [-e script] ... [-f script_file] ... [file ...] -i 后边需要添加备份文件的后缀名,如果不需要可以使用&amp;quot;&amp;quot;,但是不可以忽略 如 sed -i &amp;quot;.bak&amp;quot; &#39;s/xxxx/yyy/g&#39; test 会将替换后的文本写入test.bak  </description>
+    </item>
+    
+  </channel>
+</rss>

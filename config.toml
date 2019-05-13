@@ -1,0 +1,30 @@
+baseURL = "http://www.garfcat.github.io"
+languageCode = "en-us"
+title = "garfcat"
+theme = "maupassant"
+
+[author]
+  name = "grafcat"
+
+[params]
+  author = "grafcat"
+  subtitle = "focus on backend tech"
+  keywords = "go,golang,后端"
+  description = "focus on your focus"
+
+[menu]
+#  [[menu.main]]
+#    identifier = "books"
+#    name = "新书"
+#    url = "/books/"
+#    weight = 2
+  [[menu.main]]
+    identifier = "archives"
+    name = "归档"
+    url = "/archives/"
+    weight = 2
+  [[menu.main]]
+    identifier = "about"
+    name = "关于"
+    url = "/about/"
+    weight = 3
