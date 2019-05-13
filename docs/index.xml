@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>garfcat</title>
-    <link>http://www.garfcat.github.io/</link>
+    <link>http://www.geekgame.site/</link>
     <description>Recent content on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate>
     
-	<atom:link href="http://www.garfcat.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.geekgame.site/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>mac  sed 报错</title>
-      <link>http://www.garfcat.github.io/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
+      <link>http://www.geekgame.site/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
       
-      <guid>http://www.garfcat.github.io/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
+      <guid>http://www.geekgame.site/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
       <description>mac 下使用sed -i 替换命令时 会报错
 $sed -i &#39;s/xxxx/yyy/g&#39; test sed: 1: &amp;quot;test&amp;quot;: extra characters at the end of p command  解决方法
 sed -i &amp;quot;&amp;quot; &amp;quot;s/XX/YY/g&amp;quot; test  ============================================
@@ -26,19 +26,19 @@ sed: illegal option -- - usage: sed script [-Ealn] [-i extension] [file ...] sed
     
     <item>
       <title>Index</title>
-      <link>http://www.garfcat.github.io/archives/</link>
+      <link>http://www.geekgame.site/archives/</link>
       <pubDate>Mon, 13 May 2019 12:22:44 +0800</pubDate>
       
-      <guid>http://www.garfcat.github.io/archives/</guid>
+      <guid>http://www.geekgame.site/archives/</guid>
       <description></description>
     </item>
     
     <item>
       <title>About</title>
-      <link>http://www.garfcat.github.io/about/</link>
+      <link>http://www.geekgame.site/about/</link>
       <pubDate>Fri, 10 May 2019 17:38:49 +0800</pubDate>
       
-      <guid>http://www.garfcat.github.io/about/</guid>
+      <guid>http://www.geekgame.site/about/</guid>
       <description></description>
     </item>
     

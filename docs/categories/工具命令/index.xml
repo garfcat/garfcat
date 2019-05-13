@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>工具命令 on garfcat</title>
-    <link>http://www.garfcat.github.io/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</link>
+    <link>http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</link>
     <description>Recent content in 工具命令 on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate>
     
-	<atom:link href="http://www.garfcat.github.io/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>mac  sed 报错</title>
-      <link>http://www.garfcat.github.io/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
+      <link>http://www.geekgame.site/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
       
-      <guid>http://www.garfcat.github.io/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
+      <guid>http://www.geekgame.site/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
       <description>mac 下使用sed -i 替换命令时 会报错
 $sed -i &#39;s/xxxx/yyy/g&#39; test sed: 1: &amp;quot;test&amp;quot;: extra characters at the end of p command  解决方法
 sed -i &amp;quot;&amp;quot; &amp;quot;s/XX/YY/g&amp;quot; test  ============================================
