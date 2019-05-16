@@ -9,7 +9,7 @@ publishDir = "docs"
 
 [params]
   author = "grafcat"
-  subtitle = "focus on backend tech"
+  subtitle = "just for fun"
   keywords = "go,golang,后端"
   description = "focus on your focus"
 

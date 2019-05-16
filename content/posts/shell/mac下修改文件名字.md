@@ -2,7 +2,7 @@
 title: "mac  sed 报错"
 date: 2019-05-13T12:36:43+08:00
 draft: false
-tags: [ "sed", "mac" ]
+tags: [ "sed", "mac", "shell"]
 series: ["命令"]
 categories: ["工具命令"]
 ---
