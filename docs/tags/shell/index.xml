@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shell on garfcat</title>
+    <link>http://www.geekgame.site/tags/shell/</link>
+    <description>Recent content in shell on garfcat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate>
+    
+	<atom:link href="http://www.geekgame.site/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Effective_shell</title>
+      <link>http://www.geekgame.site/posts/shell/effective_shell/</link>
+      <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/posts/shell/effective_shell/</guid>
+      <description> shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
+oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；
+autosuggestions: 补全已经输入过的命令；
+jump around : 感觉这个非常有用，在目录的跳转之前节省大量的时间；
+命令  hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr &amp;ndash;show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ；
+ htop: 加强版的top, 安装与介绍可以看一下这里  </description>
+    </item>
+    
+    <item>
+      <title>mac  sed 报错</title>
+      <link>http://www.geekgame.site/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
+      <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
+      <description>mac 下使用sed -i 替换命令时 会报错
+$sed -i &#39;s/xxxx/yyy/g&#39; test sed: 1: &amp;quot;test&amp;quot;: extra characters at the end of p command  解决方法
+sed -i &amp;quot;&amp;quot; &amp;quot;s/XX/YY/g&amp;quot; test  ============================================
+sed 用法
+sed: illegal option -- - usage: sed script [-Ealn] [-i extension] [file ...] sed [-Ealn] [-i extension] [-e script] ... [-f script_file] ... [file ...] -i 后边需要添加备份文件的后缀名,如果不需要可以使用&amp;quot;&amp;quot;,但是不可以忽略 如 sed -i &amp;quot;.bak&amp;quot; &#39;s/xxxx/yyy/g&#39; test 会将替换后的文本写入test.bak  </description>
+    </item>
+    
+  </channel>
+</rss>
