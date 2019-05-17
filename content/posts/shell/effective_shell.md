@@ -1,7 +1,6 @@
 ---
 title: "Effective_shell"
 date: 2019-05-16T19:34:57+08:00
-draft: false
 tags: [ "effective", "shell"]
 categories: ["工具命令"]
 ---
