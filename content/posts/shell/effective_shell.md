@@ -1,7 +1,7 @@
 ---
 title: "Effective_shell"
 date: 2019-05-16T19:34:57+08:00
-draft: true
+draft: false
 tags: [ "effective", "shell"]
 categories: ["工具命令"]
 ---
@@ -17,5 +17,5 @@ jump around : 感觉这个非常有用，在目录的跳转之前节省大量的
 
 ## 命令 
  
-* [hstr](https://github.com/dvorka/hstr): 查找历史命令，比Ctrl+R 方便太多；     
+* [hstr](https://github.com/dvorka/hstr): 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration >> ~/.zshrc , source ~/.zshrc ；     
 * htop: 加强版的top, 安装与介绍可以看一下[这里](https://cloud.tencent.com/developer/article/1115041)
