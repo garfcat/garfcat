@@ -4,25 +4,48 @@
   
   <url>
     <loc>http://www.geekgame.site/categories/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://www.geekgame.site/posts/shell/effective_shell/</loc>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.geekgame.site/posts/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.geekgame.site/tags/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.geekgame.site/tags/effective/</loc>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.geekgame.site/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.geekgame.site/tags/shell/</loc>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -33,18 +56,12 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</loc>
+    <loc>http://www.geekgame.site/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</loc>
     <lastmod>2019-05-13T12:36:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://www.geekgame.site/tags/sed/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</loc>
     <lastmod>2019-05-13T12:36:43+08:00</lastmod>
     <priority>0</priority>
   </url>

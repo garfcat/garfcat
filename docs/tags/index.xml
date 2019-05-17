@@ -6,10 +6,28 @@
     <description>Recent content in Tags on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate>
     
 	<atom:link href="http://www.geekgame.site/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>effective</title>
+      <link>http://www.geekgame.site/tags/effective/</link>
+      <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/effective/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shell</title>
+      <link>http://www.geekgame.site/tags/shell/</link>
+      <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/shell/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>mac</title>
