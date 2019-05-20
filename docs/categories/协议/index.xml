@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>协议 on garfcat</title>
+    <link>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</link>
+    <description>Recent content in 协议 on garfcat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 15 May 2019 13:24:24 +0800</lastBuildDate>
+    
+	<atom:link href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MQTT 基本概念</title>
+      <link>http://www.geekgame.site/posts/protocol/mqtt/</link>
+      <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/posts/protocol/mqtt/</guid>
+      <description> MQTT 概述 MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是 低开销、低带宽，在lot上应用较为广泛。
+MQTT 架构  MQTT 是c/s模型，每个客户端通过tcp连接到服务器(broker)； MQTT 是面向消息的。每个消息都是独立的数据块，对于broker来说是不透明的； 每条消息都会发送到一个地址，这个地址称为主题(topic),订阅主题的每个客户端都会收到发布到该主题上的每条消息；  如下所示： 客户端 A、B、C都连接到一个中间broker;
+B、C都订阅topic :dev_info 来获取其他设备的设备信息；
+A发布设备信息到topic dev_info，broker 将该消息转发给所有的订阅者即 BC；
+主题匹配 mqtt 主题是分层级的，通过／划分层级。如 A/B/G ; 注意在订阅时可以使用通配符，发布时不可以使用通配符；
+通配符 + 匹配任何单个主题，# 匹配任意名称任意数量的主题；
+例如： A/+/G 可以匹配 A/B/G A/C/G A/D/G 等
+A/# 可以配置 A/B/C/D/E/F/G
+Qos mqtt 支持三种级别的服务质量:
+&amp;ldquo;至多一次&amp;rdquo; &amp;ldquo;至少一次&amp;rdquo; &amp;ldquo;只有一次&amp;rdquo;：
+最后遗愿 持久 安全 参考  维基百科 MQTT
+ MQTT manpage MQTT and CoAP, IoT Protocols  </description>
+    </item>
+    
+  </channel>
+</rss>
