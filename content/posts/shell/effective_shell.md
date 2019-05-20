@@ -10,9 +10,9 @@ categories: ["工具命令"]
 
 使用超强组合 [oh-my-zsh](https://ohmyz.sh/) + [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) + [z - jump around](https://github.com/rupa/z)。  
  
-* oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；  
-* autosuggestions: 补全已经输入过的命令； 
-* jump around : 感觉这个非常有用，在目录的跳转之前节省大量的时间；
+- oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；  
+- autosuggestions: 补全已经输入过的命令； 
+- jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；
 
 
 ## 命令 
