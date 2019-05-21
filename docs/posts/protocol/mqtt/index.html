@@ -129,13 +129,21 @@ A发布设备信息到topic dev_info，broker 将该消息转发给所有的订�
 <h1 id="qos">Qos</h1>
 
 <p>mqtt 支持三种级别的服务质量:<br />
- &ldquo;至多一次&rdquo; &ldquo;至少一次&rdquo; &ldquo;只有一次&rdquo;：</p>
+ 0: &ldquo;至多一次&rdquo; 并不需要回复确认消息，有可能丢失消息；<br />
+ 1: &ldquo;至少一次&rdquo; 收到报文后会回复确认消息，这样会重复收到消息（如超时回复确认消息情况）；<br />
+ 2: &ldquo;只有一次&rdquo; 通过 publish pubrec pubrel pubcomp 四个状态确认有且只有一次消息被处理，但是网络带宽会增加；</p>
 
-<h1 id="最后遗愿">最后遗愿</h1>
+<h1 id="最后遗愿-last-will">最后遗愿(last will)</h1>
 
-<h1 id="持久">持久</h1>
+<p>提前预定好的消息，当客户端断开连接时，broker 会将该消息发送给所有订阅者的客户端；</p>
+
+<h1 id="持久-retain">持久(retain)</h1>
+
+<p>topic 设置retain 之后，broker 会保留最后一条retain消息,当client 订阅该topic 时会立刻收到一条retain消息；</p>
 
 <h1 id="安全">安全</h1>
+
+<p>可以通过ssl/tls 双向认证保证数据安全， 也可以通过 ssl/tls + username/password 保证双向安全；</p>
 
 <h1 id="参考">参考</h1>
 
