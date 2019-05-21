@@ -12,6 +12,15 @@ publishDir = "docs"
   subtitle = "just for fun"
   keywords = "go,golang,后端"
   description = "focus on your focus"
+  [params.valine]
+    enable = true
+    appId = 'pSCor7tBnItnANnzoW1f1YUJ-gzGzoHsz'
+    appKey = 'DFEhbtQS9nDVy6c8nSY4qYvz'
+    notify = false  # mail notifier , https://github.com/xCss/Valine/wiki
+    verify = false # Verification code
+    avatar = 'e'
+    placeholder = 'let us talk talk...'
+    visitor = true
 
 [menu]
 #  [[menu.main]]
