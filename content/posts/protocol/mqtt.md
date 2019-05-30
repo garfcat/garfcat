@@ -43,10 +43,12 @@ mqtt 主题是分层级的，通过／划分层级。如 A/B/G ;
 # 持久(retain)
  topic 设置retain 之后，broker 会保留最后一条retain消息,当client 订阅该topic 时会立刻收到一条retain消息；
  
-
+# 清理会话（cleansession）
+设置为true时，客户端建立连接时将清除旧的连接，即再次连接时不会收到消息；  
+设置为false时，客户端即使断开连接，再次连接时会收到未接收的消息；  
  
 # 安全
- 可以通过ssl/tls 双向认证保证数据安全， 也可以通过 ssl/tls + username/password 保证双向安全；
+ 可以通过ssl/tls 双向认证保证数据安全， 也可以通过 单向 ssl/tls + 单向https/username/password 保证双向安全；
 
 # 参考  
 
