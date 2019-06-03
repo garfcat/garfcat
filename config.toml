@@ -5,11 +5,11 @@ theme = "maupassant"
 publishDir = "docs"
 
 [author]
-  name = "grafcat"
+  name = "garfcat"
 
 [params]
   author = "grafcat"
-  subtitle = "just for fun"
+  subtitle = "make it simple, keep it clean."
   keywords = "go,golang,后端"
   description = "focus on your focus"
   [params.valine]
