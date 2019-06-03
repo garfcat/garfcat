@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>编程语言 on garfcat</title>
+    <link>http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
+    <description>Recent content in 编程语言 on garfcat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate>
+    
+	<atom:link href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go module</title>
+      <link>http://www.geekgame.site/posts/language/golang/module/</link>
+      <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/posts/language/golang/module/</guid>
+      <description>Go module Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
+需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
+本文会介绍Go module的一些基本用法；
+ 创建一个模块
+ 添加一个依赖
+ 升级依赖
+ 其他命令  创建一个模块 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;
+执行一下子命令
+~/gomod/hello$ go mod init example.com/hello go: creating new go.mod: module example.com/hello  创建hello.go
+package hello func Hello()string { return &amp;quot;Hello, world.&amp;quot; }  为使用SayHi,创建test文件 hello_test.go
+package hello import &amp;quot;testing&amp;quot; func TestHello(t *testing.T) { want := &amp;quot;Hello, world.&amp;quot; if got := Hello(); got !</description>
+    </item>
+    
+  </channel>
+</rss>

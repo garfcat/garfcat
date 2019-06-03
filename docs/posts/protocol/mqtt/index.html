@@ -141,9 +141,14 @@ A发布设备信息到topic dev_info，broker 将该消息转发给所有的订�
 
 <p>topic 设置retain 之后，broker 会保留最后一条retain消息,当client 订阅该topic 时会立刻收到一条retain消息；</p>
 
+<h1 id="清理会话-cleansession">清理会话（cleansession）</h1>
+
+<p>设置为true时，客户端建立连接时将清除旧的连接，即再次连接时不会收到消息；<br />
+设置为false时，客户端即使断开连接，再次连接时会收到未接收的消息；</p>
+
 <h1 id="安全">安全</h1>
 
-<p>可以通过ssl/tls 双向认证保证数据安全， 也可以通过 ssl/tls + username/password 保证双向安全；</p>
+<p>可以通过ssl/tls 双向认证保证数据安全， 也可以通过 单向 ssl/tls + 单向https/username/password 保证双向安全；</p>
 
 <h1 id="参考">参考</h1>
 
@@ -219,6 +224,10 @@ A发布设备信息到topic dev_info，broker 将该消息转发给所有的订�
 <ul class="widget-list">
     
     <li>
+        <a href="http://www.geekgame.site/posts/language/golang/module/" title="Go module">Go module</a>
+    </li>
+    
+    <li>
         <a href="http://www.geekgame.site/posts/shell/effective_shell/" title="高效shell">高效shell</a>
     </li>
     
@@ -247,6 +256,10 @@ A发布设备信息到topic dev_info，broker 将该消息转发给所有的订�
         <a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令(2)</a>
     </li>
     
+    <li>
+        <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言(1)</a>
+    </li>
+    
 </ul>
     </section>
 
@@ -256,7 +269,11 @@ A发布设备信息到topic dev_info，broker 将该消息转发给所有的订�
     
     <a href="http://www.geekgame.site/tags/effective/">effective</a>
     
+    <a href="http://www.geekgame.site/tags/go/">go</a>
+    
     <a href="http://www.geekgame.site/tags/mac/">mac</a>
+    
+    <a href="http://www.geekgame.site/tags/module/">module</a>
     
     <a href="http://www.geekgame.site/tags/mqtt/">mqtt</a>
     

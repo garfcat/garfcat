@@ -6,10 +6,28 @@
     <description>Recent content in Tags on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate>
     
 	<atom:link href="http://www.geekgame.site/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>go</title>
+      <link>http://www.geekgame.site/tags/go/</link>
+      <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>module</title>
+      <link>http://www.geekgame.site/tags/module/</link>
+      <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/module/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>effective</title>

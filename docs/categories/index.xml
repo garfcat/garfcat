@@ -6,10 +6,19 @@
     <description>Recent content in Categories on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate>
     
 	<atom:link href="http://www.geekgame.site/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>编程语言</title>
+      <link>http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
+      <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>工具命令</title>
