@@ -7,20 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Go module | garfcat</title>
-    <meta property="og:title" content="Go module - garfcat">
+    <title>golang 栈结构 | garfcat</title>
+    <meta property="og:title" content="golang 栈结构 - garfcat">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content="2019-05-30T17:12:47&#43;08:00">
+    <meta property="article:published_time" content="2019-06-15T16:41:11&#43;08:00">
         
         
-    <meta property="article:modified_time" content="2019-05-30T17:12:47&#43;08:00">
+    <meta property="article:modified_time" content="2019-06-15T16:41:11&#43;08:00">
         
     <meta name="Keywords" content="go,golang,后端">
-    <meta name="description" content="Go module">
+    <meta name="description" content="golang 栈结构">
         
     <meta name="author" content="garfcat">
-    <meta property="og:url" content="http://www.geekgame.site/posts/language/golang/module/">
+    <meta property="og:url" content="http://www.geekgame.site/posts/language/golang/plan9/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/normalize.css">
@@ -82,200 +82,189 @@
                 <div class="res-cons">
                     <article class="post">
                         <header>
-                            <h1 class="post-title">Go module</h1>
+                            <h1 class="post-title">golang 栈结构</h1>
                         </header>
                         <date class="post-meta meta-date">
-                            2019年5月30日
+                            2019年6月15日
                         </date>
-                        
-                        <div class="post-meta">
-                            <span>|</span>
-                            
-                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a></span>
-                            
-                        </div>
                         
                         
                         
                         <div class="post-content">
                             
 
-<h1 id="go-module">Go module</h1>
+<h1 id="程序组成">程序组成</h1>
 
-<p>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及<a href="https://semver.org/lang/zh-CN/">特定寓意的版本信息</a>。<br />
-需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。</p>
+<p>程序由代码和数据组成，数据又有静态与动态之分；<br />
+动态数据：存放在堆区和栈区；<br />
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br />
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；</p>
 
-<p>本文会介绍Go module的一些基本用法；</p>
+<h1 id="寄存器">寄存器</h1>
 
-<ul>
-<li>创建一个模块<br /></li>
-<li>添加一个依赖<br /></li>
-<li>升级依赖<br /></li>
-<li>其他命令</li>
-</ul>
-
-<h1 id="创建一个模块">创建一个模块</h1>
-
-<p>如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;<br />
-执行一下子命令</p>
-
-<pre><code class="language-bash"> ~/gomod/hello$ go mod init example.com/hello
-go: creating new go.mod: module example.com/hello
-</code></pre>
-
-<p>创建hello.go</p>
-
-<pre><code class="language-golang">package hello
-
-func Hello()string {
-	return &quot;Hello, world.&quot;
-}
-</code></pre>
-
-<p>为使用SayHi,创建test文件 hello_test.go</p>
-
-<pre><code class="language-golang">package hello
-
-import &quot;testing&quot;
-
-func TestHello(t *testing.T) {
-	want := &quot;Hello, world.&quot;
-	if got := Hello(); got != want {
-		t.Errorf(&quot;Hello() = %s, want %s&quot;, got, want)
-	}
-}
-</code></pre>
-
-<p>执行测试用例</p>
-
-<pre><code class="language-bash"> ~/gomod/hello$ go test -run TestHello
-PASS
-ok  	example.com/hello	0.006s
-
-</code></pre>
-
-<h1 id="添加一个依赖">添加一个依赖</h1>
-
-<pre><code class="language-golang">package hello
-
-import &quot;rsc.io/quote&quot;
-func Hello()string {
-	return quote.Hello()
-}
-</code></pre>
-
-<p>执行</p>
-
-<pre><code class="language-bash">go: extracting rsc.io/quote v1.5.2
-go: extracting rsc.io/sampler v1.3.0
-PASS
-ok  	example.com/hello	0.009s
-</code></pre>
-
-<p>此时会将代码下载到$GOPATH/pkg/mod目录下，之后运行不会重复下载，可以到go.mod已经更新了</p>
-
-<pre><code class="language-bash">module example.com/hello
-
-go 1.12
-
-require rsc.io/quote v1.5.2
-</code></pre>
-
-<p>使用 go list -m all 可以查看所有依赖</p>
-
-<pre><code class="language-bash">$ go list -m all
-example.com/hello
-golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c
-rsc.io/quote v1.5.2
-rsc.io/sampler v1.3.0
-</code></pre>
-
-<p>此时目录下多了一个go.sum文件，这个文件是做什么的呢？</p>
-
-<pre><code class="language-bash">golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c h1:qgOY6WgZOaTkIIMiVjBQcw93ERBE4m30iBm00nkL0i8=
-golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
-rsc.io/quote v1.5.2 h1:w5fcysjrx7yqtD/aO+QwRjYZOKnaM9Uh2b40tElTs3Y=
-rsc.io/quote v1.5.2/go.mod h1:LzX7hefJvL54yjefDEDHNONDjII0t9xZLPXsUe+TKr0=
-rsc.io/sampler v1.3.0 h1:7uVkIFmeBqHfdjD+gZwtXXI+RODJ2Wc4O7MPEh/QiW4=
-rsc.io/sampler v1.3.0/go.mod h1:T1hPZKmBbMNahiBKFy5HrXp6adAjACjK9JXDnKaTXpA=
-</code></pre>
-
-<p>可以看出该文件存储了包的路径 版本 还有校验值；每次执行命令时都会check 该校验是否与download目录下的是否一致；不一致就会报错</p>
-
-<pre><code class="language-bash">verifying rsc.io/quote@v1.5.2/go.mod: checksum mismatch
-	downloaded: h1:Q15uSTpOVzCmer7yFUWKviBR7qLGLuYQ5zPmjACcaxQ=
-	go.sum:     h1:LzX7hefJvL54yjefDEDHNONDjII0t9xZLPXsUe+TKr0=
-</code></pre>
-
-<h1 id="升级依赖">升级依赖</h1>
-
-<p>加入要把quote包升级到其他版本，比如v3（需要提前知道升级的版本以及其中函数），</p>
-
-<pre><code class="language-golang">package hello
-
-import (
-	quoteV3 &quot;rsc.io/quote/v3&quot;
-)
-func Hello()string {
-	return quoteV3.HelloV3()
-}
-</code></pre>
-
-<p>运行 go test, 会自动下载V3</p>
-
-<pre><code class="language-bash">go test
-go: downloading rsc.io/quote/v3 v3.1.0
-go: extracting rsc.io/quote/v3 v3.1.0
-PASS
-ok  	example.com/hello	0.008s
-</code></pre>
-
-<p>查看 go.mod</p>
-
-<pre><code class="language-bash">module example.com/hello
-
-go 1.12
-
-require (
-	golang.org/x/text v0.3.2 // indirect
-	rsc.io/quote v1.5.2
-	rsc.io/quote/v3 v3.1.0
-)
-</code></pre>
-
-<p>并没有删除   rsc.io/quote v1.5.2 ，这需要执行 go mod tidy 来去除不使用的包。</p>
-
-<pre><code class="language-bash">$ go mod tidy
-$ cat go.mod
-module example.com/hello
-
-go 1.12
-
-require (
-	golang.org/x/text v0.3.2 // indirect
-	rsc.io/quote/v3 v3.1.0
-)
-</code></pre>
-
-<h1 id="其他命令">其他命令</h1>
+<h2 id="伪寄存器">伪寄存器</h2>
 
 <ul>
-<li>replace 替换依赖项模块</li>
-<li>exclude 忽略依赖项模块</li>
+<li>FP(Frame pointer): 表示参数以及返回值的基地址；
+通过 SYMBOL+/-ffset(FP)</li>
+<li>PC(Program counter): 跳转寄存器，存储下一条指令地址；</li>
+<li>SB(Static base pointer): 全局静态起始地址.<br /></li>
+<li>SP(Stack pointer): 表示本地变量的起始地址；<br />
+使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx</li>
 </ul>
 
-<h1 id="总结">总结</h1>
+<p>这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；<br />
+SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&lt;&gt; 和 +N，其中N是一个整数。 foo&lt;&gt;(SB)表示foo是一个私有元素只能在
+当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；<em>注意 这里是相对符号的地址</em><br />
+FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。</p>
 
-<ul>
-<li>go mod init 创建一个模块，并创建文件go.mod;</li>
-<li>go build , go test 还有其他关于编译的命令都会按需将依赖添加到go.mod;</li>
-<li>go list -m all 输出当前模块所有的依赖；</li>
-<li>go mod tidy 可以删除不使用的依赖；</li>
-</ul>
+<h2 id="fp-伪sp-硬件sp之间的关系">FP、 伪SP、 硬件SP之间的关系</h2>
+
+<p>SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。</p>
+
+<h3 id="栈结构">栈结构</h3>
+
+<h4 id="无参数无本地变量">无参数无本地变量</h4>
+
+<p>无参数无本地变量栈结果是如下所示</p>
+
+<p><img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png" alt="没有参数没有本地变量" /></p>
+
+<p>通过如下函数来验证</p>
+
+<pre><code class="language-asm">#include &quot;textflag.h&quot; //
+
+TEXT ·SpFp(SB),NOSPLIT,$0-32
+    LEAQ (SP), AX   // 将硬件SP地址存储到AX
+    LEAQ a+0(SP), BX  // 将伪SP地址存储到BX
+    LEAQ b+0(FP), CX  // 将FP地址存储到CX
+    MOVQ AX, ret+0(FP) // 将AX地址存储到第一个返回值
+    MOVQ BX, ret+8(FP) // 将BX地址存储到第二个返回值
+    MOVQ CX, ret+16(FP) // 将CX地址存储到第三个返回值
+    MOVQ a+0(SP), AX  // 将SP 存储的值存储到AX， 也就是该函数的返回值
+    MOVQ AX, ret+24(FP)  //将AX 放到第四个返回值
+    RET
+    
+</code></pre>
+
+<pre><code class="language-golang">package main
+
+import &quot;fmt&quot;
+
+func SpFp() (int, int, int, int) // 汇编函数声明
+func main()  {
+	a,b,c, addr  := SpFp()
+	fmt.Printf(&quot;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&quot;, a, b ,c,addr,SpFp )
+}
+
+</code></pre>
+
+<pre><code class="language-bash">$ ./spfp
+硬SP[824634216112] 伪SP[824634216112] FP[824634216120] addr[17385428] SpFp[17385904]
+</code></pre>
+
+<p>由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8</p>
+
+<pre><code class="language-bash">$ dlv exec ./fpsp
+Type 'help' for list of commands.
+(dlv) b *17385428
+Breakpoint 1 set at 0x10947d4 for main.main() ./main.go:7
+(dlv)
+</code></pre>
+
+<p>由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()</p>
+
+<h4 id="无参数无本地变量-1">无参数无本地变量</h4>
+
+<pre><code class="language-asm">#include &quot;textflag.h&quot; //
+
+TEXT ·SpFpArgs(SB),NOSPLIT,$0-24
+    LEAQ (SP), AX
+    LEAQ a+0(SP), BX
+    LEAQ b+0(FP), CX
+    MOVQ AX, ret+24(FP)
+    MOVQ BX, ret+32(FP)
+    MOVQ CX, ret+40(FP)
+    RET
+    
+</code></pre>
+
+<pre><code class="language-golang">package main
+
+import &quot;fmt&quot;
+
+func SpFpArgs(int, int, int) (int, int, int) // 汇编函数声明
+func main()  {
+	e,f,g   := SpFpArgs(1, 2, 3)
+	fmt.Printf(&quot;硬SP[%d] 伪SP[%d] FP[%d]\n&quot;, e, f, g)
+}
+
+</code></pre>
+
+<pre><code class="language-bash">$ ./spfp
+硬SP[824634216048] 伪SP[824634216048] FP[824634216056]
+</code></pre>
+
+<p>由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8</p>
+
+<h3 id="有本地变量">有本地变量</h3>
+
+<p>在有本地变量情况下，在X86 和 ARM 中栈结构是不同的，如下所示：</p>
+
+<pre><code class="language-bash">
+
+// Stack frame layout
+//
+// (x86)
+// +------------------+
+// | args from caller |
+// +------------------+ &lt;- frame-&gt;argp
+// |  return address  |
+// +------------------+
+// |  caller's BP (*) | (*) if framepointer_enabled &amp;&amp; varp &lt; sp
+// +------------------+ &lt;- frame-&gt;varp
+// |     locals       |
+// +------------------+
+// |  args to callee  |
+// +------------------+ &lt;- frame-&gt;sp
+//
+// (arm)
+// +------------------+
+// | args from caller |
+// +------------------+ &lt;- frame-&gt;argp
+// | caller's retaddr |
+// +------------------+ &lt;- frame-&gt;varp
+// |     locals       |
+// +------------------+
+// |  args to callee  |
+// +------------------+
+// |  return address  |
+// +------------------+ &lt;- frame-&gt;sp
+
+</code></pre>
+
+<p>我们在这里主要关注X86， 在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：
+1. 函数的栈帧大于0；
+2. 满足条件</p>
+
+<pre><code class="language-golang">func Framepointer_enabled(goos, goarch string) bool {
+  return framepointer_enabled != 0 &amp;&amp; goarch == &quot;amd64&quot; &amp;&amp; goos != &quot;nacl&quot;
+}
+</code></pre>
 
 <h1 id="参考">参考</h1>
 
-<p><a href="https://blog.golang.org/using-go-modules">using-go-modules</a></p>
+<p><a href="https://9p.io/plan9/">https://9p.io/plan9/</a><br />
+<a href="http://68k.hax.com/">指令查询</a><br />
+<a href="https://9p.io/magic/man2html/1/8a">命令查询</a><br />
+<a href="https://zhuanlan.zhihu.com/p/19902040">Go的标准IDE：Acme文本编辑器</a><br />
+<a href="https://golang.org/doc/asm">A Quick Guide to Go&rsquo;s Assembler</a><br />
+<a href="https://lrita.github.io/2017/12/12/golang-asm/">golang 汇编</a><br />
+<a href="https://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html">汇编语言入门教程</a><br />
+<a href="http://xargin.com/go-and-plan9-asm/">[译]go 和 plan9 汇编</a><br />
+<a href="https://blog.brickgao.com/2019/01/27/split-stacks/">split stacks</a><br />
+<a href="https://blog.cloudflare.com/how-stacks-are-handled-in-go/">How Stacks are Handled in Go</a><br />
+<a href="https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">go函数调用</a></p>
 
                         </div>
 
@@ -288,6 +277,8 @@ require (
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/posts/language/golang/module/">Go module</a></li>
+        
         <li><a href="/posts/shell/effective_shell/">高效shell</a></li>
         
         <li><a href="/posts/protocol/mqtt/">MQTT 基本概念</a></li>
@@ -296,21 +287,13 @@ require (
         
         <li><a href="/archives/">Index</a></li>
         
-        <li><a href="/about/">About</a></li>
-        
     </ul>
 </div>
 
 
                         <div class="post-meta meta-tags">
                             
-                            <ul class="clearfix">
-                                
-                                <li><a href="http://www.geekgame.site/tags/go">go</a></li>
-                                
-                                <li><a href="http://www.geekgame.site/tags/module">module</a></li>
-                                
-                            </ul>
+                            没有标签
                             
                         </div>
                     </article>

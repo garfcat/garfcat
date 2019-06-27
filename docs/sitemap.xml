@@ -3,6 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://www.geekgame.site/posts/</loc>
+    <lastmod>2019-06-15T16:41:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.geekgame.site/</loc>
+    <lastmod>2019-06-15T16:41:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.geekgame.site/posts/language/golang/plan9/</loc>
+    <lastmod>2019-06-15T16:41:11+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.geekgame.site/categories/</loc>
     <lastmod>2019-05-30T17:12:47+08:00</lastmod>
     <priority>0</priority>
@@ -14,19 +31,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/</loc>
-    <lastmod>2019-05-30T17:12:47+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://www.geekgame.site/tags/</loc>
-    <lastmod>2019-05-30T17:12:47+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/</loc>
     <lastmod>2019-05-30T17:12:47+08:00</lastmod>
     <priority>0</priority>
   </url>
