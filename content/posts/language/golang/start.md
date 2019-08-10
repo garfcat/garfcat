@@ -58,16 +58,95 @@ TEXT _rt0_amd64(SB),NOSPLIT,$-8
 MOVQ	0(SP), DI 是将argc 放到DI寄存器  
 LEAQ	8(SP), SI 是将 argv 的地址放到SI寄存器 
 然后跳转到runtime·rt0_go(SB）(go1.12.5/src/runtime/asm_amd64.s:87)
+
+接下来的流程用下图表示:
+![初始化流程](https://raw.githubusercontent.com/garfcat/garfcat/master/static/rt0_go.png)
+
+
+##### 参数设置
 ```asm
 TEXT runtime·rt0_go(SB),NOSPLIT,$0
 	// copy arguments forward on an even stack
+	／／将argc 和 argv 复制到指定寄存器中
 	MOVQ	DI, AX		// argc
 	MOVQ	SI, BX		// argv
 	SUBQ	$(4*8+7), SP		// 2args 2auto
+	// sp 16 字节对齐
 	ANDQ	$~15, SP
+	// 将 argc 复制到 sp+16 , argv 复制到 sp+24 
 	MOVQ	AX, 16(SP)
 	MOVQ	BX, 24(SP)
 ```
 
-接下来的流程用下图表示:
-![没有参数没有本地变量](https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png)
+##### g0 初始化
+
+```asm
+	// create istack out of the given (operating system) stack.
+	// _cgo_init may update stackguard.
+	// g0 定义在 go1.12.5/src/runtime/proc.go:81
+    // g0.stackguard0 =  rsp-64*1024+104
+    // g0.stackguard1 = g0.stackguard0
+    // g0.stack.lo = g0.stackguard0
+    // g0.stack.hi = rsp 
+	MOVQ	$runtime·g0(SB), DI
+	LEAQ	(-64*1024+104)(SP), BX
+	MOVQ	BX, g_stackguard0(DI)
+	MOVQ	BX, g_stackguard1(DI)
+	MOVQ	BX, (g_stack+stack_lo)(DI)
+	MOVQ	SP, (g_stack+stack_hi)(DI)
+```
+设置g0的栈信息，设置了栈的地址开始与结束位置，分配大约64k空间。
+
+##### cgo_init
+判断是否存在 _cgo_init ,如果有就执行，执行完之后重新设置g0的栈地址
+
+#### tls
+
+```asm
+#ifdef GOOS_plan9
+	// skip TLS setup on Plan 9
+	JMP ok
+#endif
+#ifdef GOOS_solaris
+	// skip TLS setup on Solaris
+	JMP ok
+#endif
+#ifdef GOOS_darwin
+	// skip TLS setup on Darwin
+	JMP ok
+#endif
+
+	LEAQ	runtime·m0+m_tls(SB), DI
+	//settls 位于 go1.12.5/src/runtime/sys_linux_amd64.s:606
+	CALL	runtime·settls(SB)
+
+	// store through it, to make sure it works
+	get_tls(BX)
+	MOVQ	$0x123, g(BX)
+	MOVQ	runtime·m0+m_tls(SB), AX
+	CMPQ	AX, $0x123
+	JEQ 2(PC)
+	CALL	runtime·abort(SB)
+```
+在plan 9, solaris ,darwin 上都直接跳过tls的设置。
+
+
+#### runtime.args
+```asm
+	MOVL	16(SP), AX		// copy argc
+	MOVL	AX, 0(SP)
+	MOVQ	24(SP), AX		// copy argv
+	MOVQ	AX, 8(SP)
+	CALL	runtime·args(SB)
+```
+runtime.args 位于 go1.12.5/src/runtime/runtime1.go:60
+主要作用是读取参数以及获取环境变量；
+
+#### runtime.osinit
+主要设置cpu 数量
+
+### runtime.schedinit
+位于 go1.12.5/src/runtime/proc.go:526
+主要作用 初始化堆栈, 参数，gc , sched。
+
+接下来主要是创建一个goroutine,然后放到队列中，启动mstart 进行调度 运行第一个goroutine（runtime.main）
