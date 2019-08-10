@@ -1,6 +1,9 @@
 ---
 title: "golang 启动过程"
 date: 2019-06-20T22:51:54+08:00
+tags: [ "go", "start" ]
+series: ["golang"]
+categories: ["编程语言"]
 ---
 
 知其然，也要知其所以然，从今天开始研究golang的底层实现，首先从其启动开始；

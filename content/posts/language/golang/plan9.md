@@ -2,6 +2,9 @@
 title: "golang 栈结构"
 date: 2019-06-15T16:41:11+08:00
 draft: false
+tags: [ "go", "stack" ]
+series: ["golang"]
+categories: ["编程语言"]
 ---
 
 # 程序组成
