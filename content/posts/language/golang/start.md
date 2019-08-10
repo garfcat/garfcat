@@ -57,5 +57,17 @@ TEXT _rt0_amd64(SB),NOSPLIT,$-8
 其中 MOVQ 用来操作数据，而LEAQ 用来操作地址，所以
 MOVQ	0(SP), DI 是将argc 放到DI寄存器  
 LEAQ	8(SP), SI 是将 argv 的地址放到SI寄存器 
-然后跳转到runtime·rt0_go(SB）
+然后跳转到runtime·rt0_go(SB）(go1.12.5/src/runtime/asm_amd64.s:87)
+```asm
+TEXT runtime·rt0_go(SB),NOSPLIT,$0
+	// copy arguments forward on an even stack
+	MOVQ	DI, AX		// argc
+	MOVQ	SI, BX		// argv
+	SUBQ	$(4*8+7), SP		// 2args 2auto
+	ANDQ	$~15, SP
+	MOVQ	AX, 16(SP)
+	MOVQ	BX, 24(SP)
+```
 
+接下来的流程用下图表示:
+![没有参数没有本地变量](https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png)
