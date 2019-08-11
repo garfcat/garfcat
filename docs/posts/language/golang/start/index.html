@@ -7,20 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>MQTT 基本概念 | garfcat</title>
-    <meta property="og:title" content="MQTT 基本概念 - garfcat">
+    <title>golang 启动过程 | garfcat</title>
+    <meta property="og:title" content="golang 启动过程 - garfcat">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content="2019-05-15T13:24:24&#43;08:00">
+    <meta property="article:published_time" content="2019-06-20T22:51:54&#43;08:00">
         
         
-    <meta property="article:modified_time" content="2019-05-15T13:24:24&#43;08:00">
+    <meta property="article:modified_time" content="2019-06-20T22:51:54&#43;08:00">
         
     <meta name="Keywords" content="go,golang,后端">
-    <meta name="description" content="MQTT 基本概念">
+    <meta name="description" content="golang 启动过程">
         
     <meta name="author" content="garfcat">
-    <meta property="og:url" content="http://www.geekgame.site/posts/protocol/mqtt/">
+    <meta property="og:url" content="http://www.geekgame.site/posts/language/golang/start/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/normalize.css">
@@ -82,16 +82,16 @@
                 <div class="res-cons">
                     <article class="post">
                         <header>
-                            <h1 class="post-title">MQTT 基本概念</h1>
+                            <h1 class="post-title">golang 启动过程</h1>
                         </header>
                         <date class="post-meta meta-date">
-                            2019年5月15日
+                            2019年6月20日
                         </date>
                         
                         <div class="post-meta">
                             <span>|</span>
                             
-                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE">协议</a></span>
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a></span>
                             
                         </div>
                         
@@ -100,63 +100,159 @@
                         <div class="post-content">
                             
 
-<h1 id="mqtt-概述">MQTT 概述</h1>
+<p>知其然，也要知其所以然，从今天开始研究golang的底层实现，首先从其启动开始；</p>
 
-<p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
-低开销、低带宽，在lot上应用较为广泛。</p>
+<h3 id="找到启动点">找到启动点</h3>
 
-<h1 id="mqtt-架构">MQTT 架构</h1>
+<h5 id="1-写一个hello-world">1. 写一个hello world.</h5>
 
-<ol>
-<li>MQTT 是c/s模型，每个客户端通过tcp连接到服务器(broker)；</li>
-<li>MQTT 是面向消息的。每个消息都是独立的数据块，对于broker来说是不透明的；</li>
-<li>每条消息都会发送到一个地址，这个地址称为主题(topic),订阅主题的每个客户端都会收到发布到该主题上的每条消息；</li>
-</ol>
+<pre><code class="language-golang">package main
 
-<p>如下所示： 客户端 A、B、C都连接到一个中间broker;<br />
-B、C都订阅topic :dev_info 来获取其他设备的设备信息；<br />
-A发布设备信息到topic dev_info，broker 将该消息转发给所有的订阅者即 BC；<br />
-<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/mqtt_arch.png" alt="mqqtt_arch" /></p>
+import (
+	&quot;fmt&quot;
+)
 
-<h1 id="主题匹配">主题匹配</h1>
+func main() {
+	fmt.Println(&quot;hello world&quot;)
+}
+</code></pre>
 
-<p>mqtt 主题是分层级的，通过／划分层级。如 A/B/G ;
-注意在订阅时可以使用通配符，发布时不可以使用通配符；<br />
- 通配符 + 匹配任何单个主题，# 匹配任意名称任意数量的主题；<br />
- 例如： A/+/G 可以匹配 A/B/G A/C/G A/D/G 等<br />
- A/# 可以配置 A/B/C/D/E/F/G</p>
+<h5 id="2-编译后使用gdb找到entry-point">2.编译后使用gdb找到entry point</h5>
 
-<h1 id="qos">Qos</h1>
+<pre><code class="language-bash">$ gdb hello
+ .....
+        file type mach-o-x86-64.
+	Entry point: 0x1052720
+	0x0000000001001000 - 0x0000000001093074 is .text
+	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata
+	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1
+	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink
+	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink
+	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.__gosymtab
+	0x00000000010e27e0 - 0x000000000115c6ff is __TEXT.__gopclntab
+	0x000000000115d000 - 0x000000000115d158 is __DATA.__nl_symbol_ptr
+	0x000000000115d160 - 0x0000000001169c9c is __DATA.__noptrdata
+	0x0000000001169ca0 - 0x0000000001170610 is .data
+	0x0000000001170620 - 0x000000000118be50 is .bss
+	0x000000000118be60 - 0x000000000118e418 is __DATA.__noptrbss
+(gdb) info symbol 0x1052720
+_rt0_amd64_darwin in section .text
+(gdb)
+</code></pre>
 
-<p>mqtt 支持三种级别的服务质量:<br />
- 0: &ldquo;至多一次&rdquo; 并不需要回复确认消息，有可能丢失消息；<br />
- 1: &ldquo;至少一次&rdquo; 收到报文后会回复确认消息，这样会重复收到消息（如超时回复确认消息情况）；<br />
- 2: &ldquo;只有一次&rdquo; 通过 publish pubrec pubrel pubcomp 四个状态确认有且只有一次消息被处理，但是网络带宽会增加；</p>
+<p>可以从entry point 找到入口函数 _rt0_amd64_darwin，可以在源码中搜索一下函数名称,定位函数位置
+runtime/rt0_darwin_amd64.s:7，具体如下所示</p>
 
-<h1 id="最后遗愿-last-will">最后遗愿(last will)</h1>
+<pre><code class="language-bash">TEXT _rt0_amd64_darwin(SB),NOSPLIT,$-8
+	JMP	_rt0_amd64(SB)
+</code></pre>
 
-<p>提前预定好的消息，当客户端断开连接时，broker 会将该消息发送给所有订阅者的客户端；</p>
+<p>该函数跳转到 _rt0_amd64, _rt0_amd64是一段针对amd64系统的公共启动代码。</p>
 
-<h1 id="持久-retain">持久(retain)</h1>
+<pre><code class="language-bash">TEXT _rt0_amd64(SB),NOSPLIT,$-8
+	MOVQ	0(SP), DI	// argc
+	LEAQ	8(SP), SI	// argv
+	JMP	runtime·rt0_go(SB)
+</code></pre>
 
-<p>topic 设置retain 之后，broker 会保留最后一条retain消息,当client 订阅该topic 时会立刻收到一条retain消息；</p>
+<p>其中 MOVQ 用来操作数据，而LEAQ 用来操作地址，所以
+MOVQ    0(SP), DI 是将argc 放到DI寄存器<br />
+LEAQ    8(SP), SI 是将 argv 的地址放到SI寄存器
+然后跳转到runtime·rt0_go(SB）(go1.12.5/src/runtime/asm_amd64.s:87)</p>
 
-<h1 id="清理会话-cleansession">清理会话（cleansession）</h1>
+<p>接下来的流程用下图表示:
+<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/start.png" alt="初始化流程" /></p>
 
-<p>设置为true时，客户端建立连接时将清除旧的连接，即再次连接时不会收到消息；<br />
-设置为false时，客户端即使断开连接，再次连接时会收到未接收的消息；</p>
+<h5 id="参数设置">参数设置</h5>
 
-<h1 id="安全">安全</h1>
+<pre><code class="language-asm">TEXT runtime·rt0_go(SB),NOSPLIT,$0
+	// copy arguments forward on an even stack
+	／／将argc 和 argv 复制到指定寄存器中
+	MOVQ	DI, AX		// argc
+	MOVQ	SI, BX		// argv
+	SUBQ	$(4*8+7), SP		// 2args 2auto
+	// sp 16 字节对齐
+	ANDQ	$~15, SP
+	// 将 argc 复制到 sp+16 , argv 复制到 sp+24 
+	MOVQ	AX, 16(SP)
+	MOVQ	BX, 24(SP)
+</code></pre>
 
-<p>可以通过ssl/tls 双向认证保证数据安全， 也可以通过 单向 ssl/tls + 单向https/username/password 保证双向安全；</p>
+<h5 id="g0-初始化">g0 初始化</h5>
 
-<h1 id="参考">参考</h1>
+<pre><code class="language-asm">	// create istack out of the given (operating system) stack.
+	// _cgo_init may update stackguard.
+	// g0 定义在 go1.12.5/src/runtime/proc.go:81
+    // g0.stackguard0 =  rsp-64*1024+104
+    // g0.stackguard1 = g0.stackguard0
+    // g0.stack.lo = g0.stackguard0
+    // g0.stack.hi = rsp 
+	MOVQ	$runtime·g0(SB), DI
+	LEAQ	(-64*1024+104)(SP), BX
+	MOVQ	BX, g_stackguard0(DI)
+	MOVQ	BX, g_stackguard1(DI)
+	MOVQ	BX, (g_stack+stack_lo)(DI)
+	MOVQ	SP, (g_stack+stack_hi)(DI)
+</code></pre>
 
-<ol>
-<li><a href="https://zh.wikipedia.org/wiki/MQTT">维基百科 MQTT</a><br /></li>
-<li><a href="https://mosquitto.org/man/mqtt-7.html">MQTT manpage</a></li>
-<li><a href="https://www.eclipse.org/community/eclipse_newsletter/2014/february/article2.php">MQTT and CoAP, IoT Protocols</a></li>
-</ol>
+<p>设置g0的栈信息，设置了栈的地址开始与结束位置，分配大约64k空间。</p>
+
+<h5 id="cgo-init">cgo_init</h5>
+
+<p>判断是否存在 _cgo_init ,如果有就执行，执行完之后重新设置g0的栈地址</p>
+
+<h4 id="tls">tls</h4>
+
+<pre><code class="language-asm">#ifdef GOOS_plan9
+	// skip TLS setup on Plan 9
+	JMP ok
+#endif
+#ifdef GOOS_solaris
+	// skip TLS setup on Solaris
+	JMP ok
+#endif
+#ifdef GOOS_darwin
+	// skip TLS setup on Darwin
+	JMP ok
+#endif
+
+	LEAQ	runtime·m0+m_tls(SB), DI
+	//settls 位于 go1.12.5/src/runtime/sys_linux_amd64.s:606
+	CALL	runtime·settls(SB)
+
+	// store through it, to make sure it works
+	get_tls(BX)
+	MOVQ	$0x123, g(BX)
+	MOVQ	runtime·m0+m_tls(SB), AX
+	CMPQ	AX, $0x123
+	JEQ 2(PC)
+	CALL	runtime·abort(SB)
+</code></pre>
+
+<p>在plan 9, solaris ,darwin 上都直接跳过tls的设置。</p>
+
+<h4 id="runtime-args">runtime.args</h4>
+
+<pre><code class="language-asm">	MOVL	16(SP), AX		// copy argc
+	MOVL	AX, 0(SP)
+	MOVQ	24(SP), AX		// copy argv
+	MOVQ	AX, 8(SP)
+	CALL	runtime·args(SB)
+</code></pre>
+
+<p>runtime.args 位于 go1.12.5/src/runtime/runtime1.go:60
+主要作用是读取参数以及获取环境变量；</p>
+
+<h4 id="runtime-osinit">runtime.osinit</h4>
+
+<p>主要设置cpu 数量</p>
+
+<h3 id="runtime-schedinit">runtime.schedinit</h3>
+
+<p>位于 go1.12.5/src/runtime/proc.go:526
+主要作用 初始化堆栈, 参数，gc , sched。</p>
+
+<p>接下来主要是创建一个goroutine,然后放到队列中，启动mstart 进行调度 运行第一个goroutine（runtime.main）</p>
 
                         </div>
 
@@ -169,11 +265,15 @@ A发布设备信息到topic dev_info，broker 将该消息转发给所有的订�
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/posts/language/golang/plan9/">golang 栈结构</a></li>
+        
+        <li><a href="/posts/language/golang/module/">Go module</a></li>
+        
+        <li><a href="/posts/shell/effective_shell/">高效shell</a></li>
+        
+        <li><a href="/posts/protocol/mqtt/">MQTT 基本概念</a></li>
+        
         <li><a href="/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">mac  sed 报错</a></li>
-        
-        <li><a href="/archives/">Index</a></li>
-        
-        <li><a href="/about/">About</a></li>
         
     </ul>
 </div>
@@ -183,7 +283,9 @@ A发布设备信息到topic dev_info，broker 将该消息转发给所有的订�
                             
                             <ul class="clearfix">
                                 
-                                <li><a href="http://www.geekgame.site/tags/mqtt">mqtt</a></li>
+                                <li><a href="http://www.geekgame.site/tags/go">go</a></li>
+                                
+                                <li><a href="http://www.geekgame.site/tags/start">start</a></li>
                                 
                             </ul>
                             

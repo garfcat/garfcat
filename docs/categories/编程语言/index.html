@@ -88,6 +88,65 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/start/">golang 启动过程</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月20日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                知其然，也要知其所以然，从今天开始研究golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. package main import ( &quot;fmt&quot; ) func main() { fmt.Println(&quot;hello world&quot;) }  2.编译后使用gdb找到entry point $ gdb hello ..... file type mach-o-x86-64. Entry point: 0x1052720 0x0000000001001000 - 0x0000000001093074 is .text 0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.__gosymtab 0x00000000010e27e0 - 0x000000000115c6ff is __TEXT.__gopclntab 0x000000000115d000 - 0x000000000115d158 is __DATA.……
+                                <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/start/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/plan9/">golang 栈结构</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月15日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                程序组成 程序由代码和数据组成，数据又有静态与动态之分；
+动态数据：存放在堆区和栈区；
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
+寄存器 伪寄存器  FP(Frame pointer): 表示参数以及返回值的基地址； 通过 SYMBOL+/-ffset(FP) PC(Program counter): 跳转寄存器，存储下一条指令地址； SB(Static base pointer): 全局静态起始地址.
+ SP(Stack pointer): 表示本地变量的起始地址；
+使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx  这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；
+SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&lt;&gt; 和 +N，其中N是一个整数。 foo&lt;&gt;(SB)表示foo是一个私有元素只能在 当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；注意 这里是相对符号的地址
+FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。
+FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。
+栈结构 无参数无本地变量 无参数无本地变量栈结果是如下所示
+通过如下函数来验证
+#include &quot;textflag.h&quot; // TEXT ·SpFp(SB),NOSPLIT,$0-32 LEAQ (SP), AX // 将硬件SP地址存储到AX LEAQ a+0(SP), BX // 将伪SP地址存储到BX LEAQ b+0(FP), CX // 将FP地址存储到CX MOVQ AX, ret+0(FP) // 将AX地址存储到第一个返回值 MOVQ BX, ret+8(FP) // 将BX地址存储到第二个返回值 MOVQ CX, ret+16(FP) // 将CX地址存储到第三个返回值 MOVQ a+0(SP), AX // 将SP 存储的值存储到AX， 也就是该函数的返回值 MOVQ AX, ret+24(FP) //将AX 放到第四个返回值 RET  package main import &quot;fmt&quot; func SpFp() (int, int, int, int) // 汇编函数声明 func main() { a,b,c, addr := SpFp() fmt.……
+                                <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/plan9/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="http://www.geekgame.site/posts/language/golang/module/">Go module</a>
                                 </h1>
                             </header>
@@ -143,6 +202,10 @@ package hello import &quot;testing&quot; func TestHello(t *testing.T) { want := 
 <ul class="widget-list">
     
     <li>
+        <a href="http://www.geekgame.site/posts/language/golang/start/" title="golang 启动过程">golang 启动过程</a>
+    </li>
+    
+    <li>
         <a href="http://www.geekgame.site/posts/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
     </li>
     
@@ -180,7 +243,7 @@ package hello import &quot;testing&quot; func TestHello(t *testing.T) { want := 
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言(1)</a>
+        <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言(3)</a>
     </li>
     
 </ul>
@@ -203,6 +266,10 @@ package hello import &quot;testing&quot; func TestHello(t *testing.T) { want := 
     <a href="http://www.geekgame.site/tags/sed/">sed</a>
     
     <a href="http://www.geekgame.site/tags/shell/">shell</a>
+    
+    <a href="http://www.geekgame.site/tags/stack/">stack</a>
+    
+    <a href="http://www.geekgame.site/tags/start/">start</a>
     
 </div>
     </section>

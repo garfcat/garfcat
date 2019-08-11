@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>编程语言 on garfcat</title>
-    <link>http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
-    <description>Recent content in 编程语言 on garfcat</description>
+    <title>stack on garfcat</title>
+    <link>http://www.geekgame.site/tags/stack/</link>
+    <description>Recent content in stack on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Jun 2019 22:51:54 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Jun 2019 16:41:11 +0800</lastBuildDate>
     
-	<atom:link href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.geekgame.site/tags/stack/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>golang 启动过程</title>
-      <link>http://www.geekgame.site/posts/language/golang/start/</link>
-      <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
-      
-      <guid>http://www.geekgame.site/posts/language/golang/start/</guid>
-      <description>知其然，也要知其所以然，从今天开始研究golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. package main import ( &amp;quot;fmt&amp;quot; ) func main() { fmt.Println(&amp;quot;hello world&amp;quot;) }  2.编译后使用gdb找到entry point $ gdb hello ..... file type mach-o-x86-64. Entry point: 0x1052720 0x0000000001001000 - 0x0000000001093074 is .text 0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.__gosymtab 0x00000000010e27e0 - 0x000000000115c6ff is __TEXT.__gopclntab 0x000000000115d000 - 0x000000000115d158 is __DATA.</description>
-    </item>
     
     <item>
       <title>golang 栈结构</title>
@@ -40,25 +30,6 @@ FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在�
 栈结构 无参数无本地变量 无参数无本地变量栈结果是如下所示
 通过如下函数来验证
 #include &amp;quot;textflag.h&amp;quot; // TEXT ·SpFp(SB),NOSPLIT,$0-32 LEAQ (SP), AX // 将硬件SP地址存储到AX LEAQ a+0(SP), BX // 将伪SP地址存储到BX LEAQ b+0(FP), CX // 将FP地址存储到CX MOVQ AX, ret+0(FP) // 将AX地址存储到第一个返回值 MOVQ BX, ret+8(FP) // 将BX地址存储到第二个返回值 MOVQ CX, ret+16(FP) // 将CX地址存储到第三个返回值 MOVQ a+0(SP), AX // 将SP 存储的值存储到AX， 也就是该函数的返回值 MOVQ AX, ret+24(FP) //将AX 放到第四个返回值 RET  package main import &amp;quot;fmt&amp;quot; func SpFp() (int, int, int, int) // 汇编函数声明 func main() { a,b,c, addr := SpFp() fmt.</description>
-    </item>
-    
-    <item>
-      <title>Go module</title>
-      <link>http://www.geekgame.site/posts/language/golang/module/</link>
-      <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
-      
-      <guid>http://www.geekgame.site/posts/language/golang/module/</guid>
-      <description>Go module Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
-需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
-本文会介绍Go module的一些基本用法；
- 创建一个模块
- 添加一个依赖
- 升级依赖
- 其他命令  创建一个模块 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;
-执行一下子命令
-~/gomod/hello$ go mod init example.com/hello go: creating new go.mod: module example.com/hello  创建hello.go
-package hello func Hello()string { return &amp;quot;Hello, world.&amp;quot; }  为使用SayHi,创建test文件 hello_test.go
-package hello import &amp;quot;testing&amp;quot; func TestHello(t *testing.T) { want := &amp;quot;Hello, world.&amp;quot; if got := Hello(); got !</description>
     </item>
     
   </channel>

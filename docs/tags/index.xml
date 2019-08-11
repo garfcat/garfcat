@@ -6,7 +6,7 @@
     <description>Recent content in Tags on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jun 2019 22:51:54 +0800</lastBuildDate>
     
 	<atom:link href="http://www.geekgame.site/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,27 @@
     <item>
       <title>go</title>
       <link>http://www.geekgame.site/tags/go/</link>
-      <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
+      <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
       <guid>http://www.geekgame.site/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>start</title>
+      <link>http://www.geekgame.site/tags/start/</link>
+      <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/start/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stack</title>
+      <link>http://www.geekgame.site/tags/stack/</link>
+      <pubDate>Sat, 15 Jun 2019 16:41:11 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/stack/</guid>
       <description></description>
     </item>
     
