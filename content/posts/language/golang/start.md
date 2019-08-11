@@ -1,6 +1,7 @@
 ---
 title: "golang 启动过程"
 date: 2019-06-20T22:51:54+08:00
+draft: false
 tags: [ "go", "start" ]
 series: ["golang"]
 categories: ["编程语言"]
