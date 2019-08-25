@@ -153,3 +153,5 @@ runtime.args 位于 go1.12.5/src/runtime/runtime1.go:60
 主要作用 初始化堆栈, 参数，gc , sched。
 
 接下来主要是创建一个goroutine,然后放到队列中，启动mstart 进行调度 运行第一个goroutine（runtime.main）
+
+
