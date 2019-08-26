@@ -29,10 +29,13 @@ _Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没�
 
 
 ## 调度原理
-![初始化流程](https://raw.githubusercontent.com/garfcat/garfcat/master/static/GMP.png)
+![调度原理](https://raw.githubusercontent.com/garfcat/garfcat/master/static/gmp_pic.png)
 
-
-
+### 新建G
+1. 当使用go 关键字执行函数时，会创建一个G(goroutine);
+2. 新创建的G，并不会添加到本地队列，而是添加到P关联的runnext中(runnext是一个指针变量，用来存放G的地址),runnext原来的G被放到本地队列中;  
+    2.1 如果本地队列未满（最大256），则放置到队尾；  
+    2.2 如果本地队列已满，则将本地队列的一半数量的G和runnext中原来的G存放到全局队列中；  
 ```golang
 func schedule() {    
 // only 1/61 of the time, check the global runnable queue for a G. 仅 1/61 的机会, 检查全局运行队列里面的 G.    
