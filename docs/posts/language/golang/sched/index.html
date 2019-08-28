@@ -7,20 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>golang 栈结构 | garfcat</title>
-    <meta property="og:title" content="golang 栈结构 - garfcat">
+    <title>协程调度原理 | garfcat</title>
+    <meta property="og:title" content="协程调度原理 - garfcat">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content="2019-06-15T16:41:11&#43;08:00">
+    <meta property="article:published_time" content="2019-08-11T10:23:01&#43;08:00">
         
         
-    <meta property="article:modified_time" content="2019-06-15T16:41:11&#43;08:00">
+    <meta property="article:modified_time" content="2019-08-11T10:23:01&#43;08:00">
         
     <meta name="Keywords" content="go,golang,后端">
-    <meta name="description" content="golang 栈结构">
+    <meta name="description" content="协程调度原理">
         
     <meta name="author" content="garfcat">
-    <meta property="og:url" content="http://www.geekgame.site/posts/language/golang/plan9/">
+    <meta property="og:url" content="http://www.geekgame.site/posts/language/golang/sched/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/normalize.css">
@@ -82,10 +82,10 @@
                 <div class="res-cons">
                     <article class="post">
                         <header>
-                            <h1 class="post-title">golang 栈结构</h1>
+                            <h1 class="post-title">协程调度原理</h1>
                         </header>
                         <date class="post-meta meta-date">
-                            2019年6月15日
+                            2019年8月11日
                         </date>
                         
                         <div class="post-meta">
@@ -100,178 +100,90 @@
                         <div class="post-content">
                             
 
-<h1 id="程序组成">程序组成</h1>
+<h1 id="gmp调度模型">GMP调度模型</h1>
 
-<p>程序由代码和数据组成，数据又有静态与动态之分；<br />
-动态数据：存放在堆区和栈区；<br />
-静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br />
-可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；</p>
-
-<h1 id="寄存器">寄存器</h1>
-
-<h2 id="伪寄存器">伪寄存器</h2>
+<h2 id="核心概念">核心概念</h2>
 
 <ul>
-<li>FP(Frame pointer): 表示参数以及返回值的基地址；
-通过 SYMBOL+/-ffset(FP)</li>
-<li>PC(Program counter): 跳转寄存器，存储下一条指令地址；</li>
-<li>SB(Static base pointer): 全局静态起始地址.<br /></li>
-<li>SP(Stack pointer): 表示本地变量的起始地址；<br />
-使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx</li>
+<li><p>G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：</p>
+
+<pre><code class="language-golang"> go func() //创建协程来执行函数
+</code></pre></li>
+
+<li><p>M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic.</p></li>
+
+<li><p>P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数；</p></li>
+
+<li><p>本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中；</p></li>
+
+<li><p>全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；</p></li>
 </ul>
 
-<p>这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；<br />
-SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&lt;&gt; 和 +N，其中N是一个整数。 foo&lt;&gt;(SB)表示foo是一个私有元素只能在
-当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；<em>注意 这里是相对符号的地址</em><br />
-FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。</p>
+<h2 id="协程的状态">协程的状态</h2>
 
-<h2 id="fp-伪sp-硬件sp之间的关系">FP、 伪SP、 硬件SP之间的关系</h2>
+<p>在go1.12.5/src/runtime/runtime2.go：15 定义有如下几个状态<br />
+_Gidle: 值（0） 刚刚被创建，还没有初始化；<br />
+_Grunnable： 值（1） 已经在运行队列中，只是此时没有执行用户代码,未分配栈；<br />
+_Grunning：值（2）在执行用户代码，已经不在运行队列中，分配了M和P;<br />
+_Gsyscall： 值（3）当前goroutine正在执行系统调用，已经不再运行队列中，分配了M;<br />
+_Gwaiting： 值（4） 在运行时被阻塞，并没有执行用户代码，此刻的goroutine会被记录到某处（例如channel等待队列）<br />
+_Gmoribund_unused: 值（5） 当前并未使用，但是已经在gdb中进行了硬编码；<br />
+_Gdead： 值（6） 当前goroutine没有被使用，可能刚刚退出或者刚刚被初始化，并没有执行用户代码；<br />
+_Genqueue_unused： 值（7） 当前并未使用；<br />
+_Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没有在运行队列中；</p>
 
-<p>SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。</p>
+<h2 id="p的状态">P的状态</h2>
 
-<h3 id="栈结构">栈结构</h3>
+<p>_Pidle: 空闲状态，未与M绑定<br />
+_Prunning: 正在运行，已经与M绑定,M 正在执行P中G；<br />
+_Psyscall: 正在执行的G处于系统调用中；<br />
+_Pgcstop： runtime正在gc;<br />
+_Pdead: 当前P已经不再使用；</p>
 
-<h4 id="无参数无本地变量">无参数无本地变量</h4>
+<h2 id="调度原理">调度原理</h2>
 
-<p>无参数无本地变量栈结果是如下所示</p>
+<p><img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/gmp_pic.png" alt="调度原理" />
+从上图我们可以看到在新建G时
+1. 当使用go 关键字执行函数时，会创建一个G(goroutine);
+2. 新创建的G，并不会添加到本地队列，而是添加到P关联的runnext中(runnext是一个指针变量，用来存放G的地址),runnext原来的G被放到本地队列中;<br />
+    2.1 如果本地队列未满（最大256），则放置到队尾；<br />
+    2.2 如果本地队列已满，则将本地队列的一半数量的G和runnext中原来的G存放到全局队列中；</p>
 
-<p><img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png" alt="没有参数没有本地变量" /></p>
+<h3 id="运行时调度">运行时调度</h3>
 
-<p>通过如下函数来验证</p>
+<ol>
+<li>为公平起见，有1／61的机会首先从全局队列获取到G,如果获取到则执行G;<br /></li>
+<li>如果没有机会从全局队列获取或者没有获取到G，则从P关联的runnext或者本地队列获取：<br />
+2.1 如果P的runnext有G，则执行该G；
+2.2 如果P的runnext没有G，则从本地队列中获取G；<br /></li>
+<li>如果第二步没有获取到，则执行以下步骤获取：<br />
+3.1 从关联P中获取，步骤同2，若获取到返回;<br />
+3.2 从全局队列中获取，若获取到返回;<br />
+3.3 调用 netpoll()取异步调用结束的G，该调用为非阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；<br />
+3.4 从其他P中steal一半的G到本地队列,若获取到则返回；<br />
+3.5 如果处于垃圾回收标记阶段，则执行垃圾回收操作；<br />
+3.6 再次从全局队列中获取，若获取到返回;<br />
+3.7 调用 netpoll()取异步调用结束的G，该调用为阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；<br />
+<br /></li>
+</ol>
 
-<pre><code class="language-asm">#include &quot;textflag.h&quot; //
+<h3 id="抢占">抢占</h3>
 
-TEXT ·SpFp(SB),NOSPLIT,$0-32
-    LEAQ (SP), AX   // 将硬件SP地址存储到AX
-    LEAQ a+0(SP), BX  // 将伪SP地址存储到BX
-    LEAQ b+0(FP), CX  // 将FP地址存储到CX
-    MOVQ AX, ret+0(FP) // 将AX地址存储到第一个返回值
-    MOVQ BX, ret+8(FP) // 将BX地址存储到第二个返回值
-    MOVQ CX, ret+16(FP) // 将CX地址存储到第三个返回值
-    MOVQ a+0(SP), AX  // 将SP 存储的值存储到AX， 也就是该函数的返回值
-    MOVQ AX, ret+24(FP)  //将AX 放到第四个返回值
-    RET
-    
-</code></pre>
-
-<pre><code class="language-golang">package main
-
-import &quot;fmt&quot;
-
-func SpFp() (int, int, int, int) // 汇编函数声明
-func main()  {
-	a,b,c, addr  := SpFp()
-	fmt.Printf(&quot;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&quot;, a, b ,c,addr,SpFp )
-}
-
-</code></pre>
-
-<pre><code class="language-bash">$ ./spfp
-硬SP[824634216112] 伪SP[824634216112] FP[824634216120] addr[17385428] SpFp[17385904]
-</code></pre>
-
-<p>由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8</p>
-
-<pre><code class="language-bash">$ dlv exec ./fpsp
-Type 'help' for list of commands.
-(dlv) b *17385428
-Breakpoint 1 set at 0x10947d4 for main.main() ./main.go:7
-(dlv)
-</code></pre>
-
-<p>由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()</p>
-
-<h4 id="无参数无本地变量-1">无参数无本地变量</h4>
-
-<pre><code class="language-asm">#include &quot;textflag.h&quot; //
-
-TEXT ·SpFpArgs(SB),NOSPLIT,$0-24
-    LEAQ (SP), AX
-    LEAQ a+0(SP), BX
-    LEAQ b+0(FP), CX
-    MOVQ AX, ret+24(FP)
-    MOVQ BX, ret+32(FP)
-    MOVQ CX, ret+40(FP)
-    RET
-    
-</code></pre>
-
-<pre><code class="language-golang">package main
-
-import &quot;fmt&quot;
-
-func SpFpArgs(int, int, int) (int, int, int) // 汇编函数声明
-func main()  {
-	e,f,g   := SpFpArgs(1, 2, 3)
-	fmt.Printf(&quot;硬SP[%d] 伪SP[%d] FP[%d]\n&quot;, e, f, g)
-}
-
-</code></pre>
-
-<pre><code class="language-bash">$ ./spfp
-硬SP[824634216048] 伪SP[824634216048] FP[824634216056]
-</code></pre>
-
-<p>由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8</p>
-
-<h3 id="有本地变量">有本地变量</h3>
-
-<p>在有本地变量情况下，在X86 和 ARM 中栈结构是不同的，如下所示：</p>
-
-<pre><code class="language-bash">
-
-// Stack frame layout
-//
-// (x86)
-// +------------------+
-// | args from caller |
-// +------------------+ &lt;- frame-&gt;argp
-// |  return address  |
-// +------------------+
-// |  caller's BP (*) | (*) if framepointer_enabled &amp;&amp; varp &lt; sp
-// +------------------+ &lt;- frame-&gt;varp
-// |     locals       |
-// +------------------+
-// |  args to callee  |
-// +------------------+ &lt;- frame-&gt;sp
-//
-// (arm)
-// +------------------+
-// | args from caller |
-// +------------------+ &lt;- frame-&gt;argp
-// | caller's retaddr |
-// +------------------+ &lt;- frame-&gt;varp
-// |     locals       |
-// +------------------+
-// |  args to callee  |
-// +------------------+
-// |  return address  |
-// +------------------+ &lt;- frame-&gt;sp
-
-</code></pre>
-
-<p>我们在这里主要关注X86， 在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：
-1. 函数的栈帧大于0；
-2. 满足条件</p>
-
-<pre><code class="language-golang">func Framepointer_enabled(goos, goarch string) bool {
-  return framepointer_enabled != 0 &amp;&amp; goarch == &quot;amd64&quot; &amp;&amp; goos != &quot;nacl&quot;
-}
-</code></pre>
+<p>在golang程序启动时，会创建一个M（并没有关联P）来执行监控函数即sysmon,该函数就是用来完成抢占的；
+1. 该函数每次执行之间都会休眠一定的时间，休眠时间计算规则与每次是否抢占成功有关系：<br />
+    1.1 如果连续未抢占成功的次数小于等于50，则每次休眠20us;<br />
+    1.2 如果连续未抢占成功的次数大于50，则每次休眠次数翻倍；<br />
+    1.3 最大休眠时间不得超过10ms;
+2. 遍历所有的P，查看P的状态：<br />
+    2.1 如果状态为_Psyscall(处于系统调用中)且执行时间已经超过了一个sysmon时间（最少20us）,则进行抢占；<br />
+    2.2 如果状态为_Prunning且执行时间已经超过了forcePreemptNS(10ms),则进行抢占；</p>
 
 <h1 id="参考">参考</h1>
 
-<p><a href="https://9p.io/plan9/">https://9p.io/plan9/</a><br />
-<a href="http://68k.hax.com/">指令查询</a><br />
-<a href="https://9p.io/magic/man2html/1/8a">命令查询</a><br />
-<a href="https://zhuanlan.zhihu.com/p/19902040">Go的标准IDE：Acme文本编辑器</a><br />
-<a href="https://golang.org/doc/asm">A Quick Guide to Go&rsquo;s Assembler</a><br />
-<a href="https://lrita.github.io/2017/12/12/golang-asm/">golang 汇编</a><br />
-<a href="https://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html">汇编语言入门教程</a><br />
-<a href="http://xargin.com/go-and-plan9-asm/">[译]go 和 plan9 汇编</a><br />
-<a href="https://blog.brickgao.com/2019/01/27/split-stacks/">split stacks</a><br />
-<a href="https://blog.cloudflare.com/how-stacks-are-handled-in-go/">How Stacks are Handled in Go</a><br />
-<a href="https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">go函数调用</a></p>
+<p><a href="https://studygolang.com/articles/20991">https://studygolang.com/articles/20991</a>
+<a href="https://studygolang.com/articles/11627">https://studygolang.com/articles/11627</a><br />
+<a href="https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA">https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA</a><br />
+<a href="https://blog.csdn.net/u010853261/article/details/84790392">https://blog.csdn.net/u010853261/article/details/84790392</a></p>
 
                         </div>
 
@@ -284,15 +196,15 @@ func main()  {
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/posts/language/golang/start/">golang 启动过程</a></li>
+        
+        <li><a href="/posts/language/golang/plan9/">golang 栈结构</a></li>
+        
         <li><a href="/posts/language/golang/module/">Go module</a></li>
         
         <li><a href="/posts/shell/effective_shell/">高效shell</a></li>
         
         <li><a href="/posts/protocol/mqtt/">MQTT 基本概念</a></li>
-        
-        <li><a href="/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">mac  sed 报错</a></li>
-        
-        <li><a href="/archives/">Index</a></li>
         
     </ul>
 </div>
@@ -304,7 +216,7 @@ func main()  {
                                 
                                 <li><a href="http://www.geekgame.site/tags/go">go</a></li>
                                 
-                                <li><a href="http://www.geekgame.site/tags/stack">stack</a></li>
+                                <li><a href="http://www.geekgame.site/tags/sched">sched</a></li>
                                 
                             </ul>
                             

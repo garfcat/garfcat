@@ -1,7 +1,10 @@
 ---
 title: "协程调度原理"
 date: 2019-08-11T10:23:01+08:00
-draft: true
+draft: false
+tags: [ "go", "sched" ]
+series: ["golang"]
+categories: ["编程语言"]
 ---
 
 # GMP调度模型
@@ -24,32 +27,50 @@ _Gsyscall： 值（3）当前goroutine正在执行系统调用，已经不再运
 _Gwaiting： 值（4） 在运行时被阻塞，并没有执行用户代码，此刻的goroutine会被记录到某处（例如channel等待队列）  
 _Gmoribund_unused: 值（5） 当前并未使用，但是已经在gdb中进行了硬编码；  
 _Gdead： 值（6） 当前goroutine没有被使用，可能刚刚退出或者刚刚被初始化，并没有执行用户代码；  
-_Genqueue_unused： 值（7） 当前并未使用； 
-_Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没有在运行队列中；  
+_Genqueue_unused： 值（7） 当前并未使用；   
+_Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没有在运行队列中；    
 
+## P的状态
+_Pidle: 空闲状态，未与M绑定  
+_Prunning: 正在运行，已经与M绑定,M 正在执行P中G；  
+_Psyscall: 正在执行的G处于系统调用中；  
+_Pgcstop： runtime正在gc;  
+_Pdead: 当前P已经不再使用；  
 
 ## 调度原理
 ![调度原理](https://raw.githubusercontent.com/garfcat/garfcat/master/static/gmp_pic.png)
-
-### 新建G
+从上图我们可以看到在新建G时
 1. 当使用go 关键字执行函数时，会创建一个G(goroutine);
-2. 新创建的G，并不会添加到本地队列，而是添加到P关联的runnext中(runnext是一个指针变量，用来存放G的地址),runnext原来的G被放到本地队列中;  
-    2.1 如果本地队列未满（最大256），则放置到队尾；  
+2. 新创建的G，并不会添加到本地队列，而是添加到P关联的runnext中(runnext是一个指针变量，用来存放G的地址),runnext原来的G被放到本地队列中;    
+    2.1 如果本地队列未满（最大256），则放置到队尾；    
     2.2 如果本地队列已满，则将本地队列的一半数量的G和runnext中原来的G存放到全局队列中；  
-```golang
-func schedule() {    
-// only 1/61 of the time, check the global runnable queue for a G. 仅 1/61 的机会, 检查全局运行队列里面的 G.    
-// if not found, check the local queue. 如果没找到, 检查本地队列.    
-// if not found, 还是没找到 ?    
-//     try to steal from other Ps. 尝试从其他 P 偷.   
- //     if not, check the global runnable queue. 还是没有, 检查全局运行队列.   
-  //     if not found, poll network. 还是没有, 轮询网络.
-  
-  }
-
-```
+    
+### 运行时调度
+1. 为公平起见，有1／61的机会首先从全局队列获取到G,如果获取到则执行G;  
+2. 如果没有机会从全局队列获取或者没有获取到G，则从P关联的runnext或者本地队列获取：  
+    2.1 如果P的runnext有G，则执行该G； 
+    2.2 如果P的runnext没有G，则从本地队列中获取G；  
+3. 如果第二步没有获取到，则执行以下步骤获取：  
+    3.1 从关联P中获取，步骤同2，若获取到返回;  
+    3.2 从全局队列中获取，若获取到返回;  
+    3.3 调用 netpoll()取异步调用结束的G，该调用为非阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；  
+    3.4 从其他P中steal一半的G到本地队列,若获取到则返回；  
+    3.5 如果处于垃圾回收标记阶段，则执行垃圾回收操作；  
+    3.6 再次从全局队列中获取，若获取到返回;  
+    3.7 调用 netpoll()取异步调用结束的G，该调用为阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；  
+    
+### 抢占
+在golang程序启动时，会创建一个M（并没有关联P）来执行监控函数即sysmon,该函数就是用来完成抢占的；
+1. 该函数每次执行之间都会休眠一定的时间，休眠时间计算规则与每次是否抢占成功有关系：  
+    1.1 如果连续未抢占成功的次数小于等于50，则每次休眠20us;  
+    1.2 如果连续未抢占成功的次数大于50，则每次休眠次数翻倍；  
+    1.3 最大休眠时间不得超过10ms;
+2. 遍历所有的P，查看P的状态：  
+    2.1 如果状态为_Psyscall(处于系统调用中)且执行时间已经超过了一个sysmon时间（最少20us）,则进行抢占；  
+    2.2 如果状态为_Prunning且执行时间已经超过了forcePreemptNS(10ms),则进行抢占；  
 
 # 参考
 https://studygolang.com/articles/20991 
 https://studygolang.com/articles/11627  
-https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA   
+https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA    
+https://blog.csdn.net/u010853261/article/details/84790392    
