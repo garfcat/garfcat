@@ -85,7 +85,7 @@ Breakpoint 1 set at 0x10947d4 for main.main() ./main.go:7
 由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()
 
 
-#### 无参数无本地变量
+#### 有参数无本地变量
 
 ```asm
 #include "textflag.h" //
@@ -153,14 +153,9 @@ $ ./spfp
 // +------------------+ <- frame->sp
 
 ```
-我们在这里主要关注X86， 在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：
-1. 函数的栈帧大于0；
-2. 满足条件
-```golang
-func Framepointer_enabled(goos, goarch string) bool {
-  return framepointer_enabled != 0 && goarch == "amd64" && goos != "nacl"
-}
-```
+
+此时 硬件SP与伪SP是不相同的。  
+硬件SP + locals = 伪SP
 
 # 参考
 https://9p.io/plan9/  
