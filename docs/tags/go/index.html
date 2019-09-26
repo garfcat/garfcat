@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.56.0-DEV" />
+    <meta name="generator" content="Hugo 0.58.2" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -103,27 +103,8 @@
                             </div>
                             
                             <div class="post-content">
-                                GMP调度模型 核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：
-go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic.
- P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数；
- 本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中；
- 全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；
-  协程的状态 在go1.12.5/src/runtime/runtime2.go：15 定义有如下几个状态
-_Gidle: 值（0） 刚刚被创建，还没有初始化；
-_Grunnable： 值（1） 已经在运行队列中，只是此时没有执行用户代码,未分配栈；
-_Grunning：值（2）在执行用户代码，已经不在运行队列中，分配了M和P;
-_Gsyscall： 值（3）当前goroutine正在执行系统调用，已经不再运行队列中，分配了M;
-_Gwaiting： 值（4） 在运行时被阻塞，并没有执行用户代码，此刻的goroutine会被记录到某处（例如channel等待队列）
-_Gmoribund_unused: 值（5） 当前并未使用，但是已经在gdb中进行了硬编码；
-_Gdead： 值（6） 当前goroutine没有被使用，可能刚刚退出或者刚刚被初始化，并没有执行用户代码；
-_Genqueue_unused： 值（7） 当前并未使用；
-_Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没有在运行队列中；
-P的状态 _Pidle: 空闲状态，未与M绑定
-_Prunning: 正在运行，已经与M绑定,M 正在执行P中G；
-_Psyscall: 正在执行的G处于系统调用中；
-_Pgcstop： runtime正在gc;
-_Pdead: 当前P已经不再使用；
-调度原理 从上图我们可以看到在新建G时 1. 当使用go 关键字执行函数时，会创建一个G(goroutine); 2.……
+                                <p>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
+本文就来深入探讨一下Go的调度原理。</p>……
                                 <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/sched/">阅读全文</a></p>
                             </div>
                         </article>
@@ -170,19 +151,12 @@ _Pdead: 当前P已经不再使用；
                             </div>
                             
                             <div class="post-content">
-                                程序组成 程序由代码和数据组成，数据又有静态与动态之分；
-动态数据：存放在堆区和栈区；
-静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
-可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
-寄存器 伪寄存器  FP(Frame pointer): 表示参数以及返回值的基地址； 通过 SYMBOL+/-ffset(FP) PC(Program counter): 跳转寄存器，存储下一条指令地址； SB(Static base pointer): 全局静态起始地址.
- SP(Stack pointer): 表示本地变量的起始地址；
-使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx  这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；
-SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&lt;&gt; 和 +N，其中N是一个整数。 foo&lt;&gt;(SB)表示foo是一个私有元素只能在 当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；注意 这里是相对符号的地址
-FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。
-FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。
-栈结构 无参数无本地变量 无参数无本地变量栈结果是如下所示
-通过如下函数来验证
-#include &quot;textflag.h&quot; // TEXT ·SpFp(SB),NOSPLIT,$0-32 LEAQ (SP), AX // 将硬件SP地址存储到AX LEAQ a+0(SP), BX // 将伪SP地址存储到BX LEAQ b+0(FP), CX // 将FP地址存储到CX MOVQ AX, ret+0(FP) // 将AX地址存储到第一个返回值 MOVQ BX, ret+8(FP) // 将BX地址存储到第二个返回值 MOVQ CX, ret+16(FP) // 将CX地址存储到第三个返回值 MOVQ a+0(SP), AX // 将SP 存储的值存储到AX， 也就是该函数的返回值 MOVQ AX, ret+24(FP) //将AX 放到第四个返回值 RET  package main import &quot;fmt&quot; func SpFp() (int, int, int, int) // 汇编函数声明 func main() { a,b,c, addr := SpFp() fmt.……
+                                <h1 id="程序组成">程序组成</h1>
+
+<p>程序由代码和数据组成，数据又有静态与动态之分；<br />
+动态数据：存放在堆区和栈区；<br />
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br />
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；</p>……
                                 <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/plan9/">阅读全文</a></p>
                             </div>
                         </article>

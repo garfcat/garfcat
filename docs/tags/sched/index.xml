@@ -17,27 +17,8 @@
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       
       <guid>http://www.geekgame.site/posts/language/golang/sched/</guid>
-      <description>GMP调度模型 核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：
-go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic.
- P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数；
- 本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中；
- 全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；
-  协程的状态 在go1.12.5/src/runtime/runtime2.go：15 定义有如下几个状态
-_Gidle: 值（0） 刚刚被创建，还没有初始化；
-_Grunnable： 值（1） 已经在运行队列中，只是此时没有执行用户代码,未分配栈；
-_Grunning：值（2）在执行用户代码，已经不在运行队列中，分配了M和P;
-_Gsyscall： 值（3）当前goroutine正在执行系统调用，已经不再运行队列中，分配了M;
-_Gwaiting： 值（4） 在运行时被阻塞，并没有执行用户代码，此刻的goroutine会被记录到某处（例如channel等待队列）
-_Gmoribund_unused: 值（5） 当前并未使用，但是已经在gdb中进行了硬编码；
-_Gdead： 值（6） 当前goroutine没有被使用，可能刚刚退出或者刚刚被初始化，并没有执行用户代码；
-_Genqueue_unused： 值（7） 当前并未使用；
-_Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没有在运行队列中；
-P的状态 _Pidle: 空闲状态，未与M绑定
-_Prunning: 正在运行，已经与M绑定,M 正在执行P中G；
-_Psyscall: 正在执行的G处于系统调用中；
-_Pgcstop： runtime正在gc;
-_Pdead: 当前P已经不再使用；
-调度原理 从上图我们可以看到在新建G时 1. 当使用go 关键字执行函数时，会创建一个G(goroutine); 2.</description>
+      <description>&lt;p&gt;Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
+本文就来深入探讨一下Go的调度原理。&lt;/p&gt;</description>
     </item>
     
   </channel>

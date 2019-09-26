@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.56.0-DEV" />
+    <meta name="generator" content="Hugo 0.58.2" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -98,9 +98,7 @@
                         
                         
                         <div class="post-content">
-                            
-
-<h1 id="程序组成">程序组成</h1>
+                            <h1 id="程序组成">程序组成</h1>
 
 <p>程序由代码和数据组成，数据又有静态与动态之分；<br />
 动态数据：存放在堆区和栈区；<br />
@@ -250,7 +248,17 @@ func main()  {
 
 </code></pre>
 
-<p>此时 硬件SP与伪SP是不相同的。<br />
+<p>我们在这里特别关注X86，会使用到BP寄存器，这个寄存器主要用来指示栈的起始位置，现在很多编译器并不需要这个，因为可以通过SP加Offset来寻找栈起始位置。在amd64平台上,会在函数返回值之后插入8byte来放置Caller BP。
+在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：
+1. 函数的栈帧大于0；
+2. 满足条件</p>
+
+<pre><code class="language-golang">func Framepointer_enabled(goos, goarch string) bool {
+  return framepointer_enabled != 0 &amp;&amp; goarch == &quot;amd64&quot; &amp;&amp; goos != &quot;nacl&quot;
+}
+</code></pre>
+
+<p>另外此时 硬件SP与伪SP是不相同的。<br />
 硬件SP + locals = 伪SP</p>
 
 <h1 id="参考">参考</h1>
@@ -266,7 +274,6 @@ func main()  {
 <a href="https://blog.brickgao.com/2019/01/27/split-stacks/">split stacks</a><br />
 <a href="https://blog.cloudflare.com/how-stacks-are-handled-in-go/">How Stacks are Handled in Go</a><br />
 <a href="https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">go函数调用</a></p>
-
                         </div>
 
                         
