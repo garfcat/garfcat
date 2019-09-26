@@ -146,7 +146,7 @@
 </code></pre>
 
 <p>从上图(来自雨痕GO源码阅读)我们可以看到在新建G时<br />
-1. 当使用go 关键字执行函数时，会创建一个G(goroutine);<br />
+1. 当使用go 关键字执行函数时，会创建(首先查看P的freelist是否可以复用G，如果不能则新建)一个G(goroutine);<br />
 2. 新创建的G，并不会添加到本地队列，而是添加到P关联的runnext中(runnext是一个指针变量，用来存放G的地址),runnext原来的G被放到本地队列中;<br />
   * 2.1 如果本地队列未满（最大256），则放置到队尾；<br />
   * 2.2 如果本地队列已满，则将本地队列的一半数量的G和runnext中原来的G存放到全局队列中；<br />
@@ -252,7 +252,8 @@ new(p)  -----+        +---------------+     +-----------+     +------------+    
 <p><a href="https://studygolang.com/articles/20991">https://studygolang.com/articles/20991</a>
 <a href="https://studygolang.com/articles/11627">https://studygolang.com/articles/11627</a><br />
 <a href="https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA">https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA</a><br />
-<a href="https://blog.csdn.net/u010853261/article/details/84790392">https://blog.csdn.net/u010853261/article/details/84790392</a></p>
+<a href="https://blog.csdn.net/u010853261/article/details/84790392">https://blog.csdn.net/u010853261/article/details/84790392</a><br />
+<a href="https://reading.developerlearning.cn/reading/12-2018-08-02-goroutine-gpm/">go夜读 golang 调度</a></p>
                         </div>
 
                         
