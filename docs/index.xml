@@ -82,7 +82,8 @@ package hello import &amp;quot;testing&amp;quot; func TestHello(t *testing.T) { 
       <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
       
       <guid>http://www.geekgame.site/posts/protocol/mqtt/</guid>
-      <description>MQTT 概述 MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是 低开销、低带宽，在lot上应用较为广泛。
+      <description>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是 低开销、低带宽，在lot上应用较为广泛。
+
 MQTT 架构  MQTT 是c/s模型，每个客户端通过tcp连接到服务器(broker)； MQTT 是面向消息的。每个消息都是独立的数据块，对于broker来说是不透明的； 每条消息都会发送到一个地址，这个地址称为主题(topic),订阅主题的每个客户端都会收到发布到该主题上的每条消息；  如下所示： 客户端 A、B、C都连接到一个中间broker;
 B、C都订阅topic :dev_info 来获取其他设备的设备信息；
 A发布设备信息到topic dev_info，broker 将该消息转发给所有的订阅者即 BC；
