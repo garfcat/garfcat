@@ -7,12 +7,11 @@ categories: ["协议"]
 ---
 
 
-# MQTT 概述
   
 MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
 低开销、低带宽，在lot上应用较为广泛。
 
-
+<more>
 # MQTT 架构
 1. MQTT 是c/s模型，每个客户端通过tcp连接到服务器(broker)；
 2. MQTT 是面向消息的。每个消息都是独立的数据块，对于broker来说是不透明的；
