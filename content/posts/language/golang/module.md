@@ -7,7 +7,6 @@ series: ["golang"]
 categories: ["编程语言"]
 ---
 
-# Go module
 Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及[特定寓意的版本信息](https://semver.org/lang/zh-CN/)。  
 需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
 
@@ -17,7 +16,7 @@ Go module 是golang最新的包管理工具，可以使依赖包版本信息更�
  - 添加一个依赖  
  - 升级依赖  
  - 其他命令
-
+<!--more-->
 
 # 创建一个模块
 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;  
