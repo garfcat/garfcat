@@ -7,7 +7,7 @@ series: ["golang"]
 categories: ["编程语言"]
 ---
 
-知其然，也要知其所以然，从今天开始研究golang的底层实现，首先从其启动开始；
+知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
 
 ### 找到启动点
 ##### 1. 写一个hello world.  
@@ -22,6 +22,7 @@ func main() {
 	fmt.Println("hello world")
 }
 ``` 
+<!--more-->
 ##### 2.编译后使用gdb找到entry point
 ```bash
 $ gdb hello

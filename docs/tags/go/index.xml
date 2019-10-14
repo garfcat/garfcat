@@ -27,8 +27,22 @@
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
       <guid>http://www.geekgame.site/posts/language/golang/start/</guid>
-      <description>知其然，也要知其所以然，从今天开始研究golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. package main import ( &amp;quot;fmt&amp;quot; ) func main() { fmt.Println(&amp;quot;hello world&amp;quot;) }  2.编译后使用gdb找到entry point $ gdb hello ..... file type mach-o-x86-64. Entry point: 0x1052720 0x0000000001001000 - 0x0000000001093074 is .text 0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.__gosymtab 0x00000000010e27e0 - 0x000000000115c6ff is __TEXT.__gopclntab 0x000000000115d000 - 0x000000000115d158 is __DATA.</description>
+      <description>&lt;p&gt;知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；&lt;/p&gt;
+
+&lt;h3 id=&#34;找到启动点&#34;&gt;找到启动点&lt;/h3&gt;
+
+&lt;h5 id=&#34;1-写一个hello-world&#34;&gt;1. 写一个hello world.&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-golang&#34;&gt;package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+	fmt.Println(&amp;quot;hello world&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>

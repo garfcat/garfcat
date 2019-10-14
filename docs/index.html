@@ -117,8 +117,22 @@
                             </div>
                             
                             <div class="post-content">
-                                知其然，也要知其所以然，从今天开始研究golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. package main import ( &quot;fmt&quot; ) func main() { fmt.Println(&quot;hello world&quot;) }  2.编译后使用gdb找到entry point $ gdb hello ..... file type mach-o-x86-64. Entry point: 0x1052720 0x0000000001001000 - 0x0000000001093074 is .text 0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.__gosymtab 0x00000000010e27e0 - 0x000000000115c6ff is __TEXT.__gopclntab 0x000000000115d000 - 0x000000000115d158 is __DATA.……
+                                <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</p>
+
+<h3 id="找到启动点">找到启动点</h3>
+
+<h5 id="1-写一个hello-world">1. 写一个hello world.</h5>
+
+<pre><code class="language-golang">package main
+
+import (
+	&quot;fmt&quot;
+)
+
+func main() {
+	fmt.Println(&quot;hello world&quot;)
+}
+</code></pre>……
                             </div>
                             <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/start/">阅读全文</a></p>
                         </article>
@@ -202,10 +216,15 @@
                             </div>
                             
                             <div class="post-content">
-                                 shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
- oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；
- autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；  命令  hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr &ndash;show-configuration &gt;&gt; ~/.zshrc , source ~/.zshrc ；
- htop: 加强版的top, 安装与介绍可以看一下这里  ……
+                                <h2 id="shell">shell</h2>
+
+<p>使用超强组合 <a href="https://ohmyz.sh/">oh-my-zsh</a> + <a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a> + <a href="https://github.com/rupa/z">z - jump around</a>。</p>
+
+<ul>
+<li>oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；<br /></li>
+<li>autosuggestions: 补全已经输入过的命令；</li>
+<li>jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；</li>
+</ul>……
                             </div>
                             <p class="readmore"><a href="http://www.geekgame.site/posts/shell/effective_shell/">阅读全文</a></p>
                         </article>
