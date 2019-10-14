@@ -98,7 +98,7 @@
                         
                         
                         <div class="post-content">
-                            <p>mac 下使用sed -i 替换命令时 会报错</p>
+                            <p>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误</p>
 
 <pre><code class="language-shell">$sed -i 's/xxxx/yyy/g' test
 sed: 1: &quot;test&quot;: extra characters at the end of p command
@@ -122,7 +122,6 @@ usage: sed script [-Ealn] [-i extension] [file ...]
 
 如 sed -i &quot;.bak&quot; 's/xxxx/yyy/g' test 会将替换后的文本写入test.bak
 </code></pre>
-
                         </div>
 
                         

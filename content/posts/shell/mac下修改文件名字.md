@@ -6,13 +6,12 @@ tags: [ "sed", "mac", "shell"]
 series: ["命令"]
 categories: ["工具命令"]
 ---
-
-mac 下使用sed -i 替换命令时 会报错
+mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
 ```shell
 $sed -i 's/xxxx/yyy/g' test
 sed: 1: "test": extra characters at the end of p command
 ```
-
+<!--more-->
 解决方法
 ```bash
 sed -i ""   "s/XX/YY/g"  test
