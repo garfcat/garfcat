@@ -78,6 +78,24 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/protocol/tcp_1/" title="TCP timewait 过多怎么办" >TCP timewait 过多怎么办</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2020年5月7日
+                            </date>
+                            
+                            <div class="post-content">
+                                要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
+TCP 三次握手四次挥手状态迁移 TCP A TCP B 1. CLOSED LISTEN 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; --&gt; SYN-RECEIVED 3. ESTABLISHED &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=SYN,ACK&gt; &lt;-- SYN-RECEIVED 4. ESTABLISHED --&gt; &lt;SEQ=101&gt;&lt;ACK=301&gt;&lt;CTL=ACK&gt; --&gt; ESTABLISHED 5. ESTABLISHED --&gt; &lt;SEQ=101&gt;&lt;ACK=301&gt;&lt;CTL=ACK&gt;&lt;DATA&gt; --&gt; ESTABLISHED  一般的关闭流程如下所示：
+TCP A TCP B 1. ESTABLISHED ESTABLISHED 2. (Close) FIN-WAIT-1 --&gt; &lt;SEQ=100&gt;&lt;ACK=300&gt;&lt;CTL=FIN,ACK&gt; --&gt; CLOSE-WAIT 3. FIN-WAIT-2 &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=ACK&gt; &lt;-- CLOSE-WAIT 4. (Close) TIME-WAIT &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=FIN,ACK&gt; &lt;-- LAST-ACK 5. TIME-WAIT --&gt; &lt;SEQ=101&gt;&lt;ACK=301&gt;&lt;CTL=ACK&gt; --&gt; CLOSED 6.……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/protocol/tcp_1/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="http://www.geekgame.site/posts/language/golang/sched/" title="协程调度原理" >协程调度原理</a>
                                 </h1>
                             </header>
@@ -336,6 +354,10 @@ sed: 1: &quot;test&quot;: extra characters at the end of p command
 <ul class="widget-list">
     
     <li>
+        <a href="http://www.geekgame.site/posts/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
+    </li>
+    
+    <li>
         <a href="http://www.geekgame.site/posts/language/golang/sched/" title="协程调度原理">协程调度原理</a>
     </li>
     
@@ -428,7 +450,7 @@ sed: 1: &quot;test&quot;: extra characters at the end of p command
 </div>
 <footer id="footer">
     <div class="container">
-        &copy; 2019 <a href="http://www.geekgame.site">garfcat By garfcat</a>.
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>.
         Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
         <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
         
