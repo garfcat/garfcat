@@ -1,8 +1,11 @@
 ---
 title: "TCP timewait 过多怎么办"
 date: 2020-05-07T09:53:51+08:00
+tags: [ "tcp"]
+categories: ["协议"]
 ---
 要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程； 
+<!--more-->
 # TCP 三次握手四次挥手状态迁移
 ```bash
      TCP A                                                TCP B
@@ -17,7 +20,6 @@ date: 2020-05-07T09:53:51+08:00
 
   5.  ESTABLISHED --> <SEQ=101><ACK=301><CTL=ACK><DATA> --> ESTABLISHED
 ```
-
 一般的关闭流程如下所示：
 ```bash
       TCP A                                                TCP B
@@ -71,6 +73,20 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
    负载均衡通过某个端口向内部的某台服务器发起连接，源地址为负载均衡的内部地址——同一ip
    假如恰巧先后两次连接源端口相同，这台服务器先后收到两个包，第一个包的timestamp被服务器保存着，第二个包又来了，一对比，发现第二个包的timestamp比第一个还老——客户端时间不一致
    服务器基于PAWS，判断第二个包是重复报文，丢弃之   
+   
+   而且在最新的内核中已经删除了tcp_tw_recycle， 删除记录的commit 如下所示：
+  ```bash
+
+    commit 4396e46187ca5070219b81773c4e65088dac50cc
+    Author: Soheil Hassas Yeganeh <soheil@google.com>
+    Date:   Wed Mar 15 16:30:46 2017 -0400
+    
+        tcp: remove tcp_tw_recycle
+        The tcp_tw_recycle was already broken for connections
+        behind NAT, since the per-destination timestamp is not
+        monotonically increasing for multiple machines behind
+        a single destination address.
+```
 3. tcp_max_tw_buckets   
    这个参数是控制TIME_WAIT的并发数量。
 

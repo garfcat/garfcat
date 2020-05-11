@@ -6,10 +6,19 @@
     <description>Recent content in Categories on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Aug 2019 10:23:01 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate>
     
 	<atom:link href="http://www.geekgame.site/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>协议</title>
+      <link>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</link>
+      <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>编程语言</title>
@@ -26,15 +35,6 @@
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       
       <guid>http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>协议</title>
-      <link>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</link>
-      <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
-      
-      <guid>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</guid>
       <description></description>
     </item>
     
