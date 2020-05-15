@@ -98,9 +98,7 @@
                         
                         
                         <div class="post-content">
-                            
-
-<p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</p>
+                            <p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</p>
 
 <h1 id="tcp-三次握手四次挥手状态迁移">TCP 三次握手四次挥手状态迁移</h1>
 
@@ -170,9 +168,26 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
    &gt;这种机制在 客户端-服务器 一对一的时候，没有任何问题，但是当服务器在负载均衡器后面时，由于负载均衡器不会修改包内部的timestamp值，而互联网上的机器又不可能保持时间的一致性，再加上负载均衡是会重复多次使用同一个tcp端口向内部服务器发起连接的，就会导致什么情况呢：<br />
    负载均衡通过某个端口向内部的某台服务器发起连接，源地址为负载均衡的内部地址——同一ip
    假如恰巧先后两次连接源端口相同，这台服务器先后收到两个包，第一个包的timestamp被服务器保存着，第二个包又来了，一对比，发现第二个包的timestamp比第一个还老——客户端时间不一致
-   服务器基于PAWS，判断第二个包是重复报文，丢弃之<br />
-3. tcp_max_tw_buckets<br />
-   这个参数是控制TIME_WAIT的并发数量。</p>
+   服务器基于PAWS，判断第二个包是重复报文，丢弃之</p>
+
+<p>而且在最新的内核中已经删除了tcp_tw_recycle， 删除记录的commit 如下所示：</p>
+
+<pre><code class="language-bash">
+    commit 4396e46187ca5070219b81773c4e65088dac50cc
+    Author: Soheil Hassas Yeganeh &lt;soheil@google.com&gt;
+    Date:   Wed Mar 15 16:30:46 2017 -0400
+    
+        tcp: remove tcp_tw_recycle
+        The tcp_tw_recycle was already broken for connections
+        behind NAT, since the per-destination timestamp is not
+        monotonically increasing for multiple machines behind
+        a single destination address.
+</code></pre>
+
+<ol>
+<li>tcp_max_tw_buckets<br />
+这个参数是控制TIME_WAIT的并发数量。</li>
+</ol>
 
 <h1 id="完整状态迁移图如下">完整状态迁移图如下</h1>
 
@@ -233,7 +248,6 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
 </a><br /></li>
 <li><a href="https://saview.wordpress.com/2011/09/27/tcp_tw_recycle%E5%92%8Cnat%E9%80%A0%E6%88%90syn_ack%E9%97%AE%E9%A2%98/">tcp_tw_recycle和NAT造成SYN_ACK问题</a></li>
 </ol>
-
                         </div>
 
                         

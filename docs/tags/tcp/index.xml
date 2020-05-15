@@ -17,9 +17,7 @@
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
       <guid>http://www.geekgame.site/posts/protocol/tcp_1/</guid>
-      <description>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
-TCP 三次握手四次挥手状态迁移 TCP A TCP B 1. CLOSED LISTEN 2. SYN-SENT --&amp;gt; &amp;lt;SEQ=100&amp;gt;&amp;lt;CTL=SYN&amp;gt; --&amp;gt; SYN-RECEIVED 3. ESTABLISHED &amp;lt;-- &amp;lt;SEQ=300&amp;gt;&amp;lt;ACK=101&amp;gt;&amp;lt;CTL=SYN,ACK&amp;gt; &amp;lt;-- SYN-RECEIVED 4. ESTABLISHED --&amp;gt; &amp;lt;SEQ=101&amp;gt;&amp;lt;ACK=301&amp;gt;&amp;lt;CTL=ACK&amp;gt; --&amp;gt; ESTABLISHED 5. ESTABLISHED --&amp;gt; &amp;lt;SEQ=101&amp;gt;&amp;lt;ACK=301&amp;gt;&amp;lt;CTL=ACK&amp;gt;&amp;lt;DATA&amp;gt; --&amp;gt; ESTABLISHED  一般的关闭流程如下所示：
-TCP A TCP B 1. ESTABLISHED ESTABLISHED 2. (Close) FIN-WAIT-1 --&amp;gt; &amp;lt;SEQ=100&amp;gt;&amp;lt;ACK=300&amp;gt;&amp;lt;CTL=FIN,ACK&amp;gt; --&amp;gt; CLOSE-WAIT 3. FIN-WAIT-2 &amp;lt;-- &amp;lt;SEQ=300&amp;gt;&amp;lt;ACK=101&amp;gt;&amp;lt;CTL=ACK&amp;gt; &amp;lt;-- CLOSE-WAIT 4. (Close) TIME-WAIT &amp;lt;-- &amp;lt;SEQ=300&amp;gt;&amp;lt;ACK=101&amp;gt;&amp;lt;CTL=FIN,ACK&amp;gt; &amp;lt;-- LAST-ACK 5. TIME-WAIT --&amp;gt; &amp;lt;SEQ=101&amp;gt;&amp;lt;ACK=301&amp;gt;&amp;lt;CTL=ACK&amp;gt; --&amp;gt; CLOSED 6.</description>
+      <description>&lt;p&gt;要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&lt;/p&gt;</description>
     </item>
     
   </channel>
