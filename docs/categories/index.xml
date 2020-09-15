@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on garfcat</title>
@@ -6,15 +6,11 @@
     <description>Recent content in Categories on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 11 May 2020 09:25:42 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>协议</title>
       <link>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</link>
-      <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
+      <pubDate>Mon, 11 May 2020 09:25:42 +0800</pubDate>
       
       <guid>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</guid>
       <description></description>
@@ -35,6 +31,15 @@
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       
       <guid>http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>区块链</title>
+      <link>http://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</link>
+      <pubDate>Tue, 14 May 2019 10:10:35 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</guid>
       <description></description>
     </item>
     

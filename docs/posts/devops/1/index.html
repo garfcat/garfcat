@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.75.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>GitLab CI/CD 入门篇 | garfcat</title>
+    <meta property="og:title" content="GitLab CI/CD 入门篇 - garfcat">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2020-05-28T22:19:03&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2020-05-28T22:19:03&#43;08:00">
+        
+    <meta name="Keywords" content="go,golang,backend">
+    <meta name="description" content="GitLab CI/CD 入门篇">
+        
+    <meta name="author" content="garfcat">
+    <meta property="og:url" content="http://www.geekgame.site/posts/devops/1/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?842859b7e57f42ea00f8e6777027a7a2";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://www.geekgame.site">
+                        garfcat
+                    </a>
+                
+                <p class="description">make it simple, keep it clean.</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="http://www.geekgame.site">首页</a>
+                    
+                    <a  href="http://www.geekgame.site/archives/" title="归档">归档</a>
+                    
+                    <a  href="http://www.geekgame.site/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">GitLab CI/CD 入门篇</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2020年5月28日
+                        </date>
+                        
+                        
+                        
+                        <div class="post-content">
+                            <p>GitLab CI/CD 是GitLab 内置的持续集成工具，开启此功能需要在仓库的根目录配置.gitlab-ci.yml文件，并配置GitLab Runner，每次提交代码的时候GitLab 就会出发CI/CD流程， 首先找到合适的
+Runner , 然后在runner 上执行该脚本。</p>
+<h1 id="为项目创建-gitlab-ciyml-文件">为项目创建 .gitlab-ci.yml 文件</h1>
+<p>Job 是.gitlab-ci.yml的最基本元素， 其实就是runner 要执行的指令集合。Job 可以按照阶段(stage)来划分执行，每个阶段可以包含一个或者多个Job,比如一个完整的流程可以划分为build -&gt;test -&gt;deploy 三个阶段；阶段之间是串行的，阶段内部的Job是并行的；
+如果有任一一个Job失败，那么本次CI就被认为是失败的。<br>
+Job 与 Stage 的关系如下所示：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">stages:  <span style="color:#75715e">## 定义stages</span>
+    - build
+    - test 
+    - deploy
+job_build:  <span style="color:#75715e">## 定义Job</span>
+    stage: build   <span style="color:#75715e">## 关联 stage</span>
+    script: <span style="color:#66d9ef">do</span> something
+job_test:
+    stage: test
+    script: <span style="color:#66d9ef">do</span> something
+job_deploy:
+    stage: deploy
+    script: <span style="color:#66d9ef">do</span> something
+</code></pre></div><p>需要注意一下几点：</p>
+<ul>
+<li>每个Job都需要有一个唯一的名字，但这个名字不能使用预留的字段image，services，stages，types，before_script，after_script，variables，cache。</li>
+<li>如果不定义stages 或者不关联stage, 都属于默认stage: test。</li>
+<li>script 是需要runner 执行的脚本。</li>
+</ul>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/posts/language/golang/staticcheck/">Staticcheck</a></li>
+        
+        <li><a href="/posts/push/1/">1</a></li>
+        
+        <li><a href="/posts/nosql/redis/1/">1</a></li>
+        
+        <li><a href="/posts/nosql/mongodb/1/">1</a></li>
+        
+        <li><a href="/posts/database/nosql/mongodb/1/">1</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            没有标签
+                            
+                        </div>
+                    </article>
+                    
+
+<div id="vcomments"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'pSCor7tBnItnANnzoW1f1YUJ-gzGzoHsz',
+        appKey: 'DFEhbtQS9nDVy6c8nSY4qYvz',
+        notify: 'false',
+        verify: 'false',
+        avatar:'e',
+        placeholder: 'let us talk talk...',
+        visitor: 'true'
+    });
+</script>
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/language/golang/unit_test/" title="Unit_test">Unit_test</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/devops/1/" title="GitLab CI/CD 入门篇">GitLab CI/CD 入门篇</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/language/golang/staticcheck/" title="Staticcheck">Staticcheck</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/push/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/nosql/redis/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/nosql/mongodb/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/database/nosql/mongodb/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/database/mysql/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/docker/2/" title="docker 容器中的孤儿进程 僵尸进程">docker 容器中的孤儿进程 僵尸进程</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/algorithm/sort/" title="Sort">Sort</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链(1)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议(3)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令(2)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言(4)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="http://www.geekgame.site/tags/effective/">effective</a>
+    
+    <a href="http://www.geekgame.site/tags/go/">go</a>
+    
+    <a href="http://www.geekgame.site/tags/ipfs/">ipfs</a>
+    
+    <a href="http://www.geekgame.site/tags/mac/">mac</a>
+    
+    <a href="http://www.geekgame.site/tags/module/">module</a>
+    
+    <a href="http://www.geekgame.site/tags/mqtt/">mqtt</a>
+    
+    <a href="http://www.geekgame.site/tags/sched/">sched</a>
+    
+    <a href="http://www.geekgame.site/tags/sed/">sed</a>
+    
+    <a href="http://www.geekgame.site/tags/shell/">shell</a>
+    
+    <a href="http://www.geekgame.site/tags/stack/">stack</a>
+    
+    <a href="http://www.geekgame.site/tags/start/">start</a>
+    
+    <a href="http://www.geekgame.site/tags/tcp/">tcp</a>
+    
+    <a href="http://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.geekgame.site/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

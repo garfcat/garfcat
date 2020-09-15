@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>mac on garfcat</title>
@@ -6,11 +6,7 @@
     <description>Recent content in mac on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/tags/mac/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/mac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mac  sed 报错</title>
       <link>http://www.geekgame.site/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
@@ -18,10 +14,9 @@
       
       <guid>http://www.geekgame.site/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
       <description>&lt;p&gt;mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$sed -i &#39;s/xxxx/yyy/g&#39; test
-sed: 1: &amp;quot;test&amp;quot;: extra characters at the end of p command
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$sed -i &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/xxxx/yyy/g&amp;#39;&lt;/span&gt; test
+sed: 1: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;: extra characters at the end of p command
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
   </channel>

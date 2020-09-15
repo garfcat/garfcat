@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.75.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>garfcat | make it simple, keep it clean.</title>
+    <meta property="og:title" content="garfcat | make it simple, keep it clean.">
+    <meta property="og:type" content="website">
+    <meta name="Keywords" content="go,golang,backend">
+    <meta name="description" content="focus on your focus">
+    <meta property="og:url" content="http://www.geekgame.site/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="http://www.geekgame.site/index.xml" title="garfcat" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?842859b7e57f42ea00f8e6777027a7a2";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+    
+    
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <h1>
+                        <a id="logo" href="http://www.geekgame.site">
+                            garfcat
+                        </a>
+                    </h1>
+                
+                <p class="description">make it simple, keep it clean.</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://www.geekgame.site">首页</a>
+                    
+                    <a  href="http://www.geekgame.site/archives/" title="归档">归档</a>
+                    
+                    <a  href="http://www.geekgame.site/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/docker/command/" title="Command" >Command</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月20日
+                            </date>
+                            
+                            <div class="post-content">
+                                镜像 1.显示
+docker images 相当于 docker image list $ docker images REPOSITORY TAG IMAGE ID CREATED SIZE busybox latest 59788edf1f3e 8 months ago 1.15MB golang 1.9-stretch ef89ef5c42a9 11 months ago 750MB swarm latest ff454b4a0e84 12 months ago 12.7MB 2.删除
+docker rmi [OPTIONS] IMAGE [IMAGE...] docker image rm [OPTIONS] IMAGE [IMAGE...] 可以使用一些组合命令来删除；
+以下是删除所有的镜像
+docker image rm $(docker images) 3.保存
+docker save 0bd81a8c93f7 -o test.tar 4.导入
+docker load &lt; test.tar ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/docker/command/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/go-%E6%B1%87%E7%BC%96/" title="Go 汇编" >Go 汇编</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月16日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/go-%E6%B1%87%E7%BC%96/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/plan9/" title="golang 栈结构" >golang 栈结构</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月15日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <h1 id="程序组成">程序组成</h1>
+<p>程序由代码和数据组成，数据又有静态与动态之分；<br>
+动态数据：存放在堆区和栈区；<br>
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br>
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；</p>……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/plan9/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/module/" title="Go module" >Go module</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月30日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及<a href="https://semver.org/lang/zh-CN/">特定寓意的版本信息</a>。<br>
+需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。</p>
+<p>本文会介绍Go module的一些基本用法；</p>
+<ul>
+<li>创建一个模块</li>
+<li>添加一个依赖</li>
+<li>升级依赖</li>
+<li>其他命令</li>
+</ul>……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/module/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/mq/mq/" title="Mq" >Mq</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月20日
+                            </date>
+                            
+                            <div class="post-content">
+                                消息队列 消息队列(Message queue) 是一种异步的服务间（不同进程）或者同一进程不同现成间通信方式，主要用于解耦服务、流量削峰、消息异步处理；
+消息队列使用场景   消息异步处理 针对与流量较高但是对处理时效性要求不高的场景可以使用消息队列进行异步处理，例如 app push(消息推送)、短信推送； 使用
+  应用解耦
+  流量削峰
+  目前常用的消息队列 如何选择合适的消息队列 ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/mq/mq/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/shell/effective_shell/" title="高效shell" >高效shell</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月16日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4">工具命令</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <h2 id="shell">shell</h2>
+<p>使用超强组合 <a href="https://ohmyz.sh/">oh-my-zsh</a> + <a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a> + <a href="https://github.com/rupa/z">z - jump around</a>。</p>
+<ul>
+<li>oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；</li>
+<li>autosuggestions: 补全已经输入过的命令；</li>
+<li>jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；</li>
+</ul>……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/shell/effective_shell/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/defer/" title="Defer" >Defer</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月15日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/defer/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/atomic/" title="Atomic" >Atomic</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月15日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/atomic/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/protocol/mqtt/" title="MQTT 基本概念" >MQTT 基本概念</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月15日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE">协议</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
+低开销、低带宽，在lot上应用较为广泛。</p>……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/protocol/mqtt/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/blockchain/ipfs/ipfs%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="Ipfs基本概念" >Ipfs基本概念</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月14日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                什么是 ipfs
+ ipfs……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/blockchain/ipfs/ipfs%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">阅读全文</a></p>
+                        </article>
+                    
+                    
+
+
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="http://www.geekgame.site/page/2/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="http://www.geekgame.site/">1</a>
+    </li>
+    
+    <li >
+        <a href="http://www.geekgame.site/page/2/">2</a>
+    </li>
+    
+    <li  class="current">
+        <a href="http://www.geekgame.site/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="http://www.geekgame.site/page/4/">4</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="http://www.geekgame.site/page/4/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/language/golang/unit_test/" title="Unit_test">Unit_test</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/devops/1/" title="GitLab CI/CD 入门篇">GitLab CI/CD 入门篇</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/language/golang/staticcheck/" title="Staticcheck">Staticcheck</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/push/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/nosql/redis/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/nosql/mongodb/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/database/nosql/mongodb/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/database/mysql/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/docker/2/" title="docker 容器中的孤儿进程 僵尸进程">docker 容器中的孤儿进程 僵尸进程</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/algorithm/sort/" title="Sort">Sort</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链(1)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议(3)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令(2)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言(4)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="http://www.geekgame.site/tags/effective/">effective</a>
+    
+    <a href="http://www.geekgame.site/tags/go/">go</a>
+    
+    <a href="http://www.geekgame.site/tags/ipfs/">ipfs</a>
+    
+    <a href="http://www.geekgame.site/tags/mac/">mac</a>
+    
+    <a href="http://www.geekgame.site/tags/module/">module</a>
+    
+    <a href="http://www.geekgame.site/tags/mqtt/">mqtt</a>
+    
+    <a href="http://www.geekgame.site/tags/sched/">sched</a>
+    
+    <a href="http://www.geekgame.site/tags/sed/">sed</a>
+    
+    <a href="http://www.geekgame.site/tags/shell/">shell</a>
+    
+    <a href="http://www.geekgame.site/tags/stack/">stack</a>
+    
+    <a href="http://www.geekgame.site/tags/start/">start</a>
+    
+    <a href="http://www.geekgame.site/tags/tcp/">tcp</a>
+    
+    <a href="http://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.geekgame.site/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+
+</body>
+</html>

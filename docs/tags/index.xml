@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on garfcat</title>
@@ -6,15 +6,11 @@
     <description>Recent content in Tags on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 11 May 2020 09:25:42 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>tcp</title>
       <link>http://www.geekgame.site/tags/tcp/</link>
-      <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
+      <pubDate>Mon, 11 May 2020 09:25:42 +0800</pubDate>
       
       <guid>http://www.geekgame.site/tags/tcp/</guid>
       <description></description>
@@ -89,6 +85,24 @@
       <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
       
       <guid>http://www.geekgame.site/tags/mqtt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ipfs</title>
+      <link>http://www.geekgame.site/tags/ipfs/</link>
+      <pubDate>Tue, 14 May 2019 10:10:35 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/ipfs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>区块链</title>
+      <link>http://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/</link>
+      <pubDate>Tue, 14 May 2019 10:10:35 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/</guid>
       <description></description>
     </item>
     

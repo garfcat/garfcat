@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.75.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>garfcat | make it simple, keep it clean.</title>
+    <meta property="og:title" content="garfcat | make it simple, keep it clean.">
+    <meta property="og:type" content="website">
+    <meta name="Keywords" content="go,golang,backend">
+    <meta name="description" content="focus on your focus">
+    <meta property="og:url" content="http://www.geekgame.site/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="http://www.geekgame.site/index.xml" title="garfcat" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?842859b7e57f42ea00f8e6777027a7a2";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+    
+    
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <h1>
+                        <a id="logo" href="http://www.geekgame.site">
+                            garfcat
+                        </a>
+                    </h1>
+                
+                <p class="description">make it simple, keep it clean.</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://www.geekgame.site">首页</a>
+                    
+                    <a  href="http://www.geekgame.site/archives/" title="归档">归档</a>
+                    
+                    <a  href="http://www.geekgame.site/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/container/k8s/k8s_arch/" title="K8s_arch" >K8s_arch</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2020年5月11日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/container/k8s/k8s_arch/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/protocol/tcp_syn_flood/" title="TCP SYN flood 攻击以及解决方法" >TCP SYN flood 攻击以及解决方法</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2020年5月11日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE">协议</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                syn flood 攻击是一种拒绝服务攻击，主要有两种方法：
+一种是只发 SYN 不回ACK ； 一种是在SYN包中欺骗透过欺骗来源IP，让SYN-ACK发送到假的IP地址，从而收不到ACK； 如下图所示： 由上可以看出SYN flood 攻击都是收不到ACK导致的。收不到ACK就服务完成连接建立，这些半连接会耗费大量资源，当资源耗尽，就会导致拒绝服务；
+一般处理方式调整内核参数， 主要参数如下：
+ tcp_synack_retries : 如果收不到第三次握手的ack ，需要重试的次数，默认是为5， 设置为0 不进行重试，从而可以加快半连接的回收； tcp_max_syn_backlog : 半连接的上限； tcp_syncookies: 默认开启；它的原理是，在TCP服务器接收到TCP SYN包并返回TCP SYN + ACK包时，不分配一个专门的数据区，而是根据这个SYN包计算出一个cookie值。这个 cookie作为将要返回的SYN ACK包的初始序列号。当客户端返回一个ACK包时，根据包头信息计算cookie，与返回的确认序列号(初始序列号 + 1)进行对比，如果相同，则是一个正常连接，然后，分配资源，建立连接。  ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/protocol/tcp_syn_flood/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/protocol/tcp_1/" title="TCP timewait 过多怎么办" >TCP timewait 过多怎么办</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2020年5月7日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE">协议</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</p>……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/protocol/tcp_1/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/k8s/k8s/" title="K8s" >K8s</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月31日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/k8s/k8s/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/protocol/jwt/" title="Jwt" >Jwt</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月31日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/protocol/jwt/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/shell/awk/" title="Awk" >Awk</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月14日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/shell/awk/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/protocol/http-auth-digest-access/" title="Http Auth Digest Access" >Http Auth Digest Access</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年8月12日
+                            </date>
+                            
+                            <div class="post-content">
+                                digest access    ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/protocol/http-auth-digest-access/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/sched/" title="协程调度原理" >协程调度原理</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年8月11日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
+本文就来深入探讨一下Go的调度原理。</p>……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/sched/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/mem/" title="Mem" >Mem</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年8月11日
+                            </date>
+                            
+                            <div class="post-content">
+                                ……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/mem/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://www.geekgame.site/posts/language/golang/start/" title="golang 启动过程" >golang 启动过程</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月20日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</p>
+<h3 id="找到启动点">找到启动点</h3>
+<h5 id="1-写一个hello-world">1. 写一个hello world.</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;hello world&#34;</span>)
+}
+</code></pre></div>……
+                            </div>
+                            <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/start/">阅读全文</a></p>
+                        </article>
+                    
+                    
+
+
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="http://www.geekgame.site/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="http://www.geekgame.site/">1</a>
+    </li>
+    
+    <li  class="current">
+        <a href="http://www.geekgame.site/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="http://www.geekgame.site/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="http://www.geekgame.site/page/4/">4</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="http://www.geekgame.site/page/3/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/language/golang/unit_test/" title="Unit_test">Unit_test</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/devops/1/" title="GitLab CI/CD 入门篇">GitLab CI/CD 入门篇</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/language/golang/staticcheck/" title="Staticcheck">Staticcheck</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/push/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/nosql/redis/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/nosql/mongodb/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/database/nosql/mongodb/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/database/mysql/1/" title="1">1</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/docker/2/" title="docker 容器中的孤儿进程 僵尸进程">docker 容器中的孤儿进程 僵尸进程</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/posts/algorithm/sort/" title="Sort">Sort</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链(1)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议(3)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令(2)</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言(4)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="http://www.geekgame.site/tags/effective/">effective</a>
+    
+    <a href="http://www.geekgame.site/tags/go/">go</a>
+    
+    <a href="http://www.geekgame.site/tags/ipfs/">ipfs</a>
+    
+    <a href="http://www.geekgame.site/tags/mac/">mac</a>
+    
+    <a href="http://www.geekgame.site/tags/module/">module</a>
+    
+    <a href="http://www.geekgame.site/tags/mqtt/">mqtt</a>
+    
+    <a href="http://www.geekgame.site/tags/sched/">sched</a>
+    
+    <a href="http://www.geekgame.site/tags/sed/">sed</a>
+    
+    <a href="http://www.geekgame.site/tags/shell/">shell</a>
+    
+    <a href="http://www.geekgame.site/tags/stack/">stack</a>
+    
+    <a href="http://www.geekgame.site/tags/start/">start</a>
+    
+    <a href="http://www.geekgame.site/tags/tcp/">tcp</a>
+    
+    <a href="http://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.geekgame.site/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+
+</body>
+</html>
