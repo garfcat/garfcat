@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>module on garfcat</title>
@@ -6,26 +6,20 @@
     <description>Recent content in module on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/tags/module/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/module/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go module</title>
-      <link>http://www.geekgame.site/posts/language/golang/module/</link>
+      <link>http://www.geekgame.site/post/language/golang/module/</link>
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/posts/language/golang/module/</guid>
-      <description>&lt;p&gt;Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及&lt;a href=&#34;https://semver.org/lang/zh-CN/&#34;&gt;特定寓意的版本信息&lt;/a&gt;。&lt;br /&gt;
+      <guid>http://www.geekgame.site/post/language/golang/module/</guid>
+      <description>&lt;p&gt;Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及&lt;a href=&#34;https://semver.org/lang/zh-CN/&#34;&gt;特定寓意的版本信息&lt;/a&gt;。&lt;br&gt;
 需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。&lt;/p&gt;
-
 &lt;p&gt;本文会介绍Go module的一些基本用法；&lt;/p&gt;
-
 &lt;ul&gt;
-&lt;li&gt;创建一个模块&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;添加一个依赖&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;升级依赖&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;创建一个模块&lt;/li&gt;
+&lt;li&gt;添加一个依赖&lt;/li&gt;
+&lt;li&gt;升级依赖&lt;/li&gt;
 &lt;li&gt;其他命令&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>

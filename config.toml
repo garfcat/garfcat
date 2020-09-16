@@ -6,6 +6,10 @@ publishDir = "docs"
 
 [author]
   name = "garfcat"
+[markup]
+  [markup.highlight]
+    lineNos = true
+    style = "github"
 
 [params]
   author = "grafcat"
@@ -19,7 +23,7 @@ publishDir = "docs"
     notify = false  # mail notifier , https://github.com/xCss/Valine/wiki
     verify = false # Verification code
     avatar = 'e'
-    placeholder = 'let us talk talk...'
+    placeholder = '请输入评论'
     visitor = true
 
 [menu]

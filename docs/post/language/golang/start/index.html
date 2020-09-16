@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>golang 启动过程 | garfcat</title>
+    <meta property="og:title" content="golang 启动过程 - garfcat">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-06-20T22:51:54&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-06-20T22:51:54&#43;08:00'>
+        
+    <meta name="Keywords" content="go,golang,后端">
+    <meta name="description" content="golang 启动过程">
+        
+    <meta name="author" content="garfcat">
+    <meta property="og:url" content="http://www.geekgame.site/post/language/golang/start/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://www.geekgame.site">
+                        garfcat
+                    </a>
+                
+                <p class="description">make it simple, keep it clean.</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://www.geekgame.site">首页</a>
+                    
+                    <a  href="http://www.geekgame.site/archives/" title="归档">归档</a>
+                    
+                    <a  href="http://www.geekgame.site/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">golang 启动过程</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月20日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80'>编程语言</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="post-content">
+            <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</p>
+<h3 id="找到启动点">找到启动点</h3>
+<h5 id="1-写一个hello-world">1. 写一个hello world.</h5>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">package</span> main
+
+<span style="color:#000;font-weight:bold">import</span> (
+	<span style="color:#d14">&#34;fmt&#34;</span>
+)
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+	fmt.<span style="color:#900;font-weight:bold">Println</span>(<span style="color:#d14">&#34;hello world&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="2编译后使用gdb找到entry-point">2.编译后使用gdb找到entry point</h5>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gdb hello
+ .....
+        file <span style="color:#0086b3">type</span> mach-o-x86-64.
+	Entry point: 0x1052720
+	0x0000000001001000 - 0x0000000001093074 is .text
+	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata
+	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1
+	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink
+	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink
+	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.__gosymtab
+	0x00000000010e27e0 - 0x000000000115c6ff is __TEXT.__gopclntab
+	0x000000000115d000 - 0x000000000115d158 is __DATA.__nl_symbol_ptr
+	0x000000000115d160 - 0x0000000001169c9c is __DATA.__noptrdata
+	0x0000000001169ca0 - 0x0000000001170610 is .data
+	0x0000000001170620 - 0x000000000118be50 is .bss
+	0x000000000118be60 - 0x000000000118e418 is __DATA.__noptrbss
+<span style="color:#000;font-weight:bold">(</span>gdb<span style="color:#000;font-weight:bold">)</span> info symbol 0x1052720
+_rt0_amd64_darwin in section .text
+<span style="color:#000;font-weight:bold">(</span>gdb<span style="color:#000;font-weight:bold">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以从entry point 找到入口函数 _rt0_amd64_darwin，可以在源码中搜索一下函数名称,定位函数位置
+runtime/rt0_darwin_amd64.s:7，具体如下所示</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">TEXT _rt0_amd64_darwin<span style="color:#000;font-weight:bold">(</span>SB<span style="color:#000;font-weight:bold">)</span>,NOSPLIT,<span style="color:#008080">$-</span><span style="color:#099">8</span>
+	JMP	_rt0_amd64<span style="color:#000;font-weight:bold">(</span>SB<span style="color:#000;font-weight:bold">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>该函数跳转到 _rt0_amd64, _rt0_amd64是一段针对amd64系统的公共启动代码。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">TEXT _rt0_amd64<span style="color:#000;font-weight:bold">(</span>SB<span style="color:#000;font-weight:bold">)</span>,NOSPLIT,<span style="color:#008080">$-</span><span style="color:#099">8</span>
+	MOVQ	0<span style="color:#000;font-weight:bold">(</span>SP<span style="color:#000;font-weight:bold">)</span>, DI	// argc
+	LEAQ	8<span style="color:#000;font-weight:bold">(</span>SP<span style="color:#000;font-weight:bold">)</span>, SI	// argv
+	JMP	runtime·rt0_go<span style="color:#000;font-weight:bold">(</span>SB<span style="color:#000;font-weight:bold">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中 MOVQ 用来操作数据，而LEAQ 用来操作地址，所以
+MOVQ	0(SP), DI 是将argc 放到DI寄存器<br>
+LEAQ	8(SP), SI 是将 argv 的地址放到SI寄存器
+然后跳转到runtime·rt0_go(SB）(go1.12.5/src/runtime/asm_amd64.s:87)</p>
+<p>接下来的流程用下图表示:
+
+        <img class="mx-auto" alt="初始化流程" src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/start.png" />   
+    </p>
+<h5 id="参数设置">参数设置</h5>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#900;font-weight:bold">TEXT</span> <span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">rt0_go</span>(<span style="color:#008080">SB</span>),<span style="color:#008080">NOSPLIT</span>,<span style="color:#008080">$0</span>
+	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">copy</span> <span style="color:#008080">arguments</span> <span style="color:#008080">forward</span> <span style="color:#008080">on</span> <span style="color:#008080">an</span> <span style="color:#008080">even</span> <span style="color:#008080">stack</span>
+	<span style="color:#a61717;background-color:#e3d2d2">／／将</span><span style="color:#900;font-weight:bold">argc</span> <span style="color:#a61717;background-color:#e3d2d2">和</span> <span style="color:#008080">argv</span> <span style="color:#a61717;background-color:#e3d2d2">复制到指定寄存器中</span>
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">DI</span>, <span style="color:#008080">AX</span>		<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#008080">argc</span>
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">SI</span>, <span style="color:#008080">BX</span>		<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#008080">argv</span>
+	<span style="color:#900;font-weight:bold">SUBQ</span>	<span style="color:#008080">$</span>(<span style="color:#099">4</span>*<span style="color:#099">8</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">7</span>), <span style="color:#008080">SP</span>		<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#099">2</span><span style="color:#008080">args</span> <span style="color:#099">2</span><span style="color:#008080">auto</span>
+	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">sp</span> <span style="color:#099">16</span> <span style="color:#a61717;background-color:#e3d2d2">字节对齐</span>
+	<span style="color:#900;font-weight:bold">ANDQ</span>	<span style="color:#008080">$</span><span style="color:#a61717;background-color:#e3d2d2">~</span><span style="color:#099">15</span>, <span style="color:#008080">SP</span>
+	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将</span> <span style="color:#900;font-weight:bold">argc</span> <span style="color:#a61717;background-color:#e3d2d2">复制到</span> <span style="color:#008080">sp</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">16</span> , <span style="color:#008080">argv</span> <span style="color:#a61717;background-color:#e3d2d2">复制到</span> <span style="color:#008080">sp</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">24</span> 
+	<span style="color:#008080">MOVQ</span>	<span style="color:#008080">AX</span>, <span style="color:#099">16</span>(<span style="color:#008080">SP</span>)
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">BX</span>, <span style="color:#099">24</span>(<span style="color:#008080">SP</span>)
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="g0-初始化">g0 初始化</h5>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">create</span> <span style="color:#008080">istack</span> <span style="color:#008080">out</span> <span style="color:#008080">of</span> <span style="color:#008080">the</span> <span style="color:#008080">given</span> (<span style="color:#008080">operating</span> <span style="color:#008080">system</span>) <span style="color:#008080">stack.</span>
+	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">_cgo_init</span> <span style="color:#008080">may</span> <span style="color:#008080">update</span> <span style="color:#008080">stackguard.</span>
+	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">g0</span> <span style="color:#a61717;background-color:#e3d2d2">定义在</span> <span style="color:#008080">go1.12.5</span><span style="color:#a61717;background-color:#e3d2d2">/</span><span style="color:#008080">src</span><span style="color:#a61717;background-color:#e3d2d2">/</span><span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">/</span><span style="color:#008080">proc.go</span>:<span style="color:#099">81</span>
+    <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">g0.stackguard0</span> <span style="color:#a61717;background-color:#e3d2d2">=</span>  <span style="color:#008080">rsp-64</span>*<span style="color:#099">1024</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">104</span>
+    <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">g0.stackguard1</span> <span style="color:#a61717;background-color:#e3d2d2">=</span> <span style="color:#008080">g0.stackguard0</span>
+    <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">g0.stack.lo</span> <span style="color:#a61717;background-color:#e3d2d2">=</span> <span style="color:#008080">g0.stackguard0</span>
+    <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">g0.stack.hi</span> <span style="color:#a61717;background-color:#e3d2d2">=</span> <span style="color:#008080">rsp</span> 
+	<span style="color:#008080">MOVQ</span>	<span style="color:#008080">$runtime</span><span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">g0</span>(<span style="color:#008080">SB</span>), <span style="color:#008080">DI</span>
+	<span style="color:#900;font-weight:bold">LEAQ</span>	(-<span style="color:#099">64</span>*<span style="color:#099">1024</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">104</span>)(<span style="color:#008080">SP</span>), <span style="color:#008080">BX</span>
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">BX</span>, <span style="color:#008080">g_stackguard0</span>(<span style="color:#008080">DI</span>)
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">BX</span>, <span style="color:#008080">g_stackguard1</span>(<span style="color:#008080">DI</span>)
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">BX</span>, (<span style="color:#008080">g_stack</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#008080">stack_lo</span>)(<span style="color:#008080">DI</span>)
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">SP</span>, (<span style="color:#008080">g_stack</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#008080">stack_hi</span>)(<span style="color:#008080">DI</span>)
+</code></pre></td></tr></table>
+</div>
+</div><p>设置g0的栈信息，设置了栈的地址开始与结束位置，分配大约64k空间。</p>
+<h5 id="cgo_init">cgo_init</h5>
+<p>判断是否存在 _cgo_init ,如果有就执行，执行完之后重新设置g0的栈地址</p>
+<h4 id="tls">tls</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#998;font-style:italic">#ifdef GOOS_plan9
+</span><span style="color:#998;font-style:italic"></span>	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">skip</span> <span style="color:#008080">TLS</span> <span style="color:#008080">setup</span> <span style="color:#008080">on</span> <span style="color:#008080">Plan</span> <span style="color:#099">9</span>
+	<span style="color:#900;font-weight:bold">JMP</span> <span style="color:#008080">ok</span>
+<span style="color:#998;font-style:italic">#endif
+</span><span style="color:#998;font-style:italic">#ifdef GOOS_solaris
+</span><span style="color:#998;font-style:italic"></span>	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">skip</span> <span style="color:#008080">TLS</span> <span style="color:#008080">setup</span> <span style="color:#008080">on</span> <span style="color:#008080">Solaris</span>
+	<span style="color:#900;font-weight:bold">JMP</span> <span style="color:#008080">ok</span>
+<span style="color:#998;font-style:italic">#endif
+</span><span style="color:#998;font-style:italic">#ifdef GOOS_darwin
+</span><span style="color:#998;font-style:italic"></span>	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">skip</span> <span style="color:#008080">TLS</span> <span style="color:#008080">setup</span> <span style="color:#008080">on</span> <span style="color:#008080">Darwin</span>
+	<span style="color:#900;font-weight:bold">JMP</span> <span style="color:#008080">ok</span>
+<span style="color:#998;font-style:italic">#endif
+</span><span style="color:#998;font-style:italic"></span>
+	<span style="color:#900;font-weight:bold">LEAQ</span>	<span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">m0</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#008080">m_tls</span>(<span style="color:#008080">SB</span>), <span style="color:#008080">DI</span>
+	<span style="color:#a61717;background-color:#e3d2d2">//</span><span style="color:#900;font-weight:bold">settls</span> <span style="color:#a61717;background-color:#e3d2d2">位于</span> <span style="color:#008080">go1.12.5</span><span style="color:#a61717;background-color:#e3d2d2">/</span><span style="color:#008080">src</span><span style="color:#a61717;background-color:#e3d2d2">/</span><span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">/</span><span style="color:#008080">sys_linux_amd64.s</span>:<span style="color:#099">606</span>
+	<span style="color:#900;font-weight:bold">CALL</span>	<span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">settls</span>(<span style="color:#008080">SB</span>)
+
+	<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#900;font-weight:bold">store</span> <span style="color:#008080">through</span> <span style="color:#008080">it</span>, <span style="color:#008080">to</span> <span style="color:#008080">make</span> <span style="color:#008080">sure</span> <span style="color:#008080">it</span> <span style="color:#008080">works</span>
+	<span style="color:#900;font-weight:bold">get_tls</span>(<span style="color:#008080">BX</span>)
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">$0x123</span>, <span style="color:#008080">g</span>(<span style="color:#008080">BX</span>)
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">m0</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#008080">m_tls</span>(<span style="color:#008080">SB</span>), <span style="color:#008080">AX</span>
+	<span style="color:#900;font-weight:bold">CMPQ</span>	<span style="color:#008080">AX</span>, <span style="color:#008080">$0x123</span>
+	<span style="color:#900;font-weight:bold">JEQ</span> <span style="color:#099">2</span>(<span style="color:#008080">PC</span>)
+	<span style="color:#900;font-weight:bold">CALL</span>	<span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">abort</span>(<span style="color:#008080">SB</span>)
+</code></pre></td></tr></table>
+</div>
+</div><p>在plan 9, solaris ,darwin 上都直接跳过tls的设置。</p>
+<h4 id="runtimeargs">runtime.args</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">	<span style="color:#900;font-weight:bold">MOVL</span>	<span style="color:#099">16</span>(<span style="color:#008080">SP</span>), <span style="color:#008080">AX</span>		<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#008080">copy</span> <span style="color:#008080">argc</span>
+	<span style="color:#900;font-weight:bold">MOVL</span>	<span style="color:#008080">AX</span>, <span style="color:#099">0</span>(<span style="color:#008080">SP</span>)
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#099">24</span>(<span style="color:#008080">SP</span>), <span style="color:#008080">AX</span>		<span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#008080">copy</span> <span style="color:#008080">argv</span>
+	<span style="color:#900;font-weight:bold">MOVQ</span>	<span style="color:#008080">AX</span>, <span style="color:#099">8</span>(<span style="color:#008080">SP</span>)
+	<span style="color:#900;font-weight:bold">CALL</span>	<span style="color:#008080">runtime</span><span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">args</span>(<span style="color:#008080">SB</span>)
+</code></pre></td></tr></table>
+</div>
+</div><p>runtime.args 位于 go1.12.5/src/runtime/runtime1.go:60
+主要作用是读取参数以及获取环境变量；</p>
+<h4 id="runtimeosinit">runtime.osinit</h4>
+<p>主要设置cpu 数量</p>
+<h3 id="runtimeschedinit">runtime.schedinit</h3>
+<p>位于 go1.12.5/src/runtime/proc.go:526
+主要作用 初始化堆栈, 参数，gc , sched。</p>
+<p>接下来主要是创建一个goroutine,然后放到队列中，启动mstart 进行调度 运行第一个goroutine（runtime.main）</p>
+        </div>
+
+        
+
+
+        
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/language/golang/plan9/">golang 栈结构</a></li>
+        
+        <li><a href="/post/language/golang/module/">Go module</a></li>
+        
+        <li><a href="/post/shell/effective_shell/">高效shell</a></li>
+        
+        <li><a href="/post/protocol/mqtt/">MQTT 基本概念</a></li>
+        
+        <li><a href="/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">mac  sed 报错</a></li>
+        
+    </ul>
+</div>
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='http://www.geekgame.site/tags/go'>go</a></li>
+                
+                <li><a href='http://www.geekgame.site/tags/start'>start</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+
+<div id="vcomments"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'pSCor7tBnItnANnzoW1f1YUJ-gzGzoHsz',
+        appKey: 'DFEhbtQS9nDVy6c8nSY4qYvz',
+        notify: 'false',
+        verify: 'false',
+        avatar:'e',
+        placeholder: '请输入评论',
+        visitor: 'true'
+    });
+</script>
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>
+        
+    </div>
+    <br />
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/sched/" title="协程调度原理">协程调度原理</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/start/" title="golang 启动过程">golang 启动过程</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/module/" title="Go module">Go module</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/shell/effective_shell/" title="高效shell">高效shell</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/protocol/mqtt/" title="MQTT 基本概念">MQTT 基本概念</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="mac  sed 报错">mac  sed 报错</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href="/categories">分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议 (2)</a></li>
+    
+    <li><a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令 (2)</a></li>
+    
+    <li><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言 (4)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href="/tags">标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="http://www.geekgame.site/tags/effective/">effective</a>
+    
+    <a href="http://www.geekgame.site/tags/go/">go</a>
+    
+    <a href="http://www.geekgame.site/tags/mac/">mac</a>
+    
+    <a href="http://www.geekgame.site/tags/module/">module</a>
+    
+    <a href="http://www.geekgame.site/tags/mqtt/">mqtt</a>
+    
+    <a href="http://www.geekgame.site/tags/sched/">sched</a>
+    
+    <a href="http://www.geekgame.site/tags/sed/">sed</a>
+    
+    <a href="http://www.geekgame.site/tags/shell/">shell</a>
+    
+    <a href="http://www.geekgame.site/tags/stack/">stack</a>
+    
+    <a href="http://www.geekgame.site/tags/start/">start</a>
+    
+    <a href="http://www.geekgame.site/tags/tcp/">tcp</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.geekgame.site/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

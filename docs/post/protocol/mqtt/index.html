@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MQTT 基本概念 | garfcat</title>
+    <meta property="og:title" content="MQTT 基本概念 - garfcat">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-05-15T13:24:24&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-05-15T13:24:24&#43;08:00'>
+        
+    <meta name="Keywords" content="go,golang,后端">
+    <meta name="description" content="MQTT 基本概念">
+        
+    <meta name="author" content="garfcat">
+    <meta property="og:url" content="http://www.geekgame.site/post/protocol/mqtt/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://www.geekgame.site">
+                        garfcat
+                    </a>
+                
+                <p class="description">make it simple, keep it clean.</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://www.geekgame.site">首页</a>
+                    
+                    <a  href="http://www.geekgame.site/archives/" title="归档">归档</a>
+                    
+                    <a  href="http://www.geekgame.site/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">MQTT 基本概念</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月15日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE'>协议</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="post-content">
+            <p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
+低开销、低带宽，在lot上应用较为广泛。</p>
+<h1 id="mqtt-架构">MQTT 架构</h1>
+<ol>
+<li>MQTT 是c/s模型，每个客户端通过tcp连接到服务器(broker)；</li>
+<li>MQTT 是面向消息的。每个消息都是独立的数据块，对于broker来说是不透明的；</li>
+<li>每条消息都会发送到一个地址，这个地址称为主题(topic),订阅主题的每个客户端都会收到发布到该主题上的每条消息；</li>
+</ol>
+<p>如下所示： 客户端 A、B、C都连接到一个中间broker; <br>
+B、C都订阅topic :dev_info 来获取其他设备的设备信息；<br>
+A发布设备信息到topic dev_info，broker 将该消息转发给所有的订阅者即 BC；<br>
+
+        <img class="mx-auto" alt="mqqtt_arch" src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/mqtt_arch.png" />   
+    </p>
+<h1 id="主题匹配">主题匹配</h1>
+<p>mqtt 主题是分层级的，通过／划分层级。如 A/B/G ;
+注意在订阅时可以使用通配符，发布时不可以使用通配符；<br>
+通配符 + 匹配任何单个主题，# 匹配任意名称任意数量的主题；<br>
+例如： A/+/G 可以匹配 A/B/G A/C/G A/D/G 等<br>
+A/# 可以配置 A/B/C/D/E/F/G</p>
+<h1 id="qos">Qos</h1>
+<p>mqtt 支持三种级别的服务质量:<br>
+0: &ldquo;至多一次&rdquo; 并不需要回复确认消息，有可能丢失消息；<br>
+1: &ldquo;至少一次&rdquo; 收到报文后会回复确认消息，这样会重复收到消息（如超时回复确认消息情况）；<br>
+2: &ldquo;只有一次&rdquo; 通过 publish pubrec pubrel pubcomp 四个状态确认有且只有一次消息被处理，但是网络带宽会增加；</p>
+<h1 id="最后遗愿last-will">最后遗愿(last will)</h1>
+<p>提前预定好的消息，当客户端断开连接时，broker 会将该消息发送给所有订阅者的客户端；</p>
+<h1 id="持久retain">持久(retain)</h1>
+<p>topic 设置retain 之后，broker 会保留最后一条retain消息,当client 订阅该topic 时会立刻收到一条retain消息；</p>
+<h1 id="清理会话cleansession">清理会话（cleansession）</h1>
+<p>设置为true时，客户端建立连接时将清除旧的连接，即再次连接时不会收到消息；<br>
+设置为false时，客户端即使断开连接，再次连接时会收到未接收的消息；</p>
+<h1 id="安全">安全</h1>
+<p>可以通过ssl/tls 双向认证保证数据安全， 也可以通过 单向 ssl/tls + 单向https/username/password 保证双向安全；</p>
+<h1 id="参考">参考</h1>
+<ol>
+<li><a href="https://zh.wikipedia.org/wiki/MQTT">维基百科 MQTT</a></li>
+<li><a href="https://mosquitto.org/man/mqtt-7.html">MQTT manpage</a></li>
+<li><a href="https://www.eclipse.org/community/eclipse_newsletter/2014/february/article2.php">MQTT and CoAP, IoT Protocols</a></li>
+</ol>
+        </div>
+
+        
+
+
+        
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">mac  sed 报错</a></li>
+        
+        <li><a href="/archives/">Index</a></li>
+        
+        <li><a href="/about/">About</a></li>
+        
+    </ul>
+</div>
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='http://www.geekgame.site/tags/mqtt'>mqtt</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+
+<div id="vcomments"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'pSCor7tBnItnANnzoW1f1YUJ-gzGzoHsz',
+        appKey: 'DFEhbtQS9nDVy6c8nSY4qYvz',
+        notify: 'false',
+        verify: 'false',
+        avatar:'e',
+        placeholder: '请输入评论',
+        visitor: 'true'
+    });
+</script>
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>
+        
+    </div>
+    <br />
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/sched/" title="协程调度原理">协程调度原理</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/start/" title="golang 启动过程">golang 启动过程</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/module/" title="Go module">Go module</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/shell/effective_shell/" title="高效shell">高效shell</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/protocol/mqtt/" title="MQTT 基本概念">MQTT 基本概念</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="mac  sed 报错">mac  sed 报错</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href="/categories">分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议 (2)</a></li>
+    
+    <li><a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令 (2)</a></li>
+    
+    <li><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言 (4)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href="/tags">标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="http://www.geekgame.site/tags/effective/">effective</a>
+    
+    <a href="http://www.geekgame.site/tags/go/">go</a>
+    
+    <a href="http://www.geekgame.site/tags/mac/">mac</a>
+    
+    <a href="http://www.geekgame.site/tags/module/">module</a>
+    
+    <a href="http://www.geekgame.site/tags/mqtt/">mqtt</a>
+    
+    <a href="http://www.geekgame.site/tags/sched/">sched</a>
+    
+    <a href="http://www.geekgame.site/tags/sed/">sed</a>
+    
+    <a href="http://www.geekgame.site/tags/shell/">shell</a>
+    
+    <a href="http://www.geekgame.site/tags/stack/">stack</a>
+    
+    <a href="http://www.geekgame.site/tags/start/">start</a>
+    
+    <a href="http://www.geekgame.site/tags/tcp/">tcp</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.geekgame.site/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

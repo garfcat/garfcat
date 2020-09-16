@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>协议 on garfcat</title>
@@ -6,26 +6,22 @@
     <description>Recent content in 协议 on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TCP timewait 过多怎么办</title>
-      <link>http://www.geekgame.site/posts/protocol/tcp_1/</link>
+      <link>http://www.geekgame.site/post/protocol/tcp_1/</link>
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/posts/protocol/tcp_1/</guid>
+      <guid>http://www.geekgame.site/post/protocol/tcp_1/</guid>
       <description>&lt;p&gt;要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MQTT 基本概念</title>
-      <link>http://www.geekgame.site/posts/protocol/mqtt/</link>
+      <link>http://www.geekgame.site/post/protocol/mqtt/</link>
       <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/posts/protocol/mqtt/</guid>
+      <guid>http://www.geekgame.site/post/protocol/mqtt/</guid>
       <description>&lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
 低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;</description>
     </item>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>effective on garfcat</title>
@@ -6,23 +6,17 @@
     <description>Recent content in effective on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/tags/effective/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/effective/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>高效shell</title>
-      <link>http://www.geekgame.site/posts/shell/effective_shell/</link>
+      <link>http://www.geekgame.site/post/shell/effective_shell/</link>
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/posts/shell/effective_shell/</guid>
+      <guid>http://www.geekgame.site/post/shell/effective_shell/</guid>
       <description>&lt;h2 id=&#34;shell&#34;&gt;shell&lt;/h2&gt;
-
 &lt;p&gt;使用超强组合 &lt;a href=&#34;https://ohmyz.sh/&#34;&gt;oh-my-zsh&lt;/a&gt; + &lt;a href=&#34;https://github.com/zsh-users/zsh-autosuggestions&#34;&gt;zsh-autosuggestions&lt;/a&gt; + &lt;a href=&#34;https://github.com/rupa/z&#34;&gt;z - jump around&lt;/a&gt;。&lt;/p&gt;
-
 &lt;ul&gt;
-&lt;li&gt;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；&lt;/li&gt;
 &lt;li&gt;autosuggestions: 补全已经输入过的命令；&lt;/li&gt;
 &lt;li&gt;jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；&lt;/li&gt;
 &lt;/ul&gt;</description>

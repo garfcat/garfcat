@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tcp on garfcat</title>
@@ -6,17 +6,13 @@
     <description>Recent content in tcp on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TCP timewait 过多怎么办</title>
-      <link>http://www.geekgame.site/posts/protocol/tcp_1/</link>
+      <link>http://www.geekgame.site/post/protocol/tcp_1/</link>
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/posts/protocol/tcp_1/</guid>
+      <guid>http://www.geekgame.site/post/protocol/tcp_1/</guid>
       <description>&lt;p&gt;要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&lt;/p&gt;</description>
     </item>
     

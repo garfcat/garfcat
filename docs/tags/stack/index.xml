@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>stack on garfcat</title>
@@ -6,22 +6,17 @@
     <description>Recent content in stack on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 15 Jun 2019 16:41:11 +0800</lastBuildDate>
-    
-	<atom:link href="http://www.geekgame.site/tags/stack/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 15 Jun 2019 16:41:11 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/stack/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>golang 栈结构</title>
-      <link>http://www.geekgame.site/posts/language/golang/plan9/</link>
+      <link>http://www.geekgame.site/post/language/golang/plan9/</link>
       <pubDate>Sat, 15 Jun 2019 16:41:11 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/posts/language/golang/plan9/</guid>
+      <guid>http://www.geekgame.site/post/language/golang/plan9/</guid>
       <description>&lt;h1 id=&#34;程序组成&#34;&gt;程序组成&lt;/h1&gt;
-
-&lt;p&gt;程序由代码和数据组成，数据又有静态与动态之分；&lt;br /&gt;
-动态数据：存放在堆区和栈区；&lt;br /&gt;
-静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；&lt;br /&gt;
+&lt;p&gt;程序由代码和数据组成，数据又有静态与动态之分；&lt;br&gt;
+动态数据：存放在堆区和栈区；&lt;br&gt;
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；&lt;br&gt;
 可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；&lt;/p&gt;</description>
     </item>
     

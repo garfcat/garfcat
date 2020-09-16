@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>golang 栈结构 | garfcat</title>
+    <meta property="og:title" content="golang 栈结构 - garfcat">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-06-15T16:41:11&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-06-15T16:41:11&#43;08:00'>
+        
+    <meta name="Keywords" content="go,golang,后端">
+    <meta name="description" content="golang 栈结构">
+        
+    <meta name="author" content="garfcat">
+    <meta property="og:url" content="http://www.geekgame.site/post/language/golang/plan9/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://www.geekgame.site">
+                        garfcat
+                    </a>
+                
+                <p class="description">make it simple, keep it clean.</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://www.geekgame.site">首页</a>
+                    
+                    <a  href="http://www.geekgame.site/archives/" title="归档">归档</a>
+                    
+                    <a  href="http://www.geekgame.site/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">golang 栈结构</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月15日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80'>编程语言</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="post-content">
+            <h1 id="程序组成">程序组成</h1>
+<p>程序由代码和数据组成，数据又有静态与动态之分；<br>
+动态数据：存放在堆区和栈区；<br>
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br>
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；</p>
+<h1 id="寄存器">寄存器</h1>
+<h2 id="伪寄存器">伪寄存器</h2>
+<ul>
+<li>FP(Frame pointer): 表示参数以及返回值的基地址；
+通过 SYMBOL+/-ffset(FP)</li>
+<li>PC(Program counter): 跳转寄存器，存储下一条指令地址；</li>
+<li>SB(Static base pointer): 全局静态起始地址.</li>
+<li>SP(Stack pointer): 表示本地变量的起始地址；<br>
+使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx</li>
+</ul>
+<p>这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；<br>
+SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&lt;&gt; 和 +N，其中N是一个整数。 foo&lt;&gt;(SB)表示foo是一个私有元素只能在
+当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；<em>注意 这里是相对符号的地址</em><br>
+FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。</p>
+<h2 id="fp-伪sp-硬件sp之间的关系">FP、 伪SP、 硬件SP之间的关系</h2>
+<p>SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。</p>
+<h3 id="栈结构">栈结构</h3>
+<h4 id="无参数无本地变量">无参数无本地变量</h4>
+<p>无参数无本地变量栈结果是如下所示</p>
+<p>
+        <img class="mx-auto" alt="没有参数没有本地变量" src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png" />   
+    </p>
+<p>通过如下函数来验证</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#998;font-style:italic">#include &#34;textflag.h&#34; //
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#900;font-weight:bold">TEXT</span> <span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">SpFp</span>(<span style="color:#008080">SB</span>),<span style="color:#008080">NOSPLIT</span>,<span style="color:#008080">$0-32</span>
+    <span style="color:#900;font-weight:bold">LEAQ</span> (<span style="color:#008080">SP</span>), <span style="color:#008080">AX</span>   <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将硬件</span><span style="color:#008080">SP地址存储到AX</span>
+    <span style="color:#900;font-weight:bold">LEAQ</span> <span style="color:#008080">a</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">0</span>(<span style="color:#008080">SP</span>), <span style="color:#008080">BX</span>  <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将伪</span><span style="color:#008080">SP地址存储到BX</span>
+    <span style="color:#900;font-weight:bold">LEAQ</span> <span style="color:#008080">b</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">0</span>(<span style="color:#008080">FP</span>), <span style="color:#008080">CX</span>  <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将</span><span style="color:#008080">FP地址存储到CX</span>
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">AX</span>, <span style="color:#008080">ret</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">0</span>(<span style="color:#008080">FP</span>) <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将</span><span style="color:#008080">AX地址存储到第一个返回值</span>
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">BX</span>, <span style="color:#008080">ret</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">8</span>(<span style="color:#008080">FP</span>) <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将</span><span style="color:#008080">BX地址存储到第二个返回值</span>
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">CX</span>, <span style="color:#008080">ret</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">16</span>(<span style="color:#008080">FP</span>) <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将</span><span style="color:#008080">CX地址存储到第三个返回值</span>
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">a</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">0</span>(<span style="color:#008080">SP</span>), <span style="color:#008080">AX</span>  <span style="color:#a61717;background-color:#e3d2d2">//</span> <span style="color:#a61717;background-color:#e3d2d2">将</span><span style="color:#008080">SP</span> <span style="color:#a61717;background-color:#e3d2d2">存储的值存储到</span><span style="color:#008080">AX</span><span style="color:#a61717;background-color:#e3d2d2">，</span> <span style="color:#a61717;background-color:#e3d2d2">也就是该函数的返回值</span>
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">AX</span>, <span style="color:#008080">ret</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">24</span>(<span style="color:#008080">FP</span>)  <span style="color:#a61717;background-color:#e3d2d2">//将</span><span style="color:#008080">AX</span> <span style="color:#a61717;background-color:#e3d2d2">放到第四个返回值</span>
+    <span style="color:#900;font-weight:bold">RET</span>
+    
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">package</span> main
+
+<span style="color:#000;font-weight:bold">import</span> <span style="color:#d14">&#34;fmt&#34;</span>
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">SpFp</span>() (<span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span>) <span style="color:#998;font-style:italic">// 汇编函数声明
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>()  {
+	a,b,c, addr  <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">SpFp</span>()
+	fmt.<span style="color:#900;font-weight:bold">Printf</span>(<span style="color:#d14">&#34;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&#34;</span>, a, b ,c,addr,SpFp )
+}
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./spfp
+硬SP<span style="color:#000;font-weight:bold">[</span>824634216112<span style="color:#000;font-weight:bold">]</span> 伪SP<span style="color:#000;font-weight:bold">[</span>824634216112<span style="color:#000;font-weight:bold">]</span> FP<span style="color:#000;font-weight:bold">[</span>824634216120<span style="color:#000;font-weight:bold">]</span> addr<span style="color:#000;font-weight:bold">[</span>17385428<span style="color:#000;font-weight:bold">]</span> SpFp<span style="color:#000;font-weight:bold">[</span>17385904<span style="color:#000;font-weight:bold">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ dlv <span style="color:#0086b3">exec</span> ./fpsp
+Type <span style="color:#d14">&#39;help&#39;</span> <span style="color:#000;font-weight:bold">for</span> list of commands.
+<span style="color:#000;font-weight:bold">(</span>dlv<span style="color:#000;font-weight:bold">)</span> b *17385428
+Breakpoint <span style="color:#099">1</span> <span style="color:#0086b3">set</span> at 0x10947d4 <span style="color:#000;font-weight:bold">for</span> main.main<span style="color:#000;font-weight:bold">()</span> ./main.go:7
+<span style="color:#000;font-weight:bold">(</span>dlv<span style="color:#000;font-weight:bold">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()</p>
+<h4 id="有参数无本地变量">有参数无本地变量</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#998;font-style:italic">#include &#34;textflag.h&#34; //
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#900;font-weight:bold">TEXT</span> <span style="color:#a61717;background-color:#e3d2d2">·</span><span style="color:#008080">SpFpArgs</span>(<span style="color:#008080">SB</span>),<span style="color:#008080">NOSPLIT</span>,<span style="color:#008080">$0-24</span>
+    <span style="color:#900;font-weight:bold">LEAQ</span> (<span style="color:#008080">SP</span>), <span style="color:#008080">AX</span>
+    <span style="color:#900;font-weight:bold">LEAQ</span> <span style="color:#008080">a</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">0</span>(<span style="color:#008080">SP</span>), <span style="color:#008080">BX</span>
+    <span style="color:#900;font-weight:bold">LEAQ</span> <span style="color:#008080">b</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">0</span>(<span style="color:#008080">FP</span>), <span style="color:#008080">CX</span>
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">AX</span>, <span style="color:#008080">ret</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">24</span>(<span style="color:#008080">FP</span>)
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">BX</span>, <span style="color:#008080">ret</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">32</span>(<span style="color:#008080">FP</span>)
+    <span style="color:#900;font-weight:bold">MOVQ</span> <span style="color:#008080">CX</span>, <span style="color:#008080">ret</span><span style="color:#a61717;background-color:#e3d2d2">+</span><span style="color:#099">40</span>(<span style="color:#008080">FP</span>)
+    <span style="color:#900;font-weight:bold">RET</span>
+    
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">package</span> main
+
+<span style="color:#000;font-weight:bold">import</span> <span style="color:#d14">&#34;fmt&#34;</span>
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">SpFpArgs</span>(<span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span>) (<span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span>, <span style="color:#458;font-weight:bold">int</span>) <span style="color:#998;font-style:italic">// 汇编函数声明
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>()  {
+	e,f,g   <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">SpFpArgs</span>(<span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">3</span>)
+	fmt.<span style="color:#900;font-weight:bold">Printf</span>(<span style="color:#d14">&#34;硬SP[%d] 伪SP[%d] FP[%d]\n&#34;</span>, e, f, g)
+}
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./spfp
+硬SP<span style="color:#000;font-weight:bold">[</span>824634216048<span style="color:#000;font-weight:bold">]</span> 伪SP<span style="color:#000;font-weight:bold">[</span>824634216048<span style="color:#000;font-weight:bold">]</span> FP<span style="color:#000;font-weight:bold">[</span>824634216056<span style="color:#000;font-weight:bold">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8</p>
+<h3 id="有本地变量">有本地变量</h3>
+<p>在有本地变量情况下，在X86 和 ARM 中栈结构是不同的，如下所示：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+
+// Stack frame layout
+//
+// <span style="color:#000;font-weight:bold">(</span>x86<span style="color:#000;font-weight:bold">)</span>
+// +------------------+
+// | args from <span style="color:#0086b3">caller</span> |
+// +------------------+ &lt;- frame-&gt;argp
+// |  <span style="color:#000;font-weight:bold">return</span> address  |
+// +------------------+
+// |  caller<span style="color:#d14">&#39;s BP (*) | (*) if framepointer_enabled &amp;&amp; varp &lt; sp
+</span><span style="color:#d14">// +------------------+ &lt;- frame-&gt;varp
+</span><span style="color:#d14">// |     locals       |
+</span><span style="color:#d14">// +------------------+
+</span><span style="color:#d14">// |  args to callee  |
+</span><span style="color:#d14">// +------------------+ &lt;- frame-&gt;sp
+</span><span style="color:#d14">//
+</span><span style="color:#d14">// (arm)
+</span><span style="color:#d14">// +------------------+
+</span><span style="color:#d14">// | args from caller |
+</span><span style="color:#d14">// +------------------+ &lt;- frame-&gt;argp
+</span><span style="color:#d14">// | caller&#39;</span>s retaddr |
+// +------------------+ &lt;- frame-&gt;varp
+// |     locals       |
+// +------------------+
+// |  args to callee  |
+// +------------------+
+// |  <span style="color:#000;font-weight:bold">return</span> address  |
+// +------------------+ &lt;- frame-&gt;sp
+
+</code></pre></td></tr></table>
+</div>
+</div><p>我们在这里特别关注X86，会使用到BP寄存器，这个寄存器主要用来指示栈的起始位置，现在很多编译器并不需要这个，因为可以通过SP加Offset来寻找栈起始位置。在amd64平台上,会在函数返回值之后插入8byte来放置Caller BP。
+在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：</p>
+<ol>
+<li>函数的栈帧大于0；</li>
+<li>满足条件</li>
+</ol>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">Framepointer_enabled</span>(goos, goarch <span style="color:#458;font-weight:bold">string</span>) <span style="color:#458;font-weight:bold">bool</span> {
+  <span style="color:#000;font-weight:bold">return</span> framepointer_enabled <span style="color:#000;font-weight:bold">!=</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> goarch <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;amd64&#34;</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> goos <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#34;nacl&#34;</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>另外此时 硬件SP与伪SP是不相同的。<br>
+硬件SP + locals = 伪SP</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://9p.io/plan9/">https://9p.io/plan9/</a><br>
+<a href="http://68k.hax.com/">指令查询</a><br>
+<a href="https://9p.io/magic/man2html/1/8a">命令查询</a><br>
+<a href="https://zhuanlan.zhihu.com/p/19902040">Go的标准IDE：Acme文本编辑器</a><br>
+<a href="https://golang.org/doc/asm">A Quick Guide to Go&rsquo;s Assembler</a><br>
+<a href="https://lrita.github.io/2017/12/12/golang-asm/">golang 汇编</a><br>
+<a href="https://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html">汇编语言入门教程</a><br>
+<a href="http://xargin.com/go-and-plan9-asm/">[译]go 和 plan9 汇编</a><br>
+<a href="https://blog.brickgao.com/2019/01/27/split-stacks/">split stacks</a><br>
+<a href="https://blog.cloudflare.com/how-stacks-are-handled-in-go/">How Stacks are Handled in Go</a><br>
+<a href="https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">go函数调用</a></p>
+        </div>
+
+        
+
+
+        
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/language/golang/module/">Go module</a></li>
+        
+        <li><a href="/post/shell/effective_shell/">高效shell</a></li>
+        
+        <li><a href="/post/protocol/mqtt/">MQTT 基本概念</a></li>
+        
+        <li><a href="/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">mac  sed 报错</a></li>
+        
+        <li><a href="/archives/">Index</a></li>
+        
+    </ul>
+</div>
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='http://www.geekgame.site/tags/go'>go</a></li>
+                
+                <li><a href='http://www.geekgame.site/tags/stack'>stack</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+
+<div id="vcomments"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'pSCor7tBnItnANnzoW1f1YUJ-gzGzoHsz',
+        appKey: 'DFEhbtQS9nDVy6c8nSY4qYvz',
+        notify: 'false',
+        verify: 'false',
+        avatar:'e',
+        placeholder: '请输入评论',
+        visitor: 'true'
+    });
+</script>
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>
+        
+    </div>
+    <br />
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/sched/" title="协程调度原理">协程调度原理</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/start/" title="golang 启动过程">golang 启动过程</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/module/" title="Go module">Go module</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/shell/effective_shell/" title="高效shell">高效shell</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/protocol/mqtt/" title="MQTT 基本概念">MQTT 基本概念</a>
+    </li>
+    
+    <li>
+        <a href="http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="mac  sed 报错">mac  sed 报错</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href="/categories">分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议 (2)</a></li>
+    
+    <li><a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令 (2)</a></li>
+    
+    <li><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言 (4)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href="/tags">标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="http://www.geekgame.site/tags/effective/">effective</a>
+    
+    <a href="http://www.geekgame.site/tags/go/">go</a>
+    
+    <a href="http://www.geekgame.site/tags/mac/">mac</a>
+    
+    <a href="http://www.geekgame.site/tags/module/">module</a>
+    
+    <a href="http://www.geekgame.site/tags/mqtt/">mqtt</a>
+    
+    <a href="http://www.geekgame.site/tags/sched/">sched</a>
+    
+    <a href="http://www.geekgame.site/tags/sed/">sed</a>
+    
+    <a href="http://www.geekgame.site/tags/shell/">shell</a>
+    
+    <a href="http://www.geekgame.site/tags/stack/">stack</a>
+    
+    <a href="http://www.geekgame.site/tags/start/">start</a>
+    
+    <a href="http://www.geekgame.site/tags/tcp/">tcp</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.geekgame.site/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

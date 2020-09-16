@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
@@ -13,7 +13,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/</loc>
+    <loc>http://www.geekgame.site/post/</loc>
     <lastmod>2020-05-07T09:53:51+08:00</lastmod>
   </url>
   
@@ -28,7 +28,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/protocol/tcp_1/</loc>
+    <loc>http://www.geekgame.site/post/protocol/tcp_1/</loc>
     <lastmod>2020-05-07T09:53:51+08:00</lastmod>
   </url>
   
@@ -48,7 +48,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/language/golang/sched/</loc>
+    <loc>http://www.geekgame.site/post/language/golang/sched/</loc>
     <lastmod>2019-08-11T10:23:01+08:00</lastmod>
   </url>
   
@@ -58,7 +58,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/language/golang/start/</loc>
+    <loc>http://www.geekgame.site/post/language/golang/start/</loc>
     <lastmod>2019-06-20T22:51:54+08:00</lastmod>
   </url>
   
@@ -68,7 +68,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/language/golang/plan9/</loc>
+    <loc>http://www.geekgame.site/post/language/golang/plan9/</loc>
     <lastmod>2019-06-15T16:41:11+08:00</lastmod>
   </url>
   
@@ -78,7 +78,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/language/golang/module/</loc>
+    <loc>http://www.geekgame.site/post/language/golang/module/</loc>
     <lastmod>2019-05-30T17:12:47+08:00</lastmod>
   </url>
   
@@ -103,7 +103,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/shell/effective_shell/</loc>
+    <loc>http://www.geekgame.site/post/shell/effective_shell/</loc>
     <lastmod>2019-05-16T19:34:57+08:00</lastmod>
   </url>
   
@@ -113,7 +113,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/protocol/mqtt/</loc>
+    <loc>http://www.geekgame.site/post/protocol/mqtt/</loc>
     <lastmod>2019-05-15T13:24:24+08:00</lastmod>
   </url>
   
@@ -123,7 +123,7 @@
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</loc>
+    <loc>http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</loc>
     <lastmod>2019-05-13T12:36:43+08:00</lastmod>
   </url>
   

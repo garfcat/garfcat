@@ -3,7 +3,6 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.58.2" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,32 +18,22 @@
     <meta property="og:url" content="http://www.geekgame.site/tags/start/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
     <link rel="alternate" type="application/rss+xml+xml" href="http://www.geekgame.site/tags/start/index.xml" title="garfcat" />
-    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-    <script>
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?842859b7e57f42ea00f8e6777027a7a2";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
-
-
+    
+    
+    
     
     
 </head>
 
 
 <body>
-<header id="header" class="clearfix">
+    <header id="header" class="clearfix">
     <div class="container">
         <div class="col-group">
             <div class="site-name ">
@@ -69,73 +58,104 @@
     </div>
 </header>
 
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
 
-<div id="body">
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
+                <div class="col-8" id="main">
                     
-                    <h3 class="archive-title">
-                        包含标签
-                        <span class="keyword">start</span>
-                        的文章
-                    </h3>
-                    
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">start</span>
+        的文章
+    </h3>
+    
 
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="http://www.geekgame.site/posts/language/golang/start/">golang 启动过程</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年6月20日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80">编程语言</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</p>
-
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="http://www.geekgame.site/post/language/golang/start/">golang 启动过程</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月20日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80'>编程语言</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</p>
 <h3 id="找到启动点">找到启动点</h3>
-
 <h5 id="1-写一个hello-world">1. 写一个hello world.</h5>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">package</span> main
 
-<pre><code class="language-golang">package main
-
-import (
-	&quot;fmt&quot;
+<span style="color:#000;font-weight:bold">import</span> (
+	<span style="color:#d14">&#34;fmt&#34;</span>
 )
 
-func main() {
-	fmt.Println(&quot;hello world&quot;)
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+	fmt.<span style="color:#900;font-weight:bold">Println</span>(<span style="color:#d14">&#34;hello world&#34;</span>)
 }
-</code></pre>……
-                                <p class="readmore"><a href="http://www.geekgame.site/posts/language/golang/start/">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
+</code></pre></td></tr></table>
+</div>
+</div>……
+            <p class="readmore"><a href="http://www.geekgame.site/post/language/golang/start/">阅读全文</a></p>
+        </div>
+    </article>
+    
 
-                    
+    
+
+
+
+
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>
+        
+    </div>
+    <br />
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
 
 
 
 
 
                 </div>
-            </div>
 
-            <div id="secondary">
+                <div id="secondary">
     <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
@@ -148,35 +168,35 @@ func main() {
 <ul class="widget-list">
     
     <li>
-        <a href="http://www.geekgame.site/posts/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
+        <a href="http://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/posts/language/golang/sched/" title="协程调度原理">协程调度原理</a>
+        <a href="http://www.geekgame.site/post/language/golang/sched/" title="协程调度原理">协程调度原理</a>
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/posts/language/golang/start/" title="golang 启动过程">golang 启动过程</a>
+        <a href="http://www.geekgame.site/post/language/golang/start/" title="golang 启动过程">golang 启动过程</a>
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/posts/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
+        <a href="http://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/posts/language/golang/module/" title="Go module">Go module</a>
+        <a href="http://www.geekgame.site/post/language/golang/module/" title="Go module">Go module</a>
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/posts/shell/effective_shell/" title="高效shell">高效shell</a>
+        <a href="http://www.geekgame.site/post/shell/effective_shell/" title="高效shell">高效shell</a>
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/posts/protocol/mqtt/" title="MQTT 基本概念">MQTT 基本概念</a>
+        <a href="http://www.geekgame.site/post/protocol/mqtt/" title="MQTT 基本概念">MQTT 基本概念</a>
     </li>
     
     <li>
-        <a href="http://www.geekgame.site/posts/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="mac  sed 报错">mac  sed 报错</a>
+        <a href="http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="mac  sed 报错">mac  sed 报错</a>
     </li>
     
 </ul>
@@ -185,26 +205,20 @@ func main() {
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href="/categories">分类</a></h3>
 <ul class="widget-list">
     
-    <li>
-        <a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议(2)</a>
-    </li>
+    <li><a href="http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/">协议 (2)</a></li>
     
-    <li>
-        <a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令(2)</a>
-    </li>
+    <li><a href="http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/">工具命令 (2)</a></li>
     
-    <li>
-        <a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言(4)</a>
-    </li>
+    <li><a href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言 (4)</a></li>
     
 </ul>
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href="/tags">标签</a></h3>
 <div class="tagcloud">
     
     <a href="http://www.geekgame.site/tags/effective/">effective</a>
@@ -241,27 +255,9 @@ func main() {
         </ul>
     </section>
 </div>
+            </div>
         </div>
     </div>
-</div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2020 <a href="http://www.geekgame.site">garfcat By garfcat</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
-        
-    </div>
-</footer>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
-
-
-
-
-
-
-
 </body>
+
 </html>
