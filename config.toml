@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "garfcat"
 theme = "maupassant"
 publishDir = "docs"
-
+summaryLength = 1
 [author]
   name = "garfcat"
 [markup]
@@ -16,6 +16,8 @@ publishDir = "docs"
   subtitle = "make it simple, keep it clean."
   keywords = "go,golang,后端"
   description = "focus on your focus"
+  localSearch = true
+  busuanzi = true
   [params.valine]
     enable = true
     appId = 'pSCor7tBnItnANnzoW1f1YUJ-gzGzoHsz'
@@ -25,7 +27,12 @@ publishDir = "docs"
     avatar = 'e'
     placeholder = '请输入评论'
     visitor = true
-
+  [params.cc]
+    name = "知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议"
+    link = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+  [params.sequenceDiagrams]
+    enable = true
+    options = ""            # default: "{theme: 'simple'}"
 [menu]
 #  [[menu.main]]
 #    identifier = "books"

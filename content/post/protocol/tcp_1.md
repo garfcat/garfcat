@@ -5,7 +5,7 @@ tags: [ "tcp"]
 categories: ["协议"]
 ---
 要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程； 
-<!--more-->  
+ 
 # TCP 三次握手四次挥手状态迁移
 ```bash
      TCP A                                                TCP B
