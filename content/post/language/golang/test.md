@@ -13,13 +13,6 @@ Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go
 
 测试文件名称一般是源代码文件加上 "_test.go", 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
 
-为方便说明以下用例均围绕 函数 Add 展开， 如下所示：
-```golang
-func Add(a int, b int) int {
-    return a + b 
-}
-```
-
 在展开单元测试之前先讲下,testing包中的输出函数：
 -  t.Log() :  正常日志输出;
 -  t.Errorf():  错误日志输出，当前函数继续运行;
@@ -32,6 +25,12 @@ TestAdd;
 2. 函数参数必需为 t * testing.T;
 完整的功能测试如下所示：
 ```golang
+// add.go
+func Add(a int, b int) int {
+    return a + b 
+}
+
+// add_tesg.go
 func TestAdd(t *testing.T){
     a := 1
     b := 2 
