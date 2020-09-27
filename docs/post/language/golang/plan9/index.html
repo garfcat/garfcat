@@ -85,6 +85,11 @@
         </div>
         
         
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
         
         <div class="post-content">
             <h1 id="程序组成">程序组成</h1>
@@ -367,9 +372,19 @@ Breakpoint <span style="color:#099">1</span> <span style="color:#0086b3">set</sp
 <a href="https://blog.brickgao.com/2019/01/27/split-stacks/">split stacks</a><br>
 <a href="https://blog.cloudflare.com/how-stacks-are-handled-in-go/">How Stacks are Handled in Go</a><br>
 <a href="https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">go函数调用</a></p>
+
         </div>
 
         
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>原文作者：</strong><a rel="author" href="http://www.geekgame.site">garfcat</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://www.geekgame.site/post/language/golang/plan9/">http://www.geekgame.site/post/language/golang/plan9/</a></li>
+        <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
+    </ul>
+</div>
+<br/>
+
 
 
         
@@ -432,7 +447,31 @@ Breakpoint <span style="color:#099">1</span> <span style="color:#0086b3">set</sp
 
 
     
-    <script type="text/javascript">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js" crossorigin="anonymous"></script>
+        <script>(function () {
+            if (!window.Diagram) return;
+            const blocks = document.querySelectorAll('pre code.language-sequence');
+            for (let i = 0; i < blocks.length; i++) {
+                const block = blocks[i];
+                
+                const rootElement = block.parentNode;
+                const container = document.createElement('div');
+                const id = `js-sequence-diag-${i}`;
+                container.id = id;
+                container.className = 'align-center';
+                container.setAttribute("style", "overFlow-x:auto");
+                rootElement.parentNode.replaceChild(container, rootElement);
+
+                const diagram = Diagram.parse(block.childNodes[0].nodeValue);
+                diagram.drawSVG(id, window.sequenceDiagramsOptions
+                    ? window.sequenceDiagramsOptions
+                    : { theme: 'simple' });
+            }
+        })();
+        </script><script type="text/javascript">
         window.MathJax = {
             tex2jax: {
                 inlineMath: [['$', '$']],
@@ -447,6 +486,8 @@ Breakpoint <span style="color:#099">1</span> <span style="color:#0086b3">set</sp
 
 
 
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
 
 
 
@@ -454,7 +495,7 @@ Breakpoint <span style="color:#099">1</span> <span style="color:#0086b3">set</sp
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='http://www.geekgame.site/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
@@ -465,6 +506,10 @@ Breakpoint <span style="color:#099">1</span> <span style="color:#0086b3">set</sp
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/test/" title="golang test 使用教程">golang test 使用教程</a>
+    </li>
     
     <li>
         <a href="http://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>

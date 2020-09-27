@@ -6,14 +6,23 @@
     <description>Recent content on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang test 使用教程</title>
+      <link>http://www.geekgame.site/post/language/golang/test/</link>
+      <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/post/language/golang/test/</guid>
+      <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：</description>
+    </item>
+    
     <item>
       <title>TCP timewait 过多怎么办</title>
       <link>http://www.geekgame.site/post/protocol/tcp_1/</link>
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/protocol/tcp_1/</guid>
-      <description>&lt;p&gt;要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&lt;/p&gt;</description>
+      <description>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</description>
     </item>
     
     <item>
@@ -22,8 +31,7 @@
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/language/golang/sched/</guid>
-      <description>&lt;p&gt;Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
-本文就来深入探讨一下Go的调度原理。&lt;/p&gt;</description>
+      <description>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。</description>
     </item>
     
     <item>
@@ -32,34 +40,7 @@
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/language/golang/start/</guid>
-      <description>&lt;p&gt;知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；&lt;/p&gt;
-&lt;h3 id=&#34;找到启动点&#34;&gt;找到启动点&lt;/h3&gt;
-&lt;h5 id=&#34;1-写一个hello-world&#34;&gt;1. 写一个hello world.&lt;/h5&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;
-&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
-&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;9
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;
-&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;package&lt;/span&gt; main
-
-&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;import&lt;/span&gt; (
-	&lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
-)
-
-&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#900;font-weight:bold&#34;&gt;main&lt;/span&gt;() {
-	fmt.&lt;span style=&#34;color:#900;font-weight:bold&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;hello world&amp;#34;&lt;/span&gt;)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
+      <description>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</description>
     </item>
     
     <item>
@@ -68,11 +49,7 @@
       <pubDate>Sat, 15 Jun 2019 16:41:11 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/language/golang/plan9/</guid>
-      <description>&lt;h1 id=&#34;程序组成&#34;&gt;程序组成&lt;/h1&gt;
-&lt;p&gt;程序由代码和数据组成，数据又有静态与动态之分；&lt;br&gt;
-动态数据：存放在堆区和栈区；&lt;br&gt;
-静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；&lt;br&gt;
-可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；&lt;/p&gt;</description>
+      <description>程序组成 程序由代码和数据组成，数据又有静态与动态之分；</description>
     </item>
     
     <item>
@@ -81,15 +58,7 @@
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/language/golang/module/</guid>
-      <description>&lt;p&gt;Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及&lt;a href=&#34;https://semver.org/lang/zh-CN/&#34;&gt;特定寓意的版本信息&lt;/a&gt;。&lt;br&gt;
-需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。&lt;/p&gt;
-&lt;p&gt;本文会介绍Go module的一些基本用法；&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;创建一个模块&lt;/li&gt;
-&lt;li&gt;添加一个依赖&lt;/li&gt;
-&lt;li&gt;升级依赖&lt;/li&gt;
-&lt;li&gt;其他命令&lt;/li&gt;
-&lt;/ul&gt;</description>
+      <description>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.</description>
     </item>
     
     <item>
@@ -98,13 +67,7 @@
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/shell/effective_shell/</guid>
-      <description>&lt;h2 id=&#34;shell&#34;&gt;shell&lt;/h2&gt;
-&lt;p&gt;使用超强组合 &lt;a href=&#34;https://ohmyz.sh/&#34;&gt;oh-my-zsh&lt;/a&gt; + &lt;a href=&#34;https://github.com/zsh-users/zsh-autosuggestions&#34;&gt;zsh-autosuggestions&lt;/a&gt; + &lt;a href=&#34;https://github.com/rupa/z&#34;&gt;z - jump around&lt;/a&gt;。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；&lt;/li&gt;
-&lt;li&gt;autosuggestions: 补全已经输入过的命令；&lt;/li&gt;
-&lt;li&gt;jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；&lt;/li&gt;
-&lt;/ul&gt;</description>
+      <description>shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。</description>
     </item>
     
     <item>
@@ -123,18 +86,7 @@
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
-      <description>&lt;p&gt;mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;
-&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
-&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;
-&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;color:#008080&#34;&gt;$sed&lt;/span&gt; -i &lt;span style=&#34;color:#d14&#34;&gt;&amp;#39;s/xxxx/yyy/g&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#0086b3&#34;&gt;test&lt;/span&gt;
-sed: 1: &lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;: extra characters at the end of p &lt;span style=&#34;color:#0086b3&#34;&gt;command&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
+      <description>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误</description>
     </item>
     
     <item>
@@ -152,6 +104,15 @@ sed: 1: &lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&g
       <pubDate>Fri, 10 May 2019 17:38:49 +0800</pubDate>
       
       <guid>http://www.geekgame.site/about/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>搜索</title>
+      <link>http://www.geekgame.site/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.geekgame.site/search/</guid>
       <description></description>
     </item>
     

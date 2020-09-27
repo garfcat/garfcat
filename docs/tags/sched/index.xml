@@ -13,8 +13,7 @@
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/language/golang/sched/</guid>
-      <description>&lt;p&gt;Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
-本文就来深入探讨一下Go的调度原理。&lt;/p&gt;</description>
+      <description>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。</description>
     </item>
     
   </channel>

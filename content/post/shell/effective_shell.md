@@ -15,7 +15,6 @@ description: ""
 - autosuggestions: 补全已经输入过的命令； 
 - jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；
 
-<!--more-->
 ## 命令 
  
 * [hstr](https://github.com/dvorka/hstr): 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration >> ~/.zshrc , source ~/.zshrc ；     

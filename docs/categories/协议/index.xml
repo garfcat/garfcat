@@ -13,7 +13,7 @@
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
       <guid>http://www.geekgame.site/post/protocol/tcp_1/</guid>
-      <description>&lt;p&gt;要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&lt;/p&gt;</description>
+      <description>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</description>
     </item>
     
     <item>

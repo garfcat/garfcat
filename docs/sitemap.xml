@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://www.geekgame.site/categories/</loc>
-    <lastmod>2020-05-07T09:53:51+08:00</lastmod>
+    <loc>http://www.geekgame.site/</loc>
+    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://www.geekgame.site/</loc>
-    <lastmod>2020-05-07T09:53:51+08:00</lastmod>
+    <loc>http://www.geekgame.site/post/language/golang/test/</loc>
+    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://www.geekgame.site/post/</loc>
+    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.geekgame.site/categories/</loc>
     <lastmod>2020-05-07T09:53:51+08:00</lastmod>
   </url>
   
@@ -140,6 +145,10 @@
   <url>
     <loc>http://www.geekgame.site/about/</loc>
     <lastmod>2019-05-10T17:38:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.geekgame.site/search/</loc>
   </url>
   
 </urlset>

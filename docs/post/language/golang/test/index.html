@@ -6,20 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>mac  sed 报错 | garfcat</title>
-    <meta property="og:title" content="mac  sed 报错 - garfcat">
+    <title>golang test 使用教程 | garfcat</title>
+    <meta property="og:title" content="golang test 使用教程 - garfcat">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2019-05-13T12:36:43&#43;08:00'>
+    <meta property="article:published_time" content='2020-09-27T16:15:18&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2019-05-13T12:36:43&#43;08:00'>
+    <meta property="article:modified_time" content='2020-09-27T16:15:18&#43;08:00'>
         
     <meta name="Keywords" content="go,golang,后端">
-    <meta name="description" content="mac  sed 报错">
+    <meta name="description" content="golang test 使用教程">
         
     <meta name="author" content="garfcat">
-    <meta property="og:url" content="http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">
+    <meta property="og:url" content="http://www.geekgame.site/post/language/golang/test/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -71,18 +71,11 @@
     
     <article class="post">
         <header>
-            <h1 class="post-title">mac  sed 报错</h1>
+            <h1 class="post-title">golang test 使用教程</h1>
         </header>
         <date class="post-meta meta-date">
-            2019年5月13日
+            2020年9月27日
         </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4'>工具命令</a></span>
-            
-        </div>
         
         
         <div class="post-meta">
@@ -92,28 +85,42 @@
         
         
         <div class="post-content">
-            <p>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误</p>
+            <p>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。
+Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test  即可。
+单元测试主要分为以下三类：</p>
+<ul>
+<li>功能测试（Test）</li>
+<li>性能测试（Benchmark）</li>
+<li>示例测试（Example）</li>
+</ul>
+<p>测试文件名称一般是源代码文件加上 &ldquo;_test.go&rdquo;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。</p>
+<p>为方便说明以下用例均围绕 函数 Add 展开， 如下所示：</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#008080">$sed</span> -i <span style="color:#d14">&#39;s/xxxx/yyy/g&#39;</span> <span style="color:#0086b3">test</span>
-sed: 1: <span style="color:#d14">&#34;test&#34;</span>: extra characters at the end of p <span style="color:#0086b3">command</span>
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">Add</span>(a <span style="color:#458;font-weight:bold">int</span>, b <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">int</span> {
+    <span style="color:#000;font-weight:bold">return</span> a <span style="color:#000;font-weight:bold">+</span> b 
+}
 </code></pre></td></tr></table>
 </div>
-</div><p>解决方法</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sed -i <span style="color:#d14">&#34;&#34;</span>   <span style="color:#d14">&#34;s/XX/YY/g&#34;</span>  <span style="color:#0086b3">test</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>============================================</p>
-<p>sed 用法</p>
+</div><p>在展开单元测试之前先讲下,testing包中的输出函数：</p>
+<ul>
+<li>t.Log() :  正常日志输出;</li>
+<li>t.Errorf():  错误日志输出，当前函数继续运行;</li>
+<li>t.Fatalf():  错误日志输出，当前函数立刻退出；</li>
+</ul>
+<h2 id="功能测试">功能测试</h2>
+<p>测试函数有两点约定：</p>
+<ol>
+<li>函数名必需以Test为前缀，如需要测试Add函数则名称应该为
+TestAdd;</li>
+<li>函数参数必需为 t * testing.T;
+完整的功能测试如下所示：</li>
+</ol>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -124,26 +131,127 @@ sed: 1: <span style="color:#d14">&#34;test&#34;</span>: extra characters at the 
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sed: illegal option -- -
-usage: sed script <span style="color:#000;font-weight:bold">[</span>-Ealn<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">[</span>-i extension<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">[</span>file ...<span style="color:#000;font-weight:bold">]</span>
-       sed <span style="color:#000;font-weight:bold">[</span>-Ealn<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">[</span>-i extension<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">[</span>-e script<span style="color:#000;font-weight:bold">]</span> ... <span style="color:#000;font-weight:bold">[</span>-f script_file<span style="color:#000;font-weight:bold">]</span> ... <span style="color:#000;font-weight:bold">[</span>file ...<span style="color:#000;font-weight:bold">]</span>
-
-
--i 后边需要添加备份文件的后缀名,如果不需要可以使用<span style="color:#d14">&#34;&#34;</span>,但是不可以忽略
-
-如 sed -i <span style="color:#d14">&#34;.bak&#34;</span> <span style="color:#d14">&#39;s/xxxx/yyy/g&#39;</span> <span style="color:#0086b3">test</span> 会将替换后的文本写入test.bak
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">TestAdd</span>(t <span style="color:#000;font-weight:bold">*</span>testing.T){
+    a <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">1</span>
+    b <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">2</span> 
+    want <span style="color:#000;font-weight:bold">:=</span> a <span style="color:#000;font-weight:bold">+</span> b 
+    got <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">Add</span>(a, b)
+    <span style="color:#000;font-weight:bold">if</span> want <span style="color:#000;font-weight:bold">!=</span> got {
+        t.<span style="color:#900;font-weight:bold">Errorf</span>(<span style="color:#d14">&#34;Add(%d, %d) = %d, want %d&#34;</span>, a, b, got, want)
+    }
+}
 </code></pre></td></tr></table>
 </div>
+</div><p>在运行的时候可以使用 go test 执行该目录下的所有功能测试函数， 也可以通过 go test -run Xxxx 指定特定测试函数运行，-v 可以显示每个测试函数的执行结果， 如下所示：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">➜    go <span style="color:#0086b3">test</span> -v
+<span style="color:#000;font-weight:bold">===</span> RUN   TestAdd
+--- PASS: TestAdd <span style="color:#000;font-weight:bold">(</span>0.00s<span style="color:#000;font-weight:bold">)</span>
+PASS
+ok  	learn/golang/test	0.185s
+</code></pre></td></tr></table>
 </div>
+</div><h1 id="性能测试">性能测试</h1>
+<p>性能测试函数有两点约定：</p>
+<ol>
+<li>函数名必需以Benchmark为前缀，如需要测试Add函数则名称应该为
+BenchmarkAdd;</li>
+<li>函数参数必需为 b * testing.B;
+完成测试函数如下所示：</li>
+</ol>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">BenchmarkRandInt</span>(b <span style="color:#000;font-weight:bold">*</span>testing.B) {
+	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; b.N; i<span style="color:#000;font-weight:bold">++</span> {
+		rand.<span style="color:#900;font-weight:bold">Int</span>()
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>在运行的时候可以执行如下命令：</p>
+<ol>
+<li>go test -bench=.  ：执行该目录下的所有测试函数(包含功能测试和性能测试)；</li>
+<li>go test -bench=.  -run=^$  ：执行该目录下的性能测试函数；</li>
+<li>go test -bench=BenchmarkRandInt -run=^$: 执行性能测试函数BenchmarkRandInt；</li>
+</ol>
+<p>-bench: 只有有个该标志才会执行性能测试函数；
+-run: 这个标志表示要执行哪些功能测试函数，默认是全部，^$ 表示空，即不执行功能测试函数；</p>
+<p>执行结果如下：</p>
+<pre><code class="language-sbtshell" data-lang="sbtshell">➜    go test -bench=BenchmarkRandInt -run=^$
+goos: darwin
+goarch: amd64
+pkg: learn/golang/test
+BenchmarkRandInt-8   	70695550	        16.9 ns/op
+PASS
+ok  	learn/golang/test	1.956s
+</code></pre><p>对于测试结果的输出，重点字段解释如下：
+BenchmarkRandInt-8 ： 说明执行的测试函数是BenchmarkRandInt， 8说明使用的最大P是8个；
+70695550： 执行的总次数；
+16.9 ns/op ： 单次平均耗时；
+另外如果执行测试函数前有一些耗时的操作，可以使用b.ResetTimer() 重置以下定时器；</p>
+<h2 id="示例测试">示例测试</h2>
+<p>示例测试函数提供了运行并验证的功能，既可以当作文档又可以用来测试；
+示例测试有如下约定：</p>
+<ol>
+<li>函数名必需以Example为前缀；</li>
+<li>通过注释 Output: 来说明正确的输出结果，，在运行测试时，go 会将示例函数的输出和 &ldquo;Output:&rdquo; 注释中的值做比较；</li>
+<li>如果输出的顺序不固定可以使用 &ldquo;Unordered output:&rdquo; 开头的注释；
+完整测试如下所示：</li>
+</ol>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">ExamplePerm</span>() {
+    <span style="color:#000;font-weight:bold">for</span> _, value <span style="color:#000;font-weight:bold">:=</span> <span style="color:#000;font-weight:bold">range</span> <span style="color:#900;font-weight:bold">Perm</span>(<span style="color:#099">5</span>) {
+        fmt.<span style="color:#900;font-weight:bold">Println</span>(value)
+    }
+    <span style="color:#998;font-style:italic">// Unordered output: 4
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">// 2
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">// 1
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">// 3
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">// 0
+</span><span style="color:#998;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="参考">参考</h1>
+<p><a href="https://golang.org/pkg/testing/">golang testing</a></p>
+
         </div>
 
         
 <div class="post-archive">
     <ul class="post-copyright">
         <li><strong>原文作者：</strong><a rel="author" href="http://www.geekgame.site">garfcat</a></li>
-        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://www.geekgame.site/post/language/golang/test/">http://www.geekgame.site/post/language/golang/test/</a></li>
         <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
     </ul>
 </div>
@@ -156,26 +264,22 @@ usage: sed script <span style="color:#000;font-weight:bold">[</span>-Ealn<span s
     <h2>See Also</h2>
     <ul class="listing">
         
-        <li><a href="/archives/">Index</a></li>
+        <li><a href="/post/protocol/tcp_1/">TCP timewait 过多怎么办</a></li>
         
-        <li><a href="/about/">About</a></li>
+        <li><a href="/post/language/golang/sched/">协程调度原理</a></li>
         
-        <li><a href="/search/">搜索</a></li>
+        <li><a href="/post/language/golang/start/">golang 启动过程</a></li>
+        
+        <li><a href="/post/language/golang/plan9/">golang 栈结构</a></li>
+        
+        <li><a href="/post/language/golang/module/">Go module</a></li>
         
     </ul>
 </div>
 
         <div class="post-meta meta-tags">
             
-            <ul class="clearfix">
-                
-                <li><a href='http://www.geekgame.site/tags/sed'>sed</a></li>
-                
-                <li><a href='http://www.geekgame.site/tags/mac'>mac</a></li>
-                
-                <li><a href='http://www.geekgame.site/tags/shell'>shell</a></li>
-                
-            </ul>
+            没有标签
             
         </div>
     </article>

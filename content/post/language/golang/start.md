@@ -22,7 +22,7 @@ func main() {
 	fmt.Println("hello world")
 }
 ``` 
-<!--more-->
+
 ##### 2.编译后使用gdb找到entry point
 ```bash
 $ gdb hello

@@ -70,6 +70,24 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="http://www.geekgame.site/post/language/golang/test/" title="golang test 使用教程">golang test 使用教程</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年9月27日
+        </date>
+        
+        <div class="post-content">
+            单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：……
+        </div>
+        <p class="readmore"><a href="http://www.geekgame.site/post/language/golang/test/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="http://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
             </h1>
         </header>
@@ -85,7 +103,7 @@
         </div>
         
         <div class="post-content">
-            <p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</p>……
+            要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；……
         </div>
         <p class="readmore"><a href="http://www.geekgame.site/post/protocol/tcp_1/">阅读全文</a></p>
     </article>
@@ -110,8 +128,7 @@
         </div>
         
         <div class="post-content">
-            <p>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
-本文就来深入探讨一下Go的调度原理。</p>……
+            Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。……
         </div>
         <p class="readmore"><a href="http://www.geekgame.site/post/language/golang/sched/">阅读全文</a></p>
     </article>
@@ -136,34 +153,7 @@
         </div>
         
         <div class="post-content">
-            <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</p>
-<h3 id="找到启动点">找到启动点</h3>
-<h5 id="1-写一个hello-world">1. 写一个hello world.</h5>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">package</span> main
-
-<span style="color:#000;font-weight:bold">import</span> (
-	<span style="color:#d14">&#34;fmt&#34;</span>
-)
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-	fmt.<span style="color:#900;font-weight:bold">Println</span>(<span style="color:#d14">&#34;hello world&#34;</span>)
-}
-</code></pre></td></tr></table>
-</div>
-</div>……
+            知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；……
         </div>
         <p class="readmore"><a href="http://www.geekgame.site/post/language/golang/start/">阅读全文</a></p>
     </article>
@@ -188,11 +178,7 @@
         </div>
         
         <div class="post-content">
-            <h1 id="程序组成">程序组成</h1>
-<p>程序由代码和数据组成，数据又有静态与动态之分；<br>
-动态数据：存放在堆区和栈区；<br>
-静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br>
-可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；</p>……
+            程序组成 程序由代码和数据组成，数据又有静态与动态之分；……
         </div>
         <p class="readmore"><a href="http://www.geekgame.site/post/language/golang/plan9/">阅读全文</a></p>
     </article>
@@ -217,15 +203,7 @@
         </div>
         
         <div class="post-content">
-            <p>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及<a href="https://semver.org/lang/zh-CN/">特定寓意的版本信息</a>。<br>
-需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。</p>
-<p>本文会介绍Go module的一些基本用法；</p>
-<ul>
-<li>创建一个模块</li>
-<li>添加一个依赖</li>
-<li>升级依赖</li>
-<li>其他命令</li>
-</ul>……
+            Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.……
         </div>
         <p class="readmore"><a href="http://www.geekgame.site/post/language/golang/module/">阅读全文</a></p>
     </article>
@@ -250,13 +228,7 @@
         </div>
         
         <div class="post-content">
-            <h2 id="shell">shell</h2>
-<p>使用超强组合 <a href="https://ohmyz.sh/">oh-my-zsh</a> + <a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a> + <a href="https://github.com/rupa/z">z - jump around</a>。</p>
-<ul>
-<li>oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；</li>
-<li>autosuggestions: 补全已经输入过的命令；</li>
-<li>jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；</li>
-</ul>……
+            shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。……
         </div>
         <p class="readmore"><a href="http://www.geekgame.site/post/shell/effective_shell/">阅读全文</a></p>
     </article>
@@ -307,18 +279,7 @@
         </div>
         
         <div class="post-content">
-            <p>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#008080">$sed</span> -i <span style="color:#d14">&#39;s/xxxx/yyy/g&#39;</span> <span style="color:#0086b3">test</span>
-sed: 1: <span style="color:#d14">&#34;test&#34;</span>: extra characters at the end of p <span style="color:#0086b3">command</span>
-</code></pre></td></tr></table>
-</div>
-</div>……
+            mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误……
         </div>
         <p class="readmore"><a href="http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/">阅读全文</a></p>
     </article>
@@ -347,6 +308,8 @@ sed: 1: <span style="color:#d14">&#34;test&#34;</span>: extra characters at the 
 
 
 
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
 
 
 
@@ -354,7 +317,7 @@ sed: 1: <span style="color:#d14">&#34;test&#34;</span>: extra characters at the 
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='http://www.geekgame.site/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="http://www.geekgame.site">
@@ -365,6 +328,10 @@ sed: 1: <span style="color:#d14">&#34;test&#34;</span>: extra characters at the 
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="http://www.geekgame.site/post/language/golang/test/" title="golang test 使用教程">golang test 使用教程</a>
+    </li>
     
     <li>
         <a href="http://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
