@@ -86,10 +86,10 @@ PASS
 ok  	learn/golang/test	1.956s
 ```
 对于测试结果的输出，重点字段解释如下：
-BenchmarkRandInt-8 ： 说明执行的测试函数是BenchmarkRandInt， 8说明使用的最大P是8个；
-70695550： 执行的总次数；
-16.9 ns/op ： 单次平均耗时；
-另外如果执行测试函数前有一些耗时的操作，可以使用b.ResetTimer() 重置以下定时器；
+BenchmarkRandInt-8 ： 说明执行的测试函数是BenchmarkRandInt， 8说明使用的最大P是8个；  
+70695550： 执行的总次数；  
+16.9 ns/op ： 单次平均耗时；  
+另外如果执行测试函数前有一些耗时的操作，可以使用b.ResetTimer() 重置以下定时器；  
 
 ## 示例测试
 示例测试函数提供了运行并验证的功能，既可以当作文档又可以用来测试；
