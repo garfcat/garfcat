@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Sun, 11 Aug 2019 10:23:01 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/sched/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>协程调度原理</title>
+      <title>golang 协程调度原理</title>
       <link>http://www.geekgame.site/post/language/golang/sched/</link>
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       

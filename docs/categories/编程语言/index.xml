@@ -6,9 +6,18 @@
     <description>Recent content in 编程语言 on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Aug 2019 10:23:01 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>协程调度原理</title>
+      <title>golang test 使用教程</title>
+      <link>http://www.geekgame.site/post/language/golang/test/</link>
+      <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/post/language/golang/test/</guid>
+      <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：</description>
+    </item>
+    
+    <item>
+      <title>golang 协程调度原理</title>
       <link>http://www.geekgame.site/post/language/golang/sched/</link>
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       
@@ -17,7 +26,7 @@
     </item>
     
     <item>
-      <title>golang 启动过程</title>
+      <title>通过 hello world 寻找 golang 启动过程</title>
       <link>http://www.geekgame.site/post/language/golang/start/</link>
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
@@ -35,7 +44,7 @@
     </item>
     
     <item>
-      <title>Go module</title>
+      <title>golang module 使用教程</title>
       <link>http://www.geekgame.site/post/language/golang/module/</link>
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
       

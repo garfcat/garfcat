@@ -1,5 +1,5 @@
 ---
-title: "golang 启动过程"
+title: "通过 hello world 寻找 golang 启动过程"
 date: 2019-06-20T22:51:54+08:00
 draft: false
 tags: [ "go", "start" ]

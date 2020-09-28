@@ -1,5 +1,5 @@
 ---
-title: "协程调度原理"
+title: "golang 协程调度原理"
 date: 2019-08-11T10:23:01+08:00
 draft: false
 tags: [ "go", "sched" ]

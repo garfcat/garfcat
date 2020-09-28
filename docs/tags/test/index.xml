@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>test on garfcat</title>
+    <link>http://www.geekgame.site/tags/test/</link>
+    <description>Recent content in test on garfcat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>golang test 使用教程</title>
+      <link>http://www.geekgame.site/post/language/golang/test/</link>
+      <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/post/language/golang/test/</guid>
+      <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 20 Jun 2019 22:51:54 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/start/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>golang 启动过程</title>
+      <title>通过 hello world 寻找 golang 启动过程</title>
       <link>http://www.geekgame.site/post/language/golang/start/</link>
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       

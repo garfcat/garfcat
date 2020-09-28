@@ -6,22 +6,40 @@
     <description>Recent content in Tags on garfcat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>go</title>
+      <link>http://www.geekgame.site/tags/go/</link>
+      <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>http://www.geekgame.site/tags/test/</link>
+      <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/test/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>testing</title>
+      <link>http://www.geekgame.site/tags/testing/</link>
+      <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
+      
+      <guid>http://www.geekgame.site/tags/testing/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>tcp</title>
       <link>http://www.geekgame.site/tags/tcp/</link>
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
       <guid>http://www.geekgame.site/tags/tcp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>http://www.geekgame.site/tags/go/</link>
-      <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
-      
-      <guid>http://www.geekgame.site/tags/go/</guid>
       <description></description>
     </item>
     

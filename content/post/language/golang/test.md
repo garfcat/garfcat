@@ -2,6 +2,9 @@
 title: "golang test 使用教程"
 date: 2020-09-27T16:15:18+08:00
 draft: false
+tags: [ "go", "test","testing" ]
+series: ["golang"]
+categories: ["编程语言"]
 ---
 
 单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。

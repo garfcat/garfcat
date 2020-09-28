@@ -1,5 +1,5 @@
 ---
-title: "Go module"
+title: "golang module 使用教程"
 date: 2019-05-30T17:12:47+08:00
 draft: false
 tags: [ "go", "module" ]
