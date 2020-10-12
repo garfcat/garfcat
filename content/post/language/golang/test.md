@@ -1,5 +1,5 @@
 ---
-title: "golang test 使用教程"
+title: "golang testing 使用教程"
 date: 2020-09-27T16:15:18+08:00
 draft: false
 tags: [ "go", "test","testing" ]

@@ -11,12 +11,21 @@ Go module 是golang最新的包管理工具，可以使依赖包版本信息更�
 需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
 
 本文会介绍Go module的一些基本用法； 
- 
+ - 常见命令
  - 创建一个模块  
  - 添加一个依赖  
  - 升级依赖  
  - 其他命令
-
+# 常见命令
+go mod 提供了以下命令
+- download:  下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享;
+- edit : 编辑go.mod;
+- graph: 打印模块的依赖图;
+- init: 在当前目录初始化mod;
+- tidy : 添加缺失的依赖包并清理没有使用的包;
+- vendor : 将依赖包复制到vendor目录;
+- verify: 验证依赖是否正确;
+- why : 解释为什么需要这个依赖;
 # 创建一个模块
 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;  
 执行一下子命令
@@ -152,8 +161,8 @@ require (
 
 # 其他命令
 
-- replace 替换依赖项模块
-- exclude 忽略依赖项模块
+- replace 替换依赖项模块： 可以将包替换成另一个包或者不同版本;
+- exclude 忽略依赖项模块；
 
 # 总结
 
