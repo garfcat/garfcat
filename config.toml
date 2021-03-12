@@ -1,6 +1,6 @@
 # set `baseurl` to your root domain
 # if you set it to "/" share icons won't work properly on production
-baseurl = "https://example.com/"  # Include trailing slash
+baseurl = "https://www.geekgame.site/"  # Include trailing slash
 title = "有趣"
 author = "Garfcat"
 copyright = "Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved."
@@ -44,13 +44,13 @@ series = "series"
 
 [params]
 author = "Garfcat"
-twitter = "no"
+#twitter = "no"
 largeTwitterCard = false # set to true if you want to show a large twitter card image. The default is a small twitter card image
-introDescription = "Technologist, perpetual student, teacher, continual incremental improvement."
+introDescription = "live and learn."
 # introURL = "about/" # set the url for the 'read more' button below the introDescription, or set to false to not show the button
 # description = "" # set your site's description here. will be use for home page content meta tags (seo). Alternatively set this description in your homepage content file i.e content/_index.md. Whatever is set in the latter will take precedence
 
- showShare = false # Uncomment to not show share buttons on each post. Also available in each post's front matter.
+showShare = false # Uncomment to not show share buttons on each post. Also available in each post's front matter.
 
 # Google analytics Id
 ga_analytics = "XXXXXXXXXX"
@@ -79,7 +79,7 @@ mainSections = ["post", "docs", "archives", "ar"] # see config details here http
 # center logo on navbar
 centerLogo = false # Set to "true" for centering or "false" for left aligned.
 
-logo = "logos/logo.png"
+#logo = "logos/logo.png"
 
 # Label Non inline images on an article body
 figurePositionShow = false # toggle on or off globally
@@ -99,13 +99,13 @@ enforceLightMode = false
 # enforceDarkMode = false
 
 # customize footer icon. see issue https://github.com/chipzoller/hugo-clarity/issues/77
-# footerLogo = "icons/copy.svg"
+ footerLogo = "icons/copy.svg"
 
 # Text for the languages menu.
 languageMenuName = "🌐"
 
 # Title separator, default to |.
-# titleSeparator = "|"
+ titleSeparator = "|"
 
 # Enable or disable comments globally. Default to true.
 # comments = false
