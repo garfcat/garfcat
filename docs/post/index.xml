@@ -1,92 +1,952 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on garfcat</title>
-    <link>http://www.geekgame.site/post/</link>
-    <description>Recent content in Posts on garfcat</description>
+    <title>Posts on 有趣</title>
+    <link>https://www.geekgame.site/post/</link>
+    <description>Recent content in Posts on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>golang testing 使用教程</title>
-      <link>http://www.geekgame.site/post/language/golang/test/</link>
+      <link>https://www.geekgame.site/post/language/golang/test/</link>
       <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/language/golang/test/</guid>
-      <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：</description>
+      <guid>https://www.geekgame.site/post/language/golang/test/</guid>
+      <description>
+        
+          &lt;p&gt;单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。
+Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test  即可。
+单元测试主要分为以下三类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;功能测试（Test）&lt;/li&gt;
+&lt;li&gt;性能测试（Benchmark）&lt;/li&gt;
+&lt;li&gt;示例测试（Example）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;测试文件名称一般是源代码文件加上 &amp;quot;_test.go&amp;quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。&lt;/p&gt;
+&lt;p&gt;在展开单元测试之前先讲下,testing包中的输出函数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;t.Log() :  正常日志输出;&lt;/li&gt;
+&lt;li&gt;t.Errorf():  错误日志输出，当前函数继续运行;&lt;/li&gt;
+&lt;li&gt;t.Fatalf():  错误日志输出，当前函数立刻退出；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;功能测试&#34;&gt;功能测试&lt;/h2&gt;
+&lt;p&gt;测试函数有两点约定：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;函数名必需以Test为前缀，如需要测试Add函数则名称应该为
+TestAdd;&lt;/li&gt;
+&lt;li&gt;函数参数必需为 t * testing.T;
+完整的功能测试如下所示：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// add.go
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt; 
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// add_tesg.go
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;TestAdd&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;testing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;){&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt; 
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt; 
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Errorf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Add(%d, %d) = %d, want %d&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在运行的时候可以使用 go test 执行该目录下的所有功能测试函数， 也可以通过 go test -run Xxxx 指定特定测试函数运行，-v 可以显示每个测试函数的执行结果， 如下所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;➜    go &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; -v
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;===&lt;/span&gt; RUN   TestAdd
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;--- PASS: TestAdd &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.00s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;ok  	learn/golang/test	0.185s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;性能测试&#34;&gt;性能测试&lt;/h1&gt;
+&lt;p&gt;性能测试函数有两点约定：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;函数名必需以Benchmark为前缀，如需要测试Add函数则名称应该为
+BenchmarkAdd;&lt;/li&gt;
+&lt;li&gt;函数参数必需为 b * testing.B;
+完成测试函数如下所示：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;BenchmarkRandInt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;testing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;N&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;		&lt;span class=&#34;nx&#34;&gt;rand&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在运行的时候可以执行如下命令：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;go test -bench=.  ：执行该目录下的所有测试函数(包含功能测试和性能测试)；&lt;/li&gt;
+&lt;li&gt;go test -bench=.  -run=^$  ：执行该目录下的性能测试函数；&lt;/li&gt;
+&lt;li&gt;go test -bench=BenchmarkRandInt -run=^$: 执行性能测试函数BenchmarkRandInt；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;-bench: 只有有个该标志才会执行性能测试函数；
+-run: 这个标志表示要执行哪些功能测试函数，默认是全部，^$ 表示空，即不执行功能测试函数；&lt;/p&gt;
+&lt;p&gt;执行结果如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;➜    go test -bench=BenchmarkRandInt -run=^$
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;goos: darwin
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;goarch: amd64
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;pkg: learn/golang/test
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;BenchmarkRandInt-8   	70695550	        16.9 ns/op
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;ok  	learn/golang/test	1.956s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;对于测试结果的输出，重点字段解释如下：
+BenchmarkRandInt-8 ： 说明执行的测试函数是BenchmarkRandInt， 8说明使用的最大P是8个；&lt;br&gt;
+70695550： 执行的总次数；&lt;br&gt;
+16.9 ns/op ： 单次平均耗时；&lt;br&gt;
+另外如果执行测试函数前有一些耗时的操作，可以使用b.ResetTimer() 重置以下定时器；&lt;/p&gt;
+&lt;h2 id=&#34;示例测试&#34;&gt;示例测试&lt;/h2&gt;
+&lt;p&gt;示例测试函数提供了运行并验证的功能，既可以当作文档又可以用来测试；
+示例测试有如下约定：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;函数名必需以Example为前缀；&lt;/li&gt;
+&lt;li&gt;通过注释 Output: 来说明正确的输出结果，，在运行测试时，go 会将示例函数的输出和 &amp;quot;Output:&amp;quot; 注释中的值做比较；&lt;/li&gt;
+&lt;li&gt;如果输出的顺序不固定可以使用 &amp;quot;Unordered output:&amp;quot; 开头的注释；
+完整测试如下所示：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ExamplePerm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;value&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;range&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Perm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// Unordered output: 4
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// 2
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// 1
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// 3
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// 0
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://golang.org/pkg/testing/&#34;&gt;golang testing&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>TCP timewait 过多怎么办</title>
-      <link>http://www.geekgame.site/post/protocol/tcp_1/</link>
+      <link>https://www.geekgame.site/post/protocol/tcp_1/</link>
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/protocol/tcp_1/</guid>
-      <description>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</description>
+      <guid>https://www.geekgame.site/post/protocol/tcp_1/</guid>
+      <description>
+        
+          &lt;p&gt;要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&lt;/p&gt;
+&lt;h1 id=&#34;tcp-三次握手四次挥手状态迁移&#34;&gt;TCP 三次握手四次挥手状态迁移&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;     TCP A                                                TCP B
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  1.  CLOSED                                               LISTEN
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  2.  SYN-SENT    --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;SYN&amp;gt;               --&amp;gt; SYN-RECEIVED
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;  3.  ESTABLISHED &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;SYN,ACK&amp;gt;  &amp;lt;-- SYN-RECEIVED
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;  4.  ESTABLISHED --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;       --&amp;gt; ESTABLISHED
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;  5.  ESTABLISHED --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;&amp;lt;DATA&amp;gt; --&amp;gt; ESTABLISHED
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一般的关闭流程如下所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;      TCP A                                                TCP B
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  1.  ESTABLISHED                                          ESTABLISHED
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  2.  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;      FIN-WAIT-1  --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  --&amp;gt; CLOSE-WAIT
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  3.  FIN-WAIT-2  &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      &amp;lt;-- CLOSE-WAIT
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;  4.                                                       &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;      TIME-WAIT   &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  &amp;lt;-- LAST-ACK
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;  5.  TIME-WAIT   --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      --&amp;gt; CLOSED
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;  6.  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; MSL&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;      CLOSED   
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;两边同时关闭流程如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;      TCP A                                                TCP B
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  1.  ESTABLISHED                                          ESTABLISHED
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  2.  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;                                              &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;      FIN-WAIT-1  --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  ... FIN-WAIT-1
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;                  &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  &amp;lt;--
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;                  ... &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  --&amp;gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;  3.  CLOSING     --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      ... CLOSING
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;                  &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      &amp;lt;--
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;                  ... &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      --&amp;gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;  4.  TIME-WAIT                                            TIME-WAIT
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;      &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; MSL&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;                                              &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; MSL&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;      CLOSED                                               CLOSED
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;TIME-WAIT 是在主动关闭一方(一般是客户端)收到对端FIN包并回复最后一个ACK后进入的状态；随后等待2MSL时间后CLOSED.
+MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文一来一回的最大时间；TIME-WAIT的作用主要有两个：a) 确保 ack 可以被对端接收，如未收到可以返回FIN 包；b)确保对端发送的报文被接收或者超时被丢弃，防止未送达的报文对新连接造成影响；&lt;/p&gt;
+&lt;p&gt;由此可以看出，这个状态是必不可少的，但是并发量比较大的机器上会造成无法新建连接，服务不可用的后果；因此我们要对TIME-WAIT过多的情况做一些调优；&lt;br&gt;
+主要通过设置内核参数来调整：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;tcp_tw_reuse&lt;/strong&gt;&lt;br&gt;
+开启后在协议安全的情况下可以复用TIME-WAIT socket, 这里的协议安全是指两端都开启 timestamps；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;tcp_tw_recyle(不建议开启)&lt;br&gt;
+开启后（也是需要开启timestamp）对TIME-WAIT socket 快速回收, 但是不建议开启，因为开启后可能会导致服务端连接失败；
+具体原因如下&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这种机制在 客户端-服务器 一对一的时候，没有任何问题，但是当服务器在负载均衡器后面时，由于负载均衡器不会修改包内部的timestamp值，而互联网上的机器又不可能保持时间的一致性，再加上负载均衡是会重复多次使用同一个tcp端口向内部服务器发起连接的，就会导致什么情况呢：&lt;br&gt;
+负载均衡通过某个端口向内部的某台服务器发起连接，源地址为负载均衡的内部地址——同一ip
+假如恰巧先后两次连接源端口相同，这台服务器先后收到两个包，第一个包的timestamp被服务器保存着，第二个包又来了，一对比，发现第二个包的timestamp比第一个还老——客户端时间不一致
+服务器基于PAWS，判断第二个包是重复报文，丢弃之&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;而且在最新的内核中已经删除了tcp_tw_recycle， 删除记录的commit 如下所示：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;  commit 4396e46187ca5070219b81773c4e65088dac50cc
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  Author: Soheil Hassas Yeganeh &amp;lt;soheil@google.com&amp;gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;  Date:   Wed Mar &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt; 16:30:46 &lt;span class=&#34;m&#34;&gt;2017&lt;/span&gt; -0400
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;      tcp: remove tcp_tw_recycle
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;      The tcp_tw_recycle was already broken &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; connections
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;      behind NAT, since the per-destination timestamp is not
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;      monotonically increasing &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; multiple machines behind
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;      a single destination address.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;tcp_max_tw_buckets&lt;br&gt;
+这个参数是控制TIME_WAIT的并发数量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;完整状态迁移图如下&#34;&gt;完整状态迁移图如下&lt;/h1&gt;
+&lt;p&gt;以下状态图来自于 &lt;a href=&#34;http://www.rfc-editor.org/rfc/rfc793.txt&#34;&gt;rfc793  TRANSMISSION CONTROL PROTOCOL&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;                               
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;                              +---------+ ---------&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;     active OPEN  
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;                              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  CLOSED &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;            &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;   -----------  
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;                              +---------+&amp;lt;---------&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  create TCB  
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;                                &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     ^              &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt; snd SYN    
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;                   passive OPEN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   CLOSE        &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;          
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;                   ------------ &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ----------       &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;        
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;                    create TCB  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; delete TCB         &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;      
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;                                V     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                      &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;    
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;                              +---------+            CLOSE    &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;                              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  LISTEN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;          ---------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;                              +---------+          delete TCB &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;                   rcv SYN      &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     SEND              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;                  -----------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    -------            &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     V  
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt; +---------+      snd SYN,ACK  /       &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  snd SYN          +---------+
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&amp;lt;-----------------           ------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   SYN   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                    rcv SYN                     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   SYN   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   RCVD  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&amp;lt;-----------------------------------------------&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   SENT  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                    snd ACK                     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;------------------           -------------------&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt; +---------+   rcv ACK of SYN  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;      /  rcv SYN,ACK       +---------+
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;           --------------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   -----------                  
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                  x         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     snd ACK                    
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                            V     V                                
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  CLOSE                   +---------+                              
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; -------                  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  ESTAB  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                              
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; snd FIN                  +---------+                              
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                   CLOSE    &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    rcv FIN                     
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;   V                  -------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    -------                     
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt; +---------+          snd FIN  /       &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  snd ACK          +---------+
+&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  FIN    &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&amp;lt;-----------------           ------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  CLOSE  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; WAIT-1  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;------------------                              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   WAIT  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt; +---------+          rcv FIN  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;                           +---------+
+&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; rcv ACK of FIN   -------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                            CLOSE  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; --------------   snd ACK   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                           ------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;   V        x                   V                           snd FIN V  
+&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt; +---------+                  +---------+                   +---------+
+&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;FINWAIT-2&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; CLOSING &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; LAST-ACK&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;39&lt;/span&gt; +---------+                  +---------+                   +---------+
+&lt;span class=&#34;ln&#34;&gt;40&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                rcv ACK of FIN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                 rcv ACK of FIN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;41&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  rcv FIN       -------------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    &lt;span class=&#34;nv&#34;&gt;Timeout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2MSL -------------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  -------              x       V    ------------        x       V  
+&lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;    &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;snd ACK                 +---------+delete TCB         +---------+
+&lt;span class=&#34;ln&#34;&gt;44&lt;/span&gt;     ------------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;TIME WAIT&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; CLOSED  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;45&lt;/span&gt;                              +---------+                   +---------+
+&lt;span class=&#34;ln&#34;&gt;46&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux&#34;&gt;Coping with the TCP TIME-WAIT state on busy Linux servers
+&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://saview.wordpress.com/2011/09/27/tcp_tw_recycle%E5%92%8Cnat%E9%80%A0%E6%88%90syn_ack%E9%97%AE%E9%A2%98/&#34;&gt;tcp_tw_recycle和NAT造成SYN_ACK问题&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>golang 协程调度原理</title>
-      <link>http://www.geekgame.site/post/language/golang/sched/</link>
+      <link>https://www.geekgame.site/post/language/golang/sched/</link>
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/language/golang/sched/</guid>
-      <description>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。</description>
+      <guid>https://www.geekgame.site/post/language/golang/sched/</guid>
+      <description>
+        
+          &lt;p&gt;Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
+本文就来深入探讨一下Go的调度原理。&lt;/p&gt;
+&lt;h1 id=&#34;gmp调度模型&#34;&gt;GMP调度模型&lt;/h1&gt;
+&lt;p&gt;Go采用的是GMP调度模型。&lt;/p&gt;
+&lt;h2 id=&#34;核心概念&#34;&gt;核心概念&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;go&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//创建协程来执行函数
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic.&lt;/li&gt;
+&lt;li&gt;P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数；&lt;/li&gt;
+&lt;li&gt;本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中；&lt;/li&gt;
+&lt;li&gt;全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;调度原理&#34;&gt;调度原理&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;     +-------------------- sysmon ---------------//------+ 
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;                             |                                                   |
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;                             |                                                   |
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;                +---+      +---+-------+                   +--------+          +---+---+
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt; go func() ---&amp;gt; | G | ---&amp;gt; | P | local | &amp;lt;=== balance ===&amp;gt; | global | &amp;lt;--//--- | P | M |
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;                +---+      +---+-------+                   +--------+          +---+---+
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;                             |                                 |                 | 
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;                             |      +---+                      |                 |
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;                             +----&amp;gt; | M | &amp;lt;--- findrunnable ---+--- steal &amp;lt;--//--+
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;                                    +---+ 
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;                                      |
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;                                    mstart
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;                                      |
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;               +--- execute &amp;lt;----- schedule 
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;               |                      |   
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;               |                      |
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;               +--&amp;gt; G.fn --&amp;gt; goexit --+ 
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;从上图(来自雨痕GO源码阅读)我们可以看到在新建G时&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;当使用go 关键字执行函数时，会创建(首先查看P的freelist是否可以复用G，如果不能则新建)一个G(goroutine);&lt;/li&gt;
+&lt;li&gt;新创建的G，并不会添加到本地队列，而是添加到P关联的runnext中(runnext是一个指针变量，用来存放G的地址),runnext原来的G被放到本地队列中;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;2.1 如果本地队列未满（最大256），则放置到队尾；&lt;/li&gt;
+&lt;li&gt;2.2 如果本地队列已满，则将本地队列的一半数量的G和runnext中原来的G存放到全局队列中；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;唤醒或新建M来执行任务。&lt;/li&gt;
+&lt;li&gt;进入调度循环&lt;/li&gt;
+&lt;li&gt;尽力获取可执行的G，并执行&lt;/li&gt;
+&lt;li&gt;清理现场并且重新进入调度循环&lt;br&gt;
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/gmp_pic.png&#34; alt=&#34;调度原理&#34;&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;运行时调度&#34;&gt;运行时调度&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;为公平起见，有1／61的机会首先从全局队列获取到G,如果获取到则执行G;&lt;/li&gt;
+&lt;li&gt;如果没有机会从全局队列获取或者没有获取到G，则从P关联的runnext或者本地队列获取： &lt;br&gt;
+2.1 如果P的runnext有G，则执行该G；
+2.2 如果P的runnext没有G，则从本地队列中获取G；&lt;/li&gt;
+&lt;li&gt;如果第二步没有获取到，则执行以下步骤获取：&lt;br&gt;
+3.1 从关联P中获取，步骤同2，若获取到返回;&lt;br&gt;
+3.2 从全局队列中获取，若获取到返回;&lt;br&gt;
+3.3 调用 netpoll()取异步调用结束的G，该调用为非阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；&lt;br&gt;
+3.4 从其他P中steal一半的G到本地队列,若获取到则返回；&lt;br&gt;
+3.5 如果处于垃圾回收标记阶段，则执行垃圾回收操作；&lt;br&gt;
+3.6 再次从全局队列中获取，若获取到返回;&lt;br&gt;
+3.7 调用 netpoll()取异步调用结束的G，该调用为阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;协程的状态&#34;&gt;协程的状态&lt;/h3&gt;
+&lt;p&gt;在go1.12.5/src/runtime/runtime2.go：15 定义有如下几个状态&lt;br&gt;
+_Gidle: 值（0） 刚刚被创建，还没有初始化；&lt;br&gt;
+_Grunnable： 值（1） 已经在运行队列中，只是此时没有执行用户代码,未分配栈；&lt;br&gt;
+_Grunning：值（2）在执行用户代码，已经不在运行队列中，分配了M和P;&lt;br&gt;
+_Gsyscall： 值（3）当前goroutine正在执行系统调用，已经不再运行队列中，分配了M;&lt;br&gt;
+_Gwaiting： 值（4） 在运行时被阻塞，并没有执行用户代码，此刻的goroutine会被记录到某处（例如channel等待队列）&lt;br&gt;
+_Gmoribund_unused: 值（5） 当前并未使用，但是已经在gdb中进行了硬编码；&lt;br&gt;
+_Gdead： 值（6） 当前goroutine没有被使用，可能刚刚退出或者刚刚被初始化，并没有执行用户代码；&lt;br&gt;
+_Genqueue_unused： 值（7） 当前并未使用；&lt;br&gt;
+_Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没有在运行队列中； &lt;br&gt;
+状态转换图(引自 &lt;a href=&#34;https://reading.developerlearning.cn/reading/12-2018-08-02-goroutine-gpm/&#34;&gt;goroutine调度&lt;/a&gt;)如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;                                                     +------------+
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;                                      ready           |            |
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;                                  +------------------ |  _Gwaiting |
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;                                  |                   |            |
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;                                  |                   +------------+
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;                                  |                         ^ park_m
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;                                  V                         | 
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  +------------+            +------------+  execute   +------------+            +------------+    
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;  |            |  newproc   |            | ---------&amp;gt; |            |   goexit   |            |
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;  |  _Gidle    | ---------&amp;gt; | _Grunnable |  yield     | _Grunning  | ---------&amp;gt; |   _Gdead   |      
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;  |            |            |            | &amp;lt;--------- |            |            |            |
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;  +------------+            +-----^------+            +------------+            +------------+
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;                                  |         entersyscall |      ^ 
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;                                  |                      V      | existsyscall
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;                                  |                   +------------+
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;                                  |   existsyscall    |            |
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;                                  +------------------ |  _Gsyscall |
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;                                                      |            |
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;                                                      +------------+
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;p的状态&#34;&gt;P的状态&lt;/h3&gt;
+&lt;p&gt;_Pidle: 空闲状态，未与M绑定&lt;br&gt;
+_Prunning: 正在运行，已经与M绑定,M 正在执行P中G；&lt;br&gt;
+_Psyscall: 正在执行的G处于系统调用中；&lt;br&gt;
+_Pgcstop： runtime正在gc;&lt;br&gt;
+_Pdead: 当前P已经不再使用；&lt;/p&gt;
+&lt;p&gt;状态转换图(引自 &lt;a href=&#34;https://reading.developerlearning.cn/reading/12-2018-08-02-goroutine-gpm/&#34;&gt;goroutine调度&lt;/a&gt;)如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;                                            acquirep(p)        
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;                          不需要使用的P       P和M绑定的时候       进入系统调用       procresize()
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;new(p)  -----+        +---------------+     +-----------+     +------------+    +----------+
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;            |         |               |     |           |     |            |    |          |
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;            |   +------------+    +---v--------+    +---v--------+    +----v-------+    +--v---------+
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;            +--&amp;gt;|  _Pgcstop  |    |    _Pidle  |    |  _Prunning |    |  _Psyscall |    |   _Pdead   |
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;                +------^-----+    +--------^---+    +--------^---+    +------------+    +------------+
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;                       |            |     |            |     |            |
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;                       +------------+     +------------+     +------------+
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;                           GC结束            releasep()        退出系统调用
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;                                            P和M解绑  
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;抢占&#34;&gt;抢占&lt;/h3&gt;
+&lt;p&gt;在golang程序启动时，会创建一个M（并没有关联P）来执行监控函数即sysmon,该函数就是用来完成抢占的；&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;该函数每次执行之间都会休眠一定的时间，休眠时间计算规则与每次是否抢占成功有关系：&lt;br&gt;
+1.1 如果连续未抢占成功的次数小于等于50，则每次休眠20us;&lt;br&gt;
+1.2 如果连续未抢占成功的次数大于50，则每次休眠次数翻倍；&lt;br&gt;
+1.3 最大休眠时间不得超过10ms;&lt;/li&gt;
+&lt;li&gt;遍历所有的P，查看P的状态：&lt;br&gt;
+2.1 如果状态为_Psyscall(处于系统调用中)且执行时间已经超过了一个sysmon时间（最少20us）,则进行抢占；&lt;br&gt;
+2.2 如果状态为_Prunning且执行时间已经超过了forcePreemptNS(10ms),则进行抢占；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;阻塞唤醒&#34;&gt;阻塞/唤醒&lt;/h3&gt;
+&lt;p&gt;channel阻塞...&lt;br&gt;
+系统阻塞...&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://studygolang.com/articles/20991&#34;&gt;https://studygolang.com/articles/20991&lt;/a&gt;
+&lt;a href=&#34;https://studygolang.com/articles/11627&#34;&gt;https://studygolang.com/articles/11627&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA&#34;&gt;https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA&lt;/a&gt; &lt;br&gt;
+&lt;a href=&#34;https://blog.csdn.net/u010853261/article/details/84790392&#34;&gt;https://blog.csdn.net/u010853261/article/details/84790392&lt;/a&gt; &lt;br&gt;
+&lt;a href=&#34;https://reading.developerlearning.cn/reading/12-2018-08-02-goroutine-gpm/&#34;&gt;go夜读 golang 调度&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>通过 hello world 寻找 golang 启动过程</title>
-      <link>http://www.geekgame.site/post/language/golang/start/</link>
+      <link>https://www.geekgame.site/post/language/golang/start/</link>
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/language/golang/start/</guid>
-      <description>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；</description>
+      <guid>https://www.geekgame.site/post/language/golang/start/</guid>
+      <description>
+        
+          &lt;p&gt;知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；&lt;/p&gt;
+&lt;h3 id=&#34;找到启动点&#34;&gt;找到启动点&lt;/h3&gt;
+&lt;h5 id=&#34;1-写一个hello-world&#34;&gt;1. 写一个hello world.&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	&lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;hello world&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;2编译后使用gdb找到entry-point&#34;&gt;2.编译后使用gdb找到entry point&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;$ gdb hello
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt; .....
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;        file &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; mach-o-x86-64.
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;	Entry point: 0x1052720
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;	0x0000000001001000 - 0x0000000001093074 is .text
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.__gosymtab
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;	0x00000000010e27e0 - 0x000000000115c6ff is __TEXT.__gopclntab
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;	0x000000000115d000 - 0x000000000115d158 is __DATA.__nl_symbol_ptr
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;	0x000000000115d160 - 0x0000000001169c9c is __DATA.__noptrdata
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;	0x0000000001169ca0 - 0x0000000001170610 is .data
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;	0x0000000001170620 - 0x000000000118be50 is .bss
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;	0x000000000118be60 - 0x000000000118e418 is __DATA.__noptrbss
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;gdb&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; info symbol 0x1052720
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;_rt0_amd64_darwin in section .text
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;gdb&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以从entry point 找到入口函数 _rt0_amd64_darwin，可以在源码中搜索一下函数名称,定位函数位置
+runtime/rt0_darwin_amd64.s:7，具体如下所示&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;TEXT _rt0_amd64_darwin&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;,NOSPLIT,&lt;span class=&#34;nv&#34;&gt;$-&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;	JMP	_rt0_amd64&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该函数跳转到 _rt0_amd64, _rt0_amd64是一段针对amd64系统的公共启动代码。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;TEXT _rt0_amd64&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;,NOSPLIT,&lt;span class=&#34;nv&#34;&gt;$-&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;	MOVQ	0&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SP&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;, DI	// argc
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;	LEAQ	8&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SP&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;, SI	// argv
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	JMP	runtime·rt0_go&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其中 MOVQ 用来操作数据，而LEAQ 用来操作地址，所以
+MOVQ	0(SP), DI 是将argc 放到DI寄存器&lt;br&gt;
+LEAQ	8(SP), SI 是将 argv 的地址放到SI寄存器
+然后跳转到runtime·rt0_go(SB）(go1.12.5/src/runtime/asm_amd64.s:87)&lt;/p&gt;
+&lt;p&gt;接下来的流程用下图表示:
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/start.png&#34; alt=&#34;初始化流程&#34;&gt;&lt;/p&gt;
+&lt;h5 id=&#34;参数设置&#34;&gt;参数设置&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;TEXT&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;rt0_go&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;NOSPLIT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;$0&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;copy&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;arguments&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;forward&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;an&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;even&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;stack&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;／／将&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;argc&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;和&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;argv&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;复制到指定寄存器中&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;DI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;		&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;argc&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;SI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;		&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;argv&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;SUBQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;		&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;args&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;auto&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;sp&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;字节对齐&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;ANDQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;~&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;argc&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;复制到&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;sp&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;argv&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;复制到&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;sp&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt; 
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;g0-初始化&#34;&gt;g0 初始化&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;create&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;istack&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;out&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;given&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;operating&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;system&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;stack.&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;_cgo_init&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;may&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;update&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;stackguard.&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;g0&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;定义在&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;go1.12.5&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;proc.go&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;81&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;g0.stackguard0&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt;  &lt;span class=&#34;no&#34;&gt;rsp-64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1024&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;104&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;g0.stackguard1&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;g0.stackguard0&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;g0.stack.lo&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;g0.stackguard0&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;g0.stack.hi&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;rsp&lt;/span&gt; 
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;$runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;g0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;DI&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;(-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1024&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;104&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;g_stackguard0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;DI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;g_stackguard1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;DI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;g_stack&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;stack_lo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;DI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;g_stack&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;stack_hi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;DI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;设置g0的栈信息，设置了栈的地址开始与结束位置，分配大约64k空间。&lt;/p&gt;
+&lt;h5 id=&#34;cgo_init&#34;&gt;cgo_init&lt;/h5&gt;
+&lt;p&gt;判断是否存在 _cgo_init ,如果有就执行，执行完之后重新设置g0的栈地址&lt;/p&gt;
+&lt;h4 id=&#34;tls&#34;&gt;tls&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#ifdef GOOS_plan9
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;skip&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;TLS&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;setup&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Plan&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;JMP&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ok&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#endif
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#ifdef GOOS_solaris
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;skip&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;TLS&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;setup&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Solaris&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;JMP&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ok&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#endif
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#ifdef GOOS_darwin
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;skip&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;TLS&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;setup&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;Darwin&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;JMP&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ok&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#endif
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;m0&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;m_tls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;DI&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;settls&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;位于&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;go1.12.5&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;sys_linux_amd64.s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;606&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;CALL&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;settls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;	&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;store&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;through&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;it&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;make&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;sure&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;works&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;get_tls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;$0x123&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;m0&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;m_tls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;CMPQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;$0x123&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;JEQ&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;PC&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;CALL&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;abort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在plan 9, solaris ,darwin 上都直接跳过tls的设置。&lt;/p&gt;
+&lt;h4 id=&#34;runtimeargs&#34;&gt;runtime.args&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVL&lt;/span&gt;	&lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;		&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;copy&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;argc&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVL&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;		&lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;copy&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;argv&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;	&lt;span class=&#34;nf&#34;&gt;CALL&lt;/span&gt;	&lt;span class=&#34;no&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;runtime.args 位于 go1.12.5/src/runtime/runtime1.go:60
+主要作用是读取参数以及获取环境变量；&lt;/p&gt;
+&lt;h4 id=&#34;runtimeosinit&#34;&gt;runtime.osinit&lt;/h4&gt;
+&lt;p&gt;主要设置cpu 数量&lt;/p&gt;
+&lt;h3 id=&#34;runtimeschedinit&#34;&gt;runtime.schedinit&lt;/h3&gt;
+&lt;p&gt;位于 go1.12.5/src/runtime/proc.go:526
+主要作用 初始化堆栈, 参数，gc , sched。&lt;/p&gt;
+&lt;p&gt;接下来主要是创建一个goroutine,然后放到队列中，启动mstart 进行调度 运行第一个goroutine（runtime.main）&lt;/p&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>golang 栈结构</title>
-      <link>http://www.geekgame.site/post/language/golang/plan9/</link>
+      <link>https://www.geekgame.site/post/language/golang/plan9/</link>
       <pubDate>Sat, 15 Jun 2019 16:41:11 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/language/golang/plan9/</guid>
-      <description>程序组成 程序由代码和数据组成，数据又有静态与动态之分；</description>
+      <guid>https://www.geekgame.site/post/language/golang/plan9/</guid>
+      <description>
+        
+          &lt;h1 id=&#34;程序组成&#34;&gt;程序组成&lt;/h1&gt;
+&lt;p&gt;程序由代码和数据组成，数据又有静态与动态之分；&lt;br&gt;
+动态数据：存放在堆区和栈区；&lt;br&gt;
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；&lt;br&gt;
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；&lt;/p&gt;
+&lt;h1 id=&#34;寄存器&#34;&gt;寄存器&lt;/h1&gt;
+&lt;h2 id=&#34;伪寄存器&#34;&gt;伪寄存器&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;FP(Frame pointer): 表示参数以及返回值的基地址；
+通过 SYMBOL+/-ffset(FP)&lt;/li&gt;
+&lt;li&gt;PC(Program counter): 跳转寄存器，存储下一条指令地址；&lt;/li&gt;
+&lt;li&gt;SB(Static base pointer): 全局静态起始地址.&lt;/li&gt;
+&lt;li&gt;SP(Stack pointer): 表示本地变量的起始地址；&lt;br&gt;
+使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；&lt;br&gt;
+SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&amp;lt;&amp;gt; 和 +N，其中N是一个整数。 foo&amp;lt;&amp;gt;(SB)表示foo是一个私有元素只能在
+当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；&lt;em&gt;注意 这里是相对符号的地址&lt;/em&gt;&lt;br&gt;
+FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。&lt;/p&gt;
+&lt;h2 id=&#34;fp-伪sp-硬件sp之间的关系&#34;&gt;FP、 伪SP、 硬件SP之间的关系&lt;/h2&gt;
+&lt;p&gt;SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。&lt;/p&gt;
+&lt;h3 id=&#34;栈结构&#34;&gt;栈结构&lt;/h3&gt;
+&lt;h4 id=&#34;无参数无本地变量&#34;&gt;无参数无本地变量&lt;/h4&gt;
+&lt;p&gt;无参数无本地变量栈结果是如下所示&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png&#34; alt=&#34;没有参数没有本地变量&#34;&gt;&lt;/p&gt;
+&lt;p&gt;通过如下函数来验证&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#include &amp;#34;textflag.h&amp;#34; //
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;TEXT&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SpFp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;NOSPLIT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;$0-32&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将硬件&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP地址存储到AX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将伪&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP地址存储到BX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP地址存储到CX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;AX地址存储到第一个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;BX地址存储到第二个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;CX地址存储到第三个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;存储的值存储到&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;也就是该函数的返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;放到第四个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;RET&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 汇编函数声明
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;addr&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Printf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;SpFp&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ ./spfp
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;硬SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216112&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; 伪SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216112&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; FP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216120&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; addr&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;17385428&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; SpFp&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;17385904&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ dlv &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; ./fpsp
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Type &lt;span class=&#34;s1&#34;&gt;&amp;#39;help&amp;#39;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; list of commands.
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;dlv&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; b *17385428
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;Breakpoint &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; at 0x10947d4 &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; main.main&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; ./main.go:7
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;dlv&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()&lt;/p&gt;
+&lt;h4 id=&#34;有参数无本地变量&#34;&gt;有参数无本地变量&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#include &amp;#34;textflag.h&amp;#34; //
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;TEXT&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SpFpArgs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;NOSPLIT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;$0-24&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;40&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;RET&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFpArgs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 汇编函数声明
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFpArgs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Printf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;硬SP[%d] 伪SP[%d] FP[%d]\n&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ ./spfp
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;硬SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216048&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; 伪SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216048&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; FP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216056&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8&lt;/p&gt;
+&lt;h3 id=&#34;有本地变量&#34;&gt;有本地变量&lt;/h3&gt;
+&lt;p&gt;在有本地变量情况下，在X86 和 ARM 中栈结构是不同的，如下所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;// Stack frame layout
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;//
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;// &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;x86&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; args from &lt;span class=&#34;nb&#34;&gt;caller&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;// +------------------+ &amp;lt;- frame-&amp;gt;argp
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; address  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  caller&lt;span class=&#34;s1&#34;&gt;&amp;#39;s BP (*) | (*) if framepointer_enabled &amp;amp;&amp;amp; varp &amp;lt; sp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+ &amp;lt;- frame-&amp;gt;varp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// |     locals       |
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// |  args to callee  |
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+ &amp;lt;- frame-&amp;gt;sp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;//
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// (arm)
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// | args from caller |
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+ &amp;lt;- frame-&amp;gt;argp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// | caller&amp;#39;&lt;/span&gt;s retaddr &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;// +------------------+ &amp;lt;- frame-&amp;gt;varp
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     locals       &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  args to callee  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; address  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;// +------------------+ &amp;lt;- frame-&amp;gt;sp
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们在这里特别关注X86，会使用到BP寄存器，这个寄存器主要用来指示栈的起始位置，现在很多编译器并不需要这个，因为可以通过SP加Offset来寻找栈起始位置。在amd64平台上,会在函数返回值之后插入8byte来放置Caller BP。
+在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;函数的栈帧大于0；&lt;/li&gt;
+&lt;li&gt;满足条件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Framepointer_enabled&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;goos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;goarch&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;framepointer_enabled&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;goarch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;amd64&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;goos&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;nacl&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;另外此时 硬件SP与伪SP是不相同的。&lt;br&gt;
+硬件SP + locals = 伪SP&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://9p.io/plan9/&#34;&gt;https://9p.io/plan9/&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://68k.hax.com/&#34;&gt;指令查询&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://9p.io/magic/man2html/1/8a&#34;&gt;命令查询&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://zhuanlan.zhihu.com/p/19902040&#34;&gt;Go的标准IDE：Acme文本编辑器&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://golang.org/doc/asm&#34;&gt;A Quick Guide to Go&#39;s Assembler&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://lrita.github.io/2017/12/12/golang-asm/&#34;&gt;golang 汇编&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html&#34;&gt;汇编语言入门教程&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://xargin.com/go-and-plan9-asm/&#34;&gt;[译]go 和 plan9 汇编&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://blog.brickgao.com/2019/01/27/split-stacks/&#34;&gt;split stacks&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://blog.cloudflare.com/how-stacks-are-handled-in-go/&#34;&gt;How Stacks are Handled in Go&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8&#34;&gt;go函数调用&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>golang module 使用教程</title>
-      <link>http://www.geekgame.site/post/language/golang/module/</link>
+      <link>https://www.geekgame.site/post/language/golang/module/</link>
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/language/golang/module/</guid>
-      <description>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.</description>
+      <guid>https://www.geekgame.site/post/language/golang/module/</guid>
+      <description>
+        
+          &lt;p&gt;Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及&lt;a href=&#34;https://semver.org/lang/zh-CN/&#34;&gt;特定寓意的版本信息&lt;/a&gt;。&lt;br&gt;
+需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。&lt;/p&gt;
+&lt;p&gt;本文会介绍Go module的一些基本用法；&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;常见命令&lt;/li&gt;
+&lt;li&gt;创建一个模块&lt;/li&gt;
+&lt;li&gt;添加一个依赖&lt;/li&gt;
+&lt;li&gt;升级依赖&lt;/li&gt;
+&lt;li&gt;其他命令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;常见命令&#34;&gt;常见命令&lt;/h1&gt;
+&lt;p&gt;go mod 提供了以下命令&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;download:  下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享;&lt;/li&gt;
+&lt;li&gt;edit : 编辑go.mod;&lt;/li&gt;
+&lt;li&gt;graph: 打印模块的依赖图;&lt;/li&gt;
+&lt;li&gt;init: 在当前目录初始化mod;&lt;/li&gt;
+&lt;li&gt;tidy : 添加缺失的依赖包并清理没有使用的包;&lt;/li&gt;
+&lt;li&gt;vendor : 将依赖包复制到vendor目录;&lt;/li&gt;
+&lt;li&gt;verify: 验证依赖是否正确;&lt;/li&gt;
+&lt;li&gt;why : 解释为什么需要这个依赖;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;创建一个模块&#34;&gt;创建一个模块&lt;/h1&gt;
+&lt;p&gt;如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;&lt;br&gt;
+执行一下子命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt; ~/gomod/hello$ go mod init example.com/hello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;go: creating new go.mod: module example.com/hello
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;创建hello.go&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;Hello, world.&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;为使用SayHi,创建test文件 hello_test.go&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;testing&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;TestHello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;testing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;Hello, world.&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;		&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Errorf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Hello() = %s, want %s&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行测试用例&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt; ~/gomod/hello$ go &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; -run TestHello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;ok  	example.com/hello	0.006s
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;添加一个依赖&#34;&gt;添加一个依赖&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;rsc.io/quote&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;quote&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go: extracting rsc.io/quote v1.5.2
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;go: extracting rsc.io/sampler v1.3.0
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;ok  	example.com/hello	0.009s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此时会将代码下载到$GOPATH/pkg/mod目录下，之后运行不会重复下载，可以到go.mod已经更新了&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;module example.com/hello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;go 1.12
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;require rsc.io/quote v1.5.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用 go list -m all 可以查看所有依赖&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ go list -m all
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;example.com/hello
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;rsc.io/quote v1.5.2
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;rsc.io/sampler v1.3.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此时目录下多了一个go.sum文件，这个文件是做什么的呢？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c h1:qgOY6WgZOaTkIIMiVjBQcw93ERBE4m30iBm00nkL0i8&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;rsc.io/quote v1.5.2 h1:w5fcysjrx7yqtD/aO+QwRjYZOKnaM9Uh2b40tElTs3Y&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;rsc.io/quote v1.5.2/go.mod h1:LzX7hefJvL54yjefDEDHNONDjII0t9xZLPXsUe+TKr0&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;rsc.io/sampler v1.3.0 h1:7uVkIFmeBqHfdjD+gZwtXXI+RODJ2Wc4O7MPEh/QiW4&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;rsc.io/sampler v1.3.0/go.mod h1:T1hPZKmBbMNahiBKFy5HrXp6adAjACjK9JXDnKaTXpA&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看出该文件存储了包的路径 版本 还有校验值；每次执行命令时都会check 该校验是否与download目录下的是否一致；不一致就会报错&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;verifying rsc.io/quote@v1.5.2/go.mod: checksum mismatch
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;	downloaded: h1:Q15uSTpOVzCmer7yFUWKviBR7qLGLuYQ5zPmjACcaxQ&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;	go.sum:     h1:LzX7hefJvL54yjefDEDHNONDjII0t9xZLPXsUe+TKr0&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;升级依赖&#34;&gt;升级依赖&lt;/h1&gt;
+&lt;p&gt;加入要把quote包升级到其他版本，比如v3（需要提前知道升级的版本以及其中函数），&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;quoteV3&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;rsc.io/quote/v3&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;quoteV3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;HelloV3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;运行 go test, 会自动下载V3&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;go: downloading rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;go: extracting rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;ok  	example.com/hello	0.008s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;查看 go.mod&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;module example.com/hello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;go 1.12
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;require &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;	golang.org/x/text v0.3.2 // indirect
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;	rsc.io/quote v1.5.2
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;	rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;并没有删除 	rsc.io/quote v1.5.2 ，这需要执行 go mod tidy 来去除不使用的包。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;$ go mod tidy
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;$ cat go.mod
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;module example.com/hello
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;go 1.12
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;require &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	golang.org/x/text v0.3.2 // indirect
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;其他命令&#34;&gt;其他命令&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;replace 替换依赖项模块： 可以将包替换成另一个包或者不同版本;&lt;/li&gt;
+&lt;li&gt;exclude 忽略依赖项模块；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;go mod init 创建一个模块，并创建文件go.mod;&lt;/li&gt;
+&lt;li&gt;go build , go test 还有其他关于编译的命令都会按需将依赖添加到go.mod;&lt;/li&gt;
+&lt;li&gt;go list -m all 输出当前模块所有的依赖；&lt;/li&gt;
+&lt;li&gt;go mod tidy 可以删除不使用的依赖；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.golang.org/using-go-modules&#34;&gt;using-go-modules&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>高效shell</title>
-      <link>http://www.geekgame.site/post/shell/effective_shell/</link>
+      <link>https://www.geekgame.site/post/shell/effective_shell/</link>
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/shell/effective_shell/</guid>
-      <description>shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。</description>
+      <guid>https://www.geekgame.site/post/shell/effective_shell/</guid>
+      <description>
+        
+          &lt;h2 id=&#34;shell&#34;&gt;shell&lt;/h2&gt;
+&lt;p&gt;使用超强组合 &lt;a href=&#34;https://ohmyz.sh/&#34;&gt;oh-my-zsh&lt;/a&gt; + &lt;a href=&#34;https://github.com/zsh-users/zsh-autosuggestions&#34;&gt;zsh-autosuggestions&lt;/a&gt; + &lt;a href=&#34;https://github.com/rupa/z&#34;&gt;z - jump around&lt;/a&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；&lt;/li&gt;
+&lt;li&gt;autosuggestions: 补全已经输入过的命令；&lt;/li&gt;
+&lt;li&gt;jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;命令&#34;&gt;命令&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/dvorka/hstr&#34;&gt;hstr&lt;/a&gt;: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ；&lt;/li&gt;
+&lt;li&gt;htop: 加强版的top, 安装与介绍可以看一下&lt;a href=&#34;https://cloud.tencent.com/developer/article/1115041&#34;&gt;这里&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>MQTT 基本概念</title>
-      <link>http://www.geekgame.site/post/protocol/mqtt/</link>
+      <link>https://www.geekgame.site/post/protocol/mqtt/</link>
       <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/protocol/mqtt/</guid>
-      <description>&lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
-低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;</description>
+      <guid>https://www.geekgame.site/post/protocol/mqtt/</guid>
+      <description>
+        
+          &lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
+低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;
+&lt;h1 id=&#34;mqtt-架构&#34;&gt;MQTT 架构&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;MQTT 是c/s模型，每个客户端通过tcp连接到服务器(broker)；&lt;/li&gt;
+&lt;li&gt;MQTT 是面向消息的。每个消息都是独立的数据块，对于broker来说是不透明的；&lt;/li&gt;
+&lt;li&gt;每条消息都会发送到一个地址，这个地址称为主题(topic),订阅主题的每个客户端都会收到发布到该主题上的每条消息；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如下所示： 客户端 A、B、C都连接到一个中间broker; &lt;br&gt;
+B、C都订阅topic :dev_info 来获取其他设备的设备信息；&lt;br&gt;
+A发布设备信息到topic dev_info，broker 将该消息转发给所有的订阅者即 BC；&lt;br&gt;
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/mqtt_arch.png&#34; alt=&#34;mqqtt_arch&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;主题匹配&#34;&gt;主题匹配&lt;/h1&gt;
+&lt;p&gt;mqtt 主题是分层级的，通过／划分层级。如 A/B/G ;
+注意在订阅时可以使用通配符，发布时不可以使用通配符；&lt;br&gt;
+通配符 + 匹配任何单个主题，# 匹配任意名称任意数量的主题；&lt;br&gt;
+例如： A/+/G 可以匹配 A/B/G A/C/G A/D/G 等&lt;br&gt;
+A/# 可以配置 A/B/C/D/E/F/G&lt;/p&gt;
+&lt;h1 id=&#34;qos&#34;&gt;Qos&lt;/h1&gt;
+&lt;p&gt;mqtt 支持三种级别的服务质量:&lt;br&gt;
+0: &amp;quot;至多一次&amp;quot; 并不需要回复确认消息，有可能丢失消息；&lt;br&gt;
+1: &amp;quot;至少一次&amp;quot; 收到报文后会回复确认消息，这样会重复收到消息（如超时回复确认消息情况）；&lt;br&gt;
+2: &amp;quot;只有一次&amp;quot; 通过 publish pubrec pubrel pubcomp 四个状态确认有且只有一次消息被处理，但是网络带宽会增加；&lt;/p&gt;
+&lt;h1 id=&#34;最后遗愿last-will&#34;&gt;最后遗愿(last will)&lt;/h1&gt;
+&lt;p&gt;提前预定好的消息，当客户端断开连接时，broker 会将该消息发送给所有订阅者的客户端；&lt;/p&gt;
+&lt;h1 id=&#34;持久retain&#34;&gt;持久(retain)&lt;/h1&gt;
+&lt;p&gt;topic 设置retain 之后，broker 会保留最后一条retain消息,当client 订阅该topic 时会立刻收到一条retain消息；&lt;/p&gt;
+&lt;h1 id=&#34;清理会话cleansession&#34;&gt;清理会话（cleansession）&lt;/h1&gt;
+&lt;p&gt;设置为true时，客户端建立连接时将清除旧的连接，即再次连接时不会收到消息；&lt;br&gt;
+设置为false时，客户端即使断开连接，再次连接时会收到未接收的消息；&lt;/p&gt;
+&lt;h1 id=&#34;安全&#34;&gt;安全&lt;/h1&gt;
+&lt;p&gt;可以通过ssl/tls 双向认证保证数据安全， 也可以通过 单向 ssl/tls + 单向https/username/password 保证双向安全；&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://zh.wikipedia.org/wiki/MQTT&#34;&gt;维基百科 MQTT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mosquitto.org/man/mqtt-7.html&#34;&gt;MQTT manpage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.eclipse.org/community/eclipse_newsletter/2014/february/article2.php&#34;&gt;MQTT and CoAP, IoT Protocols&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+        
+      </description>
     </item>
     
     <item>
       <title>mac  sed 报错</title>
-      <link>http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
+      <link>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
-      <description>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误</description>
+      <guid>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
+      <description>
+        
+          &lt;p&gt;mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$sed&lt;/span&gt; -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/xxxx/yyy/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sed: 1: &lt;span class=&#34;s2&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;: extra characters at the end of p &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;解决方法&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;   &lt;span class=&#34;s2&#34;&gt;&amp;#34;s/XX/YY/g&amp;#34;&lt;/span&gt;  &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;============================================&lt;/p&gt;
+&lt;p&gt;sed 用法&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sed: illegal option -- -
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;usage: sed script &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-Ealn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-i extension&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;file ...&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;       sed &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-Ealn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-i extension&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-e script&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; ... &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-f script_file&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; ... &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;file ...&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;-i 后边需要添加备份文件的后缀名,如果不需要可以使用&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,但是不可以忽略
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;如 sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;.bak&amp;#34;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/xxxx/yyy/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; 会将替换后的文本写入test.bak
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+        
+      </description>
     </item>
     
   </channel>

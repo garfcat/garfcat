@@ -1,19 +1,161 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>stack on garfcat</title>
-    <link>http://www.geekgame.site/tags/stack/</link>
-    <description>Recent content in stack on garfcat</description>
+    <title>stack on 有趣</title>
+    <link>https://www.geekgame.site/tags/stack/</link>
+    <description>Recent content in stack on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 15 Jun 2019 16:41:11 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/stack/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Sat, 15 Jun 2019 16:41:11 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/stack/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>golang 栈结构</title>
-      <link>http://www.geekgame.site/post/language/golang/plan9/</link>
+      <link>https://www.geekgame.site/post/language/golang/plan9/</link>
       <pubDate>Sat, 15 Jun 2019 16:41:11 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/language/golang/plan9/</guid>
-      <description>程序组成 程序由代码和数据组成，数据又有静态与动态之分；</description>
+      <guid>https://www.geekgame.site/post/language/golang/plan9/</guid>
+      <description>
+        
+          &lt;h1 id=&#34;程序组成&#34;&gt;程序组成&lt;/h1&gt;
+&lt;p&gt;程序由代码和数据组成，数据又有静态与动态之分；&lt;br&gt;
+动态数据：存放在堆区和栈区；&lt;br&gt;
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；&lt;br&gt;
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；&lt;/p&gt;
+&lt;h1 id=&#34;寄存器&#34;&gt;寄存器&lt;/h1&gt;
+&lt;h2 id=&#34;伪寄存器&#34;&gt;伪寄存器&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;FP(Frame pointer): 表示参数以及返回值的基地址；
+通过 SYMBOL+/-ffset(FP)&lt;/li&gt;
+&lt;li&gt;PC(Program counter): 跳转寄存器，存储下一条指令地址；&lt;/li&gt;
+&lt;li&gt;SB(Static base pointer): 全局静态起始地址.&lt;/li&gt;
+&lt;li&gt;SP(Stack pointer): 表示本地变量的起始地址；&lt;br&gt;
+使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；&lt;br&gt;
+SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&amp;lt;&amp;gt; 和 +N，其中N是一个整数。 foo&amp;lt;&amp;gt;(SB)表示foo是一个私有元素只能在
+当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；&lt;em&gt;注意 这里是相对符号的地址&lt;/em&gt;&lt;br&gt;
+FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。&lt;/p&gt;
+&lt;h2 id=&#34;fp-伪sp-硬件sp之间的关系&#34;&gt;FP、 伪SP、 硬件SP之间的关系&lt;/h2&gt;
+&lt;p&gt;SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。&lt;/p&gt;
+&lt;h3 id=&#34;栈结构&#34;&gt;栈结构&lt;/h3&gt;
+&lt;h4 id=&#34;无参数无本地变量&#34;&gt;无参数无本地变量&lt;/h4&gt;
+&lt;p&gt;无参数无本地变量栈结果是如下所示&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png&#34; alt=&#34;没有参数没有本地变量&#34;&gt;&lt;/p&gt;
+&lt;p&gt;通过如下函数来验证&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#include &amp;#34;textflag.h&amp;#34; //
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;TEXT&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SpFp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;NOSPLIT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;$0-32&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将硬件&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP地址存储到AX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将伪&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP地址存储到BX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP地址存储到CX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;AX地址存储到第一个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;BX地址存储到第二个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;CX地址存储到第三个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;存储的值存储到&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;也就是该函数的返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;//将&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;放到第四个返回值&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;RET&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 汇编函数声明
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;addr&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Printf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;SpFp&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ ./spfp
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;硬SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216112&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; 伪SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216112&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; FP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216120&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; addr&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;17385428&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; SpFp&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;17385904&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ dlv &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; ./fpsp
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Type &lt;span class=&#34;s1&#34;&gt;&amp;#39;help&amp;#39;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; list of commands.
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;dlv&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; b *17385428
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;Breakpoint &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; at 0x10947d4 &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; main.main&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; ./main.go:7
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;dlv&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()&lt;/p&gt;
+&lt;h4 id=&#34;有参数无本地变量&#34;&gt;有参数无本地变量&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-asm&#34; data-lang=&#34;asm&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#include &amp;#34;textflag.h&amp;#34; //
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;TEXT&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;·&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SpFpArgs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;NOSPLIT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;$0-24&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;SP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;LEAQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;MOVQ&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;CX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;ret&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;40&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;no&#34;&gt;FP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;RET&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFpArgs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 汇编函数声明
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;SpFpArgs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Printf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;硬SP[%d] 伪SP[%d] FP[%d]\n&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ ./spfp
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;硬SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216048&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; 伪SP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216048&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; FP&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;824634216056&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8&lt;/p&gt;
+&lt;h3 id=&#34;有本地变量&#34;&gt;有本地变量&lt;/h3&gt;
+&lt;p&gt;在有本地变量情况下，在X86 和 ARM 中栈结构是不同的，如下所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;// Stack frame layout
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;//
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;// &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;x86&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; args from &lt;span class=&#34;nb&#34;&gt;caller&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;// +------------------+ &amp;lt;- frame-&amp;gt;argp
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; address  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  caller&lt;span class=&#34;s1&#34;&gt;&amp;#39;s BP (*) | (*) if framepointer_enabled &amp;amp;&amp;amp; varp &amp;lt; sp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+ &amp;lt;- frame-&amp;gt;varp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// |     locals       |
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// |  args to callee  |
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+ &amp;lt;- frame-&amp;gt;sp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;//
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// (arm)
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// | args from caller |
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// +------------------+ &amp;lt;- frame-&amp;gt;argp
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;// | caller&amp;#39;&lt;/span&gt;s retaddr &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;// +------------------+ &amp;lt;- frame-&amp;gt;varp
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     locals       &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  args to callee  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;// +------------------+
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;// &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; address  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;// +------------------+ &amp;lt;- frame-&amp;gt;sp
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们在这里特别关注X86，会使用到BP寄存器，这个寄存器主要用来指示栈的起始位置，现在很多编译器并不需要这个，因为可以通过SP加Offset来寻找栈起始位置。在amd64平台上,会在函数返回值之后插入8byte来放置Caller BP。
+在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;函数的栈帧大于0；&lt;/li&gt;
+&lt;li&gt;满足条件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Framepointer_enabled&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;goos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;goarch&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;framepointer_enabled&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;goarch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;amd64&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;goos&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;nacl&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;另外此时 硬件SP与伪SP是不相同的。&lt;br&gt;
+硬件SP + locals = 伪SP&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://9p.io/plan9/&#34;&gt;https://9p.io/plan9/&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://68k.hax.com/&#34;&gt;指令查询&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://9p.io/magic/man2html/1/8a&#34;&gt;命令查询&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://zhuanlan.zhihu.com/p/19902040&#34;&gt;Go的标准IDE：Acme文本编辑器&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://golang.org/doc/asm&#34;&gt;A Quick Guide to Go&#39;s Assembler&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://lrita.github.io/2017/12/12/golang-asm/&#34;&gt;golang 汇编&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html&#34;&gt;汇编语言入门教程&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://xargin.com/go-and-plan9-asm/&#34;&gt;[译]go 和 plan9 汇编&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://blog.brickgao.com/2019/01/27/split-stacks/&#34;&gt;split stacks&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://blog.cloudflare.com/how-stacks-are-handled-in-go/&#34;&gt;How Stacks are Handled in Go&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8&#34;&gt;go函数调用&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
     </item>
     
   </channel>

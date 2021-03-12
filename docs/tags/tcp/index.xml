@@ -1,19 +1,160 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>tcp on garfcat</title>
-    <link>http://www.geekgame.site/tags/tcp/</link>
-    <description>Recent content in tcp on garfcat</description>
+    <title>tcp on 有趣</title>
+    <link>https://www.geekgame.site/tags/tcp/</link>
+    <description>Recent content in tcp on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Thu, 07 May 2020 09:53:51 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TCP timewait 过多怎么办</title>
-      <link>http://www.geekgame.site/post/protocol/tcp_1/</link>
+      <link>https://www.geekgame.site/post/protocol/tcp_1/</link>
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/protocol/tcp_1/</guid>
-      <description>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</description>
+      <guid>https://www.geekgame.site/post/protocol/tcp_1/</guid>
+      <description>
+        
+          &lt;p&gt;要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&lt;/p&gt;
+&lt;h1 id=&#34;tcp-三次握手四次挥手状态迁移&#34;&gt;TCP 三次握手四次挥手状态迁移&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;     TCP A                                                TCP B
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  1.  CLOSED                                               LISTEN
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  2.  SYN-SENT    --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;SYN&amp;gt;               --&amp;gt; SYN-RECEIVED
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;  3.  ESTABLISHED &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;SYN,ACK&amp;gt;  &amp;lt;-- SYN-RECEIVED
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;  4.  ESTABLISHED --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;       --&amp;gt; ESTABLISHED
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;  5.  ESTABLISHED --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;&amp;lt;DATA&amp;gt; --&amp;gt; ESTABLISHED
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一般的关闭流程如下所示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;      TCP A                                                TCP B
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  1.  ESTABLISHED                                          ESTABLISHED
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  2.  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;      FIN-WAIT-1  --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  --&amp;gt; CLOSE-WAIT
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  3.  FIN-WAIT-2  &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      &amp;lt;-- CLOSE-WAIT
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;  4.                                                       &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;      TIME-WAIT   &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  &amp;lt;-- LAST-ACK
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;  5.  TIME-WAIT   --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      --&amp;gt; CLOSED
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;  6.  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; MSL&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;      CLOSED   
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;两边同时关闭流程如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;      TCP A                                                TCP B
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  1.  ESTABLISHED                                          ESTABLISHED
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  2.  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;                                              &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Close&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;      FIN-WAIT-1  --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  ... FIN-WAIT-1
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;                  &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  &amp;lt;--
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;                  ... &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;100&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;300&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;FIN,ACK&amp;gt;  --&amp;gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;  3.  CLOSING     --&amp;gt; &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      ... CLOSING
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;                  &amp;lt;-- &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      &amp;lt;--
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;                  ... &amp;lt;&lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;101&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;301&amp;gt;&amp;lt;&lt;span class=&#34;nv&#34;&gt;CTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ACK&amp;gt;      --&amp;gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;  4.  TIME-WAIT                                            TIME-WAIT
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;      &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; MSL&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;                                              &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; MSL&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;      CLOSED                                               CLOSED
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;TIME-WAIT 是在主动关闭一方(一般是客户端)收到对端FIN包并回复最后一个ACK后进入的状态；随后等待2MSL时间后CLOSED.
+MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文一来一回的最大时间；TIME-WAIT的作用主要有两个：a) 确保 ack 可以被对端接收，如未收到可以返回FIN 包；b)确保对端发送的报文被接收或者超时被丢弃，防止未送达的报文对新连接造成影响；&lt;/p&gt;
+&lt;p&gt;由此可以看出，这个状态是必不可少的，但是并发量比较大的机器上会造成无法新建连接，服务不可用的后果；因此我们要对TIME-WAIT过多的情况做一些调优；&lt;br&gt;
+主要通过设置内核参数来调整：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;tcp_tw_reuse&lt;/strong&gt;&lt;br&gt;
+开启后在协议安全的情况下可以复用TIME-WAIT socket, 这里的协议安全是指两端都开启 timestamps；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;tcp_tw_recyle(不建议开启)&lt;br&gt;
+开启后（也是需要开启timestamp）对TIME-WAIT socket 快速回收, 但是不建议开启，因为开启后可能会导致服务端连接失败；
+具体原因如下&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这种机制在 客户端-服务器 一对一的时候，没有任何问题，但是当服务器在负载均衡器后面时，由于负载均衡器不会修改包内部的timestamp值，而互联网上的机器又不可能保持时间的一致性，再加上负载均衡是会重复多次使用同一个tcp端口向内部服务器发起连接的，就会导致什么情况呢：&lt;br&gt;
+负载均衡通过某个端口向内部的某台服务器发起连接，源地址为负载均衡的内部地址——同一ip
+假如恰巧先后两次连接源端口相同，这台服务器先后收到两个包，第一个包的timestamp被服务器保存着，第二个包又来了，一对比，发现第二个包的timestamp比第一个还老——客户端时间不一致
+服务器基于PAWS，判断第二个包是重复报文，丢弃之&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;而且在最新的内核中已经删除了tcp_tw_recycle， 删除记录的commit 如下所示：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;  commit 4396e46187ca5070219b81773c4e65088dac50cc
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  Author: Soheil Hassas Yeganeh &amp;lt;soheil@google.com&amp;gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;  Date:   Wed Mar &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt; 16:30:46 &lt;span class=&#34;m&#34;&gt;2017&lt;/span&gt; -0400
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;      tcp: remove tcp_tw_recycle
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;      The tcp_tw_recycle was already broken &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; connections
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;      behind NAT, since the per-destination timestamp is not
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;      monotonically increasing &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; multiple machines behind
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;      a single destination address.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;tcp_max_tw_buckets&lt;br&gt;
+这个参数是控制TIME_WAIT的并发数量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;完整状态迁移图如下&#34;&gt;完整状态迁移图如下&lt;/h1&gt;
+&lt;p&gt;以下状态图来自于 &lt;a href=&#34;http://www.rfc-editor.org/rfc/rfc793.txt&#34;&gt;rfc793  TRANSMISSION CONTROL PROTOCOL&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;                               
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;                              +---------+ ---------&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;     active OPEN  
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;                              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  CLOSED &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;            &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;   -----------  
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;                              +---------+&amp;lt;---------&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  create TCB  
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;                                &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     ^              &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt; snd SYN    
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;                   passive OPEN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   CLOSE        &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;          
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;                   ------------ &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ----------       &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;        
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;                    create TCB  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; delete TCB         &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;      
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;                                V     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                      &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;    
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;                              +---------+            CLOSE    &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;                              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  LISTEN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;          ---------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;                              +---------+          delete TCB &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;                   rcv SYN      &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     SEND              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;                  -----------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    -------            &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     V  
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt; +---------+      snd SYN,ACK  /       &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  snd SYN          +---------+
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&amp;lt;-----------------           ------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   SYN   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                    rcv SYN                     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   SYN   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   RCVD  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&amp;lt;-----------------------------------------------&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   SENT  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                    snd ACK                     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;------------------           -------------------&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt; +---------+   rcv ACK of SYN  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;      /  rcv SYN,ACK       +---------+
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;           --------------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   -----------                  
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                  x         &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     snd ACK                    
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                            V     V                                
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  CLOSE                   +---------+                              
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; -------                  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  ESTAB  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                              
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; snd FIN                  +---------+                              
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                   CLOSE    &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    rcv FIN                     
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;   V                  -------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    -------                     
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt; +---------+          snd FIN  /       &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;  snd ACK          +---------+
+&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  FIN    &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&amp;lt;-----------------           ------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  CLOSE  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; WAIT-1  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;------------------                              &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   WAIT  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt; +---------+          rcv FIN  &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;                           +---------+
+&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; rcv ACK of FIN   -------   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                            CLOSE  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; --------------   snd ACK   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                           ------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;   V        x                   V                           snd FIN V  
+&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt; +---------+                  +---------+                   +---------+
+&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;FINWAIT-2&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; CLOSING &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; LAST-ACK&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;39&lt;/span&gt; +---------+                  +---------+                   +---------+
+&lt;span class=&#34;ln&#34;&gt;40&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                rcv ACK of FIN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                 rcv ACK of FIN &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;41&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  rcv FIN       -------------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    &lt;span class=&#34;nv&#34;&gt;Timeout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2MSL -------------- &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  -------              x       V    ------------        x       V  
+&lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;    &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;snd ACK                 +---------+delete TCB         +---------+
+&lt;span class=&#34;ln&#34;&gt;44&lt;/span&gt;     ------------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;TIME WAIT&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;------------------&amp;gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; CLOSED  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;45&lt;/span&gt;                              +---------+                   +---------+
+&lt;span class=&#34;ln&#34;&gt;46&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux&#34;&gt;Coping with the TCP TIME-WAIT state on busy Linux servers
+&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://saview.wordpress.com/2011/09/27/tcp_tw_recycle%E5%92%8Cnat%E9%80%A0%E6%88%90syn_ack%E9%97%AE%E9%A2%98/&#34;&gt;tcp_tw_recycle和NAT造成SYN_ACK问题&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+        
+      </description>
     </item>
     
   </channel>

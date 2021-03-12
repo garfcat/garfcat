@@ -1,164 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
-  <url>
-    <loc>http://www.geekgame.site/categories/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
+  <sitemap>
+    <loc>https://www.geekgame.site/pt/sitemap.xml</loc>
+    
+  </sitemap>
   
-  <url>
-    <loc>http://www.geekgame.site/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
+  <sitemap>
+    <loc>https://www.geekgame.site/zh/sitemap.xml</loc>
+    
+      <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    
+  </sitemap>
   
-  <url>
-    <loc>http://www.geekgame.site/tags/go/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
+  <sitemap>
+    <loc>https://www.geekgame.site/en/sitemap.xml</loc>
+    
+  </sitemap>
   
-  <url>
-    <loc>http://www.geekgame.site/post/language/golang/test/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/test/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/testing/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/tcp/</loc>
-    <lastmod>2020-05-07T09:53:51+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/protocol/tcp_1/</loc>
-    <lastmod>2020-05-07T09:53:51+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</loc>
-    <lastmod>2020-05-07T09:53:51+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/language/golang/sched/</loc>
-    <lastmod>2019-08-11T10:23:01+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/sched/</loc>
-    <lastmod>2019-08-11T10:23:01+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/start/</loc>
-    <lastmod>2019-06-20T22:51:54+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/language/golang/start/</loc>
-    <lastmod>2019-06-20T22:51:54+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/language/golang/plan9/</loc>
-    <lastmod>2019-06-15T16:41:11+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/stack/</loc>
-    <lastmod>2019-06-15T16:41:11+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/language/golang/module/</loc>
-    <lastmod>2019-05-30T17:12:47+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/module/</loc>
-    <lastmod>2019-05-30T17:12:47+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/effective/</loc>
-    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/shell/</loc>
-    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/shell/effective_shell/</loc>
-    <lastmod>2019-05-16T19:34:57+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/mqtt/</loc>
-    <lastmod>2019-05-15T13:24:24+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/protocol/mqtt/</loc>
-    <lastmod>2019-05-15T13:24:24+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/mac/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/tags/sed/</loc>
-    <lastmod>2019-05-13T12:36:43+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/archives/</loc>
-    <lastmod>2019-05-13T12:22:44+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/about/</loc>
-    <lastmod>2019-05-10T17:38:49+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.geekgame.site/search/</loc>
-  </url>
-  
-</urlset>
+</sitemapindex>

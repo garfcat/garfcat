@@ -1,19 +1,158 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>module on garfcat</title>
-    <link>http://www.geekgame.site/tags/module/</link>
-    <description>Recent content in module on garfcat</description>
+    <title>module on 有趣</title>
+    <link>https://www.geekgame.site/tags/module/</link>
+    <description>Recent content in module on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/module/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/module/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>golang module 使用教程</title>
-      <link>http://www.geekgame.site/post/language/golang/module/</link>
+      <link>https://www.geekgame.site/post/language/golang/module/</link>
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/language/golang/module/</guid>
-      <description>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.</description>
+      <guid>https://www.geekgame.site/post/language/golang/module/</guid>
+      <description>
+        
+          &lt;p&gt;Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及&lt;a href=&#34;https://semver.org/lang/zh-CN/&#34;&gt;特定寓意的版本信息&lt;/a&gt;。&lt;br&gt;
+需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。&lt;/p&gt;
+&lt;p&gt;本文会介绍Go module的一些基本用法；&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;常见命令&lt;/li&gt;
+&lt;li&gt;创建一个模块&lt;/li&gt;
+&lt;li&gt;添加一个依赖&lt;/li&gt;
+&lt;li&gt;升级依赖&lt;/li&gt;
+&lt;li&gt;其他命令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;常见命令&#34;&gt;常见命令&lt;/h1&gt;
+&lt;p&gt;go mod 提供了以下命令&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;download:  下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享;&lt;/li&gt;
+&lt;li&gt;edit : 编辑go.mod;&lt;/li&gt;
+&lt;li&gt;graph: 打印模块的依赖图;&lt;/li&gt;
+&lt;li&gt;init: 在当前目录初始化mod;&lt;/li&gt;
+&lt;li&gt;tidy : 添加缺失的依赖包并清理没有使用的包;&lt;/li&gt;
+&lt;li&gt;vendor : 将依赖包复制到vendor目录;&lt;/li&gt;
+&lt;li&gt;verify: 验证依赖是否正确;&lt;/li&gt;
+&lt;li&gt;why : 解释为什么需要这个依赖;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;创建一个模块&#34;&gt;创建一个模块&lt;/h1&gt;
+&lt;p&gt;如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;&lt;br&gt;
+执行一下子命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt; ~/gomod/hello$ go mod init example.com/hello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;go: creating new go.mod: module example.com/hello
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;创建hello.go&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;Hello, world.&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;为使用SayHi,创建test文件 hello_test.go&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;testing&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;TestHello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;testing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;Hello, world.&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;		&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Errorf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Hello() = %s, want %s&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;got&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;want&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行测试用例&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt; ~/gomod/hello$ go &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; -run TestHello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;ok  	example.com/hello	0.006s
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;添加一个依赖&#34;&gt;添加一个依赖&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;rsc.io/quote&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;quote&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go: extracting rsc.io/quote v1.5.2
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;go: extracting rsc.io/sampler v1.3.0
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;ok  	example.com/hello	0.009s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此时会将代码下载到$GOPATH/pkg/mod目录下，之后运行不会重复下载，可以到go.mod已经更新了&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;module example.com/hello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;go 1.12
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;require rsc.io/quote v1.5.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用 go list -m all 可以查看所有依赖&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ go list -m all
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;example.com/hello
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;rsc.io/quote v1.5.2
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;rsc.io/sampler v1.3.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此时目录下多了一个go.sum文件，这个文件是做什么的呢？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c h1:qgOY6WgZOaTkIIMiVjBQcw93ERBE4m30iBm00nkL0i8&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;rsc.io/quote v1.5.2 h1:w5fcysjrx7yqtD/aO+QwRjYZOKnaM9Uh2b40tElTs3Y&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;rsc.io/quote v1.5.2/go.mod h1:LzX7hefJvL54yjefDEDHNONDjII0t9xZLPXsUe+TKr0&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;rsc.io/sampler v1.3.0 h1:7uVkIFmeBqHfdjD+gZwtXXI+RODJ2Wc4O7MPEh/QiW4&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;rsc.io/sampler v1.3.0/go.mod h1:T1hPZKmBbMNahiBKFy5HrXp6adAjACjK9JXDnKaTXpA&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看出该文件存储了包的路径 版本 还有校验值；每次执行命令时都会check 该校验是否与download目录下的是否一致；不一致就会报错&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;verifying rsc.io/quote@v1.5.2/go.mod: checksum mismatch
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;	downloaded: h1:Q15uSTpOVzCmer7yFUWKviBR7qLGLuYQ5zPmjACcaxQ&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;	go.sum:     h1:LzX7hefJvL54yjefDEDHNONDjII0t9xZLPXsUe+TKr0&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;升级依赖&#34;&gt;升级依赖&lt;/h1&gt;
+&lt;p&gt;加入要把quote包升级到其他版本，比如v3（需要提前知道升级的版本以及其中函数），&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hello&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;quoteV3&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;rsc.io/quote/v3&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Hello&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;quoteV3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;HelloV3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;运行 go test, 会自动下载V3&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;go: downloading rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;go: extracting rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;PASS
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;ok  	example.com/hello	0.008s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;查看 go.mod&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;module example.com/hello
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;go 1.12
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;require &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;	golang.org/x/text v0.3.2 // indirect
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;	rsc.io/quote v1.5.2
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;	rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;并没有删除 	rsc.io/quote v1.5.2 ，这需要执行 go mod tidy 来去除不使用的包。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;$ go mod tidy
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;$ cat go.mod
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;module example.com/hello
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;go 1.12
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;require &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;	golang.org/x/text v0.3.2 // indirect
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	rsc.io/quote/v3 v3.1.0
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;其他命令&#34;&gt;其他命令&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;replace 替换依赖项模块： 可以将包替换成另一个包或者不同版本;&lt;/li&gt;
+&lt;li&gt;exclude 忽略依赖项模块；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;go mod init 创建一个模块，并创建文件go.mod;&lt;/li&gt;
+&lt;li&gt;go build , go test 还有其他关于编译的命令都会按需将依赖添加到go.mod;&lt;/li&gt;
+&lt;li&gt;go list -m all 输出当前模块所有的依赖；&lt;/li&gt;
+&lt;li&gt;go mod tidy 可以删除不使用的依赖；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.golang.org/using-go-modules&#34;&gt;using-go-modules&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
     </item>
     
   </channel>

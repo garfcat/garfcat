@@ -1,28 +1,63 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>shell on garfcat</title>
-    <link>http://www.geekgame.site/tags/shell/</link>
-    <description>Recent content in shell on garfcat</description>
+    <title>shell on 有趣</title>
+    <link>https://www.geekgame.site/tags/shell/</link>
+    <description>Recent content in shell on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate><atom:link href="http://www.geekgame.site/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/shell/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>高效shell</title>
-      <link>http://www.geekgame.site/post/shell/effective_shell/</link>
+      <link>https://www.geekgame.site/post/shell/effective_shell/</link>
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/shell/effective_shell/</guid>
-      <description>shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。</description>
+      <guid>https://www.geekgame.site/post/shell/effective_shell/</guid>
+      <description>
+        
+          &lt;h2 id=&#34;shell&#34;&gt;shell&lt;/h2&gt;
+&lt;p&gt;使用超强组合 &lt;a href=&#34;https://ohmyz.sh/&#34;&gt;oh-my-zsh&lt;/a&gt; + &lt;a href=&#34;https://github.com/zsh-users/zsh-autosuggestions&#34;&gt;zsh-autosuggestions&lt;/a&gt; + &lt;a href=&#34;https://github.com/rupa/z&#34;&gt;z - jump around&lt;/a&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；&lt;/li&gt;
+&lt;li&gt;autosuggestions: 补全已经输入过的命令；&lt;/li&gt;
+&lt;li&gt;jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;命令&#34;&gt;命令&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/dvorka/hstr&#34;&gt;hstr&lt;/a&gt;: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ；&lt;/li&gt;
+&lt;li&gt;htop: 加强版的top, 安装与介绍可以看一下&lt;a href=&#34;https://cloud.tencent.com/developer/article/1115041&#34;&gt;这里&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+        
+      </description>
     </item>
     
     <item>
       <title>mac  sed 报错</title>
-      <link>http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
+      <link>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
       
-      <guid>http://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
-      <description>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误</description>
+      <guid>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
+      <description>
+        
+          &lt;p&gt;mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$sed&lt;/span&gt; -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/xxxx/yyy/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sed: 1: &lt;span class=&#34;s2&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;: extra characters at the end of p &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;解决方法&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;   &lt;span class=&#34;s2&#34;&gt;&amp;#34;s/XX/YY/g&amp;#34;&lt;/span&gt;  &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;============================================&lt;/p&gt;
+&lt;p&gt;sed 用法&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sed: illegal option -- -
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;usage: sed script &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-Ealn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-i extension&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;file ...&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;       sed &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-Ealn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-i extension&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-e script&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; ... &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-f script_file&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; ... &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;file ...&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;-i 后边需要添加备份文件的后缀名,如果不需要可以使用&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,但是不可以忽略
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;如 sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;.bak&amp;#34;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/xxxx/yyy/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; 会将替换后的文本写入test.bak
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+        
+      </description>
     </item>
     
   </channel>
