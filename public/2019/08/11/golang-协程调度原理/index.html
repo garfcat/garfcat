@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>golang 协程调度原理  &middot; garfcat</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="description" content="" />
+
+<meta name="keywords" content="go, sched, ">
+
+
+<meta property="og:title" content="golang 协程调度原理  &middot; garfcat ">
+<meta property="og:site_name" content="garfcat"/>
+<meta property="og:url" content="http://www.geekgame.site/2019/08/11/golang-%E5%8D%8F%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/" />
+<meta property="og:locale" content="en-us">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content=""/>
+<meta property="og:article:published_time" content="2019-08-11T10:23:01&#43;08:00" />
+<meta property="og:article:modified_time" content="2019-08-11T10:23:01&#43;08:00" />
+
+  
+    
+<meta property="og:article:tag" content="go">
+    
+<meta property="og:article:tag" content="sched">
+    
+  
+
+  
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "golang 协程调度原理",
+    "author": {
+      "@type": "Person",
+      "name": "yourname"
+    },
+    "datePublished": "2019-08-11",
+    "description": "",
+    "wordCount":  344 
+  }
+</script>
+
+
+
+<link rel="canonical" href="http://www.geekgame.site/2019/08/11/golang-%E5%8D%8F%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86/" />
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.geekgame.site/touch-icon-144-precomposed.png">
+<link href="http://www.geekgame.site/favicon.png" rel="icon">
+
+<meta name="generator" content="Hugo 0.75.0" />
+
+  <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link href='https://fonts.googleapis.com/css?family=Merriweather:300%7CRaleway%7COpen+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/highlight/default.css">
+
+  
+  
+</head>
+<body>
+  <main id="main-wrapper" class="container main_wrapper has-sidebar">
+    <header id="main-header" class="container main_header">
+  <div class="container brand">
+  <div class="container title h1-like">
+  <a class="baselink" href="http://www.geekgame.site">
+  foobar
+
+</a>
+
+</div>
+
+  
+<div class="container topline">
+  
+  few words about your site
+
+
+</div>
+
+
+</div>
+
+  <nav class="container nav primary no-print">
+  
+
+<a class="homelink" href="http://www.geekgame.site">home</a>
+
+
+  
+
+</nav>
+
+<div class="container nav secondary no-print">
+  
+<a id="contact-link-email" class="contact_link" rel="me" aria-label="Email" href="mailto:yourname@example.com">
+  <span class="fa fa-envelope-square"></span></a>
+
+
+
+<a id="contact-link-github" class="contact_link" rel="me" aria-label="Github" href="https://github.com/enten/hugo-boilerplate">
+  <span class="fa fa-github-square"></span></a>
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  
+
+</header>
+
+
+<article id="main-content" class="container main_content single">
+  <header class="container hat">
+  <h1>golang 协程调度原理
+</h1>
+
+  <div class="metas">
+<time datetime="2019-08-11">11 Aug, 2019</time>
+
+
+  
+  &middot; Read in about 2 min
+  &middot; (344 Words)
+  <br>
+  
+<a class="label" href="http://www.geekgame.site/tags/go">go</a>
+
+<a class="label" href="http://www.geekgame.site/tags/sched">sched</a>
+
+
+
+</div>
+
+</header>
+
+  <div class="container content">
+  <p>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。
+本文就来深入探讨一下Go的调度原理。</p>
+<h1 id="gmp调度模型">GMP调度模型</h1>
+<p>Go采用的是GMP调度模型。</p>
+<h2 id="核心概念">核心概念</h2>
+<ul>
+<li>G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() <span style="color:#75715e">//创建协程来执行函数
+</span></code></pre></div><ul>
+<li>M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic.</li>
+<li>P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数；</li>
+<li>本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中；</li>
+<li>全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；</li>
+</ul>
+<h2 id="调度原理">调度原理</h2>
+<pre><code>     +-------------------- sysmon ---------------//------+ 
+                             |                                                   |
+                             |                                                   |
+                +---+      +---+-------+                   +--------+          +---+---+
+ go func() ---&gt; | G | ---&gt; | P | local | &lt;=== balance ===&gt; | global | &lt;--//--- | P | M |
+                +---+      +---+-------+                   +--------+          +---+---+
+                             |                                 |                 | 
+                             |      +---+                      |                 |
+                             +----&gt; | M | &lt;--- findrunnable ---+--- steal &lt;--//--+
+                                    +---+ 
+                                      |
+                                    mstart
+                                      |
+               +--- execute &lt;----- schedule 
+               |                      |   
+               |                      |
+               +--&gt; G.fn --&gt; goexit --+ 
+
+</code></pre><p>从上图(来自雨痕GO源码阅读)我们可以看到在新建G时</p>
+<ol>
+<li>当使用go 关键字执行函数时，会创建(首先查看P的freelist是否可以复用G，如果不能则新建)一个G(goroutine);</li>
+<li>新创建的G，并不会添加到本地队列，而是添加到P关联的runnext中(runnext是一个指针变量，用来存放G的地址),runnext原来的G被放到本地队列中;</li>
+</ol>
+<ul>
+<li>2.1 如果本地队列未满（最大256），则放置到队尾；</li>
+<li>2.2 如果本地队列已满，则将本地队列的一半数量的G和runnext中原来的G存放到全局队列中；</li>
+</ul>
+<ol start="3">
+<li>唤醒或新建M来执行任务。</li>
+<li>进入调度循环</li>
+<li>尽力获取可执行的G，并执行</li>
+<li>清理现场并且重新进入调度循环<br>
+<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/gmp_pic.png" alt="调度原理"></li>
+</ol>
+<h3 id="运行时调度">运行时调度</h3>
+<ol>
+<li>为公平起见，有1／61的机会首先从全局队列获取到G,如果获取到则执行G;</li>
+<li>如果没有机会从全局队列获取或者没有获取到G，则从P关联的runnext或者本地队列获取： <br>
+2.1 如果P的runnext有G，则执行该G；
+2.2 如果P的runnext没有G，则从本地队列中获取G；</li>
+<li>如果第二步没有获取到，则执行以下步骤获取：<br>
+3.1 从关联P中获取，步骤同2，若获取到返回;<br>
+3.2 从全局队列中获取，若获取到返回;<br>
+3.3 调用 netpoll()取异步调用结束的G，该调用为非阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；<br>
+3.4 从其他P中steal一半的G到本地队列,若获取到则返回；<br>
+3.5 如果处于垃圾回收标记阶段，则执行垃圾回收操作；<br>
+3.6 再次从全局队列中获取，若获取到返回;<br>
+3.7 调用 netpoll()取异步调用结束的G，该调用为阻塞调用,若获取到则返回一个G，剩余的G放入到全局队列中；</li>
+</ol>
+<h3 id="协程的状态">协程的状态</h3>
+<p>在go1.12.5/src/runtime/runtime2.go：15 定义有如下几个状态<br>
+_Gidle: 值（0） 刚刚被创建，还没有初始化；<br>
+_Grunnable： 值（1） 已经在运行队列中，只是此时没有执行用户代码,未分配栈；<br>
+_Grunning：值（2）在执行用户代码，已经不在运行队列中，分配了M和P;<br>
+_Gsyscall： 值（3）当前goroutine正在执行系统调用，已经不再运行队列中，分配了M;<br>
+_Gwaiting： 值（4） 在运行时被阻塞，并没有执行用户代码，此刻的goroutine会被记录到某处（例如channel等待队列）<br>
+_Gmoribund_unused: 值（5） 当前并未使用，但是已经在gdb中进行了硬编码；<br>
+_Gdead： 值（6） 当前goroutine没有被使用，可能刚刚退出或者刚刚被初始化，并没有执行用户代码；<br>
+_Genqueue_unused： 值（7） 当前并未使用；<br>
+_Gcopystack：值（8）正在复制堆栈，并未执行用户代码，也没有在运行队列中； <br>
+状态转换图(引自 <a href="https://reading.developerlearning.cn/reading/12-2018-08-02-goroutine-gpm/">goroutine调度</a>)如下</p>
+<pre><code>                                                     +------------+
+                                      ready           |            |
+                                  +------------------ |  _Gwaiting |
+                                  |                   |            |
+                                  |                   +------------+
+                                  |                         ^ park_m
+                                  V                         | 
+  +------------+            +------------+  execute   +------------+            +------------+    
+  |            |  newproc   |            | ---------&gt; |            |   goexit   |            |
+  |  _Gidle    | ---------&gt; | _Grunnable |  yield     | _Grunning  | ---------&gt; |   _Gdead   |      
+  |            |            |            | &lt;--------- |            |            |            |
+  +------------+            +-----^------+            +------------+            +------------+
+                                  |         entersyscall |      ^ 
+                                  |                      V      | existsyscall
+                                  |                   +------------+
+                                  |   existsyscall    |            |
+                                  +------------------ |  _Gsyscall |
+                                                      |            |
+                                                      +------------+
+
+</code></pre><h3 id="p的状态">P的状态</h3>
+<p>_Pidle: 空闲状态，未与M绑定<br>
+_Prunning: 正在运行，已经与M绑定,M 正在执行P中G；<br>
+_Psyscall: 正在执行的G处于系统调用中；<br>
+_Pgcstop： runtime正在gc;<br>
+_Pdead: 当前P已经不再使用；</p>
+<p>状态转换图(引自 <a href="https://reading.developerlearning.cn/reading/12-2018-08-02-goroutine-gpm/">goroutine调度</a>)如下</p>
+<pre><code>                                            acquirep(p)        
+                          不需要使用的P       P和M绑定的时候       进入系统调用       procresize()
+new(p)  -----+        +---------------+     +-----------+     +------------+    +----------+
+            |         |               |     |           |     |            |    |          |
+            |   +------------+    +---v--------+    +---v--------+    +----v-------+    +--v---------+
+            +--&gt;|  _Pgcstop  |    |    _Pidle  |    |  _Prunning |    |  _Psyscall |    |   _Pdead   |
+                +------^-----+    +--------^---+    +--------^---+    +------------+    +------------+
+                       |            |     |            |     |            |
+                       +------------+     +------------+     +------------+
+                           GC结束            releasep()        退出系统调用
+                                            P和M解绑  
+
+</code></pre><h3 id="抢占">抢占</h3>
+<p>在golang程序启动时，会创建一个M（并没有关联P）来执行监控函数即sysmon,该函数就是用来完成抢占的；</p>
+<ol>
+<li>该函数每次执行之间都会休眠一定的时间，休眠时间计算规则与每次是否抢占成功有关系：<br>
+1.1 如果连续未抢占成功的次数小于等于50，则每次休眠20us;<br>
+1.2 如果连续未抢占成功的次数大于50，则每次休眠次数翻倍；<br>
+1.3 最大休眠时间不得超过10ms;</li>
+<li>遍历所有的P，查看P的状态：<br>
+2.1 如果状态为_Psyscall(处于系统调用中)且执行时间已经超过了一个sysmon时间（最少20us）,则进行抢占；<br>
+2.2 如果状态为_Prunning且执行时间已经超过了forcePreemptNS(10ms),则进行抢占；</li>
+</ol>
+<h3 id="阻塞唤醒">阻塞/唤醒</h3>
+<p>channel阻塞&hellip;<br>
+系统阻塞&hellip;</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://studygolang.com/articles/20991">https://studygolang.com/articles/20991</a>
+<a href="https://studygolang.com/articles/11627">https://studygolang.com/articles/11627</a><br>
+<a href="https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA">https://mp.weixin.qq.com/s/Oos-aW1_khTO084v0jPlIA</a> <br>
+<a href="https://blog.csdn.net/u010853261/article/details/84790392">https://blog.csdn.net/u010853261/article/details/84790392</a> <br>
+<a href="https://reading.developerlearning.cn/reading/12-2018-08-02-goroutine-gpm/">go夜读 golang 调度</a></p>
+
+</div>
+
+
+  <footer class="container">
+  <div class="container navigation no-print">
+  <h2>Navigation</h2>
+  
+  
+
+    
+    <a class="prev" href="http://www.geekgame.site/2019/06/20/%E9%80%9A%E8%BF%87-hello-world-%E5%AF%BB%E6%89%BE-golang-%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/" title="通过 hello world 寻找 golang 启动过程">
+      Previous
+    </a>
+    
+
+    
+    <a class="next" href="http://www.geekgame.site/2020/05/07/tcp-timewait-%E8%BF%87%E5%A4%9A%E6%80%8E%E4%B9%88%E5%8A%9E/" title="TCP timewait 过多怎么办">
+      Next
+    </a>
+    
+
+  
+
+
+</div>
+
+  
+<div class="container comments">
+  <h2>Comments</h2>
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+
+
+</footer>
+
+</article>
+      <footer id="main-footer" class="container main_footer">
+  
+
+  <div class="container nav foot no-print">
+  
+
+  <a class="toplink" href="#">back to top</a>
+
+</div>
+
+  <div class="container credits">
+  
+<div class="container footline">
+  
+  code with <!-- raw HTML omitted --><!-- raw HTML omitted -->
+
+
+</div>
+
+
+  
+<div class="container copyright">
+  
+  (c) 2021 garfcat.
+
+
+</div>
+
+
+</div>
+
+</footer>
+
+    </main>
+    
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>mac  sed 报错  &middot; garfcat</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="description" content="" />
+
+<meta name="keywords" content="sed, mac, shell, ">
+
+
+<meta property="og:title" content="mac  sed 报错  &middot; garfcat ">
+<meta property="og:site_name" content="garfcat"/>
+<meta property="og:url" content="http://www.geekgame.site/2019/05/13/mac-sed-%E6%8A%A5%E9%94%99/" />
+<meta property="og:locale" content="en-us">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content=""/>
+<meta property="og:article:published_time" content="2019-05-13T12:36:43&#43;08:00" />
+<meta property="og:article:modified_time" content="2019-05-13T12:36:43&#43;08:00" />
+
+  
+    
+<meta property="og:article:tag" content="sed">
+    
+<meta property="og:article:tag" content="mac">
+    
+<meta property="og:article:tag" content="shell">
+    
+  
+
+  
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "mac  sed 报错",
+    "author": {
+      "@type": "Person",
+      "name": "yourname"
+    },
+    "datePublished": "2019-05-13",
+    "description": "",
+    "wordCount":  61 
+  }
+</script>
+
+
+
+<link rel="canonical" href="http://www.geekgame.site/2019/05/13/mac-sed-%E6%8A%A5%E9%94%99/" />
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.geekgame.site/touch-icon-144-precomposed.png">
+<link href="http://www.geekgame.site/favicon.png" rel="icon">
+
+<meta name="generator" content="Hugo 0.75.0" />
+
+  <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link href='https://fonts.googleapis.com/css?family=Merriweather:300%7CRaleway%7COpen+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/highlight/default.css">
+
+  
+  
+</head>
+<body>
+  <main id="main-wrapper" class="container main_wrapper has-sidebar">
+    <header id="main-header" class="container main_header">
+  <div class="container brand">
+  <div class="container title h1-like">
+  <a class="baselink" href="http://www.geekgame.site">
+  foobar
+
+</a>
+
+</div>
+
+  
+<div class="container topline">
+  
+  few words about your site
+
+
+</div>
+
+
+</div>
+
+  <nav class="container nav primary no-print">
+  
+
+<a class="homelink" href="http://www.geekgame.site">home</a>
+
+
+  
+
+</nav>
+
+<div class="container nav secondary no-print">
+  
+<a id="contact-link-email" class="contact_link" rel="me" aria-label="Email" href="mailto:yourname@example.com">
+  <span class="fa fa-envelope-square"></span></a>
+
+
+
+<a id="contact-link-github" class="contact_link" rel="me" aria-label="Github" href="https://github.com/enten/hugo-boilerplate">
+  <span class="fa fa-github-square"></span></a>
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  
+
+</header>
+
+
+<article id="main-content" class="container main_content single">
+  <header class="container hat">
+  <h1>mac  sed 报错
+</h1>
+
+  <div class="metas">
+<time datetime="2019-05-13">13 May, 2019</time>
+
+
+  
+  &middot; Read in about 1 min
+  &middot; (61 Words)
+  <br>
+  
+<a class="label" href="http://www.geekgame.site/tags/sed">sed</a>
+
+<a class="label" href="http://www.geekgame.site/tags/mac">mac</a>
+
+<a class="label" href="http://www.geekgame.site/tags/shell">shell</a>
+
+
+
+</div>
+
+</header>
+
+  <div class="container content">
+  <p>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$sed -i <span style="color:#e6db74">&#39;s/xxxx/yyy/g&#39;</span> test
+sed: 1: <span style="color:#e6db74">&#34;test&#34;</span>: extra characters at the end of p command
+</code></pre></div><p>解决方法</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sed -i <span style="color:#e6db74">&#34;&#34;</span>   <span style="color:#e6db74">&#34;s/XX/YY/g&#34;</span>  test
+</code></pre></div><p>============================================</p>
+<p>sed 用法</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sed: illegal option -- -
+usage: sed script <span style="color:#f92672">[</span>-Ealn<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-i extension<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>file ...<span style="color:#f92672">]</span>
+       sed <span style="color:#f92672">[</span>-Ealn<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-i extension<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-e script<span style="color:#f92672">]</span> ... <span style="color:#f92672">[</span>-f script_file<span style="color:#f92672">]</span> ... <span style="color:#f92672">[</span>file ...<span style="color:#f92672">]</span>
+
+
+-i 后边需要添加备份文件的后缀名,如果不需要可以使用<span style="color:#e6db74">&#34;&#34;</span>,但是不可以忽略
+
+如 sed -i <span style="color:#e6db74">&#34;.bak&#34;</span> <span style="color:#e6db74">&#39;s/xxxx/yyy/g&#39;</span> test 会将替换后的文本写入test.bak
+</code></pre></div>
+</div>
+
+
+  <footer class="container">
+  <div class="container navigation no-print">
+  <h2>Navigation</h2>
+  
+  
+
+    
+
+    
+    <a class="next" href="http://www.geekgame.site/2019/05/15/mqtt-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="MQTT 基本概念">
+      Next
+    </a>
+    
+
+  
+
+
+</div>
+
+  
+<div class="container comments">
+  <h2>Comments</h2>
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+
+
+</footer>
+
+</article>
+      <footer id="main-footer" class="container main_footer">
+  
+
+  <div class="container nav foot no-print">
+  
+
+  <a class="toplink" href="#">back to top</a>
+
+</div>
+
+  <div class="container credits">
+  
+<div class="container footline">
+  
+  code with <!-- raw HTML omitted --><!-- raw HTML omitted -->
+
+
+</div>
+
+
+  
+<div class="container copyright">
+  
+  (c) 2021 garfcat.
+
+
+</div>
+
+
+</div>
+
+</footer>
+
+    </main>
+    
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+</html>
+

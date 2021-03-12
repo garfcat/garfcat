@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>高效shell  &middot; garfcat</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="description" content="" />
+
+<meta name="keywords" content="effective, shell, ">
+
+
+<meta property="og:title" content="高效shell  &middot; garfcat ">
+<meta property="og:site_name" content="garfcat"/>
+<meta property="og:url" content="http://www.geekgame.site/2019/05/16/%E9%AB%98%E6%95%88shell/" />
+<meta property="og:locale" content="en-us">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content=""/>
+<meta property="og:article:published_time" content="2019-05-16T19:34:57&#43;08:00" />
+<meta property="og:article:modified_time" content="2019-05-16T19:34:57&#43;08:00" />
+
+  
+    
+<meta property="og:article:tag" content="effective">
+    
+<meta property="og:article:tag" content="shell">
+    
+  
+
+  
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "高效shell",
+    "author": {
+      "@type": "Person",
+      "name": "yourname"
+    },
+    "datePublished": "2019-05-16",
+    "description": "",
+    "wordCount":  34 
+  }
+</script>
+
+
+
+<link rel="canonical" href="http://www.geekgame.site/2019/05/16/%E9%AB%98%E6%95%88shell/" />
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.geekgame.site/touch-icon-144-precomposed.png">
+<link href="http://www.geekgame.site/favicon.png" rel="icon">
+
+<meta name="generator" content="Hugo 0.75.0" />
+
+  <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link href='https://fonts.googleapis.com/css?family=Merriweather:300%7CRaleway%7COpen+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/highlight/default.css">
+
+  
+  
+</head>
+<body>
+  <main id="main-wrapper" class="container main_wrapper has-sidebar">
+    <header id="main-header" class="container main_header">
+  <div class="container brand">
+  <div class="container title h1-like">
+  <a class="baselink" href="http://www.geekgame.site">
+  foobar
+
+</a>
+
+</div>
+
+  
+<div class="container topline">
+  
+  few words about your site
+
+
+</div>
+
+
+</div>
+
+  <nav class="container nav primary no-print">
+  
+
+<a class="homelink" href="http://www.geekgame.site">home</a>
+
+
+  
+
+</nav>
+
+<div class="container nav secondary no-print">
+  
+<a id="contact-link-email" class="contact_link" rel="me" aria-label="Email" href="mailto:yourname@example.com">
+  <span class="fa fa-envelope-square"></span></a>
+
+
+
+<a id="contact-link-github" class="contact_link" rel="me" aria-label="Github" href="https://github.com/enten/hugo-boilerplate">
+  <span class="fa fa-github-square"></span></a>
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  
+
+</header>
+
+
+<article id="main-content" class="container main_content single">
+  <header class="container hat">
+  <h1>高效shell
+</h1>
+
+  <div class="metas">
+<time datetime="2019-05-16">16 May, 2019</time>
+
+
+  
+  &middot; Read in about 1 min
+  &middot; (34 Words)
+  <br>
+  
+<a class="label" href="http://www.geekgame.site/tags/effective">effective</a>
+
+<a class="label" href="http://www.geekgame.site/tags/shell">shell</a>
+
+
+
+</div>
+
+</header>
+
+  <div class="container content">
+  <h2 id="shell">shell</h2>
+<p>使用超强组合 <a href="https://ohmyz.sh/">oh-my-zsh</a> + <a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a> + <a href="https://github.com/rupa/z">z - jump around</a>。</p>
+<ul>
+<li>oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；</li>
+<li>autosuggestions: 补全已经输入过的命令；</li>
+<li>jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；</li>
+</ul>
+<h2 id="命令">命令</h2>
+<ul>
+<li><a href="https://github.com/dvorka/hstr">hstr</a>: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr &ndash;show-configuration &raquo; ~/.zshrc , source ~/.zshrc ；</li>
+<li>htop: 加强版的top, 安装与介绍可以看一下<a href="https://cloud.tencent.com/developer/article/1115041">这里</a></li>
+</ul>
+
+</div>
+
+
+  <footer class="container">
+  <div class="container navigation no-print">
+  <h2>Navigation</h2>
+  
+  
+
+    
+    <a class="prev" href="http://www.geekgame.site/2019/05/15/mqtt-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="MQTT 基本概念">
+      Previous
+    </a>
+    
+
+    
+    <a class="next" href="http://www.geekgame.site/2019/05/30/golang-module-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" title="golang module 使用教程">
+      Next
+    </a>
+    
+
+  
+
+
+</div>
+
+  
+<div class="container comments">
+  <h2>Comments</h2>
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+
+
+</footer>
+
+</article>
+      <footer id="main-footer" class="container main_footer">
+  
+
+  <div class="container nav foot no-print">
+  
+
+  <a class="toplink" href="#">back to top</a>
+
+</div>
+
+  <div class="container credits">
+  
+<div class="container footline">
+  
+  code with <!-- raw HTML omitted --><!-- raw HTML omitted -->
+
+
+</div>
+
+
+  
+<div class="container copyright">
+  
+  (c) 2021 garfcat.
+
+
+</div>
+
+
+</div>
+
+</footer>
+
+    </main>
+    
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+</html>
+

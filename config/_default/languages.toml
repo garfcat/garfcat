@@ -1,0 +1,13 @@
+[zh]
+  title = "有趣"
+  LanguageName = "Chinese"
+  weight = 0
+[en]
+  title = "Funny"
+  LanguageName = "English"
+  weight = 1
+#[pt]
+#  title = "Engraçado" # just for the sake of showing this is possible
+#  LanguageName = "Português"
+#  weight = 2
+  

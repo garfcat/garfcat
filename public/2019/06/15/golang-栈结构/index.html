@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>golang 栈结构  &middot; garfcat</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="description" content="" />
+
+<meta name="keywords" content="go, stack, ">
+
+
+<meta property="og:title" content="golang 栈结构  &middot; garfcat ">
+<meta property="og:site_name" content="garfcat"/>
+<meta property="og:url" content="http://www.geekgame.site/2019/06/15/golang-%E6%A0%88%E7%BB%93%E6%9E%84/" />
+<meta property="og:locale" content="en-us">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content=""/>
+<meta property="og:article:published_time" content="2019-06-15T16:41:11&#43;08:00" />
+<meta property="og:article:modified_time" content="2019-06-15T16:41:11&#43;08:00" />
+
+  
+    
+<meta property="og:article:tag" content="go">
+    
+<meta property="og:article:tag" content="stack">
+    
+  
+
+  
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "golang 栈结构",
+    "author": {
+      "@type": "Person",
+      "name": "yourname"
+    },
+    "datePublished": "2019-06-15",
+    "description": "",
+    "wordCount":  409 
+  }
+</script>
+
+
+
+<link rel="canonical" href="http://www.geekgame.site/2019/06/15/golang-%E6%A0%88%E7%BB%93%E6%9E%84/" />
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.geekgame.site/touch-icon-144-precomposed.png">
+<link href="http://www.geekgame.site/favicon.png" rel="icon">
+
+<meta name="generator" content="Hugo 0.75.0" />
+
+  <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link href='https://fonts.googleapis.com/css?family=Merriweather:300%7CRaleway%7COpen+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/highlight/default.css">
+
+  
+  
+</head>
+<body>
+  <main id="main-wrapper" class="container main_wrapper has-sidebar">
+    <header id="main-header" class="container main_header">
+  <div class="container brand">
+  <div class="container title h1-like">
+  <a class="baselink" href="http://www.geekgame.site">
+  foobar
+
+</a>
+
+</div>
+
+  
+<div class="container topline">
+  
+  few words about your site
+
+
+</div>
+
+
+</div>
+
+  <nav class="container nav primary no-print">
+  
+
+<a class="homelink" href="http://www.geekgame.site">home</a>
+
+
+  
+
+</nav>
+
+<div class="container nav secondary no-print">
+  
+<a id="contact-link-email" class="contact_link" rel="me" aria-label="Email" href="mailto:yourname@example.com">
+  <span class="fa fa-envelope-square"></span></a>
+
+
+
+<a id="contact-link-github" class="contact_link" rel="me" aria-label="Github" href="https://github.com/enten/hugo-boilerplate">
+  <span class="fa fa-github-square"></span></a>
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  
+
+</header>
+
+
+<article id="main-content" class="container main_content single">
+  <header class="container hat">
+  <h1>golang 栈结构
+</h1>
+
+  <div class="metas">
+<time datetime="2019-06-15">15 Jun, 2019</time>
+
+
+  
+  &middot; Read in about 2 min
+  &middot; (409 Words)
+  <br>
+  
+<a class="label" href="http://www.geekgame.site/tags/go">go</a>
+
+<a class="label" href="http://www.geekgame.site/tags/stack">stack</a>
+
+
+
+</div>
+
+</header>
+
+  <div class="container content">
+  <h1 id="程序组成">程序组成</h1>
+<p>程序由代码和数据组成，数据又有静态与动态之分；<br>
+动态数据：存放在堆区和栈区；<br>
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br>
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；</p>
+<h1 id="寄存器">寄存器</h1>
+<h2 id="伪寄存器">伪寄存器</h2>
+<ul>
+<li>FP(Frame pointer): 表示参数以及返回值的基地址；
+通过 SYMBOL+/-ffset(FP)</li>
+<li>PC(Program counter): 跳转寄存器，存储下一条指令地址；</li>
+<li>SB(Static base pointer): 全局静态起始地址.</li>
+<li>SP(Stack pointer): 表示本地变量的起始地址；<br>
+使用方式 symbol + offset(SP), 例如第一个变量 local0 + (0)SP , local0 只是定义一个符号，类似于 local0 := xxxx</li>
+</ul>
+<p>这个四个伪寄存器在golang 汇编中经常被用到，尤其是SB和FP；<br>
+SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语法有两个修饰符&lt;&gt; 和 +N，其中N是一个整数。 foo&lt;&gt;(SB)表示foo是一个私有元素只能在
+当前文件中可见，就像是golang 首字母小写的变量或者函数。foo+8(SB)表示相对于foo 8字节的内存地址；<em>注意 这里是相对符号的地址</em><br>
+FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。</p>
+<h2 id="fp-伪sp-硬件sp之间的关系">FP、 伪SP、 硬件SP之间的关系</h2>
+<p>SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。</p>
+<h3 id="栈结构">栈结构</h3>
+<h4 id="无参数无本地变量">无参数无本地变量</h4>
+<p>无参数无本地变量栈结果是如下所示</p>
+<p><img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png" alt="没有参数没有本地变量"></p>
+<p>通过如下函数来验证</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#75715e">#include &#34;textflag.h&#34; //
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">TEXT</span> <span style="color:#960050;background-color:#1e0010">·</span><span style="color:#66d9ef">SpFp</span>(<span style="color:#66d9ef">SB</span>),<span style="color:#66d9ef">NOSPLIT</span>,<span style="color:#66d9ef">$0-32</span>
+    <span style="color:#a6e22e">LEAQ</span> (<span style="color:#66d9ef">SP</span>), <span style="color:#66d9ef">AX</span>   <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">将硬件</span><span style="color:#66d9ef">SP地址存储到AX</span>
+    <span style="color:#a6e22e">LEAQ</span> <span style="color:#66d9ef">a</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">0</span>(<span style="color:#66d9ef">SP</span>), <span style="color:#66d9ef">BX</span>  <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">将伪</span><span style="color:#66d9ef">SP地址存储到BX</span>
+    <span style="color:#a6e22e">LEAQ</span> <span style="color:#66d9ef">b</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">0</span>(<span style="color:#66d9ef">FP</span>), <span style="color:#66d9ef">CX</span>  <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">将</span><span style="color:#66d9ef">FP地址存储到CX</span>
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">AX</span>, <span style="color:#66d9ef">ret</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">0</span>(<span style="color:#66d9ef">FP</span>) <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">将</span><span style="color:#66d9ef">AX地址存储到第一个返回值</span>
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">BX</span>, <span style="color:#66d9ef">ret</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">8</span>(<span style="color:#66d9ef">FP</span>) <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">将</span><span style="color:#66d9ef">BX地址存储到第二个返回值</span>
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">CX</span>, <span style="color:#66d9ef">ret</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">16</span>(<span style="color:#66d9ef">FP</span>) <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">将</span><span style="color:#66d9ef">CX地址存储到第三个返回值</span>
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">a</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">0</span>(<span style="color:#66d9ef">SP</span>), <span style="color:#66d9ef">AX</span>  <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">将</span><span style="color:#66d9ef">SP</span> <span style="color:#960050;background-color:#1e0010">存储的值存储到</span><span style="color:#66d9ef">AX</span><span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#960050;background-color:#1e0010">也就是该函数的返回值</span>
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">AX</span>, <span style="color:#66d9ef">ret</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">24</span>(<span style="color:#66d9ef">FP</span>)  <span style="color:#960050;background-color:#1e0010">//将</span><span style="color:#66d9ef">AX</span> <span style="color:#960050;background-color:#1e0010">放到第四个返回值</span>
+    <span style="color:#a6e22e">RET</span>
+    
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SpFp</span>() (<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>) <span style="color:#75715e">// 汇编函数声明
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>()  {
+	<span style="color:#a6e22e">a</span>,<span style="color:#a6e22e">b</span>,<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">addr</span>  <span style="color:#f92672">:=</span> <span style="color:#a6e22e">SpFp</span>()
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&#34;</span>, <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> ,<span style="color:#a6e22e">c</span>,<span style="color:#a6e22e">addr</span>,<span style="color:#a6e22e">SpFp</span> )
+}
+
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./spfp
+硬SP<span style="color:#f92672">[</span>824634216112<span style="color:#f92672">]</span> 伪SP<span style="color:#f92672">[</span>824634216112<span style="color:#f92672">]</span> FP<span style="color:#f92672">[</span>824634216120<span style="color:#f92672">]</span> addr<span style="color:#f92672">[</span>17385428<span style="color:#f92672">]</span> SpFp<span style="color:#f92672">[</span>17385904<span style="color:#f92672">]</span>
+</code></pre></div><p>由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ dlv exec ./fpsp
+Type <span style="color:#e6db74">&#39;help&#39;</span> <span style="color:#66d9ef">for</span> list of commands.
+<span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> b *17385428
+Breakpoint <span style="color:#ae81ff">1</span> set at 0x10947d4 <span style="color:#66d9ef">for</span> main.main<span style="color:#f92672">()</span> ./main.go:7
+<span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span>
+</code></pre></div><p>由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()</p>
+<h4 id="有参数无本地变量">有参数无本地变量</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#75715e">#include &#34;textflag.h&#34; //
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">TEXT</span> <span style="color:#960050;background-color:#1e0010">·</span><span style="color:#66d9ef">SpFpArgs</span>(<span style="color:#66d9ef">SB</span>),<span style="color:#66d9ef">NOSPLIT</span>,<span style="color:#66d9ef">$0-24</span>
+    <span style="color:#a6e22e">LEAQ</span> (<span style="color:#66d9ef">SP</span>), <span style="color:#66d9ef">AX</span>
+    <span style="color:#a6e22e">LEAQ</span> <span style="color:#66d9ef">a</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">0</span>(<span style="color:#66d9ef">SP</span>), <span style="color:#66d9ef">BX</span>
+    <span style="color:#a6e22e">LEAQ</span> <span style="color:#66d9ef">b</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">0</span>(<span style="color:#66d9ef">FP</span>), <span style="color:#66d9ef">CX</span>
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">AX</span>, <span style="color:#66d9ef">ret</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">24</span>(<span style="color:#66d9ef">FP</span>)
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">BX</span>, <span style="color:#66d9ef">ret</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">32</span>(<span style="color:#66d9ef">FP</span>)
+    <span style="color:#a6e22e">MOVQ</span> <span style="color:#66d9ef">CX</span>, <span style="color:#66d9ef">ret</span><span style="color:#960050;background-color:#1e0010">+</span><span style="color:#ae81ff">40</span>(<span style="color:#66d9ef">FP</span>)
+    <span style="color:#a6e22e">RET</span>
+    
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SpFpArgs</span>(<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>) (<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>) <span style="color:#75715e">// 汇编函数声明
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>()  {
+	<span style="color:#a6e22e">e</span>,<span style="color:#a6e22e">f</span>,<span style="color:#a6e22e">g</span>   <span style="color:#f92672">:=</span> <span style="color:#a6e22e">SpFpArgs</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;硬SP[%d] 伪SP[%d] FP[%d]\n&#34;</span>, <span style="color:#a6e22e">e</span>, <span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">g</span>)
+}
+
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./spfp
+硬SP<span style="color:#f92672">[</span>824634216048<span style="color:#f92672">]</span> 伪SP<span style="color:#f92672">[</span>824634216048<span style="color:#f92672">]</span> FP<span style="color:#f92672">[</span>824634216056<span style="color:#f92672">]</span>
+</code></pre></div><p>由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8</p>
+<h3 id="有本地变量">有本地变量</h3>
+<p>在有本地变量情况下，在X86 和 ARM 中栈结构是不同的，如下所示：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+
+// Stack frame layout
+//
+// <span style="color:#f92672">(</span>x86<span style="color:#f92672">)</span>
+// +------------------+
+// | args from caller |
+// +------------------+ &lt;- frame-&gt;argp
+// |  <span style="color:#66d9ef">return</span> address  |
+// +------------------+
+// |  caller<span style="color:#e6db74">&#39;s BP (*) | (*) if framepointer_enabled &amp;&amp; varp &lt; sp
+</span><span style="color:#e6db74">// +------------------+ &lt;- frame-&gt;varp
+</span><span style="color:#e6db74">// |     locals       |
+</span><span style="color:#e6db74">// +------------------+
+</span><span style="color:#e6db74">// |  args to callee  |
+</span><span style="color:#e6db74">// +------------------+ &lt;- frame-&gt;sp
+</span><span style="color:#e6db74">//
+</span><span style="color:#e6db74">// (arm)
+</span><span style="color:#e6db74">// +------------------+
+</span><span style="color:#e6db74">// | args from caller |
+</span><span style="color:#e6db74">// +------------------+ &lt;- frame-&gt;argp
+</span><span style="color:#e6db74">// | caller&#39;</span>s retaddr |
+// +------------------+ &lt;- frame-&gt;varp
+// |     locals       |
+// +------------------+
+// |  args to callee  |
+// +------------------+
+// |  <span style="color:#66d9ef">return</span> address  |
+// +------------------+ &lt;- frame-&gt;sp
+
+</code></pre></div><p>我们在这里特别关注X86，会使用到BP寄存器，这个寄存器主要用来指示栈的起始位置，现在很多编译器并不需要这个，因为可以通过SP加Offset来寻找栈起始位置。在amd64平台上,会在函数返回值之后插入8byte来放置Caller BP。
+在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：</p>
+<ol>
+<li>函数的栈帧大于0；</li>
+<li>满足条件</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Framepointer_enabled</span>(<span style="color:#a6e22e">goos</span>, <span style="color:#a6e22e">goarch</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
+  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">framepointer_enabled</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">goarch</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;amd64&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">goos</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;nacl&#34;</span>
+}
+</code></pre></div><p>另外此时 硬件SP与伪SP是不相同的。<br>
+硬件SP + locals = 伪SP</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://9p.io/plan9/">https://9p.io/plan9/</a><br>
+<a href="http://68k.hax.com/">指令查询</a><br>
+<a href="https://9p.io/magic/man2html/1/8a">命令查询</a><br>
+<a href="https://zhuanlan.zhihu.com/p/19902040">Go的标准IDE：Acme文本编辑器</a><br>
+<a href="https://golang.org/doc/asm">A Quick Guide to Go&rsquo;s Assembler</a><br>
+<a href="https://lrita.github.io/2017/12/12/golang-asm/">golang 汇编</a><br>
+<a href="https://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html">汇编语言入门教程</a><br>
+<a href="http://xargin.com/go-and-plan9-asm/">[译]go 和 plan9 汇编</a><br>
+<a href="https://blog.brickgao.com/2019/01/27/split-stacks/">split stacks</a><br>
+<a href="https://blog.cloudflare.com/how-stacks-are-handled-in-go/">How Stacks are Handled in Go</a><br>
+<a href="https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">go函数调用</a></p>
+
+</div>
+
+
+  <footer class="container">
+  <div class="container navigation no-print">
+  <h2>Navigation</h2>
+  
+  
+
+    
+    <a class="prev" href="http://www.geekgame.site/2019/05/30/golang-module-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" title="golang module 使用教程">
+      Previous
+    </a>
+    
+
+    
+    <a class="next" href="http://www.geekgame.site/2019/06/20/%E9%80%9A%E8%BF%87-hello-world-%E5%AF%BB%E6%89%BE-golang-%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/" title="通过 hello world 寻找 golang 启动过程">
+      Next
+    </a>
+    
+
+  
+
+
+</div>
+
+  
+<div class="container comments">
+  <h2>Comments</h2>
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+
+
+</footer>
+
+</article>
+      <footer id="main-footer" class="container main_footer">
+  
+
+  <div class="container nav foot no-print">
+  
+
+  <a class="toplink" href="#">back to top</a>
+
+</div>
+
+  <div class="container credits">
+  
+<div class="container footline">
+  
+  code with <!-- raw HTML omitted --><!-- raw HTML omitted -->
+
+
+</div>
+
+
+  
+<div class="container copyright">
+  
+  (c) 2021 garfcat.
+
+
+</div>
+
+
+</div>
+
+</footer>
+
+    </main>
+    
+<script type="text/javascript">
+  (function() {
+    
+    
+    if (window.location.hostname == "localhost")
+      return;
+    var dsq = document.createElement('script'); dsq.async = true; dsq.type = 'text/javascript';
+    dsq.src = '//your_disqus_shortname.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+</html>
+
