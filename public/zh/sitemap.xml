@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://www.geekgame.site/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -24,7 +24,7 @@
   
   <url>
     <loc>https://www.geekgame.site/categories/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -43,28 +43,48 @@
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/tags/go/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <loc>https://www.geekgame.site/tags/es/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/series/golang/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <loc>https://www.geekgame.site/tags/hbase/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/post/language/golang/test/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <loc>https://www.geekgame.site/tags/mongodb/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/nosql/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/series/nosql/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/categories/nosql/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/post/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/redis/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/series/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -84,7 +104,7 @@
   
   <url>
     <loc>https://www.geekgame.site/tags/</loc>
-    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -100,6 +120,31 @@
                 hreflang="zh"
                 href="https://www.geekgame.site/tags/"
                 />
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/nosql/select/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B/</loc>
+    <lastmod>2021-03-13T20:58:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/go/</loc>
+    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/series/golang/</loc>
+    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/language/golang/test/</loc>
+    <lastmod>2020-09-27T16:15:18+08:00</lastmod>
   </url>
   
   <url>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>redis on 有趣</title>
+    <link>https://www.geekgame.site/tags/redis/</link>
+    <description>Recent content in redis on 有趣</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Sat, 13 Mar 2021 20:58:49 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>主流 nosql 数据库选型</title>
+      <link>https://www.geekgame.site/post/nosql/select/</link>
+      <pubDate>Sat, 13 Mar 2021 20:58:49 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/nosql/select/</guid>
+      <description>
+        
+          &lt;p&gt;Nosql 目前主流说法已经从 no sql 变为现在的 not only sql,这个不仅仅是因为 nosql 数据库提供了类似 sql 的查询语言,更是因为它为我们解决复杂场景下业务需求和分布式数据处理提供了有效解决方法。&lt;br&gt;
+目前nosql数据库已经有200多个(从 &lt;a href=&#34;https://hostingdata.co.uk/nosql-database/&#34;&gt;https://hostingdata.co.uk/nosql-database/&lt;/a&gt; 可以看到已经有225个)，但是我们目前常用的数据库有以下四类:
+KV数据库、文档数据库、列式数据库、全文搜索引擎。本文就以redis、mongodb、hbase、ES为例说明这几种数据的区别以及各自的适用场景。&lt;/p&gt;
+&lt;h1 id=&#34;redis&#34;&gt;Redis&lt;/h1&gt;
+&lt;p&gt;以redis 为代表的键/值对存储数据库，可以允许你将键/值存储到数据库中，并将可以按照键读取数据。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;优点:&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;轻量且高性能；&lt;/li&gt;
+&lt;li&gt;支持集群（主从集群，切片集群）；&lt;/li&gt;
+&lt;li&gt;不仅支持简单的字符串键值对， 它还提供了一系列数据结构类型值，如list、hash、set、sorted set、bitmap、hyperloglog.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;缺点:&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;主要缺点是事务支持不完整：保证了 ACID 中的一致性（C）和隔离性（I），但并不保证原子性（A）和持久性（D）；&lt;/li&gt;
+&lt;li&gt;集群使用Slot映射表来决定数据分布，规模有一定限制；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;主要场景&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;缓存： 其高性能最适合用来做缓存，这也是redis最常用的场景之一;&lt;/li&gt;
+&lt;li&gt;分布式锁：redis 提供了 Redlock 算法,用来实现基于多个实例的分布式锁;&lt;/li&gt;
+&lt;li&gt;消息队列：redis 通过list和stream来实现消息队列，数据不大的情况下redis不失为一个好的消息队列方案；&lt;/li&gt;
+&lt;li&gt;排行榜/计数：redis提供了一些统计模式，常见的有聚合统计、排序统计、二值状态统计和基数统计；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;mongodb&#34;&gt;Mongodb&lt;/h1&gt;
+&lt;p&gt;MongoDB 是文档数据库，主要提供数据存储和管理服务。最大的特点就是free-schema,可以将存储任意数据，多种信息存储在一个文档中，而不像关系型数据库那样存储在不同的表中。目前最常用的文档格式是JSON.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;优点&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;灵活的查询语言；&lt;/li&gt;
+&lt;li&gt;易于水平扩展，高可用复制集，可扩展分片集群；&lt;/li&gt;
+&lt;li&gt;字段增加简单，可以存储复杂的数据格式；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;缺点或者限制&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;由于没有像关系型数据库的范式要求，所以数据可能会有冗余存储；&lt;/li&gt;
+&lt;li&gt;每个文档大小限制为16MB;&lt;/li&gt;
+&lt;li&gt;事务MVCC的旧数据保存在内存中，所以如果涉及大量文档的数据会带来性能问题，而且mongodb 也提供了默认清理时间transactionLifetimeLimitSeconds，指定多文档事务的生存期。超过此限制的事务将被视为已过期，并且将通过定期清理过程中止；&lt;/li&gt;
+&lt;li&gt;虽然事务锁定了正在修改的文档，但是其他会话修改该文档并不会被block，而是要求终止该事务然后重试，这会造成浪费因为事务中的其他操作也会重新执行；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;适用场景&lt;/em&gt;
+电商、游戏、物流、内容管理、社交、物联网、视频直播等领域都可以使用mongodb;&lt;/p&gt;
+&lt;h1 id=&#34;hbase&#34;&gt;hbase&lt;/h1&gt;
+&lt;p&gt;hbase是一种key/value分布式存储系统，仅能按照主键(row key)和主键的range来检索数据，属于列式数据库，是按照列来存储数据的；&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;优点&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;海量数据存储： 一个表可以有上亿行数据，上百万列；&lt;/li&gt;
+&lt;li&gt;准实时查询：1s内或者百毫秒内返回查询结果；&lt;/li&gt;
+&lt;li&gt;横向扩展能力强；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;缺点&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;仅能按照主键(row key)和主键的range来检索数据，这样无法实现复杂的查询；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;适用场景&lt;/em&gt;&lt;br&gt;
+主要解决&lt;strong&gt;海量数据&lt;/strong&gt;量场景下I/O较高的问题，可以存储海量数据，因此非常适合数据量极大，但是查询条件比较简单的场景；
+比如： 交通GPS、物流（快递员轨迹）、金融（取款信息/消费信息）、电商（浏览日志信息）；&lt;/p&gt;
+&lt;h1 id=&#34;es&#34;&gt;ES&lt;/h1&gt;
+&lt;p&gt;ES 是分布式的文档存储，定位数据检索服务，是一个搜索服务。其主要通过倒排索引，建立从单词到文档的索引来实现全文搜索的。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;优点&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;支持全文搜索；&lt;/li&gt;
+&lt;li&gt;自动建立索引，可支持复杂的查询；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;缺点&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;其他mapping(同关系数据库的字段)不可修改；&lt;/li&gt;
+&lt;li&gt;写入性能相对不高，资源损耗较高；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;适用场景&lt;/em&gt;&lt;br&gt;
+ES 主要是用来构建搜索服务：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;监控信息、日志数据的检索；&lt;/li&gt;
+&lt;li&gt;数据查询纬度比较多的场景，如婚恋网站、电商购物；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+&lt;p&gt;需要缓存服务时一般用redis;&lt;br&gt;
+查询纬度较多时用es;&lt;br&gt;
+数据结构多变且读写性能要求较高用mongodb;&lt;br&gt;
+海量数据且查询比较单一用hbase;&lt;br&gt;
+以上只是一般情况，针对自己的业务场景并根据各个Nosql的特点综合分析来确定用哪个Nosql.&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;http://blog.knuthaugen.no/2010/03/a-brief-history-of-nosql.html&#34;&gt;A Brief History of NoSQL&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://searchdatamanagement.techtarget.com/definition/NoSQL-Not-Only-SQL&#34;&gt;NoSQL (Not Only SQL database)&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://redisbook.readthedocs.io/en/latest/feature/transaction.html#id12&#34;&gt;Redis设计与实现&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.dbta.com/Columns/MongoDB-Matters/Limitations-in-MongoDB-Transactions-127057.aspx&#34;&gt;Limitations in MongoDB Transactions&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

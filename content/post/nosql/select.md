@@ -1,7 +1,7 @@
 ---
 title: "主流 nosql 数据库选型"
 date: 2021-03-13T20:58:49+08:00
-draft: true
+draft: false
 tags: [ "mongodb", "hbase" , "redis", "es", "数据库选型", "nosql"]
 series: ["nosql"]
 categories: ["nosql"]
