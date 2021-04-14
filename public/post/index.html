@@ -119,6 +119,38 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Mar 29, 2021</span>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
+如何使用 Golang标准库中提供了两种引入方式：
+ runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试； net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；  runtime/pprof 支持基准测试：以下命令在当前目录中运行基准测试并将 CPU 和内存配置文件写入 cpu.prof 和 mem.prof：
+1 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/language/golang/golang_performance/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/nosql/select/" title="主流 nosql 数据库选型">主流 nosql 数据库选型</a>
       </h3>
       <div class="post_meta">
@@ -438,46 +470,27 @@ GMP调度模型 Go采用的是GMP调度模型。
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="mac  sed 报错">mac  sed 报错</a>
-      </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg>
-    <span class="post_date">
-      May 13, 2019</span>
-      <a href='https://www.geekgame.site/tags/sed' title="sed" class="post_tag button button_translucent">sed
-      </a>
-      <a href='https://www.geekgame.site/tags/mac' title="mac" class="post_tag button button_translucent">mac
-      </a>
-      <a href='https://www.geekgame.site/tags/shell' title="shell" class="post_tag button button_translucent">shell
-      </a>
-</div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
-1$sed -i &#39;s/xxxx/yyy/g&#39; test 2sed: 1: &#34;test&#34;: extra characters at the end of p command 解决方法
-1sed -i &#34;&#34; &#34;s/XX/YY/g&#34; test ============================================
-sed 用法
-1sed: illegal option -- - 2usage: sed script [-Ealn] [-i …
-            
-          </p>
-          <a href="https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
+<ul class="pagination">
+  <li class="page-item">
+    <a href="/post/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+  </li>
+  <li class="page-item disabled">
+    <a  class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
+  <li class="page-item active">
+    <a class="page-link" href="/post/">1</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="/post/page/2/">2</a>
+  </li>
+  <li class="page-item">
+    <a href="/post/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/post/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+  </li>
+</ul>
 
 
     </li>
@@ -492,6 +505,9 @@ sed 用法
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" class="nav-link" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/nosql/select/" class="nav-link" title="主流 nosql 数据库选型">主流 nosql 数据库选型</a>
       </li>
@@ -512,9 +528,6 @@ sed 用法
       </li>
       <li>
         <a href="https://www.geekgame.site/post/language/golang/module/" class="nav-link" title="golang module 使用教程">golang module 使用教程</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/shell/effective_shell/" class="nav-link" title="高效shell">高效shell</a>
       </li>
     </ul>
     <div>
