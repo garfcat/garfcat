@@ -206,9 +206,30 @@
 </code></pre></div><h1 id="分析">分析</h1>
 <p>无论是 runtime/pprof 还是net/http/pporf 都是为收集程序运行时的采样数据， 对于分析数据我们还要借助工具 go tool pprof， 以下以http server为例：</p>
 <ol>
-<li>CPU分析</li>
+<li>CPU分析
+Demo如下：</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof http://localhost:6060/debug/pprof/profile
+<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
+<span class="ln"> 4</span>	<span class="s">&#34;log&#34;</span>
+<span class="ln"> 5</span>	<span class="s">&#34;net/http&#34;</span>
+<span class="ln"> 6</span>	<span class="nx">_</span> <span class="s">&#34;net/http/pprof&#34;</span>
+<span class="ln"> 7</span>	<span class="s">&#34;time&#34;</span>
+<span class="ln"> 8</span><span class="p">)</span>
+<span class="ln"> 9</span>
+<span class="ln">10</span><span class="kd">func</span> <span class="nf">Bug</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">11</span>	<span class="k">for</span> <span class="p">{</span>
+<span class="ln">12</span>		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10000000000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+<span class="ln">13</span>		<span class="p">}</span>
+<span class="ln">14</span>		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+<span class="ln">15</span>	<span class="p">}</span>
+<span class="ln">16</span><span class="p">}</span>
+<span class="ln">17</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">18</span>	<span class="k">go</span> <span class="nf">Bug</span><span class="p">()</span>
+<span class="ln">19</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:6060&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+<span class="ln">20</span><span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof http://localhost:6060/debug/pprof/profile
 </code></pre></div><p>执行以上命令，可以通过http 获取到CPU的采样信息并通过go tool pprof进行分析，在进入交互式命令行后，可以输入top来查看占用CPU较高的函数</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>(pprof) top
 <span class="ln">2</span>Showing nodes accounting for 25.31s, 99.14% of 25.53s total
@@ -224,6 +245,27 @@ flat%：当前函数的运行耗时占 CPU 运行耗时比例；<br>
 sum%： 前面每一行的 flat 占比总和；<br>
 cum： 当前函数加上该函数调用函数的总耗时；<br>
 cum%： 当前函数加上该函数调用函数的总耗时占用CPU运行耗时的比例；</p>
+<p>通过top 可以看到占用CPU较高的函数，然后可以通过 <em>list 函数名</em> 命令来查看某个函数的更细致的分析</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>(pprof) list Bug
+<span class="ln"> 2</span>Total: 20.06s
+<span class="ln"> 3</span>ROUTINE ======================== main.Bug in /Users/xiefei/repo/post/debug/main.go
+<span class="ln"> 4</span>    18.74s     19.76s (flat, cum) 98.50% of Total
+<span class="ln"> 5</span>         .          .      6:	_ &#34;net/http/pprof&#34;
+<span class="ln"> 6</span>         .          .      7:	&#34;time&#34;
+<span class="ln"> 7</span>         .          .      8:)
+<span class="ln"> 8</span>         .          .      9:
+<span class="ln"> 9</span>         .          .     10:func Bug() {
+<span class="ln">10</span>         .      770ms     11:	for {
+<span class="ln">11</span>    18.74s     18.98s     12:		for i := 0; i &lt; 10000000000; i++ {
+<span class="ln">12</span>         .          .     13:		}
+<span class="ln">13</span>         .       10ms     14:		time.Sleep(1 * time.Second)
+<span class="ln">14</span>         .          .     15:	}
+<span class="ln">15</span>         .          .     16:}
+<span class="ln">16</span>         .          .     17:
+<span class="ln">17</span>         .          .     18:func main() {
+<span class="ln">18</span>         .          .     19:	go Bug()
+</code></pre></div><p>由该命令可以看出 for 循环那段代码占用的CPU较高，从而定位问题；</p>
+<p>另外我们还可以通过web 命令查看将采样数据图形化展示出来；</p>
 <h1 id="参考">参考</h1>
 <p><a href="https://pkg.go.dev/runtime/pprof">runtime/pprof</a><br>
 <a href="https://pkg.go.dev/net/http/pprof">net/http/pprf</a></p>
