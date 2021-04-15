@@ -171,16 +171,33 @@ flat、flat%、cum、cum%.
 go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
 ```
 从浏览器中可以看到top、source、graph、火焰图等信息；
-
-
-
-
+![top](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png)
+top 与命令行top显示是基本一致;
+![source](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png)
+source 与 命令行list 显示基本一致；
+![graph](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png)
+graph 与命令web 显示一致；
+![火焰图](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png)
+火焰图的Y轴表示函数调用栈。X轴表示该函数占用的CPU时间的百分比，越宽代表占用的CPU时间就越多。
 
 
 
 ## 内存
+```sbtshell
+go tool pprof http://localhost:6060/debug/pprof/heap
+```
+```sbtshell
+go tool pprof -http=:8888 http://localhost:6060/debug/pprof/heap
+```
+内存分析通过以上命令获取相应的数据，分析方法与CPU基本一样，不过有几个术语需要解释以下：  
+inuse_space:正在使用的分配空间;  
+inuse_objects:正在使用的分配对象数;  
+aloc_objects:累计的分配对象数;  
+aloc_space:累计的分配空间;  
 
-
+# 总结
+pprof 确实是分析Golang程序的一大利器，我们一般使用基本分为三步：1.将代码加入到项目中 2. 收集相关数据 3.分析数据；
+在分析时我们也一般使用top list 或者火焰图来分析；
 
 # 参考
 [runtime/pprof](https://pkg.go.dev/runtime/pprof)  

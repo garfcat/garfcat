@@ -275,8 +275,26 @@ cum%： 当前函数加上该函数调用函数的总耗时占用CPU运行耗时
 flat、flat%、cum、cum%.</p>
 <p>另外我们还可以通过以下命令获取Profile并在启动一个web服务在浏览器中进行分析：</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
-</code></pre></div><p>从浏览器中可以看到top、source、graph、火焰图等信息；</p>
+</code></pre></div><p>从浏览器中可以看到top、source、graph、火焰图等信息；
+<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png" alt="top">
+top 与命令行top显示是基本一致;
+<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png" alt="source">
+source 与 命令行list 显示基本一致；
+<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png" alt="graph">
+graph 与命令web 显示一致；
+<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png" alt="火焰图">
+火焰图的Y轴表示函数调用栈。X轴表示该函数占用的CPU时间的百分比，越宽代表占用的CPU时间就越多。</p>
 <h2 id="内存">内存</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof http://localhost:6060/debug/pprof/heap
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof -http=:8888 http://localhost:6060/debug/pprof/heap
+</code></pre></div><p>内存分析通过以上命令获取相应的数据，分析方法与CPU基本一样，不过有几个术语需要解释以下：<br>
+inuse_space:正在使用的分配空间;<br>
+inuse_objects:正在使用的分配对象数;<br>
+aloc_objects:累计的分配对象数;<br>
+aloc_space:累计的分配空间;</p>
+<h1 id="总结">总结</h1>
+<p>pprof 确实是分析Golang程序的一大利器，我们一般使用基本分为三步：1.将代码加入到项目中 2. 收集相关数据 3.分析数据；
+在分析时我们也一般使用top list 或者火焰图来分析；</p>
 <h1 id="参考">参考</h1>
 <p><a href="https://pkg.go.dev/runtime/pprof">runtime/pprof</a><br>
 <a href="https://pkg.go.dev/net/http/pprof">net/http/pprf</a><br>

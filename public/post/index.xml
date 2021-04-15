@@ -163,8 +163,26 @@ cum%： 当前函数加上该函数调用函数的总耗时占用CPU运行耗时
 flat、flat%、cum、cum%.&lt;/p&gt;
 &lt;p&gt;另外我们还可以通过以下命令获取Profile并在启动一个web服务在浏览器中进行分析：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;从浏览器中可以看到top、source、graph、火焰图等信息；&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;从浏览器中可以看到top、source、graph、火焰图等信息；
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png&#34; alt=&#34;top&#34;&gt;
+top 与命令行top显示是基本一致;
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png&#34; alt=&#34;source&#34;&gt;
+source 与 命令行list 显示基本一致；
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png&#34; alt=&#34;graph&#34;&gt;
+graph 与命令web 显示一致；
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png&#34; alt=&#34;火焰图&#34;&gt;
+火焰图的Y轴表示函数调用栈。X轴表示该函数占用的CPU时间的百分比，越宽代表占用的CPU时间就越多。&lt;/p&gt;
 &lt;h2 id=&#34;内存&#34;&gt;内存&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go tool pprof http://localhost:6060/debug/pprof/heap
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go tool pprof -http=:8888 http://localhost:6060/debug/pprof/heap
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;内存分析通过以上命令获取相应的数据，分析方法与CPU基本一样，不过有几个术语需要解释以下：&lt;br&gt;
+inuse_space:正在使用的分配空间;&lt;br&gt;
+inuse_objects:正在使用的分配对象数;&lt;br&gt;
+aloc_objects:累计的分配对象数;&lt;br&gt;
+aloc_space:累计的分配空间;&lt;/p&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+&lt;p&gt;pprof 确实是分析Golang程序的一大利器，我们一般使用基本分为三步：1.将代码加入到项目中 2. 收集相关数据 3.分析数据；
+在分析时我们也一般使用top list 或者火焰图来分析；&lt;/p&gt;
 &lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://pkg.go.dev/runtime/pprof&#34;&gt;runtime/pprof&lt;/a&gt;&lt;br&gt;
 &lt;a href=&#34;https://pkg.go.dev/net/http/pprof&#34;&gt;net/http/pprf&lt;/a&gt;&lt;br&gt;
