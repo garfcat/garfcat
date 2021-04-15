@@ -136,6 +136,8 @@
 <li>runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试；</li>
 <li>net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；</li>
 </ol>
+<p>无论哪种方式，都是分析的第一步即采集程序运行时的数据；<br>
+采集后的数据都要经过第二步 通过go tool pprof 对其进行可视化分析；</p>
 <h2 id="runtimepprof">runtime/pprof</h2>
 <p><strong>支持基准测试</strong>：以下命令在当前目录中运行基准测试并将 CPU 和内存配置文件写入 cpu.prof 和 mem.prof：</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span> go <span class="nb">test</span> -cpuprofile cpu.prof -memprofile mem.prof -bench .
