@@ -2,11 +2,6 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <sitemap>
-    <loc>https://www.geekgame.site/pt/sitemap.xml</loc>
-    
-  </sitemap>
-  
-  <sitemap>
     <loc>https://www.geekgame.site/en/sitemap.xml</loc>
     
   </sitemap>
@@ -15,6 +10,11 @@
     <loc>https://www.geekgame.site/zh/sitemap.xml</loc>
     
       <lastmod>2021-03-29T20:30:20+08:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://www.geekgame.site/pt/sitemap.xml</loc>
     
   </sitemap>
   

@@ -92,7 +92,29 @@ trace: A trace of execution of the current program. You can specify the duration
 无论是 runtime/pprof 还是net/http/pporf 都是为收集程序运行时的采样数据， 对于分析数据我们还要借助工具 go tool pprof， 以下以http server为例：
 
 1. CPU分析
+Demo如下：
+```golang
+package main
 
+import (
+	"log"
+	"net/http"
+	_ "net/http/pprof"
+	"time"
+)
+
+func Bug() {
+	for {
+		for i := 0; i < 10000000000; i++ {
+		}
+		time.Sleep(1 * time.Second)
+	}
+}
+func main() {
+	go Bug()
+	log.Println(http.ListenAndServe("localhost:6060", nil))
+}
+```
 ```sbtshell
 go tool pprof http://localhost:6060/debug/pprof/profile
 ```
@@ -113,6 +135,33 @@ flat%：当前函数的运行耗时占 CPU 运行耗时比例；
 sum%： 前面每一行的 flat 占比总和；  
 cum： 当前函数加上该函数调用函数的总耗时；   
 cum%： 当前函数加上该函数调用函数的总耗时占用CPU运行耗时的比例；
+
+通过top 可以看到占用CPU较高的函数，然后可以通过 *list 函数名* 命令来查看某个函数的更细致的分析
+```sbtshell
+(pprof) list Bug
+Total: 20.06s
+ROUTINE ======================== main.Bug in /Users/xiefei/repo/post/debug/main.go
+    18.74s     19.76s (flat, cum) 98.50% of Total
+         .          .      6:	_ "net/http/pprof"
+         .          .      7:	"time"
+         .          .      8:)
+         .          .      9:
+         .          .     10:func Bug() {
+         .      770ms     11:	for {
+    18.74s     18.98s     12:		for i := 0; i < 10000000000; i++ {
+         .          .     13:		}
+         .       10ms     14:		time.Sleep(1 * time.Second)
+         .          .     15:	}
+         .          .     16:}
+         .          .     17:
+         .          .     18:func main() {
+         .          .     19:	go Bug()
+```
+由该命令可以看出 for 循环那段代码占用的CPU较高，从而定位问题；
+
+另外我们还可以通过web 命令查看将采样数据图形化展示出来；
+
+
 
 
   
