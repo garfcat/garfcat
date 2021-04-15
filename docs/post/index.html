@@ -135,10 +135,9 @@
         <div>
           <p class="pale">
             
-              对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
-如何使用 Golang标准库中提供了两种引入方式：
- runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试； net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；  无论哪种方式，都是分析的第一步即采集程序运行时的数据；
-采集后的数据都要经过第二步 通过go tool pprof 对其进行可视化分析； …
+              对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。 整个分析主要分为三个部分：
+ 项目中引入相关的包； 编译程序运行并收集运行时的数据； 分析相关数据  引入并收集数据 Golang标准库中提供了两种引入方式：
+ runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试； net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；  runtime/pprof 支持基准测试：以下 …
             
           </p>
           <a href="https://www.geekgame.site/post/language/golang/golang_performance/" title="阅读更多" class="excerpt_more button">阅读更多</a>

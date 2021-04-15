@@ -4,14 +4,14 @@ date: 2021-03-29T20:30:20+08:00
 ---
 
 对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
-
-# 如何使用
+整个分析主要分为三个部分：
+1. 项目中引入相关的包；
+2. 编译程序运行并收集运行时的数据；
+3. 分析相关数据
+# 引入并收集数据
 Golang标准库中提供了两种引入方式：
 1. runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试；
 2. net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；
-
-无论哪种方式，都是分析的第一步即采集程序运行时的数据；  
-采集后的数据都要经过第二步 通过go tool pprof 对其进行可视化分析；
 
 ## runtime/pprof 
 **支持基准测试**：以下命令在当前目录中运行基准测试并将 CPU 和内存配置文件写入 cpu.prof 和 mem.prof：
@@ -89,8 +89,7 @@ trace: A trace of execution of the current program. You can specify the duration
 
 
 # 分析
-无论是 runtime/pprof 还是net/http/pporf 都是为收集程序运行时的采样数据， 对于分析数据我们还要借助工具 go tool pprof， 以下以http server为例：
-
+无论是 runtime/pprof 还是net/http/pporf 都是为收集程序运行时的采样数据，对于分析数据我们还要借助工具 go tool pprof， 以下以http server为例：
 1. CPU分析
 Demo如下：
 ```golang
@@ -121,14 +120,16 @@ go tool pprof http://localhost:6060/debug/pprof/profile
 执行以上命令，可以通过http 获取到CPU的采样信息并通过go tool pprof进行分析，在进入交互式命令行后，可以输入top来查看占用CPU较高的函数
 ```sbtshell
 (pprof) top
-Showing nodes accounting for 25.31s, 99.14% of 25.53s total
-Dropped 12 nodes (cum <= 0.13s)
+Showing nodes accounting for 19990ms, 99.65% of 20060ms total
+Dropped 19 nodes (cum <= 100.30ms)
       flat  flat%   sum%        cum   cum%
-    23.24s 91.03% 91.03%     25.31s 99.14%  main.Bug
-     2.07s  8.11% 99.14%      2.07s  8.11%  runtime.asyncPreempt
-         0     0% 99.14%      0.21s  0.82%  runtime.mstart
-         0     0% 99.14%      0.21s  0.82%  runtime.mstart1
-         0     0% 99.14%      0.21s  0.82%  runtime.sysmon
+   18740ms 93.42% 93.42%    19760ms 98.50%  main.Bug
+    1010ms  5.03% 98.45%     1010ms  5.03%  runtime.asyncPreempt
+     240ms  1.20% 99.65%      240ms  1.20%  runtime.nanotime1
+         0     0% 99.65%      250ms  1.25%  runtime.mstart
+         0     0% 99.65%      250ms  1.25%  runtime.mstart1
+         0     0% 99.65%      240ms  1.20%  runtime.nanotime (inline)
+         0     0% 99.65%      250ms  1.25%  runtime.sysmon
 ```
 flat：当前函数上运行耗时；  
 flat%：当前函数的运行耗时占 CPU 运行耗时比例；  
@@ -161,14 +162,27 @@ ROUTINE ======================== main.Bug in /Users/xiefei/repo/post/debug/main.
 
 另外我们还可以通过web 命令查看将采样数据图形化展示出来；
 
+![web](https://raw.githubusercontent.com/garfcat/garfcat/master/static/bug.png)
+图中的箭头代表的是函数的调用，箭头上的值代表的是该方法的采样值，这里是CPU耗时，框越大的函数CPU占用就越高，框内表示的就是
+flat、flat%、cum、cum%.
+
+另外我们还可以通过以下命令获取Profile并在启动一个web服务在浏览器中进行分析：
+```sbtshell
+go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
+```
+从浏览器中可以看到top、source、graph、火焰图等信息；
 
 
 
-  
+
+
+
+
+## 内存
 
 
 
 # 参考
 [runtime/pprof](https://pkg.go.dev/runtime/pprof)  
-[net/http/pprf](https://pkg.go.dev/net/http/pprof)
-
+[net/http/pprf](https://pkg.go.dev/net/http/pprof)  
+[Profiling your Golang app in 3 steps](https://coder.today/tech/2018-11-10_profiling-your-golang-app-in-3-steps/)   

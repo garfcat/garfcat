@@ -15,15 +15,19 @@
       <guid>https://www.geekgame.site/post/language/golang/golang_performance/</guid>
       <description>
         
-          &lt;p&gt;对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。&lt;/p&gt;
-&lt;h1 id=&#34;如何使用&#34;&gt;如何使用&lt;/h1&gt;
+          &lt;p&gt;对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
+整个分析主要分为三个部分：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;项目中引入相关的包；&lt;/li&gt;
+&lt;li&gt;编译程序运行并收集运行时的数据；&lt;/li&gt;
+&lt;li&gt;分析相关数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;引入并收集数据&#34;&gt;引入并收集数据&lt;/h1&gt;
 &lt;p&gt;Golang标准库中提供了两种引入方式：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试；&lt;/li&gt;
 &lt;li&gt;net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;无论哪种方式，都是分析的第一步即采集程序运行时的数据；&lt;br&gt;
-采集后的数据都要经过第二步 通过go tool pprof 对其进行可视化分析；&lt;/p&gt;
 &lt;h2 id=&#34;runtimepprof&#34;&gt;runtime/pprof&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;支持基准测试&lt;/strong&gt;：以下命令在当前目录中运行基准测试并将 CPU 和内存配置文件写入 cpu.prof 和 mem.prof：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt; go &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; -cpuprofile cpu.prof -memprofile mem.prof -bench .
@@ -90,7 +94,7 @@
 &lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;threadcreate: Stack traces that led to the creation of new OS threads
 &lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;trace: A trace of execution of the current program. You can specify the duration in the seconds GET parameter. After you get the trace file, use the go tool trace &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; to investigate the trace.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;分析&#34;&gt;分析&lt;/h1&gt;
-&lt;p&gt;无论是 runtime/pprof 还是net/http/pporf 都是为收集程序运行时的采样数据， 对于分析数据我们还要借助工具 go tool pprof， 以下以http server为例：&lt;/p&gt;
+&lt;p&gt;无论是 runtime/pprof 还是net/http/pporf 都是为收集程序运行时的采样数据，对于分析数据我们还要借助工具 go tool pprof， 以下以http server为例：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;CPU分析
 Demo如下：&lt;/li&gt;
@@ -117,15 +121,17 @@ Demo如下：&lt;/li&gt;
 &lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go tool pprof http://localhost:6060/debug/pprof/profile
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行以上命令，可以通过http 获取到CPU的采样信息并通过go tool pprof进行分析，在进入交互式命令行后，可以输入top来查看占用CPU较高的函数&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;(pprof) top
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Showing nodes accounting for 25.31s, 99.14% of 25.53s total
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;Dropped 12 nodes (cum &amp;lt;= 0.13s)
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;      flat  flat%   sum%        cum   cum%
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;    23.24s 91.03% 91.03%     25.31s 99.14%  main.Bug
-&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;     2.07s  8.11% 99.14%      2.07s  8.11%  runtime.asyncPreempt
-&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;         0     0% 99.14%      0.21s  0.82%  runtime.mstart
-&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;         0     0% 99.14%      0.21s  0.82%  runtime.mstart1
-&lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;         0     0% 99.14%      0.21s  0.82%  runtime.sysmon
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;(pprof) top
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;Showing nodes accounting for 19990ms, 99.65% of 20060ms total
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;Dropped 19 nodes (cum &amp;lt;= 100.30ms)
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;      flat  flat%   sum%        cum   cum%
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;   18740ms 93.42% 93.42%    19760ms 98.50%  main.Bug
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    1010ms  5.03% 98.45%     1010ms  5.03%  runtime.asyncPreempt
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;     240ms  1.20% 99.65%      240ms  1.20%  runtime.nanotime1
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;         0     0% 99.65%      250ms  1.25%  runtime.mstart
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;         0     0% 99.65%      250ms  1.25%  runtime.mstart1
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;         0     0% 99.65%      240ms  1.20%  runtime.nanotime (inline)
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;         0     0% 99.65%      250ms  1.25%  runtime.sysmon
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;flat：当前函数上运行耗时；&lt;br&gt;
 flat%：当前函数的运行耗时占 CPU 运行耗时比例；&lt;br&gt;
 sum%： 前面每一行的 flat 占比总和；&lt;br&gt;
@@ -152,9 +158,17 @@ cum%： 当前函数加上该函数调用函数的总耗时占用CPU运行耗时
 &lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;         .          .     19:	go Bug()
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由该命令可以看出 for 循环那段代码占用的CPU较高，从而定位问题；&lt;/p&gt;
 &lt;p&gt;另外我们还可以通过web 命令查看将采样数据图形化展示出来；&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/bug.png&#34; alt=&#34;web&#34;&gt;
+图中的箭头代表的是函数的调用，箭头上的值代表的是该方法的采样值，这里是CPU耗时，框越大的函数CPU占用就越高，框内表示的就是
+flat、flat%、cum、cum%.&lt;/p&gt;
+&lt;p&gt;另外我们还可以通过以下命令获取Profile并在启动一个web服务在浏览器中进行分析：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;从浏览器中可以看到top、source、graph、火焰图等信息；&lt;/p&gt;
+&lt;h2 id=&#34;内存&#34;&gt;内存&lt;/h2&gt;
 &lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://pkg.go.dev/runtime/pprof&#34;&gt;runtime/pprof&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://pkg.go.dev/net/http/pprof&#34;&gt;net/http/pprf&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&#34;https://pkg.go.dev/net/http/pprof&#34;&gt;net/http/pprf&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://coder.today/tech/2018-11-10_profiling-your-golang-app-in-3-steps/&#34;&gt;Profiling your Golang app in 3 steps&lt;/a&gt;&lt;/p&gt;
 
         
       </description>
