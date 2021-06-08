@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kubebuilder on 有趣</title>
+    <link>https://www.geekgame.site/tags/kubebuilder/</link>
+    <description>Recent content in kubebuilder on 有趣</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 08 Jun 2021 16:18:16 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/kubebuilder/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubebuilder 使用教程</title>
+      <link>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</link>
+      <pubDate>Tue, 08 Jun 2021 16:18:16 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</guid>
+      <description>
+        
+          &lt;h1 id=&#34;kubebuilder-是什么&#34;&gt;Kubebuilder 是什么&lt;/h1&gt;
+&lt;p&gt;kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。&lt;/p&gt;
+&lt;h1 id=&#34;kubebuilder-如何使用&#34;&gt;Kubebuilder 如何使用&lt;/h1&gt;
+&lt;p&gt;我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。
+其主要步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建一个项目&lt;/li&gt;
+&lt;li&gt;创建一个API&lt;/li&gt;
+&lt;li&gt;定义CRD&lt;/li&gt;
+&lt;li&gt;实现controller&lt;/li&gt;
+&lt;li&gt;测试&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;创建项目&#34;&gt;创建项目&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;执行 kubebuilder init 命令，初始化一个新项目。示例如下。
+kubebuilder init --domain ipes-cmp&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;--domain&lt;/strong&gt;: 项目的域名&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;创建一个api&#34;&gt;创建一个API&lt;/h2&gt;
+&lt;p&gt;运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;   kubebuilder create api --group cluster --version v1 --kind Cluster
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;目录结构：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.go ，
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;该文件中定义相关 API ，而针对于这一类型 (CRD) 的对账业务逻辑生成在 controller/cluster_controller.go 文件中。
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;.
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;├── Dockerfile
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;├── Makefile       # 这里定义了很多脚本命令，例如运行测试，开始执行等
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;├── PROJECT    # 这里是 kubebuilder 的一些元数据信息
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;├── api
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;│   └── v1
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;│       ├── cluster_types.go   #定义 Spec 和 Status
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;│       ├── groupversion_info.go  # 包含了关于 group-version 的一些元数据
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;│       └── zz_generated.deepcopy.go
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;├── bin
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;│   └── controller-gen
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;├── config
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;│   ├── crd   # 部署 crd 所需的 yaml, 自动生成, 只需要修改了 v1 中的 go 文件之后执行 make generate 即可
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;│   │   ├── kustomization.yaml
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;│   │   ├── kustomizeconfig.yaml
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;│   │   └── patches
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;│   │       ├── cainjection_in_clusters.yaml
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;│   │       └── webhook_in_clusters.yaml
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;│   ├── default     # 一些默认配置
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;│   │   ├── kustomization.yaml
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;│   │   ├── manager_auth_proxy_patch.yaml
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;│   │   └── manager_config_patch.yaml
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;│   ├── manager
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;│   │   ├── controller_manager_config.yaml
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;│   │   ├── kustomization.yaml
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;│   │   └── manager.yaml
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;│   ├── prometheus   # 监控指标数据采集配置
+&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;│   │   ├── kustomization.yaml
+&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt;│   │   └── monitor.yaml
+&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt;│   ├── rbac   # 部署所需的 rbac 授权 yaml
+&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;│   │   ├── auth_proxy_client_clusterrole.yaml
+&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;│   │   ├── auth_proxy_role.yaml
+&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;│   │   ├── auth_proxy_role_binding.yaml
+&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt;│   │   ├── auth_proxy_service.yaml
+&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt;│   │   ├── cluster_editor_role.yaml
+&lt;span class=&#34;ln&#34;&gt;39&lt;/span&gt;│   │   ├── cluster_viewer_role.yaml
+&lt;span class=&#34;ln&#34;&gt;40&lt;/span&gt;│   │   ├── kustomization.yaml
+&lt;span class=&#34;ln&#34;&gt;41&lt;/span&gt;│   │   ├── leader_election_role.yaml
+&lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;│   │   ├── leader_election_role_binding.yaml
+&lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;│   │   ├── role_binding.yaml
+&lt;span class=&#34;ln&#34;&gt;44&lt;/span&gt;│   │   └── service_account.yaml
+&lt;span class=&#34;ln&#34;&gt;45&lt;/span&gt;│   └── samples  # 这里是 crd 示例文件，可以用来部署到集群当中
+&lt;span class=&#34;ln&#34;&gt;46&lt;/span&gt;│       └── cluster_v1_cluster.yaml
+&lt;span class=&#34;ln&#34;&gt;47&lt;/span&gt;├── controllers
+&lt;span class=&#34;ln&#34;&gt;48&lt;/span&gt;│   ├── cluster_controller.go
+&lt;span class=&#34;ln&#34;&gt;49&lt;/span&gt;│   └── suite_test.go
+&lt;span class=&#34;ln&#34;&gt;50&lt;/span&gt;├── go.mod
+&lt;span class=&#34;ln&#34;&gt;51&lt;/span&gt;├── go.sum
+&lt;span class=&#34;ln&#34;&gt;52&lt;/span&gt;├── hack
+&lt;span class=&#34;ln&#34;&gt;53&lt;/span&gt;│   └── boilerplate.go.txt
+&lt;span class=&#34;ln&#34;&gt;54&lt;/span&gt;└── main.go
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;定义crd&#34;&gt;定义CRD&lt;/h2&gt;
+&lt;p&gt;修改 cluster_type.go 文件添加地域信息：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// ClusterSpec defines the desired state of Cluster
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ClusterSpec&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// Important: Run &amp;#34;make&amp;#34; to regenerate code after modifying this file
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// Foo is an example field of Cluster. Edit cluster_types.go to remove/update
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Foo&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;foo,omitempty&amp;#34;`&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// Region represents the region of the member cluster locate in.
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// +optional
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Region&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;region,omitempty&amp;#34;`&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改完之后执行 make manifests generate ，可以生成对应的config/bases/cluster.ipes.io_clusters.yaml文件。可以看到spec信息如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;  spec:
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;    description: ClusterSpec defines the desired state of Cluster
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;    properties:
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;      foo:
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;        description: Foo is an example field of Cluster. Edit cluster_types.go
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;          to remove/update
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;        type: string
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;      region:
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;        description: Region represents the region of the member cluster locate
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;          in.
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;        type: string
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;    type: object
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;实现controller&#34;&gt;实现controller&lt;/h1&gt;
+&lt;p&gt;controller的逻辑框架kubebuilder已经帮我们完成，我们只需要完成最核心的函数 &lt;em&gt;Reconcile&lt;/em&gt;即可；&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;controllers&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;cluser_controller&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;go&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ClusterReconciler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Reconcile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctx&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Request&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;WithValues&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;cluster&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;NamespacedName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{},&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在这里我们获取cluster信息并打印&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ClusterReconciler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Reconcile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctx&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Request&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;WithValues&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;cluster&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;NamespacedName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;clusterv1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Client&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;TODO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;NamespacedName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// The resource may no longer exist, in which case we stop processing.
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;apierrors&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;IsNotFound&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;			&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{},&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;		&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;		&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Requeue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// your logic here
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Info&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;ipes cluster status change&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;region&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Region&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{},&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;测试&#34;&gt;测试&lt;/h2&gt;
+&lt;h3 id=&#34;部署crd资源&#34;&gt;部署CRD资源&lt;/h3&gt;
+&lt;p&gt;我们在实现了controller 的核心逻辑之后， 需要先将CRD注册到集群中, 具体命令：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;make install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里make install ; 是执行了以下两步：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;make manifests  # 生成CRD资源&lt;/li&gt;
+&lt;li&gt;bin/kustomize build config/crd | kubectl apply -f - #生成部署CRD， 并部署到集群中
+如果集群不在本地， 可以分开执行这两步。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;运行-controller&#34;&gt;运行 controller&lt;/h3&gt;
+&lt;p&gt;本地直接执行 make run 即可，我这里需要编译后，放到服务器上执行：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;➜  ~ ./ipes-cmp
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;2021-06-08T19:22:38.187+0800	INFO	controller-runtime.metrics	metrics server is starting to listen	{&amp;#34;addr&amp;#34;: &amp;#34;:8080&amp;#34;}
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;2021-06-08T19:22:38.188+0800	INFO	setup	starting manager
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager	starting metrics server	{&amp;#34;path&amp;#34;: &amp;#34;/metrics&amp;#34;}
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager.controller.cluster	Starting EventSource	{&amp;#34;reconciler group&amp;#34;: &amp;#34;cluster.ipes.io&amp;#34;, &amp;#34;reconciler kind&amp;#34;: &amp;#34;Cluster&amp;#34;, &amp;#34;source&amp;#34;: &amp;#34;kind source: /, Kind=&amp;#34;}
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting Controller	{&amp;#34;reconciler group&amp;#34;: &amp;#34;cluster.ipes.io&amp;#34;, &amp;#34;reconciler kind&amp;#34;: &amp;#34;Cluster&amp;#34;}
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting workers	{&amp;#34;reconciler group&amp;#34;: &amp;#34;cluster.ipes.io&amp;#34;, &amp;#34;reconciler kind&amp;#34;: &amp;#34;Cluster&amp;#34;, &amp;#34;worker count&amp;#34;: 1}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;添加一个测试例子&#34;&gt;添加一个测试例子&lt;/h3&gt;
+&lt;p&gt;创建一个测试的集群&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;cluster.ipes.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Cluster&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;test-cluster&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Add fields here&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;region&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;beijing&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;kubectl apply -f bj_cluster.yml # 部署测试集群
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看到controller 输入日志，controller已经获取到关于cluster的信息。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2021-06-08T19:35:49.562&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;+0800&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;	&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;INFO	controllers.Cluster	ipes cluster status change	{&amp;#34;name&amp;#34;: &amp;#34;test-cluster&amp;#34;, &amp;#34;region&amp;#34;: &amp;#34;beijing&amp;#34;}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;目前扩展 Kubernetes 的 API 的方式有创建 CRD、使用 Operator SDK 等方式，都需要写很多的样本文件（boilerplate），使用起来十分麻烦。为了能够更方便构建 Kubernetes API 和工具，就需要一款能够事半功倍的工具，与其他 Kubernetes API 扩展方案相比，kubebuilder 更加简单易用，并获得了社区的广泛支持。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.aliyun.com/article/719215&#34;&gt;深入解析 Kubebuilder：让编写 CRD 变得更简单&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://cloudnative.to/kubebuilder/quick-start.html&#34;&gt;Kubebuilder&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.bookstack.cn/read/kubernetes-handbook-201910/develop-kubebuilder.md&#34;&gt;Kubernetes中文指南/云原生应用架构实践手册(201910)&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -196,8 +196,10 @@ aloc_objects:累计的分配对象数;
 aloc_space:累计的分配空间;  
 
 # 总结
-pprof 确实是分析Golang程序的一大利器，我们一般使用基本分为三步：1.将代码加入到项目中 2. 收集相关数据 3.分析数据；
-在分析时我们也一般使用top list 或者火焰图来分析；
+pprof 确实是分析Golang程序的一大利器，我们一般使用基本分为三步：
+1.将代码加入到项目中 
+2. 收集相关数据
+3.分析数据；在分析时我们也一般使用top list 或者火焰图来分析；  
 
 # 参考
 [runtime/pprof](https://pkg.go.dev/runtime/pprof)  
