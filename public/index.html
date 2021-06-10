@@ -125,6 +125,37 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/k8s/extensions/extend/" title="Kubernetes 扩展">Kubernetes 扩展</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Jun 8, 2021</span>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
+Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
+ Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点：  变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响；   API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/k8s/extensions/extend/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </h3>
       <div class="post_meta">
@@ -446,40 +477,6 @@ GMP调度模型 Go采用的是GMP调度模型。
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/shell/effective_shell/" title="高效shell">高效shell</a>
-      </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg>
-    <span class="post_date">
-      May 16, 2019</span>
-      <a href='https://www.geekgame.site/tags/effective' title="effective" class="post_tag button button_translucent">effective
-      </a>
-      <a href='https://www.geekgame.site/tags/shell' title="shell" class="post_tag button button_translucent">shell
-      </a>
-</div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
- oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；  命令  hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &gt;&gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里  
-            
-          </p>
-          <a href="https://www.geekgame.site/post/shell/effective_shell/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -516,6 +513,9 @@ GMP调度模型 Go采用的是GMP调度模型。
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </li>
       <li>
@@ -535,9 +535,6 @@ GMP调度模型 Go采用的是GMP调度模型。
       </li>
       <li>
         <a href="https://www.geekgame.site/post/language/golang/start/" class="nav-link" title="通过 hello world 寻找 golang 启动过程">通过 hello world 寻找 golang 启动过程</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/language/golang/plan9/" class="nav-link" title="golang 栈结构">golang 栈结构</a>
       </li>
     </ul>
     <div>
