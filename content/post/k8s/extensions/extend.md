@@ -1,6 +1,9 @@
 ---
 title: "Kubernetes 扩展"
 date: 2021-06-08T16:18:40+08:00
+tags: [ "kubebuilder", "kubernetes" , "extend"]
+series: ["kubernetes extend"]
+categories: ["kubernetes extend"]
 ---
 
 Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
@@ -44,9 +47,10 @@ for {
 调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。
 
 # 总结
-Kubernetes 提供了7个扩展点, 其中自定义资源和控制器组成了 Operator 模式，Operator 的工作原理,实际上是利用了 Kubernetes 的自定义 API 资源(CRD),来描述我们想要部署的“有状态应用”;然后在自定义控制器里,根据自定义 API 对象的变化,来完成具体的部署和运维工作。其中控制的调协循环更是编排的核心。
+Kubernetes 提供了7个扩展点, 其中自定义资源和控制器组成了 Operator 模式，Operator 的工作原理,实际上是利用了 Kubernetes 的自定义 API 资源(CRD),来描述我们想要部署的应用;然后在自定义控制器里,根据自定义 API 对象的变化,来完成具体的部署和运维工作,其中控制的调协循环更是编排的核心。
 
 # 参考
 
 [Extending Kubernetes — Part 1 — Custom Operator](https://krvarma.medium.com/extending-kubernetes-part-1-custom-operator-b6745c42be4f)  
-[扩展 Kubernetes](https://kubernetes.io/zh/docs/concepts/extend-kubernetes/#user-defined-types)
+[扩展 Kubernetes](https://kubernetes.io/zh/docs/concepts/extend-kubernetes/#user-defined-types)  
+[Extending Kubernetes - Create Controllers for Core and Custom Resources](https://trstringer.com/extending-k8s-custom-controllers/)

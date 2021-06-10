@@ -23,18 +23,8 @@
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/post/k8s/extensions/extend/</loc>
-    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/post/</loc>
-    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.geekgame.site/categories/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -54,37 +44,42 @@
   
   <url>
     <loc>https://www.geekgame.site/tags/extend/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/tags/kubebuilder/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/tags/kubernetes/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/series/kubernetes-extend/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/categories/kubernetes-extend/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/k8s/extensions/extend/</loc>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/</loc>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/series/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -104,7 +99,7 @@
   
   <url>
     <loc>https://www.geekgame.site/tags/</loc>
-    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
+    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -120,6 +115,11 @@
                 hreflang="zh"
                 href="https://www.geekgame.site/tags/"
                 />
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</loc>
+    <lastmod>2021-06-08T16:18:16+08:00</lastmod>
   </url>
   
   <url>

@@ -124,6 +124,12 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
 </svg>
     <span class="post_date">
       Jun 8, 2021</span>
+      <a href='https://www.geekgame.site/tags/kubebuilder' title="kubebuilder" class="post_tag button button_translucent">kubebuilder
+      </a>
+      <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+      </a>
+      <a href='https://www.geekgame.site/tags/extend' title="extend" class="post_tag button button_translucent">extend
+      </a>
 </div>
 
     
@@ -174,10 +180,11 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
 <span class="ln">9</span><span class="p">}</span>
 </code></pre></div><p>调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。</p>
 <h1 id="总结">总结</h1>
-<p>Kubernetes 提供了7个扩展点, 其中自定义资源和控制器组成了 Operator 模式，Operator 的工作原理,实际上是利用了 Kubernetes 的自定义 API 资源(CRD),来描述我们想要部署的“有状态应用”;然后在自定义控制器里,根据自定义 API 对象的变化,来完成具体的部署和运维工作。其中控制的调协循环更是编排的核心。</p>
+<p>Kubernetes 提供了7个扩展点, 其中自定义资源和控制器组成了 Operator 模式，Operator 的工作原理,实际上是利用了 Kubernetes 的自定义 API 资源(CRD),来描述我们想要部署的应用;然后在自定义控制器里,根据自定义 API 对象的变化,来完成具体的部署和运维工作,其中控制的调协循环更是编排的核心。</p>
 <h1 id="参考">参考</h1>
 <p><a href="https://krvarma.medium.com/extending-kubernetes-part-1-custom-operator-b6745c42be4f">Extending Kubernetes — Part 1 — Custom Operator</a><br>
-<a href="https://kubernetes.io/zh/docs/concepts/extend-kubernetes/#user-defined-types">扩展 Kubernetes</a></p>
+<a href="https://kubernetes.io/zh/docs/concepts/extend-kubernetes/#user-defined-types">扩展 Kubernetes</a><br>
+<a href="https://trstringer.com/extending-k8s-custom-controllers/">Extending Kubernetes - Create Controllers for Core and Custom Resources</a></p>
 
   </article>
 <aside class="sidebar">
@@ -223,6 +230,11 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
           <span class="button_tally">5</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
+          KUBERNETES-EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/' class="post_tag button button_translucent" title="协议">
           协议
           <span class="button_tally">2</span>
@@ -231,11 +243,6 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
         <a href='https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/' class="post_tag button button_translucent" title="工具命令">
           工具命令
           <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
-          KUBERNETES-EXTEND
-          <span class="button_tally">1</span>
         </a>
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
@@ -256,7 +263,7 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
         
         <a href='https://www.geekgame.site/series/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
           KUBERNETES-EXTEND
-          <span class="button_tally">1</span>
+          <span class="button_tally">2</span>
         </a>
         
         <a href='https://www.geekgame.site/series/nosql/' class="post_tag button button_translucent" title="nosql">
@@ -280,6 +287,21 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
           <span class="button_tally">5</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
+          EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubebuilder/' class="post_tag button button_translucent" title="kubebuilder">
+          KUBEBUILDER
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/shell/' class="post_tag button button_translucent" title="shell">
           SHELL
           <span class="button_tally">2</span>
@@ -295,11 +317,6 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
-          EXTEND
-          <span class="button_tally">1</span>
-        </a>
-        
         <a href='https://www.geekgame.site/tags/hbase/' class="post_tag button button_translucent" title="hbase">
           HBASE
           <span class="button_tally">1</span>
@@ -307,16 +324,6 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
         
         <a href='https://www.geekgame.site/tags/index/' class="post_tag button button_translucent" title="index">
           INDEX
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/kubebuilder/' class="post_tag button button_translucent" title="kubebuilder">
-          KUBEBUILDER
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
-          KUBERNETES
           <span class="button_tally">1</span>
         </a>
         
@@ -359,7 +366,7 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/extend/' class=" post_tag button button_translucent" data-position=1 title="extend">EXTEND<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/extend/' class=" post_tag button button_translucent" data-position=2 title="extend">EXTEND<span class="button_tally">2</span>
             </a>
             
             
@@ -375,11 +382,11 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/kubebuilder/' class=" post_tag button button_translucent" data-position=1 title="kubebuilder">KUBEBUILDER<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/kubebuilder/' class=" post_tag button button_translucent" data-position=2 title="kubebuilder">KUBEBUILDER<span class="button_tally">2</span>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=1 title="kubernetes">KUBERNETES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=2 title="kubernetes">KUBERNETES<span class="button_tally">2</span>
             </a>
             
             
