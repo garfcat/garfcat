@@ -153,7 +153,24 @@ cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻
 <p>kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; <br>
 kube-proxy: 负责K8s集群服务的通信以及负载均衡；</p>
 <h1 id="数据流转">数据流转</h1>
-<p><img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png" alt="K8s 数据流转"></p>
+<p><img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png" alt="K8s 数据流转">
+我们以 ReplicaSet 为例，讲述一下K8s的数据流转：<br>
+0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；</p>
+<ol>
+<li>API作为集群入口，接收命令请求；</li>
+<li>API 与 ETCD交互，持久化 ReplicaSet;</li>
+<li>Etcd将 ReplicaSet 的创建事件发送给API;</li>
+<li>API 将 ReplicaSet 的创建事件发送给正在监听的 kube-controller-manager;</li>
+<li>kube-controller-manager 接收事件并创建Pod 发送给 API；</li>
+<li>API 与 etcd 交互持久化Pod;</li>
+<li>etcd 将Pod创建事件发送给 API；</li>
+<li>API 将Pod创建事件发送给 kube-scheduler;</li>
+<li>kube-scheduler 接收Pod事件并为Pod 选择合适的节点，并将更新信息发送给API;</li>
+<li>API 与 etcd 交互更新Pod;</li>
+<li>etcd 将Pod更新事件发送给 API；</li>
+<li>API 将Pod信息发送给 Kubelet;</li>
+<li>Kubelet 接收到 Pod, 真正去创建Pod；</li>
+</ol>
 <h1 id="参考">参考</h1>
 <p><a href="https://www.aquasec.com/cloud-native-academy/kubernetes-101/kubernetes-architecture/">Kubernetes Architecture</a><br>
 <a href="https://x-team.com/blog/introduction-kubernetes-architecture/">INTRODUCTION TO KUBERNETES ARCHITECTURE</a><br>
