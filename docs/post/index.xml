@@ -835,6 +835,7 @@ cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻
 &lt;p&gt;kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; &lt;br&gt;
 kube-proxy: 负责K8s集群服务的通信以及负载均衡；&lt;/p&gt;
 &lt;h1 id=&#34;数据流转&#34;&gt;数据流转&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png&#34; alt=&#34;K8s 数据流转&#34;&gt;&lt;/p&gt;
 &lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.aquasec.com/cloud-native-academy/kubernetes-101/kubernetes-architecture/&#34;&gt;Kubernetes Architecture&lt;/a&gt;&lt;br&gt;
 &lt;a href=&#34;https://x-team.com/blog/introduction-kubernetes-architecture/&#34;&gt;INTRODUCTION TO KUBERNETES ARCHITECTURE&lt;/a&gt;&lt;br&gt;

@@ -31,7 +31,7 @@ kubelet: 负责与master节点通信，处理master下发的任务，管理节�
 kube-proxy: 负责K8s集群服务的通信以及负载均衡；
 
 # 数据流转
-
+![K8s 数据流转](https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png)
 
 
 
