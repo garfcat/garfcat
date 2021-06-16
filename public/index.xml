@@ -853,6 +853,7 @@ kube-proxy: 负责K8s集群服务的通信以及负载均衡；&lt;/p&gt;
 &lt;li&gt;API 将Pod信息发送给 Kubelet;&lt;/li&gt;
 &lt;li&gt;Kubelet 接收到 Pod, 真正去创建Pod；&lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;以上就是关于K8s架构以及数据流转的介绍。&lt;/p&gt;
 &lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.aquasec.com/cloud-native-academy/kubernetes-101/kubernetes-architecture/&#34;&gt;Kubernetes Architecture&lt;/a&gt;&lt;br&gt;
 &lt;a href=&#34;https://x-team.com/blog/introduction-kubernetes-architecture/&#34;&gt;INTRODUCTION TO KUBERNETES ARCHITECTURE&lt;/a&gt;&lt;br&gt;

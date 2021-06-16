@@ -49,6 +49,8 @@ kube-proxy: 负责K8s集群服务的通信以及负载均衡；
 13. Kubelet 接收到 Pod, 真正去创建Pod；  
 
 
+以上就是关于K8s架构以及数据流转的介绍。
+
 # 参考
 [Kubernetes Architecture](https://www.aquasec.com/cloud-native-academy/kubernetes-101/kubernetes-architecture/)  
 [INTRODUCTION TO KUBERNETES ARCHITECTURE](https://x-team.com/blog/introduction-kubernetes-architecture/)  
