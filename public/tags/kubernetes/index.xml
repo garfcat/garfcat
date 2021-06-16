@@ -275,7 +275,9 @@ Kubernetes 的主要特点：&lt;/p&gt;
 &lt;h1 id=&#34;kubernetes-架构&#34;&gt;Kubernetes 架构&lt;/h1&gt;
 &lt;p&gt;K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端,node是客户端。K8s可以设置多Master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。
 master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler;&lt;br&gt;
-node 包含的组件有: kubelet,  kube-proxy;&lt;/p&gt;
+node 包含的组件有: kubelet,  kube-proxy;
+&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg&#34; alt=&#34;k8s 架构&#34;&gt;
+带有两个Worker nodes和一个master的K8s架构图&lt;a href=&#34;https://x-team.com/blog/introduction-kubernetes-architecture/&#34;&gt;图片来源&lt;/a&gt;&lt;/p&gt;
 &lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.aquasec.com/cloud-native-academy/kubernetes-101/kubernetes-architecture/&#34;&gt;Kubernetes Architecture&lt;/a&gt;&lt;br&gt;
 &lt;a href=&#34;https://x-team.com/blog/introduction-kubernetes-architecture/&#34;&gt;INTRODUCTION TO KUBERNETES ARCHITECTURE&lt;/a&gt;&lt;br&gt;
