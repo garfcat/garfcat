@@ -27,7 +27,7 @@ kube-controller-manager: K8s实现自动化的关键组件，是集群中所有�
 cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻辑的控制平面组件,使得 K8s 可以直接利用云平台实现持久化卷、负载均衡、网络路由、DNS 解析以及横向扩展等功能。    
  
 ## node 组件
-kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等;  
+kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等;    
 kube-proxy: 负责K8s集群服务的通信以及负载均衡；
 
 
