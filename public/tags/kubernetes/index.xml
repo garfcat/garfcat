@@ -256,5 +256,36 @@ kubebuilder init --domain ipes-cmp&lt;/p&gt;
       </description>
     </item>
     
+    <item>
+      <title>kubernetes 架构</title>
+      <link>https://www.geekgame.site/post/k8s/k8s/</link>
+      <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/k8s/k8s/</guid>
+      <description>
+        
+          &lt;h1 id=&#34;什么是-kubernetes&#34;&gt;什么是 Kubernetes&lt;/h1&gt;
+&lt;p&gt;Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。
+Kubernetes 的主要特点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;可扩展：Kubernetes 是高度可配置且可扩展的。&lt;/li&gt;
+&lt;li&gt;可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。&lt;/li&gt;
+&lt;li&gt;自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;kubernetes-架构&#34;&gt;Kubernetes 架构&lt;/h1&gt;
+&lt;p&gt;K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端,node是客户端。K8s可以设置多Master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。
+master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler;&lt;br&gt;
+node 包含的组件有: kubelet,  kube-proxy;&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.aquasec.com/cloud-native-academy/kubernetes-101/kubernetes-architecture/&#34;&gt;Kubernetes Architecture&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://x-team.com/blog/introduction-kubernetes-architecture/&#34;&gt;INTRODUCTION TO KUBERNETES ARCHITECTURE&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://kubernetes.io/zh/docs/concepts/services-networking/service/&#34;&gt;服务&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://dockone.io/article/4884&#34;&gt;Kubernetes的三种外部访问方式：NodePort、LoadBalancer 和 Ingress&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;&#34;&gt;极客时间&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
   </channel>
 </rss>
