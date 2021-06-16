@@ -30,6 +30,7 @@ cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻
 kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等;    
 kube-proxy: 负责K8s集群服务的通信以及负载均衡；
 
+# 数据流转
 
 
 
