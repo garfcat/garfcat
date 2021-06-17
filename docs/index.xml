@@ -8,7 +8,7 @@
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
     <lastBuildDate>Thu, 17 Jun 2021 13:40:20 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>kKubernetes Controller runtime 详解</title>
+      <title>Kubernetes Controller runtime 详解</title>
       <link>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</link>
       <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
       

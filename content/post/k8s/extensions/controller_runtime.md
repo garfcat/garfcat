@@ -1,5 +1,5 @@
 ---
-title: "kKubernetes Controller runtime 详解" # Title of the blog post.
+title: "Kubernetes Controller runtime 详解" # Title of the blog post.
 date: 2021-06-17T13:40:20+08:00 # Date of post creation.
 tags: [ "kubebuilder", "kubernetes" , "controller runtime"]
 series: ["kubernetes extend"]
