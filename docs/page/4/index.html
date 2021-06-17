@@ -125,7 +125,7 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/language/golang/defer/" title="Defer">Defer</a>
+        <a href="https://www.geekgame.site/post/protocol/jwt/" title="Jwt">Jwt</a>
       </h3>
       <div class="post_meta">
   
@@ -133,7 +133,7 @@
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      May 15, 2019</span>
+      Oct 31, 2019</span>
 </div>
 
     </div>
@@ -142,7 +142,7 @@
           <p class="pale">
             
           </p>
-          <a href="https://www.geekgame.site/post/language/golang/defer/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+          <a href="https://www.geekgame.site/post/protocol/jwt/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
@@ -152,7 +152,7 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/language/golang/atomic/" title="Atomic">Atomic</a>
+        <a href="https://www.geekgame.site/post/shell/awk/" title="Awk">Awk</a>
       </h3>
       <div class="post_meta">
   
@@ -160,7 +160,7 @@
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      May 15, 2019</span>
+      Oct 14, 2019</span>
 </div>
 
     </div>
@@ -169,7 +169,7 @@
           <p class="pale">
             
           </p>
-          <a href="https://www.geekgame.site/post/language/golang/atomic/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+          <a href="https://www.geekgame.site/post/shell/awk/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
@@ -179,7 +179,7 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/protocol/mqtt/" title="MQTT 基本概念">MQTT 基本概念</a>
+        <a href="https://www.geekgame.site/post/protocol/http-auth-digest-access/" title="Http Auth Digest Access">Http Auth Digest Access</a>
       </h3>
       <div class="post_meta">
   
@@ -187,9 +187,7 @@
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      May 15, 2019</span>
-      <a href='https://www.geekgame.site/tags/mqtt' title="mqtt" class="post_tag button button_translucent">mqtt
-      </a>
+      Aug 12, 2019</span>
 </div>
 
     </div>
@@ -197,11 +195,10 @@
         <div>
           <p class="pale">
             
-              <p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
-低开销、低带宽，在lot上应用较为广泛。</p>
+              digest access    
             
           </p>
-          <a href="https://www.geekgame.site/post/protocol/mqtt/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+          <a href="https://www.geekgame.site/post/protocol/http-auth-digest-access/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
@@ -211,7 +208,7 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/blockchain/ipfs/ipfs%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="Ipfs基本概念">Ipfs基本概念</a>
+        <a href="https://www.geekgame.site/post/language/golang/sched/" title="golang 协程调度原理">golang 协程调度原理</a>
       </h3>
       <div class="post_meta">
   
@@ -219,10 +216,10 @@
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      May 14, 2019</span>
-      <a href='https://www.geekgame.site/tags/ipfs' title="ipfs" class="post_tag button button_translucent">ipfs
+      Aug 11, 2019</span>
+      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
       </a>
-      <a href='https://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE' title="区块链" class="post_tag button button_translucent">区块链
+      <a href='https://www.geekgame.site/tags/sched' title="sched" class="post_tag button button_translucent">sched
       </a>
 </div>
 
@@ -231,11 +228,12 @@
         <div>
           <p class="pale">
             
-              什么是 ipfs
- ipfs
+              Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
+GMP调度模型 Go采用的是GMP调度模型。
+核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：  1 go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量 …
             
           </p>
-          <a href="https://www.geekgame.site/post/blockchain/ipfs/ipfs%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+          <a href="https://www.geekgame.site/post/language/golang/sched/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
@@ -245,7 +243,7 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="mac  sed 报错">mac  sed 报错</a>
+        <a href="https://www.geekgame.site/post/language/golang/mem/" title="Mem">Mem</a>
       </h3>
       <div class="post_meta">
   
@@ -253,12 +251,37 @@
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      May 13, 2019</span>
-      <a href='https://www.geekgame.site/tags/sed' title="sed" class="post_tag button button_translucent">sed
+      Aug 11, 2019</span>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+          </p>
+          <a href="https://www.geekgame.site/post/language/golang/mem/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/language/golang/start/" title="通过 hello world 寻找 golang 启动过程">通过 hello world 寻找 golang 启动过程</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Jun 20, 2019</span>
+      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
       </a>
-      <a href='https://www.geekgame.site/tags/mac' title="mac" class="post_tag button button_translucent">mac
-      </a>
-      <a href='https://www.geekgame.site/tags/shell' title="shell" class="post_tag button button_translucent">shell
+      <a href='https://www.geekgame.site/tags/start' title="start" class="post_tag button button_translucent">start
       </a>
 </div>
 
@@ -267,14 +290,144 @@
         <div>
           <p class="pale">
             
-              mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
-1$sed -i &#39;s/xxxx/yyy/g&#39; test 2sed: 1: &#34;test&#34;: extra characters at the end of p command 解决方法
-1sed -i &#34;&#34; &#34;s/XX/YY/g&#34; test ============================================
-sed 用法
-1sed: illegal option -- - 2usage: sed script [-Ealn] [-i …
+              知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&#34;fmt&#34; 5) 6 7func main() { 8	fmt.Println(&#34;hello world&#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6 …
             
           </p>
-          <a href="https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+          <a href="https://www.geekgame.site/post/language/golang/start/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/docker/command/" title="Command">Command</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Jun 20, 2019</span>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              镜像 1.显示
+1docker images 相当于 docker image list 2 3$ docker images 4REPOSITORY TAG IMAGE ID CREATED SIZE 5busybox latest 59788edf1f3e 8 months ago 1.15MB 6golang 1.9-stretch ef89ef5c42a9 11 months ago 750MB 7swarm latest ff454b4a0e84 12 months ago 12.7MB 2.删除
+1 docker rmi [OPTIONS] IMAGE [IMAGE...] 2 docker image rm …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/docker/command/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/language/golang/go-%E6%B1%87%E7%BC%96/" title="Go 汇编">Go 汇编</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Jun 16, 2019</span>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+          </p>
+          <a href="https://www.geekgame.site/post/language/golang/go-%E6%B1%87%E7%BC%96/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Jun 15, 2019</span>
+      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+      </a>
+      <a href='https://www.geekgame.site/tags/stack' title="stack" class="post_tag button button_translucent">stack
+      </a>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              程序组成 程序由代码和数据组成，数据又有静态与动态之分；
+动态数据：存放在堆区和栈区；
+静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
+可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
+寄存器 伪寄存器  FP(Frame pointer): 表示参数以及返回值的基地址； 通过 SYMBOL+/-ffset(FP) PC(Program counter): 跳转寄存器，存储下一条指令地址； SB(Static base pointer): 全局静态起始地址. SP(Stack pointer): 表示本地变量的起始地址；
+使用方式 symbol + offset(SP), 例如第一个 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/language/golang/plan9/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/language/golang/module/" title="golang module 使用教程">golang module 使用教程</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      May 30, 2019</span>
+      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+      </a>
+      <a href='https://www.geekgame.site/tags/module' title="module" class="post_tag button button_translucent">module
+      </a>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
+需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
+本文会介绍Go module的一些基本用法；
+ 常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令  常见命令 go mod 提供了以下命令
+ download: 下载 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/language/golang/module/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
@@ -300,11 +453,14 @@ sed 用法
   <li class="page-item active">
     <a class="page-link" href="/page/4/">4</a>
   </li>
-  <li class="page-item disabled">
-    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  <li class="page-item">
+    <a class="page-link" href="/page/5/">5</a>
   </li>
   <li class="page-item">
-    <a href="/page/4/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    <a href="/page/5/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/page/5/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
   </li>
 </ul>
 
@@ -319,31 +475,43 @@ sed 用法
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    <h2 class="mt-4">精选文章</h2>
+    <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Controller_runtime">Controller_runtime</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/issues/samll_packet2/" class="nav-link" title="Samll_packet2">Samll_packet2</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/issues/samll_packet/" class="nav-link" title="网络传输小包引起的性能问题">网络传输小包引起的性能问题</a>
+      </li>
+    </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
-        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" class="nav-link" title="Golang_performance">Golang_performance</a>
+        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Controller_runtime">Controller_runtime</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/nosql/select/" class="nav-link" title="主流 nosql 数据库选型">主流 nosql 数据库选型</a>
+        <a href="https://www.geekgame.site/post/issues/samll_packet2/" class="nav-link" title="Samll_packet2">Samll_packet2</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/linux/logrotate/" class="nav-link" title="Logrotate">Logrotate</a>
+        <a href="https://www.geekgame.site/post/issues/samll_packet/" class="nav-link" title="网络传输小包引起的性能问题">网络传输小包引起的性能问题</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/language/golang/test/" class="nav-link" title="golang testing 使用教程">golang testing 使用教程</a>
+        <a href="https://www.geekgame.site/post/linux/anycast/" class="nav-link" title="Anycast">Anycast</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/language/golang/unit_test/" class="nav-link" title="Unit_test">Unit_test</a>
+        <a href="https://www.geekgame.site/post/linux/lvs/" class="nav-link" title="Lvs">Lvs</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/devops/1/" class="nav-link" title="GitLab CI/CD 入门篇">GitLab CI/CD 入门篇</a>
+        <a href="https://www.geekgame.site/post/linux/load_balance/" class="nav-link" title="Load_balance">Load_balance</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/language/golang/staticcheck/" class="nav-link" title="Staticcheck">Staticcheck</a>
+        <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/push/1/" class="nav-link" title="1">1</a>
+        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </li>
     </ul>
     <div>
@@ -359,9 +527,24 @@ sed 用法
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
+          KUBERNETES-EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/' class="post_tag button button_translucent" title="工具命令">
           工具命令
           <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">1</span>
         </a>
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
@@ -385,8 +568,18 @@ sed 用法
           <span class="button_tally">5</span>
         </a>
         
+        <a href='https://www.geekgame.site/series/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
+          KUBERNETES-EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/series/ipfs/' class="post_tag button button_translucent" title="ipfs">
           IPFS
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/series/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
           <span class="button_tally">1</span>
         </a>
         
@@ -411,8 +604,33 @@ sed 用法
           <span class="button_tally">5</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
+          EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubebuilder/' class="post_tag button button_translucent" title="kubebuilder">
+          KUBEBUILDER
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/shell/' class="post_tag button button_translucent" title="shell">
           SHELL
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/tag_name1/' class="post_tag button button_translucent" title="tag_name1">
+          TAG_NAME1
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/tag_name2/' class="post_tag button button_translucent" title="tag_name2">
+          TAG_NAME2
           <span class="button_tally">2</span>
         </a>
         
@@ -446,33 +664,8 @@ sed 用法
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/mac/' class="post_tag button button_translucent" title="mac">
-          MAC
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/module/' class="post_tag button button_translucent" title="module">
-          MODULE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
-          MONGODB
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/mqtt/' class="post_tag button button_translucent" title="mqtt">
-          MQTT
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/nosql/' class="post_tag button button_translucent" title="nosql">
-          NOSQL
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/redis/' class="post_tag button button_translucent" title="redis">
-          REDIS
+        <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
+          KUBERNETES-ARCH
           <span class="button_tally">1</span>
         </a>
         
@@ -490,6 +683,10 @@ sed 用法
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/extend/' class=" post_tag button button_translucent" data-position=2 title="extend">EXTEND<span class="button_tally">2</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/go/' class=" post_tag button button_translucent" data-position=5 title="go">GO<span class="button_tally">5</span>
             </a>
             
@@ -503,6 +700,18 @@ sed 用法
             
             
             <a href='https://www.geekgame.site/tags/ipfs/' class=" post_tag button button_translucent" data-position=1 title="ipfs">IPFS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubebuilder/' class=" post_tag button button_translucent" data-position=2 title="kubebuilder">KUBEBUILDER<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=3 title="kubernetes">KUBERNETES<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes-arch/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-arch">KUBERNETES-ARCH<span class="button_tally">1</span>
             </a>
             
             
@@ -547,6 +756,14 @@ sed 用法
             
             
             <a href='https://www.geekgame.site/tags/start/' class=" post_tag button button_translucent" data-position=1 title="start">START<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=2 title="tag_name1">TAG_NAME1<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=2 title="tag_name2">TAG_NAME2<span class="button_tally">2</span>
             </a>
             
             

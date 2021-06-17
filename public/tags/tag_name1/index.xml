@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tag_name1 on 有趣</title>
+    <link>https://www.geekgame.site/tags/tag_name1/</link>
+    <description>Recent content in Tag_name1 on 有趣</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Thu, 17 Jun 2021 13:40:20 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/tag_name1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Controller_runtime</title>
+      <link>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</link>
+      <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
+      <description>
+        
+          &lt;p&gt;&lt;strong&gt;Insert Lead paragraph here.&lt;/strong&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Samll_packet2</title>
+      <link>https://www.geekgame.site/post/issues/samll_packet2/</link>
+      <pubDate>Wed, 16 Jun 2021 23:00:51 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/issues/samll_packet2/</guid>
+      <description>
+        
+          &lt;p&gt;&lt;strong&gt;Insert Lead paragraph here.&lt;/strong&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>
