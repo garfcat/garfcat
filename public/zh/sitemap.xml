@@ -43,7 +43,32 @@
   </url>
   
   <url>
+    <loc>https://www.geekgame.site/tags/controller-runtime/</loc>
+    <lastmod>2021-06-17T13:40:20+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</loc>
+    <lastmod>2021-06-17T13:40:20+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/kubebuilder/</loc>
+    <lastmod>2021-06-17T13:40:20+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/kubernetes/</loc>
+    <lastmod>2021-06-17T13:40:20+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/series/kubernetes-extend/</loc>
+    <lastmod>2021-06-17T13:40:20+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/categories/kubernetes-extend/</loc>
     <lastmod>2021-06-17T13:40:20+08:00</lastmod>
   </url>
   
@@ -53,13 +78,23 @@
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/tags/tag_name1/</loc>
+    <loc>https://www.geekgame.site/series/</loc>
     <lastmod>2021-06-17T13:40:20+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/tags/tag_name2/</loc>
-    <lastmod>2021-06-17T13:40:20+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.geekgame.site/en/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://www.geekgame.site/pt/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.geekgame.site/series/"
+                />
   </url>
   
   <url>
@@ -83,58 +118,13 @@
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/categories/technology/</loc>
-    <lastmod>2021-06-17T13:40:20+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.geekgame.site/tags/extend/</loc>
-    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/tags/kubebuilder/</loc>
-    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/tags/kubernetes/</loc>
-    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/series/kubernetes-extend/</loc>
-    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/categories/kubernetes-extend/</loc>
     <lastmod>2021-06-08T16:18:40+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/post/k8s/extensions/extend/</loc>
     <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/series/</loc>
-    <lastmod>2021-06-08T16:18:40+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.geekgame.site/en/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://www.geekgame.site/pt/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.geekgame.site/series/"
-                />
   </url>
   
   <url>

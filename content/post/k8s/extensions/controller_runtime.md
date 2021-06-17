@@ -1,23 +1,9 @@
 ---
-title: "Controller_runtime" # Title of the blog post.
+title: "kKubernetes Controller runtime 详解" # Title of the blog post.
 date: 2021-06-17T13:40:20+08:00 # Date of post creation.
-description: "Article description." # Description used for search engine.
-featured: true # Sets if post is a featured post, making appear on the home page side bar.
-draft: false # Sets whether to render this page. Draft of true will not be rendered.
-toc: false # Controls if a table of contents should be generated for first-level links automatically.
-# menu: main
-featureImage: "/images/path/file.jpg" # Sets featured image on blog post.
-thumbnail: "/images/path/thumbnail.png" # Sets thumbnail image appearing inside card on homepage.
-shareImage: "/images/path/share.png" # Designate a separate image for social media sharing.
-codeMaxLines: 10 # Override global value for how many lines within a code block before auto-collapsing.
-codeLineNumbers: false # Override global value for showing of line numbers within code block.
-figurePositionShow: true # Override global value for showing the figure label.
-categories:
-  - Technology
-tags:
-  - Tag_name1
-  - Tag_name2
-# comment: false # Disable comment if false.
+tags: [ "kubebuilder", "kubernetes" , "controller runtime"]
+series: ["kubernetes extend"]
+categories: ["kubernetes extend"]
 ---
 controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
 # 概念
@@ -100,11 +86,18 @@ Kubernetes的其他组件都是通过client-go(K8s系统使用client-go作为Go�
 
 # 整体设计
 Controller-runtime设计图如下所示：
-![](/static/k8s/controller_runtime.jpg)
+![](https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/controller_runtime.jpg)
+controller 的整理流程：
+1. 首先会初始化Schema, 注册原生资源以及自定义资源;
+2. 创建并初始化manager，将schema传入，并在内部初始化cache和client等其他资源;
+3. 创建并初始化 Reconciler, 传入 client 和 schema
+4. 将 Reconciler 注册到 manager，并创建controller 与 Reconciler 绑定;
+5. Controller Watch 自定义资源，此时 controller 会从 Cache 里面去获取 Share Informer,如果没有则创建,然后对该 Share Informer 进行 Watch,将得到的资源的名字和 Namespace存入到Queue中；
+6. Controller 不断获取 Queue 中的数据并调用 Reconciler 进行调协；
 
-
-# 源码解析
 
 
 # 参考文献
-[1. 定制资源](https://kubernetes.io/zh/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+[1. 定制资源](https://kubernetes.io/zh/docs/concepts/extend-kubernetes/api-extension/custom-resources/)  
+[2. controller-runtime 之控制器实现](https://jishuin.proginn.com/p/763bfbd2f5b9)  
+[3. 还在手写 Operator?是时候使用 Kubebuilder 了](https://my.oschina.net/u/4657223/blog/4792083)  
