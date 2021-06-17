@@ -3,7 +3,7 @@ title: "Controller_runtime" # Title of the blog post.
 date: 2021-06-17T13:40:20+08:00 # Date of post creation.
 description: "Article description." # Description used for search engine.
 featured: true # Sets if post is a featured post, making appear on the home page side bar.
-draft: true # Sets whether to render this page. Draft of true will not be rendered.
+draft: false # Sets whether to render this page. Draft of true will not be rendered.
 toc: false # Controls if a table of contents should be generated for first-level links automatically.
 # menu: main
 featureImage: "/images/path/file.jpg" # Sets featured image on blog post.
@@ -100,7 +100,7 @@ Kubernetes的其他组件都是通过client-go(K8s系统使用client-go作为Go�
 
 # 整体设计
 Controller-runtime设计图如下所示：
-![](../../../../images/controller_runtime.jpg)
+![](/static/k8s/controller_runtime.jpg)
 
 
 # 源码解析

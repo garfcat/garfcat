@@ -125,6 +125,45 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" title="Controller_runtime">Controller_runtime</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Jun 17, 2021</span>
+      <a href='https://www.geekgame.site/tags/tag_name1' title="Tag_name1" class="post_tag button button_translucent">Tag_name1
+      </a>
+      <a href='https://www.geekgame.site/tags/tag_name2' title="Tag_name2" class="post_tag button button_translucent">Tag_name2
+      </a>
+</div>
+
+    </div>
+    <div class="excerpt_footer partition">
+      <div class="excerpt_thumbnail">
+        <img src='https://www.geekgame.site/images/path/thumbnail.png' alt="Controller_runtime">
+      </div>
+      
+        <div>
+          <p class="pale">
+            
+              controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
+概念   CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
+下面例子是定义了一个crontab 的 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" title="Kubernetes 扩展">Kubernetes 扩展</a>
       </h3>
       <div class="post_meta">
@@ -442,44 +481,6 @@ GMP调度模型 Go采用的是GMP调度模型。
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
-      </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg>
-    <span class="post_date">
-      Jun 15, 2019</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/stack' title="stack" class="post_tag button button_translucent">stack
-      </a>
-</div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              程序组成 程序由代码和数据组成，数据又有静态与动态之分；
-动态数据：存放在堆区和栈区；
-静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
-可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
-寄存器 伪寄存器  FP(Frame pointer): 表示参数以及返回值的基地址； 通过 SYMBOL+/-ffset(FP) PC(Program counter): 跳转寄存器，存储下一条指令地址； SB(Static base pointer): 全局静态起始地址. SP(Stack pointer): 表示本地变量的起始地址；
-使用方式 symbol + offset(SP), 例如第一个 …
-            
-          </p>
-          <a href="https://www.geekgame.site/post/language/golang/plan9/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -513,8 +514,17 @@ GMP调度模型 Go采用的是GMP调度模型。
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    <h2 class="mt-4">精选文章</h2>
+    <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Controller_runtime">Controller_runtime</a>
+      </li>
+    </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Controller_runtime">Controller_runtime</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
       </li>
@@ -535,9 +545,6 @@ GMP调度模型 Go采用的是GMP调度模型。
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/k8s/" class="nav-link" title="kubernetes 架构">kubernetes 架构</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/language/golang/sched/" class="nav-link" title="golang 协程调度原理">golang 协程调度原理</a>
       </li>
     </ul>
     <div>
@@ -570,6 +577,11 @@ GMP调度模型 Go采用的是GMP调度模型。
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -763,6 +775,14 @@ GMP调度模型 Go采用的是GMP调度模型。
             
             
             <a href='https://www.geekgame.site/tags/start/' class=" post_tag button button_translucent" data-position=1 title="start">START<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
             </a>
             
             

@@ -132,7 +132,104 @@
     
     <img src="/images/path/file.jpg" class="image_featured" alt="Controller_runtime">
     
-    <p><strong>Insert Lead paragraph here.</strong></p>
+    <p>controller-runtime(<a href="https://github.com/kubernetes-sigs/controller-runtime">https://github.com/kubernetes-sigs/controller-runtime</a>) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。</p>
+<h1 id="概念">概念</h1>
+<ul>
+<li>
+<p>CRD:
+自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。<br>
+下面例子是定义了一个crontab 的自定义资源:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="w">  </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apiextensions.k8s.io/v1</span><span class="w">
+</span><span class="ln"> 2</span><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">CustomResourceDefinition</span><span class="w">
+</span><span class="ln"> 3</span><span class="w">  </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 4</span><span class="w">    </span><span class="c"># 名字必需与下面的 spec 字段匹配，并且格式为 &#39;&lt;名称的复数形式&gt;.&lt;组名&gt;&#39;</span><span class="w">
+</span><span class="ln"> 5</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">crontabs.stable.example.com</span><span class="w">
+</span><span class="ln"> 6</span><span class="w">  </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 7</span><span class="w">    </span><span class="c"># 组名称，用于 REST API: /apis/&lt;组&gt;/&lt;版本&gt;</span><span class="w">
+</span><span class="ln"> 8</span><span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l">stable.example.com</span><span class="w">
+</span><span class="ln"> 9</span><span class="w">    </span><span class="c"># 列举此 CustomResourceDefinition 所支持的版本</span><span class="w">
+</span><span class="ln">10</span><span class="w">    </span><span class="nt">versions</span><span class="p">:</span><span class="w">
+</span><span class="ln">11</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="ln">12</span><span class="w">        </span><span class="c"># 每个版本都可以通过 served 标志来独立启用或禁止</span><span class="w">
+</span><span class="ln">13</span><span class="w">        </span><span class="nt">served</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="ln">14</span><span class="w">        </span><span class="c"># 其中一个且只有一个版本必需被标记为存储版本</span><span class="w">
+</span><span class="ln">15</span><span class="w">        </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="ln">16</span><span class="w">        </span><span class="nt">schema</span><span class="p">:</span><span class="w">
+</span><span class="ln">17</span><span class="w">          </span><span class="nt">openAPIV3Schema</span><span class="p">:</span><span class="w">
+</span><span class="ln">18</span><span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">object</span><span class="w">
+</span><span class="ln">19</span><span class="w">            </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span><span class="ln">20</span><span class="w">              </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="ln">21</span><span class="w">                </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">object</span><span class="w">
+</span><span class="ln">22</span><span class="w">                </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span><span class="ln">23</span><span class="w">                  </span><span class="nt">cronSpec</span><span class="p">:</span><span class="w">
+</span><span class="ln">24</span><span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">string</span><span class="w">
+</span><span class="ln">25</span><span class="w">                  </span><span class="nt">image</span><span class="p">:</span><span class="w">
+</span><span class="ln">26</span><span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">string</span><span class="w">
+</span><span class="ln">27</span><span class="w">                  </span><span class="nt">replicas</span><span class="p">:</span><span class="w">
+</span><span class="ln">28</span><span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">integer</span><span class="w">
+</span><span class="ln">29</span><span class="w">    </span><span class="c"># 可以是 Namespaced 或 Cluster</span><span class="w">
+</span><span class="ln">30</span><span class="w">    </span><span class="nt">scope</span><span class="p">:</span><span class="w"> </span><span class="l">Namespaced</span><span class="w">
+</span><span class="ln">31</span><span class="w">    </span><span class="nt">names</span><span class="p">:</span><span class="w">
+</span><span class="ln">32</span><span class="w">      </span><span class="c"># 名称的复数形式，用于 URL：/apis/&lt;组&gt;/&lt;版本&gt;/&lt;名称的复数形式&gt;</span><span class="w">
+</span><span class="ln">33</span><span class="w">      </span><span class="nt">plural</span><span class="p">:</span><span class="w"> </span><span class="l">crontabs</span><span class="w">
+</span><span class="ln">34</span><span class="w">      </span><span class="c"># 名称的单数形式，作为命令行使用时和显示时的别名</span><span class="w">
+</span><span class="ln">35</span><span class="w">      </span><span class="nt">singular</span><span class="p">:</span><span class="w"> </span><span class="l">crontab</span><span class="w">
+</span><span class="ln">36</span><span class="w">      </span><span class="c"># kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。</span><span class="w">
+</span><span class="ln">37</span><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">CronTab</span><span class="w">
+</span><span class="ln">38</span><span class="w">      </span><span class="c"># shortNames 允许你在命令行使用较短的字符串来匹配资源</span><span class="w">
+</span><span class="ln">39</span><span class="w">      </span><span class="nt">shortNames</span><span class="p">:</span><span class="w">
+</span><span class="ln">40</span><span class="w">      </span>- <span class="l">ct</span><span class="w">
+</span></code></pre></div></li>
+<li>
+<p>GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写<br>
+Group: ApiGroup,是相关API功能的集合。<br>
+Version: ApiGroup的版本， 每个ApiGroup可以对应多个版本。<br>
+Kind：资源类型。
+Resource：资源，Kind的具象化，类似于面向对象语言中的类与对象，Kind就是类，Resource就是对象。</p>
+<p>那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln">1</span><span class="w">  </span><span class="c"># group/version: group 是 stable.example.com， version 是 v1</span><span class="w">
+</span><span class="ln">2</span><span class="w">  </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;stable.example.com/v1&#34;</span><span class="w"> 
+</span><span class="ln">3</span><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">CronTab  </span><span class="w">
+</span><span class="ln">4</span><span class="w">  </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln">5</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-new-cron-object</span><span class="w">
+</span><span class="ln">6</span><span class="w">  </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="ln">7</span><span class="w">    </span><span class="nt">cronSpec</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;* * * * */5&#34;</span><span class="w">
+</span><span class="ln">8</span><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">my-awesome-cron-image</span><span class="w">
+</span></code></pre></div></li>
+<li>
+<p>Schema: 定义了资源序列化和反序列化的方法以及资源类型和版本的对应关系,可以根据GVK找到Go Type, 也可以通过Go Type找到GVK。</p>
+</li>
+<li>
+<p>Informer机制<br>
+Kubernetes的其他组件都是通过client-go(K8s系统使用client-go作为Go语言的官方编程式交互客户端库,提供对 K8s API Server服务的交互访问)的Informer机制与Kubernetes API Server进行通信的。</p>
+</li>
+<li>
+<p>Clients
+提供访问API对象的客户端。</p>
+</li>
+<li>
+<p>Caches
+默认情况下客户端从本地缓存读取对象。缓存将自动缓存需要Watch的对象，同时也会缓存其他被请求的结构化对象。Cache内部是通过Informer负责监听对应 GVK 的 GVR 的创建/删除/更新操作,然后通知所有 Watch 该 GVK 的 Controller, Controller 将对应的资源名称添加到 Queue 里面,最终触发 Reconciler 的调协。</p>
+</li>
+<li>
+<p>Managers<br>
+Controller runtime抽象的最外层的管理对象，负责管理 Controller、Caches、Client，以及 leader 选举。</p>
+</li>
+<li>
+<p>Controllers<br>
+控制器响应事件(Create/Update/Delete)来触发调协(reconcile)请求,与要实现的调协逻辑一一对应，会创建限速Queue, 一个 Controller 可以关注很多 GVK,然后根据 GVK 到 Cache 里面找到对应的 Share Informer 去 Watch 资源,Watch 到的事件会加入到 Queue里面, Queue 最终触发开发者的 Reconciler 的调和。</p>
+</li>
+<li>
+<p>Reconcilers<br>
+开发者主要实现的逻辑，用来接收Controller的GVK事件，然后获取GVR 进行协调并决定是否更新或者重新入队。</p>
+</li>
+</ul>
+<h1 id="整体设计">整体设计</h1>
+<p>Controller-runtime设计图如下所示：
+<img src="/static/k8s/controller_runtime.jpg" alt=""></p>
+<h1 id="源码解析">源码解析</h1>
+<h1 id="参考文献">参考文献</h1>
+<p><a href="https://kubernetes.io/zh/docs/concepts/extend-kubernetes/api-extension/custom-resources/">1. 定制资源</a></p>
 
   </article>
 <aside class="sidebar">
@@ -143,32 +240,8 @@
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
-    <h2 class="mt-4">精选文章</h2>
-    <ul>
-      <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet2/" class="nav-link" title="Samll_packet2">Samll_packet2</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet/" class="nav-link" title="网络传输小包引起的性能问题">网络传输小包引起的性能问题</a>
-      </li>
-    </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
-      <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet2/" class="nav-link" title="Samll_packet2">Samll_packet2</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet/" class="nav-link" title="网络传输小包引起的性能问题">网络传输小包引起的性能问题</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/linux/anycast/" class="nav-link" title="Anycast">Anycast</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/linux/lvs/" class="nav-link" title="Lvs">Lvs</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/linux/load_balance/" class="nav-link" title="Load_balance">Load_balance</a>
-      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
       </li>
@@ -176,7 +249,22 @@
         <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/language/golang/go_generate/" class="nav-link" title="Go_generate">Go_generate</a>
+        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" class="nav-link" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/nosql/select/" class="nav-link" title="主流 nosql 数据库选型">主流 nosql 数据库选型</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/language/golang/test/" class="nav-link" title="golang testing 使用教程">golang testing 使用教程</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/protocol/tcp_1/" class="nav-link" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/k8s/" class="nav-link" title="kubernetes 架构">kubernetes 架构</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/language/golang/sched/" class="nav-link" title="golang 协程调度原理">golang 协程调度原理</a>
       </li>
     </ul>
     <div>
@@ -187,18 +275,13 @@
           <span class="button_tally">5</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/' class="post_tag button button_translucent" title="协议">
-          协议
-          <span class="button_tally">3</span>
-        </a>
-        
         <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
           KUBERNETES-EXTEND
           <span class="button_tally">2</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
-          TECHNOLOGY
+        <a href='https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/' class="post_tag button button_translucent" title="协议">
+          协议
           <span class="button_tally">2</span>
         </a>
         
@@ -217,8 +300,8 @@
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/' class="post_tag button button_translucent" title="区块链">
-          区块链
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -236,11 +319,6 @@
         <a href='https://www.geekgame.site/series/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
           KUBERNETES-EXTEND
           <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/series/ipfs/' class="post_tag button button_translucent" title="ipfs">
-          IPFS
-          <span class="button_tally">1</span>
         </a>
         
         <a href='https://www.geekgame.site/series/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
@@ -289,21 +367,6 @@
           <span class="button_tally">2</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/tag_name1/' class="post_tag button button_translucent" title="tag_name1">
-          TAG_NAME1
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/tag_name2/' class="post_tag button button_translucent" title="tag_name2">
-          TAG_NAME2
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/tcp/' class="post_tag button button_translucent" title="tcp">
-          TCP
-          <span class="button_tally">2</span>
-        </a>
-        
         <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
           EFFECTIVE
           <span class="button_tally">1</span>
@@ -324,13 +387,28 @@
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/ipfs/' class="post_tag button button_translucent" title="ipfs">
-          IPFS
+        <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
+          KUBERNETES-ARCH
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
-          KUBERNETES-ARCH
+        <a href='https://www.geekgame.site/tags/mac/' class="post_tag button button_translucent" title="mac">
+          MAC
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/module/' class="post_tag button button_translucent" title="module">
+          MODULE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mqtt/' class="post_tag button button_translucent" title="mqtt">
+          MQTT
           <span class="button_tally">1</span>
         </a>
         
@@ -361,10 +439,6 @@
             
             
             <a href='https://www.geekgame.site/tags/index/' class=" post_tag button button_translucent" data-position=1 title="index">INDEX<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://www.geekgame.site/tags/ipfs/' class=" post_tag button button_translucent" data-position=1 title="ipfs">IPFS<span class="button_tally">1</span>
             </a>
             
             
@@ -424,15 +498,15 @@
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=2 title="tag_name1">TAG_NAME1<span class="button_tally">2</span>
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=2 title="tag_name2">TAG_NAME2<span class="button_tally">2</span>
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=2 title="tcp">TCP<span class="button_tally">2</span>
+            <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
             </a>
             
             
@@ -441,10 +515,6 @@
             
             
             <a href='https://www.geekgame.site/tags/testing/' class=" post_tag button button_translucent" data-position=1 title="testing">TESTING<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/' class=" post_tag button button_translucent" data-position=1 title="区块链">区块链<span class="button_tally">1</span>
             </a>
             
             

@@ -142,47 +142,12 @@
         <div>
           <p class="pale">
             
-              Insert Lead paragraph here.
+              controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
+概念   CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
+下面例子是定义了一个crontab 的 …
             
           </p>
           <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/issues/samll_packet2/" title="Samll_packet2">Samll_packet2</a>
-      </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg>
-    <span class="post_date">
-      Jun 16, 2021</span>
-      <a href='https://www.geekgame.site/tags/tag_name1' title="Tag_name1" class="post_tag button button_translucent">Tag_name1
-      </a>
-      <a href='https://www.geekgame.site/tags/tag_name2' title="Tag_name2" class="post_tag button button_translucent">Tag_name2
-      </a>
-</div>
-
-    </div>
-    <div class="excerpt_footer partition">
-      <div class="excerpt_thumbnail">
-        <img src='https://www.geekgame.site/images/path/thumbnail.png' alt="Samll_packet2">
-      </div>
-      
-        <div>
-          <p class="pale">
-            
-              Insert Lead paragraph here.
-            
-          </p>
-          <a href="https://www.geekgame.site/post/issues/samll_packet2/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
@@ -206,12 +171,6 @@
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Controller_runtime">Controller_runtime</a>
       </li>
-      <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet2/" class="nav-link" title="Samll_packet2">Samll_packet2</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet/" class="nav-link" title="网络传输小包引起的性能问题">网络传输小包引起的性能问题</a>
-      </li>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
@@ -219,25 +178,25 @@
         <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Controller_runtime">Controller_runtime</a>
       </li>
       <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet2/" class="nav-link" title="Samll_packet2">Samll_packet2</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/issues/samll_packet/" class="nav-link" title="网络传输小包引起的性能问题">网络传输小包引起的性能问题</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/linux/anycast/" class="nav-link" title="Anycast">Anycast</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/linux/lvs/" class="nav-link" title="Lvs">Lvs</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/linux/load_balance/" class="nav-link" title="Load_balance">Load_balance</a>
-      </li>
-      <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" class="nav-link" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/nosql/select/" class="nav-link" title="主流 nosql 数据库选型">主流 nosql 数据库选型</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/language/golang/test/" class="nav-link" title="golang testing 使用教程">golang testing 使用教程</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/protocol/tcp_1/" class="nav-link" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/k8s/" class="nav-link" title="kubernetes 架构">kubernetes 架构</a>
       </li>
     </ul>
     <div>
@@ -248,18 +207,13 @@
           <span class="button_tally">5</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/' class="post_tag button button_translucent" title="协议">
-          协议
-          <span class="button_tally">3</span>
-        </a>
-        
         <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
           KUBERNETES-EXTEND
           <span class="button_tally">2</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
-          TECHNOLOGY
+        <a href='https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/' class="post_tag button button_translucent" title="协议">
+          协议
           <span class="button_tally">2</span>
         </a>
         
@@ -278,8 +232,8 @@
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/' class="post_tag button button_translucent" title="区块链">
-          区块链
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -297,11 +251,6 @@
         <a href='https://www.geekgame.site/series/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
           KUBERNETES-EXTEND
           <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/series/ipfs/' class="post_tag button button_translucent" title="ipfs">
-          IPFS
-          <span class="button_tally">1</span>
         </a>
         
         <a href='https://www.geekgame.site/series/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
@@ -350,21 +299,6 @@
           <span class="button_tally">2</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/tag_name1/' class="post_tag button button_translucent" title="tag_name1">
-          TAG_NAME1
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/tag_name2/' class="post_tag button button_translucent" title="tag_name2">
-          TAG_NAME2
-          <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/tcp/' class="post_tag button button_translucent" title="tcp">
-          TCP
-          <span class="button_tally">2</span>
-        </a>
-        
         <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
           EFFECTIVE
           <span class="button_tally">1</span>
@@ -385,13 +319,28 @@
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/ipfs/' class="post_tag button button_translucent" title="ipfs">
-          IPFS
+        <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
+          KUBERNETES-ARCH
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
-          KUBERNETES-ARCH
+        <a href='https://www.geekgame.site/tags/mac/' class="post_tag button button_translucent" title="mac">
+          MAC
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/module/' class="post_tag button button_translucent" title="module">
+          MODULE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mqtt/' class="post_tag button button_translucent" title="mqtt">
+          MQTT
           <span class="button_tally">1</span>
         </a>
         
@@ -422,10 +371,6 @@
             
             
             <a href='https://www.geekgame.site/tags/index/' class=" post_tag button button_translucent" data-position=1 title="index">INDEX<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://www.geekgame.site/tags/ipfs/' class=" post_tag button button_translucent" data-position=1 title="ipfs">IPFS<span class="button_tally">1</span>
             </a>
             
             
@@ -485,15 +430,15 @@
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=2 title="tag_name1">TAG_NAME1<span class="button_tally">2</span>
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=2 title="tag_name2">TAG_NAME2<span class="button_tally">2</span>
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=2 title="tcp">TCP<span class="button_tally">2</span>
+            <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
             </a>
             
             
@@ -502,10 +447,6 @@
             
             
             <a href='https://www.geekgame.site/tags/testing/' class=" post_tag button button_translucent" data-position=1 title="testing">TESTING<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://www.geekgame.site/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/' class=" post_tag button button_translucent" data-position=1 title="区块链">区块链<span class="button_tally">1</span>
             </a>
             
             
