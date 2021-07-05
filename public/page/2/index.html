@@ -125,6 +125,40 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/language/golang/start/" title="通过 hello world 寻找 golang 启动过程">通过 hello world 寻找 golang 启动过程</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Jun 20, 2019</span>
+      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+      </a>
+      <a href='https://www.geekgame.site/tags/start' title="start" class="post_tag button button_translucent">start
+      </a>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&#34;fmt&#34; 5) 6 7func main() { 8	fmt.Println(&#34;hello world&#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/language/golang/start/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
       </h3>
       <div class="post_meta">
@@ -337,6 +371,9 @@ sed 用法
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
       </li>
       <li>
@@ -357,9 +394,6 @@ sed 用法
       <li>
         <a href="https://www.geekgame.site/post/protocol/tcp_1/" class="nav-link" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
       </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/k8s/" class="nav-link" title="kubernetes 架构">kubernetes 架构</a>
-      </li>
     </ul>
     <div>
       <h2 class="mt-4 taxonomy" id="categories-section">分类</h2>
@@ -374,6 +408,11 @@ sed 用法
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/' class="post_tag button button_translucent" title="协议">
           协议
           <span class="button_tally">2</span>
@@ -382,11 +421,6 @@ sed 用法
         <a href='https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/' class="post_tag button button_translucent" title="工具命令">
           工具命令
           <span class="button_tally">2</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
-          KUBERNETES
-          <span class="button_tally">1</span>
         </a>
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
@@ -412,7 +446,7 @@ sed 用法
         
         <a href='https://www.geekgame.site/series/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
           KUBERNETES
-          <span class="button_tally">1</span>
+          <span class="button_tally">2</span>
         </a>
         
         <a href='https://www.geekgame.site/series/nosql/' class="post_tag button button_translucent" title="nosql">
@@ -438,7 +472,7 @@ sed 用法
         
         <a href='https://www.geekgame.site/tags/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
           KUBERNETES
-          <span class="button_tally">4</span>
+          <span class="button_tally">5</span>
         </a>
         
         <a href='https://www.geekgame.site/tags/kubebuilder/' class="post_tag button button_translucent" title="kubebuilder">
@@ -486,6 +520,11 @@ sed 用法
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/kubernetes-monitoring/' class="post_tag button button_translucent" title="kubernetes-monitoring">
+          KUBERNETES-MONITORING
+          <span class="button_tally">1</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/mac/' class="post_tag button button_translucent" title="mac">
           MAC
           <span class="button_tally">1</span>
@@ -493,11 +532,6 @@ sed 用法
         
         <a href='https://www.geekgame.site/tags/module/' class="post_tag button button_translucent" title="module">
           MODULE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
-          MONGODB
           <span class="button_tally">1</span>
         </a>
         
@@ -539,11 +573,15 @@ sed 用法
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=4 title="kubernetes">KUBERNETES<span class="button_tally">4</span>
+            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=5 title="kubernetes">KUBERNETES<span class="button_tally">5</span>
             </a>
             
             
             <a href='https://www.geekgame.site/tags/kubernetes-arch/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-arch">KUBERNETES-ARCH<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes-monitoring/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-monitoring">KUBERNETES-MONITORING<span class="button_tally">1</span>
             </a>
             
             
