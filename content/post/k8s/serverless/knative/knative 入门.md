@@ -223,8 +223,29 @@ Knative 中的 Route 提供了一种将流量路由到正在运行的代码的�
 用户发起的请求首先会打到 Gateway 上面,然后 Istio 通过 VirtualService 再把请求转发到具体的 Revision 上面。当然用户的流量还会经过.
 Knative 的 queue 容器才能真正转发到业务容器, 这里我们直接使用 ClusterIP进行测试。
 
+```shell
+[root@test ~]# kubectl get svc istio-ingressgateway -n istio-system
+NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                      AGE
+istio-ingressgateway   NodePort   10.99.173.150   <none>        15021:31685/TCP,80:31376/TCP,443:30994/TCP,15012:31651/TCP,15443:30172/TCP   3d13h
 
+# Gateway 是通过 VirtualService 来进行流量转发的,这就要求访问者要知道目标服务的名字才行 ( 域名 ),所以要先获取helloworld-go的域名
+[root@test ~]# kubectl get route helloworld-go
+NAME            URL                                        READY   REASON
+helloworld-go   http://helloworld-go.default.example.com   True
 
+# 已经拿到.IP.地址和.Hostname,可以通过.curl.直接发起请求:
+[root@test ~]# curl -H "Host:  helloworld-go.default.example.com" http://10.99.173.150
+Hello World!
+```
+
+#### 如何进行扩缩容？
+主要依靠两个组件 Autoscaler(自动伸缩器)和 Activator(激活器)， 具体如下所示：
+![](/static/k8s/scale.png)
+
+Autoscaler 收集打到 Revision 并发请求数量的有关信息。为了做到这一点,它在 Revision Pod 内运行一个称之为queue-proxy  的容器,该 Pod 中也运行用户提供的 (user-provided) 镜像。
+queue-proxy  检测该 Revision 上观察到的并发量,然后它每隔一秒将此数据发送到 Autoscaler。Autoscaler 每两秒对这些指标进行评估。基于评估的结果,它增加或者减少 Revision 部署的规模。
+Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接受请求。当一个 Revision 停止接受请求时, Autoscaler 将其置为 Reserve (待命) 状态,条件是每 Pod 平均并发必须持续 30 秒保持为 0 (这是默认设置,但可以配置)。
+处于 Reserve 状态下,一个 Revision 底层部署缩容至零并且所有到它的流量均路由至 Activator。Activator 是一个共享组件,其捕获所有到待命 Revisios 的流量。当它收到一个到某一待命 Revision 的请求后,它转变 Revision 状态至Active。然后代理请求至合适的 Pods。  
 
 
 
