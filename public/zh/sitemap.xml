@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://www.geekgame.site/</loc>
-    <lastmod>2021-07-05T11:09:37+08:00</lastmod>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -24,7 +24,7 @@
   
   <url>
     <loc>https://www.geekgame.site/categories/</loc>
-    <lastmod>2021-07-05T11:09:37+08:00</lastmod>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -39,6 +39,76 @@
                 rel="alternate"
                 hreflang="zh"
                 href="https://www.geekgame.site/categories/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/knative/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/series/knative/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/kubernetes-serverless/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/categories/kubernetes-serverless/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/series/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.geekgame.site/en/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://www.geekgame.site/pt/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.geekgame.site/series/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/</loc>
+    <lastmod>2021-08-18T15:26:32+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.geekgame.site/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://www.geekgame.site/pt/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.geekgame.site/tags/"
                 />
   </url>
   
@@ -65,51 +135,6 @@
   <url>
     <loc>https://www.geekgame.site/post/k8s/monitoring_arch/</loc>
     <lastmod>2021-07-05T11:09:37+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/post/</loc>
-    <lastmod>2021-07-05T11:09:37+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/series/</loc>
-    <lastmod>2021-07-05T11:09:37+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.geekgame.site/en/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://www.geekgame.site/pt/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.geekgame.site/series/"
-                />
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/tags/</loc>
-    <lastmod>2021-07-05T11:09:37+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.geekgame.site/en/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://www.geekgame.site/pt/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.geekgame.site/tags/"
-                />
   </url>
   
   <url>

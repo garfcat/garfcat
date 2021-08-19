@@ -119,6 +119,40 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" title="knative入门">knative入门</a>
+      </h3>
+      <div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Aug 18, 2021</span>
+      <a href='https://www.geekgame.site/tags/kubernetes-serverless' title="kubernetes serverless" class="post_tag button button_translucent">kubernetes serverless
+      </a>
+      <a href='https://www.geekgame.site/tags/knative' title="knative" class="post_tag button button_translucent">knative
+      </a>
+</div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div>
+          <p class="pale">
+            
+              什么是knative knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。
+如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。 各个角色之间的关系,如 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
       </h3>
       <div class="post_meta">
@@ -438,41 +472,6 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/language/golang/sched/" title="golang 协程调度原理">golang 协程调度原理</a>
-      </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg>
-    <span class="post_date">
-      Aug 11, 2019</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/sched' title="sched" class="post_tag button button_translucent">sched
-      </a>
-</div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
-GMP调度模型 Go采用的是GMP调度模型。
-核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：  1 go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量 …
-            
-          </p>
-          <a href="https://www.geekgame.site/post/language/golang/sched/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -509,6 +508,9 @@ GMP调度模型 Go采用的是GMP调度模型。
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
       </li>
       <li>
@@ -528,9 +530,6 @@ GMP调度模型 Go采用的是GMP调度模型。
       </li>
       <li>
         <a href="https://www.geekgame.site/post/language/golang/test/" class="nav-link" title="golang testing 使用教程">golang testing 使用教程</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/protocol/tcp_1/" class="nav-link" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
       </li>
     </ul>
     <div>
@@ -561,6 +560,11 @@ GMP调度模型 Go采用的是GMP调度模型。
           <span class="button_tally">2</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/kubernetes-serverless/' class="post_tag button button_translucent" title="kubernetes-serverless">
+          KUBERNETES-SERVERLESS
+          <span class="button_tally">1</span>
+        </a>
+        
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
           <span class="button_tally">1</span>
@@ -585,6 +589,11 @@ GMP调度模型 Go采用的是GMP调度模型。
         <a href='https://www.geekgame.site/series/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
           KUBERNETES
           <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/series/knative/' class="post_tag button button_translucent" title="knative">
+          KNATIVE
+          <span class="button_tally">1</span>
         </a>
         
         <a href='https://www.geekgame.site/series/nosql/' class="post_tag button button_translucent" title="nosql">
@@ -653,6 +662,11 @@ GMP调度模型 Go采用的是GMP调度模型。
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/knative/' class="post_tag button button_translucent" title="knative">
+          KNATIVE
+          <span class="button_tally">1</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
           KUBERNETES-ARCH
           <span class="button_tally">1</span>
@@ -663,13 +677,8 @@ GMP调度模型 Go采用的是GMP调度模型。
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/mac/' class="post_tag button button_translucent" title="mac">
-          MAC
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/module/' class="post_tag button button_translucent" title="module">
-          MODULE
+        <a href='https://www.geekgame.site/tags/kubernetes-serverless/' class="post_tag button button_translucent" title="kubernetes-serverless">
+          KUBERNETES-SERVERLESS
           <span class="button_tally">1</span>
         </a>
         
@@ -707,6 +716,10 @@ GMP调度模型 Go采用的是GMP调度模型。
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/knative/' class=" post_tag button button_translucent" data-position=1 title="knative">KNATIVE<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/kubebuilder/' class=" post_tag button button_translucent" data-position=3 title="kubebuilder">KUBEBUILDER<span class="button_tally">3</span>
             </a>
             
@@ -720,6 +733,10 @@ GMP调度模型 Go采用的是GMP调度模型。
             
             
             <a href='https://www.geekgame.site/tags/kubernetes-monitoring/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-monitoring">KUBERNETES-MONITORING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes-serverless/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-serverless">KUBERNETES-SERVERLESS<span class="button_tally">1</span>
             </a>
             
             
