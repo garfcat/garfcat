@@ -1,0 +1,57 @@
+---
+title: "knative入门"
+date: 2019-10-31T15:26:32+08:00
+tags: ["kubernetes serverless", "knative"]
+series: ["knative"]
+categories: ["kubernetes serverless"]
+draft: true 
+---
+
+# 什么是knative
+knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。
+
+如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。
+![]()
+各个角色之间的关系,如上图所示:
+
+
+# 何为serverless
+
+serverless 中文可以翻译为无服务器架构, 有两个方面的定义:  
+狭义讲就是你的服务是很少的一段代码或者是一个函数,这个代码或者函数可以通过事件(一个http请求或者消息队列的消息)来触发,总结下来就是 trigger + FAAS + BAAS(高可用免运维的后端服务);
+广义上来讲serverless是简化运维的一种方案,即服务免运维,可实现 CI/CD,自动扩缩容,灰度等自动化操作;
+
+knative 就是属于广义上定义的serverless, 它构建在 Kubernetes 的基础上,并为构建和部署无服务器架构(serverless)和基于事件驱动的应用程序提供了一致的标准模式。Knative 减少了这种新的软件开发方法所产生的开销,同时还把路由(routing)和事件(eventing)的复杂性抽象出来。
+
+
+# 核心组件:
+为了实现对serverless 的管理, knative 将整个系统划分为三个部分, 主要由三个组件来实现
+
+构建: 通过灵活的可配置方法将源代码构建为容器
+服务: 管理应用的部署和服务支持;
+事件: 用户自动完成事件的绑定和触发;
+
+## Knative 服务(kantive Serving)
+
+knative serving 主要是用来部署serverless 应用以及为其提供服务支持.其主要特性如下:
+- 快速部署Serverless 容器
+- 自动缩放包括将pod缩放到0  
+- 支持多个网络组件来提供路由和网络编程, 例如 Ambassador、Contour、Kourier、Gloo 和 Istio。  
+- 支持部署快照。  
+
+Knative Serving 通过 Kubernetes 自定义资源 (CRD) 来控制serverless 应用在集群中的行为 ：  
+- Service: service.serving.knative.dev资源自动管理工作负载的整个生命周期。负责创建Route、Configuration以及Revision资源.通过Service可以将流量路由到最新版本或者指定版本的Revision;  
+- Route: route.serving.knative.dev资源将网络端点映射到一个或者多个Revision. 可以通过多种方式管理流量.包括灰度流量和重命名路由.  
+- Configuration: configuration.serving.knative.dev 负责保持Deployment的期望状态,提供了代码和配置之间清晰的分离,并遵循应用开发的12因素.修改一次Configuration就会生成一个Revision;  
+-  Revision: revision.serving.knative.dev 该资源是对工作负载进行的每次修改的代码和配置的时间点快照. Revision是不变对象,如果有用就可以保留.  
+资源关系图:
+
+ 
+
+
+
+
+
+# 参考
+《knative 云原生应用开发指南》  
+[Knative Serving](https://knative.dev/docs/serving/)   
