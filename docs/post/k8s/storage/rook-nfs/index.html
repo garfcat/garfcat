@@ -1,0 +1,779 @@
+
+<!DOCTYPE html>
+<html lang="zh" data-figures="true" class="page">
+  <head>
+<title>NFS 通过 rook 进行部署 | 有趣</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.75.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'XXXXXXXXXX');
+</script>
+<meta property="og:locale" content="zh" />
+
+<meta property="og:type" content="article">
+<meta name="description" content="rook nfs.">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="NFS 通过 rook 进行部署" />
+<meta property="og:url" content="https://www.geekgame.site/post/k8s/storage/rook-nfs/" />
+<meta property="og:title" content="NFS 通过 rook 进行部署" />
+<meta property="og:description" content="rook nfs." />
+<meta property="og:image" content="https://www.geekgame.site/images/path/share.png" />
+<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
+<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
+<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
+
+<link rel="canonical" href="https://www.geekgame.site/post/k8s/storage/rook-nfs/">
+
+    
+
+    
+    
+    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
+    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    
+  </head>
+  
+  
+    
+    
+  
+  <body data-code="10" data-lines="false" id="documentTop">
+
+<header class="nav_header" >
+  <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
+  <div class="nav_close">
+    <div><svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg><svg class="icon">
+  <use xlink:href="#closeme"></use>
+</svg></div>
+  </div>
+</a>
+    <div class='nav_body nav_body_left'>
+      
+      
+      
+        
+
+  <div class="nav_parent">
+    <a href="https://www.geekgame.site/" class="nav_item" title="主页">主页 </a>
+  </div>
+  <div class="nav_parent">
+    <a href="https://www.geekgame.site/archives" class="nav_item" title="归档">归档 </a>
+  </div>
+  <div class="nav_parent">
+    <a href="https://www.geekgame.site/" class="nav_item" title="链接">链接 <img src='https://www.geekgame.site/icons/caret-icon.svg' alt="icon" class="nav_icon"></a>
+    <div class="nav_sub">
+      <span class="nav_child"></span>
+        <a href="https://www.douban.com/people/157621785/" class="nav_child nav_item" title="豆瓣读书">豆瓣读书</a>
+    </div>
+  </div>
+  <div class="nav_parent">
+    <a href="https://www.geekgame.site/about/" class="nav_item" title="关于">关于 </a>
+  </div>
+      
+      <div class="nav_parent">
+        <a href="#" class="nav_item">🌐</a>
+        <div class="nav_sub">
+          <span class="nav_child"></span>
+          
+          <a href="https://www.geekgame.site/en/" class="nav_child nav_item">English</a>
+          
+          <a href="https://www.geekgame.site/" class="nav_child nav_item">Chinese</a>
+          
+          <a href="https://www.geekgame.site/pt/" class="nav_child nav_item"></a>
+          
+        </div>
+      </div>
+<div class='follow'>
+<div class="color_mode">
+  <input type="checkbox" class="color_choice" id="mode">
+</div>
+
+</div>
+
+    </div>
+  </nav>
+</header>
+
+    <main>
+  
+<div class="grid-inverse wrap content">
+  <article class="post_content">
+    <h1 class="post_title">NFS 通过 rook 进行部署</h1><div class="post_meta">
+  
+    <svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg>
+    <span class="post_date">
+      Sep 13, 2021</span>
+      <a href='https://www.geekgame.site/tags/nfs' title="NFS" class="post_tag button button_translucent">NFS
+      </a>
+      <a href='https://www.geekgame.site/tags/rook' title="rook" class="post_tag button button_translucent">rook
+      </a>
+      <a href='https://www.geekgame.site/tags/rook-nfs' title="rook-nfs" class="post_tag button button_translucent">rook-nfs
+      </a>
+</div>
+
+    
+
+    
+    <img src="/images/path/file.jpg" class="image_featured" alt="NFS 通过 rook 进行部署">
+    
+    <h1 id="介绍">介绍</h1>
+<p>NFS是Network File System的简写，即网络文件系统，NFS是FreeBSD支持的文件系统中的一种。NFS基于RPC(Remote Procedure Call)远程过程调用实现，其允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序就可以像访问本地文件一样访问远端系统上的文件。NFS是一个非常稳定的，可移植的网络文件系统。具备可扩展和高性能等特性，达到了企业级应用质量标准。由于网络速度的增加和延迟的降低，NFS系统一直是通过网络提供文件系统服务的有竞争力的选择 。</p>
+<h1 id="nfs-使用方式">NFS 使用方式</h1>
+<ol>
+<li>已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中创建PVC和STorageClass ,一般通过 <a href="https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner">Kubernetes NFS Subdir External Provisioner</a> 创建动态的provisioner,然后就可以在集群中使用NFS服务了;</li>
+</ol>
+<p>2.物理机上手动安装NFS集群, 通过linux命令进行安装, 然后可以按照 1 进行使用;</p>
+<p>3.通过K8S进行安装, 安装方式有多种 NFS Provisioner 以及 rook 等, 通过k8s 管理nfs 集群, 然后对外提供服务;</p>
+<p>此处主要介绍在 k8s 中安装nfs 服务并对集群内外提供服务.</p>
+<h1 id="nfs-安装">NFS 安装</h1>
+<h2 id="主要步骤">主要步骤</h2>
+<ul>
+<li>Step0: 创建Local Persistent Volume;</li>
+<li>Step1: 创建StorageClass;</li>
+<li>Step2: 创建PVC, 关联 Step2 中的StorageClass;</li>
+<li>Step3: 部署NFS Operator;</li>
+<li>Step4: 创建NFS Server;</li>
+<li>Step5: 创建NFS Storage Class;</li>
+<li>Step6: 创建 Pod 并使用NFS;</li>
+<li>Step7: 让集群外部服务也可以访问NFS Server;</li>
+</ul>
+<h2 id="step0-创建-local-persistent-volume">Step0: 创建 Local Persistent Volume</h2>
+<p>首先在集群的宿主机(k8s-node2)创建挂载点, 比如 /mnt/disk; 然后 用RAM Disk 来模拟本地磁盘, 如下所示:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="c1"># 在 k8s-node2 上执行</span>
+<span class="ln">2</span>$ mkdir /mnt/disks
+<span class="ln">3</span>$ <span class="k">for</span> vol in vol1 vol2 vol3<span class="p">;</span> <span class="k">do</span>
+<span class="ln">4</span>      mkdir -p /mnt/disks/<span class="nv">$vol</span>
+<span class="ln">5</span>      mount -t tmpfs <span class="nv">$vol</span> /mnt/disks/<span class="nv">$vol</span>
+<span class="ln">6</span>   <span class="k">done</span>
+<span class="ln">7</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ df 查看
+<span class="ln">2</span>vol3            7.8G     0  7.8G   0% /mnt/disks/vol3
+<span class="ln">3</span>vol1            7.8G     0  7.8G   0% /mnt/disks/vol1
+<span class="ln">4</span>vol2            7.8G     0  7.8G   0% /mnt/disks/vol2
+</code></pre></div><p>注意: 其他机器如果也要创建 Local Persistent Volume, 那就执行相同的操作,但是磁盘名字不能重复.</p>
+<p>接下来,定义PV, 如下所示:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
+</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv</span><span class="w">
+</span><span class="ln"> 5</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 6</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 7</span><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span><span class="ln"> 8</span><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 9</span><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
+</span><span class="ln">10</span><span class="w">  </span><span class="nt">local</span><span class="p">:</span><span class="w">
+</span><span class="ln">11</span><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/mnt/disks/vol1</span><span class="w">
+</span><span class="ln">12</span><span class="w">  </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w">
+</span><span class="ln">13</span><span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w">
+</span><span class="ln">14</span><span class="w">      </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w">
+</span><span class="ln">15</span><span class="w">      </span>- <span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span><span class="ln">16</span><span class="w">        </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/hostname</span><span class="w">
+</span><span class="ln">17</span><span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span><span class="ln">18</span><span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span><span class="ln">19</span><span class="w">          </span>- <span class="l">k8s-node2</span><span class="w">
+</span><span class="ln">20</span><span class="w">  </span><span class="nt">persistentVolumeReclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span><span class="ln">21</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span><span class="ln">22</span><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
+</span><span class="ln">23</span><span class="w">
+</span><span class="ln">24</span><span class="w">
+</span></code></pre></div><p>这个 PV 的定义里:local 字段,指定了它是一个 Local Persistent Volume; 而 path 字段,指定的正是这个 PV 对应的本地磁盘的路径,即:/mnt/disks/vol1。</p>
+<p>接下来, 我们使用 kubectl create 来创建这个PV, 如下所示:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜   kubectl get pv 
+<span class="ln">2</span>NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                       STORAGECLASS      REASON   AGE
+<span class="ln">3</span>example-pv                                 5Gi        RWO            Delete           Available                               local-storage              6s
+</code></pre></div><p>可以看到,example-pv创建后已经变成可用可用状态了.</p>
+<h2 id="step1-创建storageclass">Step1: 创建StorageClass</h2>
+<p>通过StorageClass 描述 PV, 如下所示:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln">1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+</span><span class="ln">2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
+</span><span class="ln">3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln">4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span><span class="ln">5</span><span class="w"></span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/no-provisioner</span><span class="w">
+</span><span class="ln">6</span><span class="w"></span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span><span class="ln">7</span><span class="w"></span><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l">WaitForFirstConsumer</span><span class="w">
+</span></code></pre></div><p>这里有两个重要的字段:
+provisioner: 我们使用no-provisioner, 这是因为 Local Persistent Volume 目前尚不支持Dynamic Provisioning,所以它没办法在用户创建 PVC 的时候,就自动创建出对应的PV。
+volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persistent 需要等到调度时才可以进行绑定操作.
+通过 kubectl create 来创建 StorageClass, 如下所示:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f sc.yaml
+<span class="ln">2</span>storageclass.storage.k8s.io/local-storage created
+<span class="ln">3</span>➜  kubectl get sc
+<span class="ln">4</span>NAME              PROVISIONER                                     RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+<span class="ln">5</span>local-storage     kubernetes.io/no-provisioner                    Delete          WaitForFirstConsumer   <span class="nb">false</span>                  25s
+</code></pre></div><h2 id="step2-创建pvc">Step2: 创建PVC</h2>
+<p>这里我们定义一个PVC来使用之前定义好的Local PV, 如下所示:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-local-claim</span><span class="w">
+</span><span class="ln"> 5</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span><span class="ln"> 6</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 7</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 8</span><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span><span class="ln"> 9</span><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span><span class="ln">10</span><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span><span class="ln">11</span><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
+</span><span class="ln">12</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span><span class="ln">13</span><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
+</span><span class="ln">14</span><span class="w">  </span><span class="nt">volumeName</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv</span><span class="w">
+</span></code></pre></div><p>接下来创建这个PVC:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f example-local-claim.yaml
+<span class="ln">2</span>persistentvolumeclaim/example-local-claim created
+<span class="ln">3</span>➜  kubectl get pvc -n rook-nfs
+<span class="ln">4</span>NAME                  STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS    AGE
+<span class="ln">5</span>example-local-claim   Bound    example-pv   5Gi        RWO            local-storage   25s
+<span class="ln">6</span>
+<span class="ln">7</span>
+</code></pre></div><p>注意: 这里我们指定了namespace 为rook-nfs , 这是为了方便nfs operator 使用.</p>
+<h2 id="step3-部署nfs-operator">Step3: 部署NFS Operator</h2>
+<p>安装 rook 之前需要先安装 NFS Client 安装包。在 CentOS 节点上安装 nf-utils，在 Ubuntu 节点上安装 nf-common。然后就可以安装 Rook 了。</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>$ git clone --single-branch --branch v1.7.3 https://github.com/rook/nfs.git
+<span class="ln">2</span><span class="nb">cd</span> rook/cluster/examples/kubernetes/nfs
+<span class="ln">3</span>kubectl create -f crds.yaml
+<span class="ln">4</span>kubectl create -f operator.yaml
+<span class="ln">5</span>
+</code></pre></div><p>检查operator 是否运行正常:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜   kubectl -n rook-nfs-system get pod
+<span class="ln">2</span>NAME                                READY   STATUS    RESTARTS   AGE
+<span class="ln">3</span>rook-nfs-operator-d489f8c4b-4hr9m   1/1     Running   <span class="m">0</span>          33s
+</code></pre></div><h2 id="step4-创建nfs-server">Step4: 创建NFS Server</h2>
+<p>现在 operator 已经运行起来了,我们可以通过创建 nfsservers.nfs.rook.io 资源的实例来创建NFS服务器的实例,在这之前我们需要创建 ServiceAccount 和 RBAC规则:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f rbac.yaml
+<span class="ln">2</span>namespace/rook-nfs created
+<span class="ln">3</span>serviceaccount/rook-nfs-server created
+<span class="ln">4</span>clusterrole.rbac.authorization.k8s.io/rook-nfs-provisioner-runner created
+<span class="ln">5</span>clusterrolebinding.rbac.authorization.k8s.io/rook-nfs-provisioner-runner created
+</code></pre></div><p>接下来 将以下内容保存到nfs.yaml:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">nfs.rook.io/v1alpha1</span><span class="w">
+</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NFSServer</span><span class="w">
+</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span><span class="ln"> 5</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span><span class="ln"> 6</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 7</span><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="ln"> 8</span><span class="w">  </span><span class="nt">exports</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 9</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">share1</span><span class="w">
+</span><span class="ln">10</span><span class="w">      </span><span class="nt">server</span><span class="p">:</span><span class="w">
+</span><span class="ln">11</span><span class="w">        </span><span class="nt">accessMode</span><span class="p">:</span><span class="w"> </span><span class="l">ReadWrite</span><span class="w">
+</span><span class="ln">12</span><span class="w">        </span><span class="nt">squash</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;none&#34;</span><span class="w">
+</span><span class="ln">13</span><span class="w">      </span><span class="c"># A Persistent Volume Claim must be created before creating NFS CRD instance.</span><span class="w">
+</span><span class="ln">14</span><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span><span class="ln">15</span><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">example-local-claim</span><span class="w">
+</span><span class="ln">16</span><span class="w">        </span><span class="c">#claimName: nfs-default-claim</span><span class="w">
+</span><span class="ln">17</span><span class="w">  </span><span class="c"># A key/value list of annotations</span><span class="w">
+</span><span class="ln">18</span><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span><span class="ln">19</span><span class="w">    </span><span class="nt">rook</span><span class="p">:</span><span class="w"> </span><span class="l">nfs</span><span class="w">
+</span><span class="ln">20</span><span class="w">
+</span><span class="ln">21</span><span class="w">
+</span></code></pre></div><p>然后通过kubectl create 创建 NFSf 服务器:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f nfs.yaml
+<span class="ln">2</span>nfsserver.nfs.rook.io/rook-nfs created
+</code></pre></div><p>验证 nfs server 是否运行正常:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl get pod -n rook-nfs
+<span class="ln">2</span>NAME         READY   STATUS    RESTARTS   AGE
+<span class="ln">3</span>rook-nfs-0   2/2     Running   <span class="m">0</span>          6m9s
+</code></pre></div><h2 id="step5-创建nfs-storage-class">Step5: 创建NFS Storage Class</h2>
+<p>部署OPerator 和 NFSServer实例之后,. 必须创建 StrorageClass 来动态配置 Volume:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
+</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 5</span><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span><span class="ln"> 6</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs-share1</span><span class="w">
+</span><span class="ln"> 7</span><span class="w"></span><span class="nt">parameters</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 8</span><span class="w">  </span><span class="nt">exportName</span><span class="p">:</span><span class="w"> </span><span class="l">share1</span><span class="w">
+</span><span class="ln"> 9</span><span class="w">  </span><span class="nt">nfsServerName</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span><span class="ln">10</span><span class="w">  </span><span class="nt">nfsServerNamespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span><span class="ln">11</span><span class="w"></span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">nfs.rook.io/rook-nfs-provisioner</span><span class="w">
+</span><span class="ln">12</span><span class="w"></span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span><span class="ln">13</span><span class="w"></span><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l">Immediate</span><span class="w">
+</span></code></pre></div><p>通过 kubectl create 创建:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f sc.yaml
+<span class="ln">2</span>storageclass.storage.k8s.io/rook-nfs-share1 created
+</code></pre></div><blockquote>
+<p>这里 StorageClass 需要传递以下三个参数:</p>
+<ol>
+<li>exportName: 告诉provisioner 使用那个 export;</li>
+<li>nfsServerName: NFSServer 实例名字;</li>
+<li>nfsServerNamespace：NFSServer实例运行的命名空间;</li>
+</ol>
+</blockquote>
+<p>StorageClass创建之后, 我们接下来就可以创建PVC来引用它:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs-pv-claim</span><span class="w">
+</span><span class="ln"> 5</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 6</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;rook-nfs-share1&#34;</span><span class="w">
+</span><span class="ln"> 7</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span><span class="ln"> 8</span><span class="w">    </span>- <span class="l">ReadWriteMany</span><span class="w">
+</span><span class="ln"> 9</span><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span><span class="ln">10</span><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span><span class="ln">11</span><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">1Mi</span><span class="w">
+</span></code></pre></div><p>通过kubectl create 进行创建:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f pvc.yaml
+<span class="ln">2</span>persistentvolumeclaim/rook-nfs-pv-claim created
+</code></pre></div><h2 id="step6-创建-pod-并使用nfs">Step6: 创建 Pod 并使用NFS</h2>
+<p>官方给出的例子 是通过 busybox-rc.yaml 和 web-rc.yaml 创建出两个POD:</p>
+<ol>
+<li>web server 用来读取和展示 NFS share 的内容;</li>
+<li>busybox 是往 NFS share写入随机数据,以便 website的内容可以一直更新;
+然后通过 web-service.yaml 创建一个service;</li>
+</ol>
+<p>最后通过以下命令查看内容:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>
+<span class="ln">2</span>
+<span class="ln">3</span>$ echo<span class="p">;</span> kubectl <span class="nb">exec</span> <span class="k">$(</span>kubectl get pod -l <span class="nv">app</span><span class="o">=</span>nfs-demo,role<span class="o">=</span>busybox -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span> -- wget -qO- http://<span class="k">$(</span>kubectl get services nfs-web -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span><span class="p">;</span> <span class="nb">echo</span>
+<span class="ln">4</span>Mon Sep <span class="m">13</span> 12:20:59 UTC <span class="m">2021</span>
+<span class="ln">5</span>nfs-busybox-77c79b4b7b-5fc2w
+<span class="ln">6</span>
+<span class="ln">7</span>
+</code></pre></div><h2 id="step7-让集群外部服务也可以访问nfs-server">Step7: 让集群外部服务也可以访问NFS Server</h2>
+<p>如果外部服务也可以访问NFS Server ,则可以通过修改 rook-nfs 的Service 类型为NodePort 来暴露 NFS 服务:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>
+<span class="ln">2</span>
+<span class="ln">3</span>➜  kubectl get svc -n rook-nfs
+<span class="ln">4</span>NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                        AGE
+<span class="ln">5</span>rook-nfs   NodePort   10.1.191.178   &lt;none&gt;        2049:32401/TCP,111:31081/TCP   45m
+</code></pre></div><p>换到其他机器上 通过 mount 进行连接:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>
+<span class="ln">2</span>➜  ~ mkdir -p  /mnt/nfs/share
+<span class="ln">3</span>➜  ~ mount -t nfs -o <span class="nv">port</span><span class="o">=</span><span class="m">32401</span>  10.41.24.236:/ /mnt/nfs/share
+<span class="ln">4</span>➜  ~ <span class="nb">cd</span> /mnt/nfs/share
+<span class="ln">5</span>➜  share ls
+<span class="ln">6</span>example-local-claim
+<span class="ln">7</span>➜  share <span class="nb">cd</span> example-local-claim
+<span class="ln">8</span>➜  example-local-claim ls
+<span class="ln">9</span>default-rook-nfs-pv-claim-pvc-476a215e-120c-4f76-a73f-3641a5f2af9f
+</code></pre></div>
+  </article>
+<aside class="sidebar">
+  <section class="sidebar_inner">
+    
+      <h2>Garfcat</h2>
+      <div class="sidebar_description">
+        live and learn.
+      </div>
+      <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    <h2 class="mt-4">最新文章</h2>
+    <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" class="nav-link" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/nosql/select/" class="nav-link" title="主流 nosql 数据库选型">主流 nosql 数据库选型</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/language/golang/test/" class="nav-link" title="golang testing 使用教程">golang testing 使用教程</a>
+      </li>
+    </ul>
+    <div>
+      <h2 class="mt-4 taxonomy" id="categories-section">分类</h2>
+      <nav class="tags_nav">
+        <a href='https://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/' class="post_tag button button_translucent" title="编程语言">
+          编程语言
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
+          KUBERNETES-EXTEND
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/' class="post_tag button button_translucent" title="协议">
+          协议
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/' class="post_tag button button_translucent" title="工具命令">
+          工具命令
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/kubernetes-serverless/' class="post_tag button button_translucent" title="kubernetes-serverless">
+          KUBERNETES-SERVERLESS
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
+          NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/storage/' class="post_tag button button_translucent" title="storage">
+          STORAGE
+          <span class="button_tally">1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="series-section">专栏</h2>
+      <nav class="tags_nav">
+        <a href='https://www.geekgame.site/series/golang/' class="post_tag button button_translucent" title="golang">
+          GOLANG
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/series/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
+          KUBERNETES-EXTEND
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/series/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/series/knative/' class="post_tag button button_translucent" title="knative">
+          KNATIVE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/series/nosql/' class="post_tag button button_translucent" title="nosql">
+          NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/series/%E5%91%BD%E4%BB%A4/' class="post_tag button button_translucent" title="命令">
+          命令
+          <span class="button_tally">1</span>
+        </a>
+        
+        
+      </nav>
+    </div>
+    <div>
+      <h2 class="mt-4 taxonomy" id="tags-section">标签</h2>
+      <nav class="tags_nav">
+        <a href='https://www.geekgame.site/tags/go/' class="post_tag button button_translucent" title="go">
+          GO
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubebuilder/' class="post_tag button button_translucent" title="kubebuilder">
+          KUBEBUILDER
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
+          EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/shell/' class="post_tag button button_translucent" title="shell">
+          SHELL
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/controller-runtime/' class="post_tag button button_translucent" title="controller-runtime">
+          CONTROLLER-RUNTIME
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
+          EFFECTIVE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/hbase/' class="post_tag button button_translucent" title="hbase">
+          HBASE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/index/' class="post_tag button button_translucent" title="index">
+          INDEX
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/knative/' class="post_tag button button_translucent" title="knative">
+          KNATIVE
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
+          KUBERNETES-ARCH
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubernetes-monitoring/' class="post_tag button button_translucent" title="kubernetes-monitoring">
+          KUBERNETES-MONITORING
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/kubernetes-serverless/' class="post_tag button button_translucent" title="kubernetes-serverless">
+          KUBERNETES-SERVERLESS
+          <span class="button_tally">1</span>
+        </a>
+        
+        
+        <br>
+        <div class="post_tags_toggle button">所有标签</div>
+        <div class="post_tags">
+          <div class="tags_list">
+            
+            <a href='https://www.geekgame.site/tags/controller-runtime/' class=" post_tag button button_translucent" data-position=1 title="controller-runtime">CONTROLLER-RUNTIME<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/effective/' class=" post_tag button button_translucent" data-position=1 title="effective">EFFECTIVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/extend/' class=" post_tag button button_translucent" data-position=2 title="extend">EXTEND<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/go/' class=" post_tag button button_translucent" data-position=5 title="go">GO<span class="button_tally">5</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/hbase/' class=" post_tag button button_translucent" data-position=1 title="hbase">HBASE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/index/' class=" post_tag button button_translucent" data-position=1 title="index">INDEX<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/knative/' class=" post_tag button button_translucent" data-position=1 title="knative">KNATIVE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubebuilder/' class=" post_tag button button_translucent" data-position=3 title="kubebuilder">KUBEBUILDER<span class="button_tally">3</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=5 title="kubernetes">KUBERNETES<span class="button_tally">5</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes-arch/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-arch">KUBERNETES-ARCH<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes-monitoring/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-monitoring">KUBERNETES-MONITORING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/kubernetes-serverless/' class=" post_tag button button_translucent" data-position=1 title="kubernetes-serverless">KUBERNETES-SERVERLESS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/mac/' class=" post_tag button button_translucent" data-position=1 title="mac">MAC<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/module/' class=" post_tag button button_translucent" data-position=1 title="module">MODULE<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/mqtt/' class=" post_tag button button_translucent" data-position=1 title="mqtt">MQTT<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/nfs/' class=" post_tag button button_translucent" data-position=1 title="nfs">NFS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/nosql/' class=" post_tag button button_translucent" data-position=1 title="nosql">NOSQL<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/redis/' class=" post_tag button button_translucent" data-position=1 title="redis">REDIS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/rook/' class=" post_tag button button_translucent" data-position=1 title="rook">ROOK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/rook-nfs/' class=" post_tag button button_translucent" data-position=1 title="rook-nfs">ROOK-NFS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/sched/' class=" post_tag button button_translucent" data-position=1 title="sched">SCHED<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/sed/' class=" post_tag button button_translucent" data-position=1 title="sed">SED<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/shell/' class=" post_tag button button_translucent" data-position=2 title="shell">SHELL<span class="button_tally">2</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/stack/' class=" post_tag button button_translucent" data-position=1 title="stack">STACK<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/start/' class=" post_tag button button_translucent" data-position=1 title="start">START<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/test/' class=" post_tag button button_translucent" data-position=1 title="test">TEST<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/testing/' class=" post_tag button button_translucent" data-position=1 title="testing">TESTING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B/' class=" post_tag button button_translucent" data-position=1 title="数据库选型">数据库选型<span class="button_tally">1</span>
+            </a>
+            
+            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
+            </div>
+            <span class="tags_hide"><svg class="icon">
+            <use xlink:href="#closeme"></use>
+          </svg></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+</aside>
+
+  
+</div>
+    </main><svg width="0" height="0" class="hidden">
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.001 18.001" id="twitter">
+    <path d="M15.891 4.013c.808-.496 1.343-1.173 1.605-2.034a8.68 8.68 0 0 1-2.351.861c-.703-.756-1.593-1.14-2.66-1.14-1.043 0-1.924.366-2.643 1.078a3.56 3.56 0 0 0-1.076 2.605c0 .309.039.585.117.819-3.076-.105-5.622-1.381-7.628-3.837-.34.601-.51 1.213-.51 1.846 0 1.301.549 2.332 1.645 3.089-.625-.053-1.176-.211-1.645-.47 0 .929.273 1.705.82 2.388a3.623 3.623 0 0 0 2.115 1.291c-.312.08-.641.118-.979.118-.312 0-.533-.026-.664-.083.23.757.664 1.371 1.291 1.841a3.652 3.652 0 0 0 2.152.743C4.148 14.173 2.625 14.69.902 14.69c-.422 0-.721-.006-.902-.038 1.697 1.102 3.586 1.649 5.676 1.649 2.139 0 4.029-.542 5.674-1.626 1.645-1.078 2.859-2.408 3.639-3.974a10.77 10.77 0 0 0 1.172-4.892v-.468a7.788 7.788 0 0 0 1.84-1.921 8.142 8.142 0 0 1-2.11.593z"
+      ></path>
+  </symbol>
+  <symbol aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="mail">
+    <path  d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="calendar">
+    <path d="M452 40h-24V0h-40v40H124V0H84v40H60C26.916 40 0 66.916 0 100v352c0 33.084 26.916 60 60 60h392c33.084 0 60-26.916 60-60V100c0-33.084-26.916-60-60-60zm20 412c0 11.028-8.972 20-20 20H60c-11.028 0-20-8.972-20-20V188h432v264zm0-304H40v-48c0-11.028 8.972-20 20-20h24v40h40V80h264v40h40V80h24c11.028 0 20 8.972 20 20v48z"></path>
+    <path d="M76 230h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 310h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zM76 390h40v40H76zm80 0h40v40h-40zm80 0h40v40h-40zm80 0h40v40h-40zm80-80h40v40h-40z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="github">
+    <path d="M255.968 5.329C114.624 5.329 0 120.401 0 262.353c0 113.536 73.344 209.856 175.104 243.872 12.8 2.368 17.472-5.568 17.472-12.384 0-6.112-.224-22.272-.352-43.712-71.2 15.52-86.24-34.464-86.24-34.464-11.616-29.696-28.416-37.6-28.416-37.6-23.264-15.936 1.728-15.616 1.728-15.616 25.696 1.824 39.2 26.496 39.2 26.496 22.848 39.264 59.936 27.936 74.528 21.344 2.304-16.608 8.928-27.936 16.256-34.368-56.832-6.496-116.608-28.544-116.608-127.008 0-28.064 9.984-51.008 26.368-68.992-2.656-6.496-11.424-32.64 2.496-68 0 0 21.504-6.912 70.4 26.336 20.416-5.696 42.304-8.544 64.096-8.64 21.728.128 43.648 2.944 64.096 8.672 48.864-33.248 70.336-26.336 70.336-26.336 13.952 35.392 5.184 61.504 2.56 68 16.416 17.984 26.304 40.928 26.304 68.992 0 98.72-59.84 120.448-116.864 126.816 9.184 7.936 17.376 23.616 17.376 47.584 0 34.368-.32 62.08-.32 70.496 0 6.88 4.608 14.88 17.6 12.352C438.72 472.145 512 375.857 512 262.353 512 120.401 397.376 5.329 255.968 5.329z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" id="gitlab">
+    <path d="M12.3 74.7h54L43.3 3c-1-3.6-6.4-3.6-7.6 0L12.3 74.8z" />
+    <path d="M12.3 74.7L.5 111c-1 3.2 0 6.8 3 8.8l101.6 74-92.5-119z"/>
+    <path d="M105 193.7l-38.6-119h-54l92.7 119z"/>
+    <path d="M105 193.7l38.7-119H66.4l38.7 119z"/>
+    <path d="M105 193.7l38.7-119H198l-93 119z"/>
+    <path d="M198 74.7l11.6 36.2c1 3 0 6.6-3 8.6l-101.5 74 93-119z"/>
+    <path d="M198 74.7h-54.3L167 3c1.2-3.6 6.4-3.6 7.6 0L198 74.8z"/> 
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="rss">
+    <circle cx="3.429" cy="20.571" r="3.429"></circle>
+    <path d="M11.429 24h4.57C15.999 15.179 8.821 8.001 0 8v4.572c6.302.001 11.429 5.126 11.429 11.428z"></path>
+    <path d="M24 24C24 10.766 13.234 0 0 0v4.571c10.714 0 19.43 8.714 19.43 19.429z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
+    <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+    <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
+  </symbol>
+  <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
+    <path d="M504.971 239.029L448 182.059V84c0-46.317-37.682-84-84-84h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c19.851 0 36 16.149 36 36v108c0 6.365 2.529 12.47 7.029 16.971L454.059 256l-47.029 47.029A24.002 24.002 0 0 0 400 320v108c0 19.851-16.149 36-36 36h-44c-13.255 0-24 10.745-24 24s10.745 24 24 24h44c46.318 0 84-37.683 84-84v-98.059l56.971-56.971c9.372-9.372 9.372-24.568 0-33.941zM112 192V84c0-19.851 16.149-36 36-36h44c13.255 0 24-10.745 24-24S205.255 0 192 0h-44c-46.318 0-84 37.683-84 84v98.059l-56.971 56.97c-9.373 9.373-9.373 24.568 0 33.941L64 329.941V428c0 46.317 37.682 84 84 84h44c13.255 0 24-10.745 24-24s-10.745-24-24-24h-44c-19.851 0-36-16.149-36-36V320c0-6.365-2.529-12.47-7.029-16.971L57.941 256l47.029-47.029A24.002 24.002 0 0 0 112 192z"></path>
+  </symbol>
+  <symbol viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="copy">
+    <path d="M23 2.75A2.75 2.75 0 0 0 20.25 0H8.75A2.75 2.75 0 0 0 6 2.75v13.5A2.75 2.75 0 0 0 8.75 19h11.5A2.75 2.75 0 0 0 23 16.25zM18.25 14.5h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5zm0-3h-7.5a.75.75 0 0 1 0-1.5h7.5a.75.75 0 0 1 0 1.5z"></path>
+    <path d="M8.75 20.5a4.255 4.255 0 0 1-4.25-4.25V2.75c0-.086.02-.166.025-.25H3.75A2.752 2.752 0 0 0 1 5.25v16A2.752 2.752 0 0 0 3.75 24h12a2.752 2.752 0 0 0 2.75-2.75v-.75z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001" id="closeme">
+    <path d="M284.286 256.002L506.143 34.144c7.811-7.811 7.811-20.475 0-28.285-7.811-7.81-20.475-7.811-28.285 0L256 227.717 34.143 5.859c-7.811-7.811-20.475-7.811-28.285 0-7.81 7.811-7.811 20.475 0 28.285l221.857 221.857L5.858 477.859c-7.811 7.811-7.811 20.475 0 28.285a19.938 19.938 0 0 0 14.143 5.857 19.94 19.94 0 0 0 14.143-5.857L256 284.287l221.857 221.857c3.905 3.905 9.024 5.857 14.143 5.857s10.237-1.952 14.143-5.857c7.811-7.811 7.811-20.475 0-28.285L284.286 256.002z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="open-menu">
+    <path d="M492 236H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0-160H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20zm0 320H20c-11.046 0-20 8.954-20 20s8.954 20 20 20h472c11.046 0 20-8.954 20-20s-8.954-20-20-20z"></path>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="instagram">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id=youtube>
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
+    <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
+  </symbol>
+</svg>
+
+
+<footer class="footer">
+  <div class="footer_inner wrap pale">
+    <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
+    <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
+  <svg class="icon">
+  <use xlink:href="#open-menu"></use>
+</svg>
+</a>
+
+  </div>
+</footer>
+
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    
+  </body>
+</html>
