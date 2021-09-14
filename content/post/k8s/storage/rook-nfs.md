@@ -4,7 +4,7 @@ date: 2021-09-13T20:39:50+08:00 # Date of post creation.
 description: "rook nfs." # Description used for search engine.
 featured: true # Sets if post is a featured post, making appear on the home page side bar.
 draft: false # Sets whether to render this page. Draft of true will not be rendered.
-toc: false # Controls if a table of contents should be generated for first-level links automatically.
+toc: true # Controls if a table of contents should be generated for first-level links automatically.
 # menu: main
 featureImage: "/static/k8s/rook.png" # Sets featured image on blog post.
 thumbnail: "/static/k8s/rook.png" # Sets thumbnail image appearing inside card on homepage.
@@ -21,15 +21,15 @@ tags:
 # comment: false # Disable comment if false.
 ---
 
-# 介绍
+## NFS 介绍
 
 
-NFS是Network File System的简写，即网络文件系统，NFS是FreeBSD支持的文件系统中的一种。NFS基于RPC(Remote Procedure Call)远程过程调用实现，其允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序就可以像访问本地文件一样访问远端系统上的文件。NFS是一个非常稳定的，可移植的网络文件系统。具备可扩展和高性能等特性，达到了企业级应用质量标准。由于网络速度的增加和延迟的降低，NFS系统一直是通过网络提供文件系统服务的有竞争力的选择 。
+NFS(Network File System)即网络文件系统, 是FreeBSD支持的文件系统中的一种。NFS是基于RPC(Remote Procedure Call)远程过程调用实现，其允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序就可以像访问本地文件一样访问远端系统上的文件。NFS是一个非常稳定的，可移植的网络文件系统。具备可扩展和高性能等特性，达到了企业级应用质量标准。由于网络速度的增加和延迟的降低，NFS系统一直是通过网络提供文件系统服务的有竞争力的选择。
 
 
 
 
-# NFS 使用方式
+## NFS 使用方式
 1. 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中创建PVC和STorageClass ,一般通过 [Kubernetes NFS Subdir External Provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner) 创建动态的provisioner,然后就可以在集群中使用NFS服务了;
 
 
@@ -44,8 +44,8 @@ NFS是Network File System的简写，即网络文件系统，NFS是FreeBSD支持
 
 
 
-# NFS 安装
-## 主要步骤
+## NFS 安装
+### 主要步骤  
 - Step0: 创建Local Persistent Volume;  
 - Step1: 创建StorageClass;
 - Step2: 创建PVC, 关联 Step2 中的StorageClass;  
@@ -58,7 +58,7 @@ NFS是Network File System的简写，即网络文件系统，NFS是FreeBSD支持
 
 
 
-## Step0: 创建 Local Persistent Volume
+### Step0: 创建 Local Persistent Volume
 首先在集群的宿主机(k8s-node2)创建挂载点, 比如 /mnt/disk; 然后 用RAM Disk 来模拟本地磁盘, 如下所示:
 ```shell
 # 在 k8s-node2 上执行
@@ -117,7 +117,7 @@ example-pv                                 5Gi        RWO            Delete     
 可以看到,example-pv创建后已经变成可用可用状态了.
 
 
-## Step1: 创建StorageClass
+### Step1: 创建StorageClass
 通过StorageClass 描述 PV, 如下所示:
 ```yaml
 apiVersion: storage.k8s.io/v1
@@ -143,7 +143,7 @@ local-storage     kubernetes.io/no-provisioner                    Delete        
 
 
 
-## Step2: 创建PVC
+### Step2: 创建PVC
 这里我们定义一个PVC来使用之前定义好的Local PV, 如下所示:
 
 ```yaml
@@ -176,7 +176,7 @@ example-local-claim   Bound    example-pv   5Gi        RWO            local-stor
 注意: 这里我们指定了namespace 为rook-nfs , 这是为了方便nfs operator 使用.
 
 
-## Step3: 部署NFS Operator
+### Step3: 部署NFS Operator
 
 
 安装 rook 之前需要先安装 NFS Client 安装包。在 CentOS 节点上安装 nf-utils，在 Ubuntu 节点上安装 nf-common。然后就可以安装 Rook 了。
@@ -196,7 +196,7 @@ NAME                                READY   STATUS    RESTARTS   AGE
 rook-nfs-operator-d489f8c4b-4hr9m   1/1     Running   0          33s
 ```
 
-## Step4: 创建NFS Server
+### Step4: 创建NFS Server
 现在 operator 已经运行起来了,我们可以通过创建 nfsservers.nfs.rook.io 资源的实例来创建NFS服务器的实例,在这之前我们需要创建 ServiceAccount 和 RBAC规则:
 ```shell
 ➜  kubectl create -f rbac.yaml
@@ -242,7 +242,7 @@ rook-nfs-0   2/2     Running   0          6m9s
 ```
 
 
-## Step5: 创建NFS Storage Class
+### Step5: 创建NFS Storage Class
 部署OPerator 和 NFSServer实例之后,. 必须创建 StrorageClass 来动态配置 Volume:
 
 
@@ -295,7 +295,7 @@ persistentvolumeclaim/rook-nfs-pv-claim created
 
 
 
-## Step6: 创建 Pod 并使用NFS
+### Step6: 创建 Pod 并使用NFS
 官方给出的例子 是通过 busybox-rc.yaml 和 web-rc.yaml 创建出两个POD:
 1. web server 用来读取和展示 NFS share 的内容;
 2. busybox 是往 NFS share写入随机数据,以便 website的内容可以一直更新;
@@ -318,7 +318,7 @@ nfs-busybox-77c79b4b7b-5fc2w
 
 
 
-## Step7: 让集群外部服务也可以访问NFS Server
+### Step7: 让集群外部服务也可以访问NFS Server
 如果外部服务也可以访问NFS Server ,则可以通过修改 rook-nfs 的Service 类型为NodePort 来暴露 NFS 服务:
 
 
@@ -344,6 +344,6 @@ default-rook-nfs-pv-claim-pvc-476a215e-120c-4f76-a73f-3641a5f2af9f
 ````
 
 
-# 参考
+## 参考
 [Network Filesystem (NFS) Quickstart](https://rook.io/docs/nfs/v1.7/quickstart.html#network-filesystem-nfs-quickstart)  
 [透過 K8S 建立 NFS 服務](https://medium.com/jacky-life/%E9%80%8F%E9%81%8E-k8s-%E5%BB%BA%E7%AB%8B-nfs-%E6%9C%8D%E5%8B%99-6bbe4aeaf2cf)  
