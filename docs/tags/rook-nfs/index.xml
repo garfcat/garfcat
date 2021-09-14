@@ -244,7 +244,10 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
 &lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;➜  share &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; example-local-claim
 &lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;➜  example-local-claim ls
 &lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;default-rook-nfs-pv-claim-pvc-476a215e-120c-4f76-a73f-3641a5f2af9f
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://rook.io/docs/nfs/v1.7/quickstart.html#network-filesystem-nfs-quickstart&#34;&gt;Network Filesystem (NFS) Quickstart&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://medium.com/jacky-life/%E9%80%8F%E9%81%8E-k8s-%E5%BB%BA%E7%AB%8B-nfs-%E6%9C%8D%E5%8B%99-6bbe4aeaf2cf&#34;&gt;透過 K8S 建立 NFS 服務&lt;/a&gt;&lt;/p&gt;
+
         
       </description>
     </item>

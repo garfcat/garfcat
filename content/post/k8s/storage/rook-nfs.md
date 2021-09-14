@@ -344,3 +344,6 @@ default-rook-nfs-pv-claim-pvc-476a215e-120c-4f76-a73f-3641a5f2af9f
 ````
 
 
+# 参考
+[Network Filesystem (NFS) Quickstart](https://rook.io/docs/nfs/v1.7/quickstart.html#network-filesystem-nfs-quickstart)  
+[透過 K8S 建立 NFS 服務](https://medium.com/jacky-life/%E9%80%8F%E9%81%8E-k8s-%E5%BB%BA%E7%AB%8B-nfs-%E6%9C%8D%E5%8B%99-6bbe4aeaf2cf)  
