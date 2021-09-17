@@ -97,7 +97,7 @@ Geo-Transparent 数据同步允许您查看全局命名空间中的数据更改�
 ## 参考
 [edgefs-storage](https://rook.io/docs/rook/v1.0/edgefs-storage.html)  
 [开发者被 GitHub 要求下架开源项目仓库，因为其上游项目未“开源”](https://www.oschina.net/news/115501/recevied-an-dmca-takedown-from-github)  
-[EdgeFS概要まとめ](https://techstep.hatenablog.com/entry/2020/02/12/083821)。
+[EdgeFS概要まとめ](https://techstep.hatenablog.com/entry/2020/02/12/083821)
 [Nexenta_Replicast_White_Paper](file:///Users/xiefei/Desktop/Nexenta_Replicast_White_Paper.pdf)  
 [Cloud Copy On Write (CCOW)](https://nexenta.com/solutions/openstack/cloud-copy-write-ccow)  
 [Multi-Segment Distributed Storage for Kubernetes](https://medium.com/edgefs/multi-segment-distributed-storage-for-kubernetes-fd01e13887d1)    

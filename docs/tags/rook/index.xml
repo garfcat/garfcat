@@ -85,7 +85,7 @@ ISGW： inter-Segment Gateway, 连接其他集群。&lt;/p&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://rook.io/docs/rook/v1.0/edgefs-storage.html&#34;&gt;edgefs-storage&lt;/a&gt;&lt;br&gt;
 &lt;a href=&#34;https://www.oschina.net/news/115501/recevied-an-dmca-takedown-from-github&#34;&gt;开发者被 GitHub 要求下架开源项目仓库，因为其上游项目未“开源”&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://techstep.hatenablog.com/entry/2020/02/12/083821&#34;&gt;EdgeFS概要まとめ&lt;/a&gt;。
+&lt;a href=&#34;https://techstep.hatenablog.com/entry/2020/02/12/083821&#34;&gt;EdgeFS概要まとめ&lt;/a&gt;
 &lt;a href=&#34;file:///Users/xiefei/Desktop/Nexenta_Replicast_White_Paper.pdf&#34;&gt;Nexenta_Replicast_White_Paper&lt;/a&gt;&lt;br&gt;
 &lt;a href=&#34;https://nexenta.com/solutions/openstack/cloud-copy-write-ccow&#34;&gt;Cloud Copy On Write (CCOW)&lt;/a&gt;&lt;br&gt;
 &lt;a href=&#34;https://medium.com/edgefs/multi-segment-distributed-storage-for-kubernetes-fd01e13887d1&#34;&gt;Multi-Segment Distributed Storage for Kubernetes&lt;/a&gt;&lt;/p&gt;
