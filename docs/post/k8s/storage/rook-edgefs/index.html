@@ -120,7 +120,7 @@
 </svg></span>
     <span class="post_date">
       Sep 17, 2021</span>
-    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/edgefs-rook' title="edgefs-rook" class="post_tag button button_translucent">edgefs-rook
+    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/edgefs-rook' title="edgefs-rook" class="post_tag button button_translucent">edgefs-rook
         </a><a href='https://www.geekgame.site/tags/rook' title="rook" class="post_tag button button_translucent">rook
         </a><a href='https://www.geekgame.site/tags/edgefs' title="edgefs" class="post_tag button button_translucent">edgefs
         </a>
@@ -138,6 +138,9 @@
     <li><a href="#现状">现状</a></li>
     <li><a href="#设计">设计</a></li>
     <li><a href="#组成">组成</a></li>
+  </ul>
+
+  <ul>
     <li><a href="#参考">参考</a></li>
   </ul>
 </nav>
@@ -173,9 +176,48 @@ S3X：提供S3X服务。在Pod内启动 rook-edgefs-s3x s3-proxy两个容器。<
 iSCSI: 提供iSCSI服务， Pod内启动GRPC进程。<br>
 CSI插件： 从Rook v1.2开始，可以使用NFS/iSCSI的CSI插件。<br>
 ISGW： inter-Segment Gateway, 连接其他集群。</p>
+<h1 id="什么是ccow">什么是CCow</h1>
+<p>Target Pod daemon容器中的运行着一个进程CCow进程,这个进程是做什么的呢? 根据 <a href="https://nexenta.com/solutions/openstack/cloud-copy-write-ccow">nexenta</a> 的解释</p>
+<blockquote>
+<p>Nexenta Cloud Copy on Write™ (CCOW™) is an object storage system providing for versioned access to objects with chunk-based distributed deduplication. Nexenta CCOW is composed of a set of software components that can be deployed in various fashions within bare metal and/or Virtual Machine servers.</p>
+</blockquote>
+<p>CCoW 是 Cloud Copy on Write 的缩写， 是一个对象存储系统，通过基于块的分布式重复数据删除提供对对象的版本化访问。Nexenta CCOW 由一组软件组件组成，这些组件可以以各种方式部署在裸机和/或虚拟机服务器中。使用裸机或虚拟机来部署一组“对象存储服务器”。服务器相互联合到持久存储，可以在任何单个服务器丢失的情况下继续存在。</p>
+<p><img src="/static/k8s/storage/CCow.png" alt=""></p>
+<p>每一个对象存储的服务都包含以下几个组件:</p>
+<ul>
+<li>
+<p>Object Storage Access Server: 对象存储访问服务, 为客户端提供一种或多种常规的对象存储访问方法。这些接口通常与现有协议兼容，例如 Amazon S3 或 OpenStack Swift Object Service。这些请求被转换成块请求和 Manifest 请求，然后转发到共同定位的块服务器和清单服务器。</p>
+</li>
+<li>
+<p>Chunk Server: 块服务器, 提供块的本地存储。一个块服务器的服务作用如下:</p>
+<ul>
+<li>存放数据块,每个存储请求都要提供一个从 Manifest Server 获取的事务ID 还有一个数据块的块ID.每个块使用可选压缩块有效负载的加密散列来标识。如果 Chunk 已知，Chunk Server 将成功完成 Chunk Put 事务，而无需传输负载。</li>
+<li>将数据块复制到数据块 ID 的指定数据块服务器</li>
+<li>当数据块服务器是该数据块的指定块服务器之一时，或者当有可用空间并且数据块有足够的流量来保证其本地保留时，保留块。</li>
+<li>在本地存储时检索块，否则从指定的块服务器之一检索块。</li>
+<li>维护对引用对象的引用。</li>
+</ul>
+</li>
+<li>
+<p>Manifest Server:  维护有关对象每个版本的元数据信息。对象组织在对应于传统对象服务容器（又名存储桶）的服务目录中。每个版本都由唯一的版本标识符标识，该标识符可由任何清单服务器根据全局同步时间戳和决胜局生成。唯一的版本标识符保证版本清单可以由不同的清单服务器以不同的顺序应用，同时仍然保证一旦所有事务都应用到所有服务器上，所有清单服务器最终将实现相同的版本清单。</p>
+</li>
+</ul>
+<p><img src="/static/k8s/storage/LocalPermanentObjectStorageServer.png" alt=""></p>
+<h1 id="什么是-isgw">什么是 ISGW</h1>
+<p><img src="/static/k8s/storage/ISGW.png" alt=""></p>
+<p>ISGW（Inter-Segment Gateway）用于EdgeFS中Segment和云之间的全局命名空间同步功能。ISGW 跨多个站点异步分发块数据，以实现无缝、地理透明的数据访问。ISGW 提供以下功能。
+当文件对象在 ISGW 链接到的数据的源站点上被修改时，ISGW 端点链接会检测并传播。这可以减少传输的数据量。</p>
+<p>即使执行了文件更改，除非其哈希值是全局唯一的（如果有另一个匹配项），否则它不会被传输。因此，在全局空间进行去重，可以实现对传输数据的去重。</p>
+<p>站点间ISGW传输方向可设置单向/双向通信。双向通信允许您修改整个全局命名空间中的相同文件/对象。您还可以控制不必要站点之间的通信和通信方向。</p>
+<p>Geo-Transparent 数据同步允许您查看全局命名空间中的数据更改。</p>
+<p>也可以仅传输元数据更改。启用后，用户可以构建可以按需加载数据更改的高效访问端点。</p>
 <h2 id="参考">参考</h2>
-<p><a href="https://rook.io/docs/rook/v1.0/edgefs-storage.html">edgefs-storage</a>
-<a href="https://www.oschina.net/news/115501/recevied-an-dmca-takedown-from-github">开发者被 GitHub 要求下架开源项目仓库，因为其上游项目未“开源”</a></p>
+<p><a href="https://rook.io/docs/rook/v1.0/edgefs-storage.html">edgefs-storage</a><br>
+<a href="https://www.oschina.net/news/115501/recevied-an-dmca-takedown-from-github">开发者被 GitHub 要求下架开源项目仓库，因为其上游项目未“开源”</a><br>
+<a href="https://techstep.hatenablog.com/entry/2020/02/12/083821">EdgeFS概要まとめ</a>。
+<a href="file:///Users/xiefei/Desktop/Nexenta_Replicast_White_Paper.pdf">Nexenta_Replicast_White_Paper</a><br>
+<a href="https://nexenta.com/solutions/openstack/cloud-copy-write-ccow">Cloud Copy On Write (CCOW)</a><br>
+<a href="https://medium.com/edgefs/multi-segment-distributed-storage-for-kubernetes-fd01e13887d1">Multi-Segment Distributed Storage for Kubernetes</a></p>
 
   </article>
 <aside class="sidebar">
