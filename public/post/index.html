@@ -118,6 +118,45 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg></span>
+    <span class="post_date">
+      Sep 17, 2021</span>
+    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/edgefs-rook' title="edgefs-rook" class="post_tag button button_translucent">edgefs-rook
+        </a><a href='https://www.geekgame.site/tags/rook' title="rook" class="post_tag button button_translucent">rook
+        </a><a href='https://www.geekgame.site/tags/edgefs' title="edgefs" class="post_tag button button_translucent">edgefs
+        </a>
+    </span>
+  </div>
+
+    </div>
+    <div class="excerpt_footer partition">
+      <div class="excerpt_thumbnail">
+        <img src='https://www.geekgame.site/images/path/thumbnail.png' alt="Rook Edgefs 介绍">
+      </div>
+      
+        <div>
+          <p class="pale">
+            
+              EdgeFS 存储 EdgeFS 是使用Go和C实现的高性能、可容错以及低延迟的对象存储系统，可以对来自本地，私有/公有云或者小型(loT)设备的数据进行地理透明地访问。
+EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点），相互连接，作为在 Kubernetes 平台上运行的一个全局名称空间数据结构，提供持久、容错和高性能的完全兼容的 S3 Object API 有状态的 Kubernetes 应用程序和 CSI 卷。 在每个Geo站点，EdgeFS 节点在物理或虚拟节点上部署为容器（StatefulSet），汇集可用存储容量并通过兼容的 S3/NFS/iSCSI/etc 存储模拟协议为在相同或专用服务器上运行的云原生应 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
       </h3>
       
@@ -437,39 +476,6 @@ Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
-      </h3>
-      
-  <div class="post_meta">
-    <span><svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg></span>
-    <span class="post_date">
-      May 7, 2020</span>
-    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/tcp' title="tcp" class="post_tag button button_translucent">tcp
-        </a>
-    </span>
-  </div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
-TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; --&gt; SYN-RECEIVED 6 7 3. ESTABLISHED &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=SYN,ACK&gt; &lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&gt; …
-            
-          </p>
-          <a href="https://www.geekgame.site/post/protocol/tcp_1/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -505,11 +511,17 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
+        <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" class="nav-link" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
       </li>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" class="nav-link" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
       </li>
@@ -531,9 +543,6 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
       <li>
         <a href="https://www.geekgame.site/post/language/golang/golang_performance/" class="nav-link" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
       </li>
-      <li>
-        <a href="https://www.geekgame.site/post/nosql/select/" class="nav-link" title="主流 nosql 数据库选型">主流 nosql 数据库选型</a>
-      </li>
     </ul>
     <div>
       <h2 class="mt-4 taxonomy" id="categories-section">分类</h2>
@@ -550,6 +559,11 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
         
         <a href='https://www.geekgame.site/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
           KUBERNETES
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/storage/' class="post_tag button button_translucent" title="storage">
+          STORAGE
           <span class="button_tally">2</span>
         </a>
         
@@ -570,11 +584,6 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/categories/storage/' class="post_tag button button_translucent" title="storage">
-          STORAGE
           <span class="button_tally">1</span>
         </a>
         
@@ -640,6 +649,11 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
           <span class="button_tally">2</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/rook/' class="post_tag button button_translucent" title="rook">
+          ROOK
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/shell/' class="post_tag button button_translucent" title="shell">
           SHELL
           <span class="button_tally">2</span>
@@ -647,6 +661,16 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
         
         <a href='https://www.geekgame.site/tags/controller-runtime/' class="post_tag button button_translucent" title="controller-runtime">
           CONTROLLER-RUNTIME
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/edgefs/' class="post_tag button button_translucent" title="edgefs">
+          EDGEFS
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/edgefs-rook/' class="post_tag button button_translucent" title="edgefs-rook">
+          EDGEFS-ROOK
           <span class="button_tally">1</span>
         </a>
         
@@ -675,21 +699,6 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/kubernetes-arch/' class="post_tag button button_translucent" title="kubernetes-arch">
-          KUBERNETES-ARCH
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/kubernetes-monitoring/' class="post_tag button button_translucent" title="kubernetes-monitoring">
-          KUBERNETES-MONITORING
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/kubernetes-serverless/' class="post_tag button button_translucent" title="kubernetes-serverless">
-          KUBERNETES-SERVERLESS
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -697,6 +706,14 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
           <div class="tags_list">
             
             <a href='https://www.geekgame.site/tags/controller-runtime/' class=" post_tag button button_translucent" data-position=1 title="controller-runtime">CONTROLLER-RUNTIME<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/edgefs/' class=" post_tag button button_translucent" data-position=1 title="edgefs">EDGEFS<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/edgefs-rook/' class=" post_tag button button_translucent" data-position=1 title="edgefs-rook">EDGEFS-ROOK<span class="button_tally">1</span>
             </a>
             
             
@@ -776,7 +793,7 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/rook/' class=" post_tag button button_translucent" data-position=1 title="rook">ROOK<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/rook/' class=" post_tag button button_translucent" data-position=2 title="rook">ROOK<span class="button_tally">2</span>
             </a>
             
             
