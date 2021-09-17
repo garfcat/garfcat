@@ -20,7 +20,7 @@ tags:
   - edgefs
 # comment: false # Disable comment if false.
 ---
-## EdgeFS 存储
+## 什么是 EdgeFS 
 EdgeFS 是使用Go和C实现的高性能、可容错以及低延迟的对象存储系统，可以对来自本地，私有/公有云或者小型(loT)设备的数据进行地理透明地访问。  
 EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点），相互连接，作为在 Kubernetes 平台上运行的一个全局名称空间数据结构，提供持久、容错和高性能的完全兼容的 S3 Object API 有状态的 Kubernetes 应用程序和 CSI 卷。
 在每个Geo站点，EdgeFS 节点在物理或虚拟节点上部署为容器（StatefulSet），汇集可用存储容量并通过兼容的 S3/NFS/iSCSI/etc 存储模拟协议为在相同或专用服务器上运行的云原生应用程序提供存储容量。
@@ -38,6 +38,26 @@ Rook operator 是一个简单的容器，它具有引导和监视存储集群所
 operator 将监控存储目标，以确保群集正常运行。EdgeFS将动态处理服务故障切换，以及可能随着集群的增长或缩小而进行的其他调整。
 EdgeFS Rook operator 还提供了集成的CSI插件。部署在每个Kubernetes节点上的CSI POD。处理节点上所需的所有存储操作，例如连接网络存储设备、挂载NFS导出和动态资源调配。
 Rook在golang实现。EdgeFS使用Go和C实现，其中数据路径得到高度优化。
+## 组成
+![edgefs-components](/static/k8s/storage/edgefs-components.png)
+
+edgefs 主要包含以下几个部分:  
+grpc manager: 使用NFS/iSCSI CSI plugin时，提供对CSI plugin的请求进行平衡委托的功能。此外，还可作为可执行efscli命令的toolbox发挥功能。内部包好三个容器：  
+    - rook-edgefs-mgr  
+    - grpc: grpc-EFS代理工作。  
+    - ui: 提供Edgefs dashboard。  
+Target: EdgeFS 中的数据节点，处理HDD/SSD。有三个POD运行：  
+    - daemon： 内部有CCow等进程运行  
+    - corosync： 在应用程序OSS中实现HA， 监控集群节点的健康状态。  
+    - auditd  
+NFS: 提供NFS服务。 Pod内除了NFS Ganesha外，还启动了GRPC进程。  
+S3: 提供S3服务，Pod内启动GRPC进程。  
+S3X：提供S3X服务。在Pod内启动 rook-edgefs-s3x s3-proxy两个容器。  
+iSCSI: 提供iSCSI服务， Pod内启动GRPC进程。  
+CSI插件： 从Rook v1.2开始，可以使用NFS/iSCSI的CSI插件。  
+ISGW： inter-Segment Gateway, 连接其他集群。   
+
+
 
 ## 参考
 [edgefs-storage](https://rook.io/docs/rook/v1.0/edgefs-storage.html)
