@@ -6,8 +6,8 @@ featured: true # Sets if post is a featured post, making appear on the home page
 draft: false # Sets whether to render this page. Draft of true will not be rendered.
 toc: true # Controls if a table of contents should be generated for first-level links automatically.
 # menu: main
-featureImage: "/static/k8s/edgefs.png" # Sets featured image on blog post.
-thumbnail: "/images/path/edgefs.png" # Sets thumbnail image appearing inside card on homepage.
+featureImage: "/static/k8s/storage/edgefs.png" # Sets featured image on blog post.
+thumbnail: "/images/k8s/storage/edgefs.png" # Sets thumbnail image appearing inside card on homepage.
 shareImage: "/images/path/share.png" # Designate a separate image for social media sharing.
 codeMaxLines: 10 # Override global value for how many lines within a code block before auto-collapsing.
 codeLineNumbers: false # Override global value for showing of line numbers within code block.
@@ -18,7 +18,7 @@ tags:
   - edgefs-rook
   - rook
   - edgefs
-comment: true # Disable comment if false.
+# comment: false # Disable comment if false.
 ---
 ## 什么是 EdgeFS 
 EdgeFS 是使用Go和C实现的高性能、可容错以及低延迟的对象存储系统，可以对来自本地，私有/公有云或者小型(loT)设备的数据进行地理透明地访问。  
