@@ -57,7 +57,7 @@ iSCSI: 提供iSCSI服务， Pod内启动GRPC进程。
 CSI插件： 从Rook v1.2开始，可以使用NFS/iSCSI的CSI插件。  
 ISGW： inter-Segment Gateway, 连接其他集群。   
 
-# 什么是CCow
+## 什么是 CCow
 Target Pod daemon容器中的运行着一个进程CCow进程,这个进程是做什么的呢? 根据 [nexenta](https://nexenta.com/solutions/openstack/cloud-copy-write-ccow) 的解释
 > Nexenta Cloud Copy on Write™ (CCOW™) is an object storage system providing for versioned access to objects with chunk-based distributed deduplication. Nexenta CCOW is composed of a set of software components that can be deployed in various fashions within bare metal and/or Virtual Machine servers.
 
@@ -78,7 +78,7 @@ CCoW 是 Cloud Copy on Write 的缩写， 是一个对象存储系统，通过�
 
 ![](/static/k8s/storage/LocalPermanentObjectStorageServer.png)
 
-# 什么是 ISGW
+## 什么是 ISGW
 
 ![](/static/k8s/storage/ISGW.png)
 

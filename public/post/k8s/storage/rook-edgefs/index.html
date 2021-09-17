@@ -138,9 +138,8 @@
     <li><a href="#现状">现状</a></li>
     <li><a href="#设计">设计</a></li>
     <li><a href="#组成">组成</a></li>
-  </ul>
-
-  <ul>
+    <li><a href="#什么是-ccow">什么是 CCow</a></li>
+    <li><a href="#什么是-isgw">什么是 ISGW</a></li>
     <li><a href="#参考">参考</a></li>
   </ul>
 </nav>
@@ -176,7 +175,7 @@ S3X：提供S3X服务。在Pod内启动 rook-edgefs-s3x s3-proxy两个容器。<
 iSCSI: 提供iSCSI服务， Pod内启动GRPC进程。<br>
 CSI插件： 从Rook v1.2开始，可以使用NFS/iSCSI的CSI插件。<br>
 ISGW： inter-Segment Gateway, 连接其他集群。</p>
-<h1 id="什么是ccow">什么是CCow</h1>
+<h2 id="什么是-ccow">什么是 CCow</h2>
 <p>Target Pod daemon容器中的运行着一个进程CCow进程,这个进程是做什么的呢? 根据 <a href="https://nexenta.com/solutions/openstack/cloud-copy-write-ccow">nexenta</a> 的解释</p>
 <blockquote>
 <p>Nexenta Cloud Copy on Write™ (CCOW™) is an object storage system providing for versioned access to objects with chunk-based distributed deduplication. Nexenta CCOW is composed of a set of software components that can be deployed in various fashions within bare metal and/or Virtual Machine servers.</p>
@@ -203,7 +202,7 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
 </li>
 </ul>
 <p><img src="/static/k8s/storage/LocalPermanentObjectStorageServer.png" alt=""></p>
-<h1 id="什么是-isgw">什么是 ISGW</h1>
+<h2 id="什么是-isgw">什么是 ISGW</h2>
 <p><img src="/static/k8s/storage/ISGW.png" alt=""></p>
 <p>ISGW（Inter-Segment Gateway）用于EdgeFS中Segment和云之间的全局命名空间同步功能。ISGW 跨多个站点异步分发块数据，以实现无缝、地理透明的数据访问。ISGW 提供以下功能。
 当文件对象在 ISGW 链接到的数据的源站点上被修改时，ISGW 端点链接会检测并传播。这可以减少传输的数据量。</p>
