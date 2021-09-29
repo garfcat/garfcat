@@ -48,7 +48,26 @@ kube-proxy: 负责K8s集群服务的通信以及负载均衡；
 12. API 将Pod信息发送给 Kubelet;  
 13. Kubelet 接收到 Pod, 真正去创建Pod；  
 
-
+## 观察POD创建过程相关事件
+我们可以通过kubectl get events --watch 来观察POD创建过程所产生的事件。使用watch 选项可以监听整个过程。
+以下是创建nginx的过程：
+```shell
+➜  ~ kubectl get events --watch       
+LAST SEEN   TYPE     REASON    OBJECT                                  MESSAGE
+0s          Normal   ScalingReplicaSet   deployment/nginx                        Scaled up replica set nginx-6799fc88d8 to 2
+0s          Normal   SuccessfulCreate    replicaset/nginx-6799fc88d8             Created pod: nginx-6799fc88d8-dlvsf
+0s          Normal   SuccessfulCreate    replicaset/nginx-6799fc88d8             Created pod: nginx-6799fc88d8-b7868
+0s          Normal   Scheduled           pod/nginx-6799fc88d8-dlvsf              Successfully assigned default/nginx-6799fc88d8-dlvsf to k8s-node1
+0s          Normal   Scheduled           pod/nginx-6799fc88d8-b7868              Successfully assigned default/nginx-6799fc88d8-b7868 to k8s-node1
+0s          Normal   Pulling             pod/nginx-6799fc88d8-b7868              Pulling image "nginx"
+0s          Normal   Pulling             pod/nginx-6799fc88d8-dlvsf              Pulling image "nginx"
+0s          Normal   Pulled              pod/nginx-6799fc88d8-b7868              Successfully pulled image "nginx" in 14.134421496s
+0s          Normal   Created             pod/nginx-6799fc88d8-b7868              Created container nginx
+0s          Normal   Started             pod/nginx-6799fc88d8-b7868              Started container nginx
+0s          Normal   Pulled              pod/nginx-6799fc88d8-dlvsf              Successfully pulled image "nginx" in 19.163499736s
+0s          Normal   Created             pod/nginx-6799fc88d8-dlvsf              Created container nginx
+0s          Normal   Started             pod/nginx-6799fc88d8-dlvsf              Started container nginx
+```
 以上就是关于K8s架构以及数据流转的介绍。
 
 # 参考

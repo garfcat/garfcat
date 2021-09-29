@@ -119,7 +119,7 @@
 </svg></span>
     <span class="post_date">
       Oct 31, 2019</span>
-    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
         </a><a href='https://www.geekgame.site/tags/kubernetes-arch' title="kubernetes arch" class="post_tag button button_translucent">kubernetes arch
         </a>
     </span>
@@ -168,7 +168,25 @@ kube-proxy: 负责K8s集群服务的通信以及负载均衡；</p>
 <li>API 将Pod信息发送给 Kubelet;</li>
 <li>Kubelet 接收到 Pod, 真正去创建Pod；</li>
 </ol>
-<p>以上就是关于K8s架构以及数据流转的介绍。</p>
+<h2 id="观察pod创建过程相关事件">观察POD创建过程相关事件</h2>
+<p>我们可以通过kubectl get events --watch 来观察POD创建过程所产生的事件。使用watch 选项可以监听整个过程。
+以下是创建nginx的过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span>➜  ~ kubectl get events --watch       
+<span class="ln"> 2</span>LAST SEEN   TYPE     REASON    OBJECT                                  MESSAGE
+<span class="ln"> 3</span>0s          Normal   ScalingReplicaSet   deployment/nginx                        Scaled up replica <span class="nb">set</span> nginx-6799fc88d8 to <span class="m">2</span>
+<span class="ln"> 4</span>0s          Normal   SuccessfulCreate    replicaset/nginx-6799fc88d8             Created pod: nginx-6799fc88d8-dlvsf
+<span class="ln"> 5</span>0s          Normal   SuccessfulCreate    replicaset/nginx-6799fc88d8             Created pod: nginx-6799fc88d8-b7868
+<span class="ln"> 6</span>0s          Normal   Scheduled           pod/nginx-6799fc88d8-dlvsf              Successfully assigned default/nginx-6799fc88d8-dlvsf to k8s-node1
+<span class="ln"> 7</span>0s          Normal   Scheduled           pod/nginx-6799fc88d8-b7868              Successfully assigned default/nginx-6799fc88d8-b7868 to k8s-node1
+<span class="ln"> 8</span>0s          Normal   Pulling             pod/nginx-6799fc88d8-b7868              Pulling image <span class="s2">&#34;nginx&#34;</span>
+<span class="ln"> 9</span>0s          Normal   Pulling             pod/nginx-6799fc88d8-dlvsf              Pulling image <span class="s2">&#34;nginx&#34;</span>
+<span class="ln">10</span>0s          Normal   Pulled              pod/nginx-6799fc88d8-b7868              Successfully pulled image <span class="s2">&#34;nginx&#34;</span> in 14.134421496s
+<span class="ln">11</span>0s          Normal   Created             pod/nginx-6799fc88d8-b7868              Created container nginx
+<span class="ln">12</span>0s          Normal   Started             pod/nginx-6799fc88d8-b7868              Started container nginx
+<span class="ln">13</span>0s          Normal   Pulled              pod/nginx-6799fc88d8-dlvsf              Successfully pulled image <span class="s2">&#34;nginx&#34;</span> in 19.163499736s
+<span class="ln">14</span>0s          Normal   Created             pod/nginx-6799fc88d8-dlvsf              Created container nginx
+<span class="ln">15</span>0s          Normal   Started             pod/nginx-6799fc88d8-dlvsf              Started container nginx
+</code></pre></div><p>以上就是关于K8s架构以及数据流转的介绍。</p>
 <h1 id="参考">参考</h1>
 <p><a href="https://www.aquasec.com/cloud-native-academy/kubernetes-101/kubernetes-architecture/">Kubernetes Architecture</a><br>
 <a href="https://x-team.com/blog/introduction-kubernetes-architecture/">INTRODUCTION TO KUBERNETES ARCHITECTURE</a><br>
