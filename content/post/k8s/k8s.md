@@ -35,18 +35,15 @@ kube-proxy: 负责K8s集群服务的通信以及负载均衡；
 我们以 ReplicaSet 为例，讲述一下K8s的数据流转：  
 0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；  
 1. API作为集群入口，接收命令请求；  
-2. API 与 ETCD交互，持久化 ReplicaSet;  
-3. Etcd将 ReplicaSet 的创建事件发送给API;  
-4. API 将 ReplicaSet 的创建事件发送给正在监听的 kube-controller-manager;  
-5. kube-controller-manager 接收事件并创建Pod 发送给 API；   
-6. API 与 etcd 交互持久化Pod;  
-7. etcd 将Pod创建事件发送给 API；  
-8. API 将Pod创建事件发送给 kube-scheduler;  
-9. kube-scheduler 接收Pod事件并为Pod 选择合适的节点，并将更新信息发送给API;  
-10. API 与 etcd 交互更新Pod;  
-11. etcd 将Pod更新事件发送给 API；  
-12. API 将Pod信息发送给 Kubelet;  
-13. Kubelet 接收到 Pod, 真正去创建Pod；  
+2. Deployment 控制器通过 watch 获取到 Deployment 的创建事件;  
+3. Deployment 控制器创建 ReplicaSet 资源;  
+4. ReplicaSet 控制器通过 watch 获取到 ReplicaSet 的创建事件;  
+5. ReplicaSet 控制器创建 POD 资源；  
+6. Scheduler 通过 watch 获取 Pod 创建事件以及获取未绑定Node的Pod；  
+7. Scheduler 通过调度算法为 Pod 选择合适的Node；  
+8. kubelet 通过 watch 获取部署在当前Node的 Pod;  
+9. kubelet 通过 CRI 通知container runtime 创建 Pod；  
+10. container runtime 成功创建Pod；   
 
 ## 观察POD创建过程相关事件
 我们可以通过kubectl get events --watch 来观察POD创建过程所产生的事件。使用watch 选项可以监听整个过程。
