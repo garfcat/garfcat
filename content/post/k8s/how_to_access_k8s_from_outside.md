@@ -1,6 +1,6 @@
 ---
-title: "Ports" # Title of the blog post.
-date: 2021-09-26T19:29:25+08:00 # Date of post creation.
+title: "How_to_access_k8s_from_outside" # Title of the blog post.
+date: 2021-10-13T10:49:48+08:00 # Date of post creation.
 description: "Article description." # Description used for search engine.
 featured: true # Sets if post is a featured post, making appear on the home page side bar.
 draft: true # Sets whether to render this page. Draft of true will not be rendered.
@@ -20,4 +20,4 @@ tags:
 # comment: false # Disable comment if false.
 ---
 
-学习 K8S 过程中会遇到各种 port,如 port、targetPort、containerPort、NodePort、hostPort 
+**Insert Lead paragraph here.**

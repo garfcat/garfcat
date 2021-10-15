@@ -7,4 +7,4 @@ date = "2019-02-28"
 I am a programmer, ordinary but a little technical pursuit;
 This blog is the place were I put into words a portion of my knowledge.
 
-I like this sentence：live and learn. 
+focus on: cloud native、edge computing、container.
