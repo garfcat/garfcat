@@ -139,6 +139,7 @@
         <li><a href="#预选算法">预选算法</a></li>
         <li><a href="#优选调度过程">优选调度过程</a></li>
         <li><a href="#选择集群过程">选择集群过程</a></li>
+        <li><a href="#为选择的集群分配replicas">为选择的集群分配Replicas</a></li>
       </ul>
     </li>
   </ul>
@@ -277,7 +278,7 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。<
 <span class="ln">30</span>	<span class="k">return</span> <span class="nx">feasibleClusters</span>
 <span class="ln">31</span><span class="p">}</span>
 <span class="ln">32</span>
-</code></pre></div><h4 id="为选择的集群分配replicas">为选择的集群分配Replicas</h4>
+</code></pre></div><h3 id="为选择的集群分配replicas">为选择的集群分配Replicas</h3>
 <p>为选择的集群分配Replicas，是通过 <strong>assignReplicas</strong> 方法实现，该方法是根据 replicaSchedulingStrategy（在 propagation policy中定义 placement时,同时指定replica scheduling strategy） 策略进行分配。</p>
 <div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">assignReplicas</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">replicaSchedulingStrategy</span> <span class="o">*</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaSchedulingStrategy</span><span class="p">,</span> <span class="nx">object</span> <span class="o">*</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">ObjectReference</span><span class="p">)</span> <span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
 <span class="ln"> 2</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>

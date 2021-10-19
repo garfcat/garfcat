@@ -164,7 +164,7 @@ func (g *genericScheduler) chooseSpreadGroup(spreadGroup *util.SpreadGroup) []*c
 
 ```
 
-#### 为选择的集群分配Replicas  
+### 为选择的集群分配Replicas  
 
 为选择的集群分配Replicas，是通过 **assignReplicas** 方法实现，该方法是根据 replicaSchedulingStrategy（在 propagation policy中定义 placement时,同时指定replica scheduling strategy） 策略进行分配。
 
