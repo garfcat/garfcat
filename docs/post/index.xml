@@ -1358,6 +1358,29 @@ kubebuilder init --domain ipes-cmp&lt;/p&gt;
     </item>
     
     <item>
+      <title>秒懂阻塞非阻塞I/O 与 同步异步I/O</title>
+      <link>https://www.geekgame.site/post/linux/io/</link>
+      <pubDate>Mon, 07 Jun 2021 10:15:54 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/linux/io/</guid>
+      <description>
+        
+          &lt;p&gt;阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。&lt;/p&gt;
+&lt;p&gt;阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分： &lt;br&gt;
+阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程就会被阻塞，不能执行其他任务。&lt;br&gt;
+阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程不会被阻塞，还能继续执行其他任务。&lt;br&gt;
+同步/异步I/O 是根据I/O响应方式而划分的：&lt;br&gt;
+同步I/O 是指系统收到I/O请求后，不会立刻响应，而是处理玩成之后才会响应。&lt;br&gt;
+异步I/O 是指系统收到I/O请求后，立刻响应告诉程序已经收到请求，随后再去异步处理，处理完成之后，通过事件通知的方式通知应用该程序I/O处理结果。&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://time.geekbang.org/column/article/79734&#34;&gt;linux 性能优化实战&lt;/a&gt;
+&lt;a href=&#34;http://cxd2014.github.io/2018/12/09/aio/&#34;&gt;Linux中的异步I/O模型&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
       <title>Golang程序性能pprof使用介绍</title>
       <link>https://www.geekgame.site/post/language/golang/golang_performance/</link>
       <pubDate>Mon, 29 Mar 2021 20:30:20 +0800</pubDate>
