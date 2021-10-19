@@ -1,8 +1,10 @@
 ---
-title: "秒懂阻塞非阻塞I/O 与 同步异步I/O"
+title: "秒懂I/O模型"
 date: 2021-06-07T10:15:54+08:00
 draft: false
 ---
+
+# 阻塞/非阻塞与同步/异步区别
 阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。  
   
 阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分：    
@@ -12,8 +14,9 @@ draft: false
 同步I/O 是指系统收到I/O请求后，不会立刻响应，而是处理玩成之后才会响应。  
 异步I/O 是指系统收到I/O请求后，立刻响应告诉程序已经收到请求，随后再去异步处理，处理完成之后，通过事件通知的方式通知应用该程序I/O处理结果。    
 
+# I/O 模型
 
 
 # 参考
-[linux 性能优化实战](https://time.geekbang.org/column/article/79734)
-[Linux中的异步I/O模型](http://cxd2014.github.io/2018/12/09/aio/)  
+[linux 性能优化实战](https://time.geekbang.org/column/article/79734)  
+[Linux中的异步I/O模型](http://cxd2014.github.io/2018/12/09/aio/)   

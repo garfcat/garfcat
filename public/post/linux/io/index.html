@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="zh" data-figures="" class="page">
   <head>
-<title>秒懂阻塞非阻塞I/O 与 同步异步I/O | 有趣</title>
+<title>秒懂I/O模型 | 有趣</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,17 +17,17 @@
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
+<meta name="description" content="阻塞/非阻塞与同步/异步区别 阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
 阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分： 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程就会被阻塞，不能执行其他任务。
-阻塞I/O 是指应用程序在进行I/O操作 …">
+阻塞I/O …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="">
-<meta name="twitter:title" content="秒懂阻塞非阻塞I/O 与 同步异步I/O" />
+<meta name="twitter:title" content="秒懂I/O模型" />
 <meta property="og:url" content="https://www.geekgame.site/post/linux/io/" />
-<meta property="og:title" content="秒懂阻塞非阻塞I/O 与 同步异步I/O" />
-<meta property="og:description" content="阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
+<meta property="og:title" content="秒懂I/O模型" />
+<meta property="og:description" content="阻塞/非阻塞与同步/异步区别 阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
 阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分： 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程就会被阻塞，不能执行其他任务。
-阻塞I/O 是指应用程序在进行I/O操作 …" />
+阻塞I/O …" />
 <meta property="og:image" content="https://www.geekgame.site/images/thumbnail.png" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
@@ -116,7 +116,7 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">秒懂阻塞非阻塞I/O 与 同步异步I/O</h1>
+    <h1 class="post_title">秒懂I/O模型</h1>
   <div class="post_meta">
     <span><svg class="icon">
   <use xlink:href="#calendar"></use>
@@ -127,15 +127,17 @@
   </div>
 
     
-    <p>阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。</p>
+    <h1 id="阻塞非阻塞与同步异步区别">阻塞/非阻塞与同步/异步区别</h1>
+<p>阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。</p>
 <p>阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分： <br>
 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程就会被阻塞，不能执行其他任务。<br>
 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程不会被阻塞，还能继续执行其他任务。<br>
 同步/异步I/O 是根据I/O响应方式而划分的：<br>
 同步I/O 是指系统收到I/O请求后，不会立刻响应，而是处理玩成之后才会响应。<br>
 异步I/O 是指系统收到I/O请求后，立刻响应告诉程序已经收到请求，随后再去异步处理，处理完成之后，通过事件通知的方式通知应用该程序I/O处理结果。</p>
+<h1 id="io-模型">I/O 模型</h1>
 <h1 id="参考">参考</h1>
-<p><a href="https://time.geekbang.org/column/article/79734">linux 性能优化实战</a>
+<p><a href="https://time.geekbang.org/column/article/79734">linux 性能优化实战</a><br>
 <a href="http://cxd2014.github.io/2018/12/09/aio/">Linux中的异步I/O模型</a></p>
 
   </article>

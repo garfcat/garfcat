@@ -411,7 +411,7 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/linux/io/" title="秒懂阻塞非阻塞I/O 与 同步异步I/O">秒懂阻塞非阻塞I/O 与 同步异步I/O</a>
+        <a href="https://www.geekgame.site/post/linux/io/" title="秒懂I/O模型">秒懂I/O模型</a>
       </h3>
       
   <div class="post_meta">
@@ -428,12 +428,12 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
         <div>
           <p class="pale">
             
-              阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
+              阻塞/非阻塞与同步/异步区别 阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
 阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分： 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程就会被阻塞，不能执行其他任务。
 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程不会被阻塞，还能继续执行其他任务。
 同步/异步I/O 是根据I/O响应方式而划分的：
 同步I/O 是指系统收到I/O请求后，不会立刻响应，而是处理玩成之后才会响应。
-异步I/O 是指系统收到I/O请求后，立刻响应告诉程序已经收到请求，随后再去异步处理，处理完成之后，通过事件通知的方式通知应 …
+异步I/O 是指系统收到I/O请求后，立刻响应告诉程序已经收到请求，随后再去异步处理，处理完成 …
             
           </p>
           <a href="https://www.geekgame.site/post/linux/io/" title="阅读更多" class="excerpt_more button">阅读更多</a>
