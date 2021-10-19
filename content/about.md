@@ -6,7 +6,7 @@ aliases = ["about-us", "about-hugo", "contact"]
 author = "Hugo Authors"
 +++
 
-  程序员一枚, 普通但是有点技术追求；  
+  程序员一枚；  
   这个博客主要用来总结工作遇到和学习到的一些知识。
   
   主要关注技术：云原生、边缘计算、容器等
