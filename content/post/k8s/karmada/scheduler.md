@@ -25,7 +25,7 @@ Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列
 **注意：** 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1
 
 ## 调度框架
-![karmada scheduler arch](/static/k8s/karmada/arch.png)
+![karmada scheduler arch](/static/k8s/karmada/scheduler.png)
 
 karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。    
 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；  
@@ -339,3 +339,6 @@ func (g *genericScheduler) divideReplicasAggregatedWithClusterReplicas(clusterAv
 	return targetClusters, nil
 }
 ```
+
+# 参考
+《kubernetes 源码剖析》  

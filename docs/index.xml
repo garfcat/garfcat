@@ -19,7 +19,7 @@
 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1&lt;/p&gt;
 &lt;h2 id=&#34;调度框架&#34;&gt;调度框架&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://www.geekgame.site/static/k8s/karmada/arch.png&#34; alt=&#34;karmada scheduler arch&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.geekgame.site/static/k8s/karmada/scheduler.png&#34; alt=&#34;karmada scheduler arch&#34;&gt;&lt;/p&gt;
 &lt;p&gt;karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 &lt;br&gt;
 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；&lt;br&gt;
 policyInformer/clusterPolicyInformer 是用来监听 policy/clusterPolicy 的Update事件，将关联的 binding/clusterBinding 添加到调度队列；&lt;br&gt;
@@ -316,7 +316,9 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&
 &lt;span class=&#34;ln&#34;&gt;41&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;targetClusters&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;p&gt;《kubernetes 源码剖析》&lt;/p&gt;
+
         
       </description>
     </item>
