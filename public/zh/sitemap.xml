@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://www.geekgame.site/</loc>
-    <lastmod>2021-09-17T10:29:11+08:00</lastmod>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -24,7 +24,7 @@
   
   <url>
     <loc>https://www.geekgame.site/categories/</loc>
-    <lastmod>2021-09-17T10:29:11+08:00</lastmod>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -43,17 +43,57 @@
   </url>
   
   <url>
+    <loc>https://www.geekgame.site/post/k8s/karmada/scheduler/</loc>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/</loc>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/tag_name1/</loc>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/tag_name2/</loc>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/</loc>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.geekgame.site/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://www.geekgame.site/pt/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.geekgame.site/tags/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/categories/technology/</loc>
+    <lastmod>2021-10-15T11:47:48+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.geekgame.site/tags/edgefs/</loc>
     <lastmod>2021-09-17T10:29:11+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/tags/edgefs-rook/</loc>
-    <lastmod>2021-09-17T10:29:11+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/post/</loc>
     <lastmod>2021-09-17T10:29:11+08:00</lastmod>
   </url>
   
@@ -70,26 +110,6 @@
   <url>
     <loc>https://www.geekgame.site/categories/storage/</loc>
     <lastmod>2021-09-17T10:29:11+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/tags/</loc>
-    <lastmod>2021-09-17T10:29:11+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.geekgame.site/en/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://www.geekgame.site/pt/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.geekgame.site/tags/"
-                />
   </url>
   
   <url>

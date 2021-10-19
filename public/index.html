@@ -125,6 +125,45 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg></span>
+    <span class="post_date">
+      Oct 15, 2021</span>
+    <span class="post_time"> · 6 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/tag_name1' title="Tag_name1" class="post_tag button button_translucent">Tag_name1
+        </a><a href='https://www.geekgame.site/tags/tag_name2' title="Tag_name2" class="post_tag button button_translucent">Tag_name2
+        </a>
+    </span>
+  </div>
+
+    </div>
+    <div class="excerpt_footer partition">
+      <div class="excerpt_thumbnail">
+        <img src='https://www.geekgame.site/images/path/thumbnail.png' alt="Karmada Scheduler核心实现">
+      </div>
+      
+        <div>
+          <p class="pale">
+            
+              Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。
+注意： 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1
+调度框架 karmada-scheduler 在启动过程中实例化并运行了多个 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
       </h3>
       
@@ -446,43 +485,6 @@ Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/language/golang/test/" title="golang testing 使用教程">golang testing 使用教程</a>
-      </h3>
-      
-  <div class="post_meta">
-    <span><svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg></span>
-    <span class="post_date">
-      Sep 27, 2020</span>
-    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-        </a><a href='https://www.geekgame.site/tags/test' title="test" class="post_tag button button_translucent">test
-        </a><a href='https://www.geekgame.site/tags/testing' title="testing" class="post_tag button button_translucent">testing
-        </a>
-    </span>
-  </div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
- 功能测试（Test） 性能测试（Benchmark） 示例测试（Example）  测试文件名称一般是源代码文件加上 &quot;_test.go&quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
-在展开单元测试之前先讲下,testing包中的输出函数：
- t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前 …
-            
-          </p>
-          <a href="https://www.geekgame.site/post/language/golang/test/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -518,6 +520,9 @@ Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
+        <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
       </li>
       <li>
@@ -526,6 +531,9 @@ Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
       </li>
@@ -546,9 +554,6 @@ Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" class="nav-link" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
       </li>
     </ul>
     <div>
@@ -591,6 +596,11 @@ Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -825,6 +835,14 @@ Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值
             
             
             <a href='https://www.geekgame.site/tags/start/' class=" post_tag button button_translucent" data-position=1 title="start">START<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
             </a>
             
             
