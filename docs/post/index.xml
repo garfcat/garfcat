@@ -318,7 +318,9 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&
 &lt;span class=&#34;ln&#34;&gt;41&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;targetClusters&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;调协调度reconcileschedule&#34;&gt;调协调度(ReconcileSchedule)&lt;/h2&gt;
+&lt;p&gt;与 &lt;a href=&#34;https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule&#34;&gt;首次调度&lt;/a&gt; 逻辑是一样的。&lt;/p&gt;
+
         
       </description>
     </item>

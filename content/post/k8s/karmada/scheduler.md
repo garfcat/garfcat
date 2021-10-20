@@ -340,3 +340,6 @@ func (g *genericScheduler) divideReplicasAggregatedWithClusterReplicas(clusterAv
 	return targetClusters, nil
 }
 ```
+## 调协调度(ReconcileSchedule)
+与 [首次调度](https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule) 逻辑是一样的。
+

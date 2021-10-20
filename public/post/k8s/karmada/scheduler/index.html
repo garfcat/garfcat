@@ -140,6 +140,7 @@
         <li><a href="#为选择的集群分配replicas">为选择的集群分配Replicas</a></li>
       </ul>
     </li>
+    <li><a href="#调协调度reconcileschedule">调协调度(ReconcileSchedule)</a></li>
   </ul>
 </nav>
     <p>Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。
@@ -445,7 +446,9 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。<
 <span class="ln">41</span>	<span class="p">}</span>
 <span class="ln">42</span>	<span class="k">return</span> <span class="nx">targetClusters</span><span class="p">,</span> <span class="kc">nil</span>
 <span class="ln">43</span><span class="p">}</span>
-</code></pre></div>
+</code></pre></div><h2 id="调协调度reconcileschedule">调协调度(ReconcileSchedule)</h2>
+<p>与 <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule">首次调度</a> 逻辑是一样的。</p>
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
