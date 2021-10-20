@@ -37,7 +37,7 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&
 &lt;li&gt;无需调度(AvoidSchedule):  默认行为，上面四个调度都未执行，则不进行任何调度。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;首次调度firstschedule&#34;&gt;首次调度（FirstSchedule）&lt;/h2&gt;
-&lt;p&gt;主要通过 scheduleOne 函数来实现，分为三个步骤：&lt;/p&gt;
+&lt;p&gt;主要通过 scheduleOne 函数来实现，分为以下几个步骤：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;根据 namespace 和 name 查询出 resource binding;&lt;/li&gt;
 &lt;li&gt;执行 预选算法 优选算法选择出合适的集群集合;&lt;/li&gt;
@@ -319,7 +319,13 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&
 &lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;targetClusters&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;调协调度reconcileschedule&#34;&gt;调协调度(ReconcileSchedule)&lt;/h2&gt;
-&lt;p&gt;与 &lt;a href=&#34;https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule&#34;&gt;首次调度&lt;/a&gt; 逻辑是一样的。&lt;/p&gt;
+&lt;p&gt;policy 的 placement 发生变化时就需要进行调协调度，与 &lt;a href=&#34;https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule&#34;&gt;首次调度&lt;/a&gt; 逻辑是一样的,都是通过函数 scheduleOne 来实现。&lt;/p&gt;
+&lt;h2 id=&#34;扩缩容调度scaleschedule&#34;&gt;扩缩容调度(ScaleSchedule)&lt;/h2&gt;
+&lt;p&gt;policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。&lt;/p&gt;
+&lt;h2 id=&#34;故障恢复调度failoverschedule&#34;&gt;故障恢复调度(FailoverSchedule)&lt;/h2&gt;
+&lt;p&gt;调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;通过本文我们了解到了karmada调度器的核心实现逻辑：为resource binding选择合适的集群，并为根据不同的策略设置replica。&lt;/p&gt;
 
         
       </description>

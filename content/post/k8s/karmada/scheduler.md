@@ -43,7 +43,7 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。
 - 无需调度(AvoidSchedule):  默认行为，上面四个调度都未执行，则不进行任何调度。
 
 ## 首次调度（FirstSchedule）
-主要通过 scheduleOne 函数来实现，分为三个步骤：  
+主要通过 scheduleOne 函数来实现，分为以下几个步骤：  
 1. 根据 namespace 和 name 查询出 resource binding;    
 2. 执行 预选算法 优选算法选择出合适的集群集合;   
 3. 执行 优选算法 为选择出的集群进行打分（未实现）;    
@@ -341,5 +341,15 @@ func (g *genericScheduler) divideReplicasAggregatedWithClusterReplicas(clusterAv
 }
 ```
 ## 调协调度(ReconcileSchedule)
-与 [首次调度](https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule) 逻辑是一样的。
+policy 的 placement 发生变化时就需要进行调协调度，与 [首次调度](https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule) 逻辑是一样的,都是通过函数 scheduleOne 来实现。  
 
+## 扩缩容调度(ScaleSchedule)  
+policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。   
+
+## 故障恢复调度(FailoverSchedule)
+调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。   
+
+
+
+## 总结  
+通过本文我们了解到了karmada调度器的核心实现逻辑：为resource binding选择合适的集群，并为根据不同的策略设置replica。
