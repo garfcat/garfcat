@@ -44,10 +44,11 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。
 
 ## 首次调度（FirstSchedule）
 主要通过 scheduleOne 函数来实现，分为三个步骤：  
-1. 根据 namespace 和 name 查询出 resource binding;  
-2. 通过 genericScheduler.Schedule 执行 预选算法 优选算法选择出合适的 集群集合;  
-3. 如果选择出合适的集群集合，赋值给 binding (spec.Clusters);  
-
+1. 根据 namespace 和 name 查询出 resource binding;    
+2. 执行 预选算法 优选算法选择出合适的集群集合;   
+3. 执行 优选算法 为选择出的集群进行打分（未实现）;    
+4. 为选择的集群分配Replicas;  
+5. 更新结果到 binding 的 spec.Clusters 字段，并通过API接口更新存储;  
 ### 预选算法
 通过 findClustersThatFit 找到符合基本条件的集群;  
 代码路径 pkg/scheduler/core/generic_scheduler.go  

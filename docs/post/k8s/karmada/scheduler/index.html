@@ -167,8 +167,10 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。<
 <p>主要通过 scheduleOne 函数来实现，分为三个步骤：</p>
 <ol>
 <li>根据 namespace 和 name 查询出 resource binding;</li>
-<li>通过 genericScheduler.Schedule 执行 预选算法 优选算法选择出合适的 集群集合;</li>
-<li>如果选择出合适的集群集合，赋值给 binding (spec.Clusters);</li>
+<li>执行 预选算法 优选算法选择出合适的集群集合;</li>
+<li>执行 优选算法 为选择出的集群进行打分（未实现）;</li>
+<li>为选择的集群分配Replicas;</li>
+<li>更新结果到 binding 的 spec.Clusters 字段，并通过API接口更新存储;</li>
 </ol>
 <h3 id="预选算法">预选算法</h3>
 <p>通过 findClustersThatFit 找到符合基本条件的集群;<br>

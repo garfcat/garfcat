@@ -40,8 +40,10 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&
 &lt;p&gt;主要通过 scheduleOne 函数来实现，分为三个步骤：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;根据 namespace 和 name 查询出 resource binding;&lt;/li&gt;
-&lt;li&gt;通过 genericScheduler.Schedule 执行 预选算法 优选算法选择出合适的 集群集合;&lt;/li&gt;
-&lt;li&gt;如果选择出合适的集群集合，赋值给 binding (spec.Clusters);&lt;/li&gt;
+&lt;li&gt;执行 预选算法 优选算法选择出合适的集群集合;&lt;/li&gt;
+&lt;li&gt;执行 优选算法 为选择出的集群进行打分（未实现）;&lt;/li&gt;
+&lt;li&gt;为选择的集群分配Replicas;&lt;/li&gt;
+&lt;li&gt;更新结果到 binding 的 spec.Clusters 字段，并通过API接口更新存储;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id=&#34;预选算法&#34;&gt;预选算法&lt;/h3&gt;
 &lt;p&gt;通过 findClustersThatFit 找到符合基本条件的集群;&lt;br&gt;
