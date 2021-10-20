@@ -344,7 +344,14 @@ func (g *genericScheduler) divideReplicasAggregatedWithClusterReplicas(clusterAv
 policy 的 placement 发生变化时就需要进行调协调度，与 [首次调度](https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule) 逻辑是一样的,都是通过函数 scheduleOne 来实现。  
 
 ## 扩缩容调度(ScaleSchedule)  
-policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。   
+policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。主要是通过 scaleScheduleOne 函数来实现，分为以下几个步骤:  
+1. 根据 namespace 和 name 查询出 resource binding;
+2. 如果 指定的replica 大于0，则：
+    a.如果 ReplicaSchedulingType 为复制类型，则直接更新每个集群的replica;  
+    b.如果 ReplicaSchedulingType 为切分并且定义了权重，则根据权重进行比例划分replica;  
+    c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则根据子集群资源重新划分replica;  
+3. 如果没有定义 replica 则集群不指定replica;  
+4. 更新结果到 binding 的 spec.Clusters 字段，并通过API接口更新存储;  
 
 ## 故障恢复调度(FailoverSchedule)
 调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。   

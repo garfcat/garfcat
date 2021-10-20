@@ -321,7 +321,16 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;调协调度reconcileschedule&#34;&gt;调协调度(ReconcileSchedule)&lt;/h2&gt;
 &lt;p&gt;policy 的 placement 发生变化时就需要进行调协调度，与 &lt;a href=&#34;https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule&#34;&gt;首次调度&lt;/a&gt; 逻辑是一样的,都是通过函数 scheduleOne 来实现。&lt;/p&gt;
 &lt;h2 id=&#34;扩缩容调度scaleschedule&#34;&gt;扩缩容调度(ScaleSchedule)&lt;/h2&gt;
-&lt;p&gt;policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。&lt;/p&gt;
+&lt;p&gt;policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。主要是通过 scaleScheduleOne 函数来实现，分为以下几个步骤:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;根据 namespace 和 name 查询出 resource binding;&lt;/li&gt;
+&lt;li&gt;如果 指定的replica 大于0，则：
+a.如果 ReplicaSchedulingType 为复制类型，则直接更新每个集群的replica;&lt;br&gt;
+b.如果 ReplicaSchedulingType 为切分并且定义了权重，则根据权重进行比例划分replica;&lt;br&gt;
+c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则根据子集群资源重新划分replica;&lt;/li&gt;
+&lt;li&gt;如果没有定义 replica 则集群不指定replica;&lt;/li&gt;
+&lt;li&gt;更新结果到 binding 的 spec.Clusters 字段，并通过API接口更新存储;&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h2 id=&#34;故障恢复调度failoverschedule&#34;&gt;故障恢复调度(FailoverSchedule)&lt;/h2&gt;
 &lt;p&gt;调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。&lt;/p&gt;
 &lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
