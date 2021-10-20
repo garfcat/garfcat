@@ -346,7 +346,7 @@ policy 的 placement 发生变化时就需要进行调协调度，与 [首次调
 ## 扩缩容调度(ScaleSchedule)  
 policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。主要是通过 scaleScheduleOne 函数来实现，分为以下几个步骤:  
 1. 根据 namespace 和 name 查询出 resource binding;
-2. 如果 指定的replica 大于0，则：
+2. 如果 指定的replica 大于0，则：  
     a.如果 ReplicaSchedulingType 为复制类型，则直接更新每个集群的replica;  
     b.如果 ReplicaSchedulingType 为切分并且定义了权重，则根据权重进行比例划分replica;  
     c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则根据子集群资源重新划分replica;  
@@ -354,9 +354,16 @@ policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就�
 4. 更新结果到 binding 的 spec.Clusters 字段，并通过API接口更新存储;  
 
 ## 故障恢复调度(FailoverSchedule)
-调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。   
-
-
+调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。主要通过 rescheduleOne 函数实现，分为以下几个步骤:  
+1. 根据 namespace 和 name 查询出 resource binding;
+2. 获取所有就绪的集群 readyClusters ；  
+3. 获取之前调度结果中的集群集合 totalClusters;  
+4. 从 totalClusters 去掉**未就绪**的集群，得到调度集合中集群依然ready 的集群集合 reservedClusters;  
+5. 获取就绪但是没有在之前调度结果集合中的集群，得到可用集群集合 availableClusters;  
+6. 遍历 availableClusters ，过滤掉不满足基本要求(ClusterAffinity ClusterTolerations等)的集群，得到候选集群集合 candidateClusters；
+7. 如果候选集群的数量小于故障集群的数量，则终止调度;  
+8. 从候选集群中选择与故障集群数量同等的集群，与 reservedClusters 组成最终结果；  
+9. 更新结果到 binding 的 spec.Clusters 字段，并通过API接口更新存储;  
 
 ## 总结  
 通过本文我们了解到了karmada调度器的核心实现逻辑：为resource binding选择合适的集群，并为根据不同的策略设置replica。
