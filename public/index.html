@@ -125,6 +125,44 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/k8s/informer/" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg></span>
+    <span class="post_date">
+      Nov 17, 2021</span>
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+        </a><a href='https://www.geekgame.site/tags/informer' title="informer" class="post_tag button button_translucent">informer
+        </a>
+    </span>
+  </div>
+
+    </div>
+    <div class="excerpt_footer partition">
+      <div class="excerpt_thumbnail">
+        <img src='https://www.geekgame.site/images/path/thumbnail.png' alt="Kubernetes Informer 机制">
+      </div>
+      
+        <div>
+          <p class="pale">
+            
+              概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 在Informer架构设计中,有多个核心组件,分别介绍如下。 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。
+2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例 …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/k8s/informer/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
       </h3>
       
@@ -449,38 +487,6 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/language/golang/golang_performance/" title="Golang程序性能pprof使用介绍">Golang程序性能pprof使用介绍</a>
-      </h3>
-      
-  <div class="post_meta">
-    <span><svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg></span>
-    <span class="post_date">
-      Mar 29, 2021</span>
-    <span class="post_time"> · 4 min read</span>
-  </div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。 整个分析主要分为三个部分：
- 项目中引入相关的包； 编译程序运行并收集运行时的数据； 分析相关数据  引入并收集数据 Golang标准库中提供了两种引入方式：
- runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试； net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；  runtime/pprof 支持基准测试：以下 …
-            
-          </p>
-          <a href="https://www.geekgame.site/post/language/golang/golang_performance/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -519,6 +525,9 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
+        <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
       </li>
       <li>
@@ -530,6 +539,9 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
       </li>
@@ -551,9 +563,6 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
       </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
-      </li>
     </ul>
     <div>
       <h2 class="mt-4 taxonomy" id="categories-section">分类</h2>
@@ -563,14 +572,14 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
           <span class="button_tally">5</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
-          KUBERNETES-EXTEND
+        <a href='https://www.geekgame.site/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
+          KUBERNETES
           <span class="button_tally">3</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
-          KUBERNETES
-          <span class="button_tally">2</span>
+        <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
+          KUBERNETES-EXTEND
+          <span class="button_tally">3</span>
         </a>
         
         <a href='https://www.geekgame.site/categories/storage/' class="post_tag button button_translucent" title="storage">
@@ -645,13 +654,13 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
     <div>
       <h2 class="mt-4 taxonomy" id="tags-section">标签</h2>
       <nav class="tags_nav">
-        <a href='https://www.geekgame.site/tags/go/' class="post_tag button button_translucent" title="go">
-          GO
-          <span class="button_tally">5</span>
-        </a>
-        
         <a href='https://www.geekgame.site/tags/kubernetes/' class="post_tag button button_translucent" title="kubernetes">
           KUBERNETES
+          <span class="button_tally">6</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/go/' class="post_tag button button_translucent" title="go">
+          GO
           <span class="button_tally">5</span>
         </a>
         
@@ -761,6 +770,10 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/informer/' class=" post_tag button button_translucent" data-position=1 title="informer">INFORMER<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/karmada/' class=" post_tag button button_translucent" data-position=1 title="karmada">KARMADA<span class="button_tally">1</span>
             </a>
             
@@ -773,7 +786,7 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=5 title="kubernetes">KUBERNETES<span class="button_tally">5</span>
+            <a href='https://www.geekgame.site/tags/kubernetes/' class=" post_tag button button_translucent" data-position=6 title="kubernetes">KUBERNETES<span class="button_tally">6</span>
             </a>
             
             
