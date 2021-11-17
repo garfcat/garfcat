@@ -26,16 +26,16 @@ Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API
 ![informer](/static/k8s/informer.png)
 
 
-在Informer架构设计中,有多个核心组件,分别介绍如下。
-1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。  
-2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。  
-3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。  
+在Informer架构设计中,有多个核心组件,分别介绍如下。  
+1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。    
+2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。   
+3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。    
 
 
-informer 中支持处理资源的三种回掉方法:
-- AddFunc :当创建资源对象时触发的事件回调方法。
-- UpdateFunc :当更新资源对象时触发的事件回调方法。
-- DeleteFunc :当删除资源对象时触发的事件回调方法。
+informer 中支持处理资源的三种回掉方法:  
+- AddFunc :当创建资源对象时触发的事件回调方法。  
+- UpdateFunc :当更新资源对象时触发的事件回调方法。  
+- DeleteFunc :当删除资源对象时触发的事件回调方法。  
 
 通过Informer机制可以很容易地监控我们所关心的资源事件.
 
@@ -50,14 +50,14 @@ func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyn
 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。
 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。
 
-1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。
+1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。 
 ![listAndWatch](/static/k8s/listAndWatch.png)
 
-a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。  
-b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。
-c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。
-d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。
-e. r.setLastSyncResourceVersion用于设置最新的资源版本号。
+a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。   
+b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。  
+c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。  
+d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。  
+e. r.setLastSyncResourceVersion用于设置最新的资源版本号。  
 
 2.监控资源对象
 
@@ -113,9 +113,9 @@ func (f *DeltaFIFO) queueActionLocked(actionType DeltaType, obj interface{}) err
 }  
 ```
 执行流程解释如下 :  
-(1)通过 Keyof函数计算出资源对象的key;  
-(2)将 actiontype和资源对象构造成 Delta 添加到 oldDeltas 中 生成新的 Delta ,并通过 dedupDeltas 函数进行去重操作;  
-(3)将新生成的 Delta 存储到 DeltaFIFO 的 item和 queue 中, 并通过cond. Broadcast通知所有消费者解除阻塞;  
+(1)通过 Keyof函数计算出资源对象的key;    
+(2)将 actiontype和资源对象构造成 Delta 添加到 oldDeltas 中 生成新的 Delta ,并通过 dedupDeltas 函数进行去重操作;   
+(3)将新生成的 Delta 存储到 DeltaFIFO 的 item和 queue 中, 并通过cond. Broadcast通知所有消费者解除阻塞;   
 
 
 

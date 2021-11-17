@@ -142,8 +142,8 @@
         <div>
           <p class="pale">
             
-              概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 在Informer架构设计中,有多个核心组件,分别介绍如下。 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。
-2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例 …
+              概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 在Informer架构设计中,有多个核心组件,分别介绍如下。
+1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例 …
             
           </p>
           <a href="https://www.geekgame.site/post/k8s/informer/" title="阅读更多" class="excerpt_more button">阅读更多</a>

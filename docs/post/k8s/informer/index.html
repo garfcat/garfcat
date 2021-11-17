@@ -148,8 +148,8 @@
     <h2 id="概述">概述</h2>
 <p>Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。
 <img src="/static/k8s/informer.png" alt="informer"></p>
-<p>在Informer架构设计中,有多个核心组件,分别介绍如下。
-1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。<br>
+<p>在Informer架构设计中,有多个核心组件,分别介绍如下。<br>
+1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 <br>
 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。<br>
 3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。</p>
 <p>informer 中支持处理资源的三种回掉方法:</p>
@@ -169,9 +169,9 @@ ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,�
 <p>1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。
 <img src="/static/k8s/listAndWatch.png" alt="listAndWatch"></p>
 <p>a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。<br>
-b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。
-c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。
-d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。
+b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。<br>
+c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。<br>
+d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。<br>
 e. r.setLastSyncResourceVersion用于设置最新的资源版本号。</p>
 <p>2.监控资源对象</p>
 <p>Watch(监控)操作通过HTTP协议与Kubernetes  API  Server建立长连接,接收Kubernetes  API  Server 发来的资源变更事件。Watch操作的实现机制使用HTTP协议的分块传输编码(Chunked Transfer Encoding)。当client-go调用Kubernetes  API  Server时,Kubernetes  API  Server在Response的HTTP Header中设置Transfer-Encoding的值为chunked,表示采用分块传输编码,客户端收到该信息后,便与服务端进行连接,并等待下一个数据块(即资源的事件信息)。</p>
@@ -212,7 +212,7 @@ key 是 <namespace>/<name> 组合, 如果namespace 为空,则 key是 <name>.</p>
 <span class="ln">16</span>   <span class="k">return</span> <span class="kc">nil</span>  
 <span class="ln">17</span><span class="p">}</span>  
 </code></pre></div><p>执行流程解释如下 :<br>
-(1)通过 Keyof函数计算出资源对象的key;<br>
+(1)通过 Keyof函数计算出资源对象的key; <br>
 (2)将 actiontype和资源对象构造成 Delta 添加到 oldDeltas 中 生成新的 Delta ,并通过 dedupDeltas 函数进行去重操作;<br>
 (3)将新生成的 Delta 存储到 DeltaFIFO 的 item和 queue 中, 并通过cond. Broadcast通知所有消费者解除阻塞;</p>
 <h3 id="消费者">消费者</h3>
