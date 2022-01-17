@@ -13,48 +13,8 @@
       <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/protocol/mqtt/</guid>
-      <description>
-        
-          &lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
-低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;
-&lt;h1 id=&#34;mqtt-架构&#34;&gt;MQTT 架构&lt;/h1&gt;
-&lt;ol&gt;
-&lt;li&gt;MQTT 是c/s模型，每个客户端通过tcp连接到服务器(broker)；&lt;/li&gt;
-&lt;li&gt;MQTT 是面向消息的。每个消息都是独立的数据块，对于broker来说是不透明的；&lt;/li&gt;
-&lt;li&gt;每条消息都会发送到一个地址，这个地址称为主题(topic),订阅主题的每个客户端都会收到发布到该主题上的每条消息；&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;如下所示： 客户端 A、B、C都连接到一个中间broker; &lt;br&gt;
-B、C都订阅topic :dev_info 来获取其他设备的设备信息；&lt;br&gt;
-A发布设备信息到topic dev_info，broker 将该消息转发给所有的订阅者即 BC；&lt;br&gt;
-&lt;img src=&#34;https://raw.githubusercontent.com/garfcat/garfcat/master/static/mqtt_arch.png&#34; alt=&#34;mqqtt_arch&#34;&gt;&lt;/p&gt;
-&lt;h1 id=&#34;主题匹配&#34;&gt;主题匹配&lt;/h1&gt;
-&lt;p&gt;mqtt 主题是分层级的，通过／划分层级。如 A/B/G ;
-注意在订阅时可以使用通配符，发布时不可以使用通配符；&lt;br&gt;
-通配符 + 匹配任何单个主题，# 匹配任意名称任意数量的主题；&lt;br&gt;
-例如： A/+/G 可以匹配 A/B/G A/C/G A/D/G 等&lt;br&gt;
-A/# 可以配置 A/B/C/D/E/F/G&lt;/p&gt;
-&lt;h1 id=&#34;qos&#34;&gt;Qos&lt;/h1&gt;
-&lt;p&gt;mqtt 支持三种级别的服务质量:&lt;br&gt;
-0: &amp;quot;至多一次&amp;quot; 并不需要回复确认消息，有可能丢失消息；&lt;br&gt;
-1: &amp;quot;至少一次&amp;quot; 收到报文后会回复确认消息，这样会重复收到消息（如超时回复确认消息情况）；&lt;br&gt;
-2: &amp;quot;只有一次&amp;quot; 通过 publish pubrec pubrel pubcomp 四个状态确认有且只有一次消息被处理，但是网络带宽会增加；&lt;/p&gt;
-&lt;h1 id=&#34;最后遗愿last-will&#34;&gt;最后遗愿(last will)&lt;/h1&gt;
-&lt;p&gt;提前预定好的消息，当客户端断开连接时，broker 会将该消息发送给所有订阅者的客户端；&lt;/p&gt;
-&lt;h1 id=&#34;持久retain&#34;&gt;持久(retain)&lt;/h1&gt;
-&lt;p&gt;topic 设置retain 之后，broker 会保留最后一条retain消息,当client 订阅该topic 时会立刻收到一条retain消息；&lt;/p&gt;
-&lt;h1 id=&#34;清理会话cleansession&#34;&gt;清理会话（cleansession）&lt;/h1&gt;
-&lt;p&gt;设置为true时，客户端建立连接时将清除旧的连接，即再次连接时不会收到消息；&lt;br&gt;
-设置为false时，客户端即使断开连接，再次连接时会收到未接收的消息；&lt;/p&gt;
-&lt;h1 id=&#34;安全&#34;&gt;安全&lt;/h1&gt;
-&lt;p&gt;可以通过ssl/tls 双向认证保证数据安全， 也可以通过 单向 ssl/tls + 单向https/username/password 保证双向安全；&lt;/p&gt;
-&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;https://zh.wikipedia.org/wiki/MQTT&#34;&gt;维基百科 MQTT&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://mosquitto.org/man/mqtt-7.html&#34;&gt;MQTT manpage&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.eclipse.org/community/eclipse_newsletter/2014/february/article2.php&#34;&gt;MQTT and CoAP, IoT Protocols&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-        
-      </description>
+      <description>&lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
+低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;</description>
     </item>
     
   </channel>
