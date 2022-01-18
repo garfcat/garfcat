@@ -118,7 +118,7 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/container/docker/network01/" title="Network01">Network01</a>
+        <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" title="Docker 容器访问不通问题定位">Docker 容器访问不通问题定位</a>
       </h3>
       
   <div class="post_meta">
@@ -126,9 +126,9 @@
   <use xlink:href="#calendar"></use>
 </svg></span>
     <span class="post_date">
-      Jan 17, 2022</span>
-    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/tag_name1' title="Tag_name1" class="post_tag button button_translucent">Tag_name1
-        </a><a href='https://www.geekgame.site/tags/tag_name2' title="Tag_name2" class="post_tag button button_translucent">Tag_name2
+      Jan 13, 2022</span>
+    <span class="post_time"> · 5 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/network' title="network" class="post_tag button button_translucent">network
+        </a><a href='https://www.geekgame.site/tags/docker' title="docker" class="post_tag button button_translucent">docker
         </a>
     </span>
   </div>
@@ -159,10 +159,106 @@
         <div>
           <p class="pale">
             
-              Insert Lead paragraph here.
+              现象 最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。
+分析 要定位该问题首先要确认以下几个事情：
+1. 服务是否正常启动
+2. 确认容器的网络模式
+3. 容器如何与外面的节点通讯
+4. 数据包在设备上实际流转
+定位过程 确认服务是否正常  查看容器运行是否正常:
+Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: …
             
           </p>
-          <a href="https://www.geekgame.site/post/container/docker/network01/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+          <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+      <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/linux/command/command/" title="Linux 常用命令">Linux 常用命令</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <use xlink:href="#calendar"></use>
+</svg></span>
+    <span class="post_date">
+      Jan 11, 2022</span>
+    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/command' title="command" class="post_tag button button_translucent">command
+        </a>
+    </span>
+  </div>
+
+    </div>
+    <div class="excerpt_footer partition">
+
+      
+      
+      
+      
+      
+<div class="excerpt_thumbnail">
+  <picture>
+
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_thumbnail image_internal" src="https://www.geekgame.site/images/cat.png" alt="Linux 常用命令" loading="lazy" decoding="async" width="1350" height="756" /></picture>
+</div>
+
+      
+        <div>
+          <p class="pale">
+            
+              find find 多个条件 AND 使用多个条件查找，默认是 AND 操作
+1$ find . -name &#34;*.bash&#34; -mtime +180 -size +2K -exec ls -l {} \; 在上面的命令中，我们告诉 find 搜索名称中带有字符串 .bash 的文件/目录，它们应该超过 180 天并且大小应该大于 2KB。
+最后，我们使用 -exec 选项对 find 命令产生的结果执行 ls -l 命令。
+find 多个条件 OR 让我们考虑一个场景，我们需要修改我们之前使用的示例并获取带有字符串 .bash 和 .txt 的文件。要满足此要求，请在 find 命令中使用 -o …
+            
+          </p>
+          <a href="https://www.geekgame.site/post/linux/command/command/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
@@ -663,42 +759,6 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
     </div>
   </li>
 
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
-      </h3>
-      
-  <div class="post_meta">
-    <span><svg class="icon">
-  <use xlink:href="#calendar"></use>
-</svg></span>
-    <span class="post_date">
-      Jun 8, 2021</span>
-    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubebuilder' title="kubebuilder" class="post_tag button button_translucent">kubebuilder
-        </a><a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
-        </a><a href='https://www.geekgame.site/tags/extend' title="extend" class="post_tag button button_translucent">extend
-        </a>
-    </span>
-  </div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
-Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：
- 创建一个项目 创建一个API 定义CRD 实现controller 测试  创建项目   创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module  …
-            
-          </p>
-          <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
     <li>
 <ul class="pagination">
   <li class="page-item">
@@ -738,7 +798,10 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
-        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+        <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="Docker 容器访问不通问题定位">Docker 容器访问不通问题定位</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/linux/command/command/" class="nav-link" title="Linux 常用命令">Linux 常用命令</a>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
@@ -756,7 +819,10 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
-        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+        <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="Docker 容器访问不通问题定位">Docker 容器访问不通问题定位</a>
+      </li>
+      <li>
+        <a href="https://www.geekgame.site/post/linux/command/command/" class="nav-link" title="Linux 常用命令">Linux 常用命令</a>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
@@ -775,9 +841,6 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
       </li>
     </ul>
     <div>
@@ -813,6 +876,11 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
           <span class="button_tally">2</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/container/' class="post_tag button button_translucent" title="container">
+          CONTAINER
+          <span class="button_tally">1</span>
+        </a>
+        
         <a href='https://www.geekgame.site/categories/karmada/' class="post_tag button button_translucent" title="karmada">
           KARMADA
           <span class="button_tally">1</span>
@@ -823,13 +891,13 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
-          NOSQL
+        <a href='https://www.geekgame.site/categories/linux/' class="post_tag button button_translucent" title="linux">
+          LINUX
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
-          TECHNOLOGY
+        <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
+          NOSQL
           <span class="button_tally">1</span>
         </a>
         
@@ -910,8 +978,18 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/command/' class="post_tag button button_translucent" title="command">
+          COMMAND
+          <span class="button_tally">1</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/controller-runtime/' class="post_tag button button_translucent" title="controller-runtime">
           CONTROLLER-RUNTIME
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/docker/' class="post_tag button button_translucent" title="docker">
+          DOCKER
           <span class="button_tally">1</span>
         </a>
         
@@ -935,16 +1013,6 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/hbase/' class="post_tag button button_translucent" title="hbase">
-          HBASE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/index/' class="post_tag button button_translucent" title="index">
-          INDEX
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -955,7 +1023,15 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/command/' class=" post_tag button button_translucent" data-position=1 title="command">COMMAND<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/controller-runtime/' class=" post_tag button button_translucent" data-position=1 title="controller-runtime">CONTROLLER-RUNTIME<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/docker/' class=" post_tag button button_translucent" data-position=1 title="docker">DOCKER<span class="button_tally">1</span>
             </a>
             
             
@@ -1039,6 +1115,10 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/network/' class=" post_tag button button_translucent" data-position=1 title="network">NETWORK<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/nfs/' class=" post_tag button button_translucent" data-position=1 title="nfs">NFS<span class="button_tally">1</span>
             </a>
             
@@ -1076,14 +1156,6 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
             
             
             <a href='https://www.geekgame.site/tags/start/' class=" post_tag button button_translucent" data-position=1 title="start">START<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
             </a>
             
             

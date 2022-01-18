@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on 有趣</title>
+    <link>https://www.geekgame.site/tags/docker/</link>
+    <description>Recent content in docker on 有趣</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Thu, 13 Jan 2022 13:44:25 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 容器访问不通问题定位</title>
+      <link>https://www.geekgame.site/post/container/docker/network_can_not_access/</link>
+      <pubDate>Thu, 13 Jan 2022 13:44:25 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/container/docker/network_can_not_access/</guid>
+      <description>
+        
+          
+            现象 最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。
+分析 要定位该问题首先要确认以下几个事情：
+1. 服务是否正常启动
+2. 确认容器的网络模式
+3. 容器如何与外面的节点通讯
+4. 数据包在设备上实际流转
+定位过程 确认服务是否正常  查看容器运行是否正常:
+Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/container/container_service.png
+鏈接到文件: /static//container/container_service.png
+使用 Page Bundles: false
+  查看服务运行是否正常:
+Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/container/service.png
+鏈接到文件: /static//container/service.
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

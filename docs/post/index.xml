@@ -6,17 +6,49 @@
     <description>Recent content in Posts on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Mon, 17 Jan 2022 20:13:39 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 13 Jan 2022 13:44:25 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Network01</title>
-      <link>https://www.geekgame.site/post/container/docker/network01/</link>
-      <pubDate>Mon, 17 Jan 2022 20:13:39 +0800</pubDate>
+      <title>Docker 容器访问不通问题定位</title>
+      <link>https://www.geekgame.site/post/container/docker/network_can_not_access/</link>
+      <pubDate>Thu, 13 Jan 2022 13:44:25 +0800</pubDate>
       
-      <guid>https://www.geekgame.site/post/container/docker/network01/</guid>
+      <guid>https://www.geekgame.site/post/container/docker/network_can_not_access/</guid>
       <description>
         
           
-            Insert Lead paragraph here.
+            现象 最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。
+分析 要定位该问题首先要确认以下几个事情：
+1. 服务是否正常启动
+2. 确认容器的网络模式
+3. 容器如何与外面的节点通讯
+4. 数据包在设备上实际流转
+定位过程 确认服务是否正常  查看容器运行是否正常:
+Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/container/container_service.png
+鏈接到文件: /static//container/container_service.png
+使用 Page Bundles: false
+  查看服务运行是否正常:
+Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/container/service.png
+鏈接到文件: /static//container/service.
+          
+          
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Linux 常用命令</title>
+      <link>https://www.geekgame.site/post/linux/command/command/</link>
+      <pubDate>Tue, 11 Jan 2022 10:47:48 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/linux/command/command/</guid>
+      <description>
+        
+          
+            find find 多个条件 AND 使用多个条件查找，默认是 AND 操作
+1$ find . -name &amp;#34;*.bash&amp;#34; -mtime +180 -size +2K -exec ls -l {} \; 在上面的命令中，我们告诉 find 搜索名称中带有字符串 .bash 的文件/目录，它们应该超过 180 天并且大小应该大于 2KB。
+最后，我们使用 -exec 选项对 find 命令产生的结果执行 ls -l 命令。
+find 多个条件 OR 让我们考虑一个场景，我们需要修改我们之前使用的示例并获取带有字符串 .bash 和 .txt 的文件。要满足此要求，请在 find 命令中使用 -o 选项来指示逻辑 OR 操作。 给出的是完整的命令
+1 find . \( -name &amp;#34;*.bash&amp;#34; -o -name &amp;#34;*.txt&amp;#34; \) -mtime +180 -size +2k -exec ls -lh {} \; find 逻辑 非 查找列出过去 30 天内修改的所有文件并排除 .
           
           
         

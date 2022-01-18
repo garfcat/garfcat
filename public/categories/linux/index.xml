@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on 有趣</title>
+    <link>https://www.geekgame.site/categories/linux/</link>
+    <description>Recent content in linux on 有趣</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 11 Jan 2022 10:47:48 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux 常用命令</title>
+      <link>https://www.geekgame.site/post/linux/command/command/</link>
+      <pubDate>Tue, 11 Jan 2022 10:47:48 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/linux/command/command/</guid>
+      <description>
+        
+          
+            find find 多个条件 AND 使用多个条件查找，默认是 AND 操作
+1$ find . -name &amp;#34;*.bash&amp;#34; -mtime +180 -size +2K -exec ls -l {} \; 在上面的命令中，我们告诉 find 搜索名称中带有字符串 .bash 的文件/目录，它们应该超过 180 天并且大小应该大于 2KB。
+最后，我们使用 -exec 选项对 find 命令产生的结果执行 ls -l 命令。
+find 多个条件 OR 让我们考虑一个场景，我们需要修改我们之前使用的示例并获取带有字符串 .bash 和 .txt 的文件。要满足此要求，请在 find 命令中使用 -o 选项来指示逻辑 OR 操作。 给出的是完整的命令
+1 find . \( -name &amp;#34;*.bash&amp;#34; -o -name &amp;#34;*.txt&amp;#34; \) -mtime +180 -size +2k -exec ls -lh {} \; find 逻辑 非 查找列出过去 30 天内修改的所有文件并排除 .
+          
+          
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

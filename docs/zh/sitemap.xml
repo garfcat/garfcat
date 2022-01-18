@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://www.geekgame.site/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -24,7 +24,7 @@
   
   <url>
     <loc>https://www.geekgame.site/categories/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -43,28 +43,33 @@
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/post/container/docker/network01/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
+    <loc>https://www.geekgame.site/categories/container/</loc>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/docker/</loc>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/container/docker/network_can_not_access/</loc>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/tags/network/</loc>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/post/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/tags/tag_name1/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.geekgame.site/tags/tag_name2/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.geekgame.site/tags/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
+    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -83,8 +88,18 @@
   </url>
   
   <url>
-    <loc>https://www.geekgame.site/categories/technology/</loc>
-    <lastmod>2022-01-17T20:13:39+08:00</lastmod>
+    <loc>https://www.geekgame.site/tags/command/</loc>
+    <lastmod>2022-01-11T10:47:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/categories/linux/</loc>
+    <lastmod>2022-01-11T10:47:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.geekgame.site/post/linux/command/command/</loc>
+    <lastmod>2022-01-11T10:47:48+08:00</lastmod>
   </url>
   
   <url>
