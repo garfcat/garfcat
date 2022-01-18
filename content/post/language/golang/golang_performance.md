@@ -162,7 +162,7 @@ ROUTINE ======================== main.Bug in /Users/xiefei/repo/post/debug/main.
 
 另外我们还可以通过web 命令查看将采样数据图形化展示出来；
 
-![web](https://raw.githubusercontent.com/garfcat/garfcat/master/static/bug.png)
+![web](/bug.png)
 图中的箭头代表的是函数的调用，箭头上的值代表的是该方法的采样值，这里是CPU耗时，框越大的函数CPU占用就越高，框内表示的就是
 flat、flat%、cum、cum%.
 
@@ -171,13 +171,13 @@ flat、flat%、cum、cum%.
 go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
 ```
 从浏览器中可以看到top、source、graph、火焰图等信息；
-![top](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png)
+![top](/performance/web-pprof-top.png)
 top 与命令行top显示是基本一致;
-![source](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png)
+![source](/performance/web-pporf-source.png)
 source 与 命令行list 显示基本一致；
-![graph](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png)
+![graph](/performance/graph.png)
 graph 与命令web 显示一致；
-![火焰图](https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png)
+![火焰图](/performance/flame.png)
 火焰图的Y轴表示函数调用栈。X轴表示该函数占用的CPU时间的百分比，越宽代表占用的CPU时间就越多。
 
 

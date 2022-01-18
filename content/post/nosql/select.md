@@ -6,7 +6,7 @@ tags: [ "mongodb", "hbase" , "redis", "es", "数据库选型", "nosql"]
 series: ["nosql"]
 categories: ["nosql"]
 ---
-![history of nosql](https://raw.githubusercontent.com/garfcat/garfcat/master/static/history-of-nosql.jpg)
+![history of nosql](/history-of-nosql.jpg)
 Nosql 目前主流说法已经从 no sql 变为现在的 not only sql,这个不仅仅是因为 nosql 数据库提供了类似 sql 的查询语言,更是因为它为我们解决复杂场景下业务需求和分布式数据处理提供了有效解决方法。  
 目前nosql数据库已经有200多个(从 https://hostingdata.co.uk/nosql-database/ 可以看到已经有225个)，但是我们目前常用的数据库有以下四类:
 KV数据库、文档数据库、列式数据库、全文搜索引擎。本文就以redis、mongodb、hbase、ES为例说明这几种数据的区别以及各自的适用场景。

@@ -149,20 +149,57 @@ node 包含的组件有: kubelet, kube-proxy;<br>
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg</a></p>
-    <p>鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg" alt="带有两个Worker nodes和一个master的K8s架构图" loading="lazy" decoding="async" width="768" height="555"  />
+      
+
+    </picture>
+  </figure>
 
 <a href="https://x-team.com/blog/introduction-kubernetes-architecture/">图片来源</a></p>
 <h2 id="master-组件">master 组件</h2>
@@ -183,20 +220,57 @@ kube-proxy: 负责K8s集群服务的通信以及负载均衡；</p>
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png</a></p>
-    <p>鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/k8s_data.png" alt="K8s 数据流转" loading="lazy" decoding="async" width="1950" height="1069"  />
+      
+
+    </picture>
+  </figure>
 
 我们以 ReplicaSet 为例，讲述一下K8s的数据流转：<br>
 0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；</p>

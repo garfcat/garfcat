@@ -86,7 +86,7 @@ Kubernetes的其他组件都是通过client-go(K8s系统使用client-go作为Go�
 
 # 整体设计
 Controller-runtime设计图如下所示：
-![](https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/controller_runtime.jpg)
+![](/k8s/controller_runtime.jpg)
 controller 的整理流程：
 1. 首先会初始化Schema, 注册原生资源以及自定义资源;
 2. 创建并初始化manager，将schema传入，并在内部初始化cache和client等其他资源;

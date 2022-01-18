@@ -181,7 +181,7 @@
 </svg></span>
     <span class="post_date">
       Nov 17, 2021</span>
-    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
         </a><a href='https://www.geekgame.site/tags/informer' title="informer" class="post_tag button button_translucent">informer
         </a>
     </span>
@@ -195,26 +195,59 @@
       
       
       
-        <div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/images/bridge.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/images/bridge.png</a></p>
-    <p>鏈接到文件: /static//static/images/bridge.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+<div class="excerpt_thumbnail">
+  <picture>
+
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_thumbnail image_internal" src="https://www.geekgame.site/images/bridge.png" alt="Kubernetes Informer 机制" loading="lazy" decoding="async" width="1388" height="726" /></picture>
 </div>
 
       
         <div>
           <p class="pale">
             
-              概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/informer.png
-鏈接到文件: …
+              概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。     在Informer架构设计中,有多个核心组件,分别介绍如下。
+1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例 …
             
           </p>
           <a href="https://www.geekgame.site/post/k8s/informer/" title="阅读更多" class="excerpt_more button">阅读更多</a>
@@ -250,18 +283,51 @@
       
       
       
-        <div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/images/cat.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/images/cat.png</a></p>
-    <p>鏈接到文件: /static//static/images/cat.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+<div class="excerpt_thumbnail">
+  <picture>
+
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_thumbnail image_internal" src="https://www.geekgame.site/images/cat.png" alt="Karmada Scheduler核心实现" loading="lazy" decoding="async" width="1350" height="756" /></picture>
 </div>
 
       
@@ -270,7 +336,7 @@
             
               Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。
 注意： 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1
-调度框架  Image not found  a.warning-link …
+调度框架      karmada-scheduler 在启动过程中实例化并 …
             
           </p>
           <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" title="阅读更多" class="excerpt_more button">阅读更多</a>
@@ -307,18 +373,51 @@
       
       
       
-        <div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/edgefs.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/edgefs.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/storage/edgefs.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+<div class="excerpt_thumbnail">
+  <picture>
+
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_thumbnail image_internal" src="https://www.geekgame.site/k8s/storage/edgefs.png" alt="Rook Edgefs 介绍" loading="lazy" decoding="async" width="800" height="240" /></picture>
 </div>
 
       
@@ -363,18 +462,51 @@ EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点）�
       
       
       
-        <div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/rook.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/rook.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/rook.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+<div class="excerpt_thumbnail">
+  <picture>
+
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_thumbnail image_internal" src="https://www.geekgame.site/k8s/rook.png" alt="NFS 通过 rook 进行部署" loading="lazy" decoding="async" width="717" height="418" /></picture>
 </div>
 
       
@@ -416,7 +548,7 @@ NFS 使用方式  已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
           <p class="pale">
             
               什么是knative knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。
-如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。 Image not …
+如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。     各个角色之间的 …
             
           </p>
           <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" title="阅读更多" class="excerpt_more button">阅读更多</a>
@@ -472,7 +604,7 @@ NFS 使用方式  已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
 </svg></span>
     <span class="post_date">
       Jun 17, 2021</span>
-    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubebuilder' title="kubebuilder" class="post_tag button button_translucent">kubebuilder
+    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubebuilder' title="kubebuilder" class="post_tag button button_translucent">kubebuilder
         </a><a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
         </a><a href='https://www.geekgame.site/tags/controller-runtime' title="controller runtime" class="post_tag button button_translucent">controller runtime
         </a>

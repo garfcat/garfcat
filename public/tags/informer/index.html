@@ -126,7 +126,7 @@
 </svg></span>
     <span class="post_date">
       Nov 17, 2021</span>
-    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
         </a><a href='https://www.geekgame.site/tags/informer' title="informer" class="post_tag button button_translucent">informer
         </a>
     </span>
@@ -140,26 +140,59 @@
       
       
       
-        <div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/images/bridge.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/images/bridge.png</a></p>
-    <p>鏈接到文件: /static//static/images/bridge.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+<div class="excerpt_thumbnail">
+  <picture>
+
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_thumbnail image_internal" src="https://www.geekgame.site/images/bridge.png" alt="Kubernetes Informer 机制" loading="lazy" decoding="async" width="1388" height="726" /></picture>
 </div>
 
       
         <div>
           <p class="pale">
             
-              概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/informer.png
-鏈接到文件: …
+              概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。     在Informer架构设计中,有多个核心组件,分别介绍如下。
+1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例 …
             
           </p>
           <a href="https://www.geekgame.site/post/k8s/informer/" title="阅读更多" class="excerpt_more button">阅读更多</a>

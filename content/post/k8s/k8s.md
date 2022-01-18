@@ -16,7 +16,7 @@ Kubernetes 的主要特点：
 K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端，是控制节点主要控制和管理整个K8s集群;node是客户端,是工作节点，主要处理来自于master的任务。K8s可以设置多master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。  
 master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler, cloud-controller-manager;    
 node 包含的组件有: kubelet, kube-proxy;  
-![带有两个Worker nodes和一个master的K8s架构图](https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg)
+![带有两个Worker nodes和一个master的K8s架构图](/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg)
 [图片来源](https://x-team.com/blog/introduction-kubernetes-architecture/)
 
 ## master 组件
@@ -31,7 +31,7 @@ kubelet: 负责与master节点通信，处理master下发的任务，管理节�
 kube-proxy: 负责K8s集群服务的通信以及负载均衡；
 
 # 数据流转
-![K8s 数据流转](https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/k8s_data.png)
+![K8s 数据流转](/k8s/k8s_data.png)
 我们以 ReplicaSet 为例，讲述一下K8s的数据流转：  
 0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；  
 1. API作为集群入口，接收命令请求；  

@@ -6,8 +6,8 @@ featured: true # Sets if post is a featured post, making appear on the home page
 draft: false # Sets whether to render this page. Draft of true will not be rendered.
 toc: true # Controls if a table of contents should be generated for first-level links automatically.
 # menu: main
-featureImage: "/static/images/cat.png" # Sets featured image on blog post.
-thumbnail: "/static/images/cat.png" # Sets thumbnail image appearing inside card on homepage.
+featureImage: "/images/cat.png" # Sets featured image on blog post.
+thumbnail: "/images/cat.png" # Sets thumbnail image appearing inside card on homepage.
 shareImage: "/images/path/share.png" # Designate a separate image for social media sharing.
 codeMaxLines: 10 # Override global value for how many lines within a code block before auto-collapsing.
 codeLineNumbers: true # Override global value for showing of line numbers within code block.
@@ -25,7 +25,7 @@ Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列
 **注意：** 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1
 
 ## 调度框架
-![karmada scheduler arch](/static/k8s/karmada/scheduler.png)
+![karmada scheduler arch](/k8s/karmada/scheduler.png)
 
 karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。    
 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；  

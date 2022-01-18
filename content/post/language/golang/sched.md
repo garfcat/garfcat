@@ -56,7 +56,7 @@ Go采用的是GMP调度模型。
 4. 进入调度循环  
 5. 尽力获取可执行的G，并执行  
 6. 清理现场并且重新进入调度循环  
-![调度原理](https://raw.githubusercontent.com/garfcat/garfcat/master/static/gmp_pic.png)    
+![调度原理](/gmp_pic.png)    
 
    
     

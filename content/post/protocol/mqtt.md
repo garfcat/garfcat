@@ -20,7 +20,7 @@ MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最
 如下所示： 客户端 A、B、C都连接到一个中间broker;    
 B、C都订阅topic :dev_info 来获取其他设备的设备信息；  
 A发布设备信息到topic dev_info，broker 将该消息转发给所有的订阅者即 BC；  
-![mqqtt_arch](https://raw.githubusercontent.com/garfcat/garfcat/master/static/mqtt_arch.png)
+![mqqtt_arch](/mqtt_arch.png)
 
 # 主题匹配
 mqtt 主题是分层级的，通过／划分层级。如 A/B/G ;

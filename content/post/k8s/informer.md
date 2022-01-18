@@ -6,8 +6,8 @@ featured: true # Sets if post is a featured post, making appear on the home page
 draft: false # Sets whether to render this page. Draft of true will not be rendered.
 toc: true # Controls if a table of contents should be generated for first-level links automatically.
 # menu: main
-featureImage: "/static/images/bridge.png" # Sets featured image on blog post.
-thumbnail: "/static/images/bridge.png" # Sets thumbnail image appearing inside card on homepage.
+featureImage: "/images/bridge.png" # Sets featured image on blog post.
+thumbnail: "/images/bridge.png" # Sets thumbnail image appearing inside card on homepage.
 shareImage: "/images/path/share.png" # Designate a separate image for social media sharing.
 codeMaxLines: 10 # Override global value for how many lines within a code block before auto-collapsing.
 codeLineNumbers: false # Override global value for showing of line numbers within code block.
@@ -23,7 +23,7 @@ tags:
 
 ## 概述
 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。
-![informer](/static/k8s/informer.png)
+![informer](/k8s/informer.png)
 
 
 在Informer架构设计中,有多个核心组件,分别介绍如下。  
@@ -51,7 +51,7 @@ Reflector对象通过Run函数启动监控并处理监控事件。而在Reflecto
 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。
 
 1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。 
-![listAndWatch](/static/k8s/listAndWatch.png)
+![listAndWatch](/k8s/listAndWatch.png)
 
 a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。   
 b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。  
@@ -86,7 +86,7 @@ type DeltaFIFO struct {
 ```
 queue字段存储资源对象的key,该key通过KeyOf函数计算得到。items字段通过map数据结构的方式存储,value存储的是对象的Deltas数组。
 
-![deltafifo](/static/k8s/deltafifo.png)
+![deltafifo](/k8s/deltafifo.png)
 key 是 <namespace>/<name> 组合, 如果namespace 为空,则 key是 <name>.
 
 DeltaFIFO 本质上是一个先进先出的队列, 有生产者和消费者, 其中生产者是 Reflector 调用的Add 方法, 消费者是Controller 调用的Pop 方法.
@@ -221,7 +221,7 @@ indices 存储缓存器, key 为缓存名称, 和索引名字相同, value为缓
 index 为缓存数据, 结构为key/value
 
 indices 结构如下所示:
-![indices](/static/k8s/indices.png)
+![indices](/k8s/indices.png)
 
 
 从index 中获取数据的核心逻辑如下所示:

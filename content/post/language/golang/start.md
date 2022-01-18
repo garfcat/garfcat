@@ -64,7 +64,7 @@ LEAQ	8(SP), SI 是将 argv 的地址放到SI寄存器
 然后跳转到runtime·rt0_go(SB）(go1.12.5/src/runtime/asm_amd64.s:87)
 
 接下来的流程用下图表示:
-![初始化流程](https://raw.githubusercontent.com/garfcat/garfcat/master/static/start.png)
+![初始化流程](/start.png)
 
 
 ##### 参数设置

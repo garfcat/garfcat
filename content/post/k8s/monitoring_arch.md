@@ -91,7 +91,7 @@ Prometheus 在一个节点上有以下指标来源：
 安装 cAdvisor+Prometheus 的命令还应该自动设置从基础设施容器收集指标。这是可能的，因为基础设施容器的名称和感兴趣的指标是 Kubernetes 控制平面配置本身的一部分，并且因为基础设施容器以 Prometheus 格式导出它们的指标。
 
 # 附录： 架构图  
-![](/static/k8s/monitoring_architecture.png)
+![](/k8s/monitoring_architecture.png)
 
 
 # 原文

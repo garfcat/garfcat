@@ -37,7 +37,7 @@ SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄�
 #### 无参数无本地变量
 无参数无本地变量栈结果是如下所示
 
-![没有参数没有本地变量](https://raw.githubusercontent.com/garfcat/garfcat/master/static/fpspnoargs.png)
+![没有参数没有本地变量](/fpspnoargs.png)
 
 通过如下函数来验证
 

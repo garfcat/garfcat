@@ -10,7 +10,7 @@ draft: true # Sets whether to render this page. Draft of true will not be render
 线上有个服务负载较高，但是CPU利用率相对来说不是很高，该服务主要作用是将数据解析后通过 trift 写入到hbase.
 # 问题定位
 首先通过 top 查看系统运行情况，如下图所示
-![](/static/issues/performance/top.png)
+![](/issues/performance/top.png)
 
 从 top 上来可以看到几点可疑之处：
 1. 平均负载为8.52 : 8核机器上负载超过了8,说明系统负载已经很高；

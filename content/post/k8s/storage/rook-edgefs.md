@@ -6,8 +6,8 @@ featured: true # Sets if post is a featured post, making appear on the home page
 draft: false # Sets whether to render this page. Draft of true will not be rendered.
 toc: true # Controls if a table of contents should be generated for first-level links automatically.
 # menu: main
-featureImage: "/static/k8s/storage/edgefs.png" # Sets featured image on blog post.
-thumbnail: "/static/k8s/storage/edgefs.png" # Sets thumbnail image appearing inside card on homepage.
+featureImage: "/k8s/storage/edgefs.png" # Sets featured image on blog post.
+thumbnail: "/k8s/storage/edgefs.png" # Sets thumbnail image appearing inside card on homepage.
 shareImage: "/images/path/share.png" # Designate a separate image for social media sharing.
 codeMaxLines: 10 # Override global value for how many lines within a code block before auto-collapsing.
 codeLineNumbers: false # Override global value for showing of line numbers within code block.
@@ -63,7 +63,7 @@ Target Pod daemon容器中的运行着一个进程CCow进程,这个进程是做�
 
 CCoW 是 Cloud Copy on Write 的缩写， 是一个对象存储系统，通过基于块的分布式重复数据删除提供对对象的版本化访问。Nexenta CCOW 由一组软件组件组成，这些组件可以以各种方式部署在裸机和/或虚拟机服务器中。使用裸机或虚拟机来部署一组“对象存储服务器”。服务器相互联合到持久存储，可以在任何单个服务器丢失的情况下继续存在。
 
-![](/static/k8s/storage/CCow.png)
+![](/k8s/storage/CCow.png)
 
 每一个对象存储的服务都包含以下几个组件:
 - Object Storage Access Server: 对象存储访问服务, 为客户端提供一种或多种常规的对象存储访问方法。这些接口通常与现有协议兼容，例如 Amazon S3 或 OpenStack Swift Object Service。这些请求被转换成块请求和 Manifest 请求，然后转发到共同定位的块服务器和清单服务器。
@@ -76,11 +76,11 @@ CCoW 是 Cloud Copy on Write 的缩写， 是一个对象存储系统，通过�
 
 - Manifest Server:  维护有关对象每个版本的元数据信息。对象组织在对应于传统对象服务容器（又名存储桶）的服务目录中。每个版本都由唯一的版本标识符标识，该标识符可由任何清单服务器根据全局同步时间戳和决胜局生成。唯一的版本标识符保证版本清单可以由不同的清单服务器以不同的顺序应用，同时仍然保证一旦所有事务都应用到所有服务器上，所有清单服务器最终将实现相同的版本清单。
 
-![](/static/k8s/storage/LocalPermanentObjectStorageServer.png)
+![](/k8s/storage/LocalPermanentObjectStorageServer.png)
 
 ## 什么是 ISGW
 
-![](/static/k8s/storage/ISGW.png)
+![](/k8s/storage/ISGW.png)
 
 ISGW（Inter-Segment Gateway）用于EdgeFS中Segment和云之间的全局命名空间同步功能。ISGW 跨多个站点异步分发块数据，以实现无缝、地理透明的数据访问。ISGW 提供以下功能。
 当文件对象在 ISGW 链接到的数据的源站点上被修改时，ISGW 端点链接会检测并传播。这可以减少传输的数据量。

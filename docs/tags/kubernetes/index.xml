@@ -16,15 +16,15 @@
       <description>
         
           
-            概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/informer.png
-鏈接到文件: /static//static/k8s/informer.png
-使用 Page Bundles: false
- 在Informer架构设计中,有多个核心组件,分别介绍如下。
+            概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。     在Informer架构设计中,有多个核心组件,分别介绍如下。
 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。
 3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。
 informer 中支持处理资源的三种回掉方法:
  AddFunc :当创建资源对象时触发的事件回调方法。 UpdateFunc :当更新资源对象时触发的事件回调方法。 DeleteFunc :当删除资源对象时触发的事件回调方法。  通过Informer机制可以很容易地监控我们所关心的资源事件.
 Reflector 1func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration) *Reflector { 2 return NewNamedReflector(naming.GetNameFromCallsite(internalPackages...), lw, expectedType, store, resyncPeriod) 3} 通过NewReflector实例化Reflector对象,实例化过程中须传入ListerWatcher数据接口对象,它拥有List和Watch方法,用于获取及监控资源列表。只要实现了List和Watch方法的对象都可以称为ListerWatcher。 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。
+1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。     a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。
+b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。
+c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。
           
           
         
@@ -130,11 +130,12 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
             什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：
  可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。  Kubernetes 架构 K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端，是控制节点主要控制和管理整个K8s集群;node是客户端,是工作节点，主要处理来自于master的任务。K8s可以设置多master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。
 master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler, cloud-controller-manager; node 包含的组件有: kubelet, kube-proxy;
-Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg
-鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg
-使用 Page Bundles: false
- 图片来源
+    图片来源
 master 组件 kube-apiserver: 提供集群HTTP REST API, 是集群控制的唯一入口,提供访问控制、注册、信息存储功能, 同时也是集群内部模块之间数据交换的枢纽。 etcd: 兼具一致性和高可用性的键值数据库,保存 K8s 所有集群数据;
+kube-scheduler: 对K8s中的Pod资源进行监控调度，为Pod选择合适的工作节点； kube-controller-manager: K8s实现自动化的关键组件，是集群中所有资源的自动化控制中心；
+cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻辑的控制平面组件,使得 K8s 可以直接利用云平台实现持久化卷、负载均衡、网络路由、DNS 解析以及横向扩展等功能。
+node 组件 kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; kube-proxy: 负责K8s集群服务的通信以及负载均衡；
+数据流转      我们以 ReplicaSet 为例，讲述一下K8s的数据流转：
           
           
         

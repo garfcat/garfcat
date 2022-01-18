@@ -120,7 +120,7 @@
 </svg></span>
     <span class="post_date">
       Nov 17, 2021</span>
-    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
         </a><a href='https://www.geekgame.site/tags/informer' title="informer" class="post_tag button button_translucent">informer
         </a>
     </span>
@@ -136,20 +136,59 @@
   
 
   
-    <div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/images/bridge.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/images/bridge.png</a></p>
-    <p>鏈接到文件: /static//static/images/bridge.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+    <div class="post_featured">
+      <figure>
+        <picture>
+
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          
+
+          <img class="image_featured image_internal" src="https://www.geekgame.site/images/bridge.png" alt="Kubernetes Informer 机制" width="1388" height="726" />
+          
+
+        </picture>
+      </figure>
+
+    </div>
   
 
 
@@ -182,20 +221,57 @@
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/informer.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/informer.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/informer.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/informer.png" alt="informer" loading="lazy" decoding="async" width="1882" height="1572"  />
+      
+
+    </picture>
+  </figure>
 </p>
 <p>在Informer架构设计中,有多个核心组件,分别介绍如下。<br>
 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 <br>
@@ -224,20 +300,57 @@ ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,�
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/listAndWatch.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/listAndWatch.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/listAndWatch.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/listAndWatch.png" alt="listAndWatch" loading="lazy" decoding="async" width="1450" height="1240"  />
+      
+
+    </picture>
+  </figure>
 </p>
 <p>a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。<br>
 b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。<br>
@@ -268,20 +381,57 @@ e. r.setLastSyncResourceVersion用于设置最新的资源版本号。</p>
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/deltafifo.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/deltafifo.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/deltafifo.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/deltafifo.png" alt="deltafifo" loading="lazy" decoding="async" width="778" height="248"  />
+      
+
+    </picture>
+  </figure>
 
 key 是 <namespace>/<name> 组合, 如果namespace 为空,则 key是 <name>.</p>
 <p>DeltaFIFO 本质上是一个先进先出的队列, 有生产者和消费者, 其中生产者是 Reflector 调用的Add 方法, 消费者是Controller 调用的Pop 方法.</p>
@@ -404,20 +554,57 @@ index 为缓存数据, 结构为key/value</p>
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/indices.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/indices.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/indices.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/indices.png" alt="indices" loading="lazy" decoding="async" width="2288" height="946"  />
+      
+
+    </picture>
+  </figure>
 </p>
 <p>从index 中获取数据的核心逻辑如下所示:</p>
 <div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span>

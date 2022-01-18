@@ -32,15 +32,15 @@
       <description>
         
           
-            概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/informer.png
-鏈接到文件: /static//static/k8s/informer.png
-使用 Page Bundles: false
- 在Informer架构设计中,有多个核心组件,分别介绍如下。
+            概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。     在Informer架构设计中,有多个核心组件,分别介绍如下。
 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。
 3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。
 informer 中支持处理资源的三种回掉方法:
  AddFunc :当创建资源对象时触发的事件回调方法。 UpdateFunc :当更新资源对象时触发的事件回调方法。 DeleteFunc :当删除资源对象时触发的事件回调方法。  通过Informer机制可以很容易地监控我们所关心的资源事件.
 Reflector 1func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration) *Reflector { 2 return NewNamedReflector(naming.GetNameFromCallsite(internalPackages...), lw, expectedType, store, resyncPeriod) 3} 通过NewReflector实例化Reflector对象,实例化过程中须传入ListerWatcher数据接口对象,它拥有List和Watch方法,用于获取及监控资源列表。只要实现了List和Watch方法的对象都可以称为ListerWatcher。 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。
+1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。     a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。
+b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。
+c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。
           
           
         
@@ -58,12 +58,11 @@ Reflector 1func NewReflector(lw ListerWatcher, expectedType interface{}, store S
           
             Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。
 注意： 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1
-调度框架  Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/karmada/scheduler.png
-鏈接到文件: /static//static/k8s/karmada/scheduler.png
-使用 Page Bundles: false
- karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；
+调度框架      karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；
 policyInformer/clusterPolicyInformer 是用来监听 policy/clusterPolicy 的Update事件，将关联的 binding/clusterBinding 添加到调度队列；
 memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。
+ 调度队列： 存储了待处理的 binding/clusterBinding 事件，使用的是先进先出队列。 调度缓存： 缓存了 cluster 的信息。  需要根据 binding/clusterBinding 当前状态决定下一步如何处理，共有如下几个状态，以 binding 为例:
+ 首次调度(FirstSchedule): resourceBinding 对象中的 spec.Clusters 字段为空，即从未被调度过。 调协调度(ReconcileSchedule)： policy 的 placement 发生变化时就需要进行调协调度。 扩缩容调度(ScaleSchedule): policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。 故障恢复调度(FailoverSchedule): 调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。 无需调度(AvoidSchedule): 默认行为，上面四个调度都未执行，则不进行任何调度。  首次调度（FirstSchedule） 主要通过 scheduleOne 函数来实现，分为以下几个步骤：
           
           
         
@@ -120,13 +119,16 @@ NFS 安装 主要步骤  Step0: 创建Local Persistent Volume; Step1: 创建Stor
         
           
             什么是knative knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。
-如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/knative_arch.png
-鏈接到文件: /static//static/k8s/knative_arch.png
-使用 Page Bundles: false
- 各个角色之间的关系,如上图所示:
+如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。     各个角色之间的关系,如上图所示:
 何为serverless serverless 中文可以翻译为无服务器架构, 有两个方面的定义: 狭义讲就是你的服务是很少的一段代码或者是一个函数,这个代码或者函数可以通过事件(一个http请求或者消息队列的消息)来触发,总结下来就是 Trigger + FAAS + BAAS(高可用免运维的后端服务);
 广义上来讲serverless是简化运维的一种方案,即服务免运维,可实现 CI/CD,自动扩缩容,灰度等自动化操作;
 knative 就是属于广义上定义的serverless, 它构建在 Kubernetes 的基础上,并为构建和部署无服务器架构(serverless)和基于事件驱动的应用程序提供了一致的标准模式。Knative 减少了这种新的软件开发方法所产生的开销,同时还把路由(routing)和事件(eventing)的复杂性抽象出来。
+核心组件: 为了实现对serverless 的管理, knative 将整个系统划分为三个部分, 主要由三个组件来实现
+构建: 通过灵活的可配置方法将源代码构建为容器;
+服务: 管理应用的部署和服务支持;
+事件: 用户自动完成事件的绑定和触发;
+Knative 服务(kantive Serving) knative serving 主要是用来部署serverless 应用以及为其提供服务支持.其主要特性如下:
+ 快速部署Serverless 容器 自动缩放包括将pod缩放到0 支持多个网络组件来提供路由和网络编程, 例如 Ambassador、Contour、Kourier、Gloo 和 Istio。 支持部署快照。  Knative Serving 通过 Kubernetes 自定义资源 (CRD) 来控制serverless 应用在集群中的行为 ：
           
           
         
@@ -272,16 +274,16 @@ Linux中的异步I/O模型
       <description>
         
           
-            Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://raw.githubusercontent.com/garfcat/garfcat/master/static/history-of-nosql.jpg
-鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/history-of-nosql.jpg
-使用 Page Bundles: false
- Nosql 目前主流说法已经从 no sql 变为现在的 not only sql,这个不仅仅是因为 nosql 数据库提供了类似 sql 的查询语言,更是因为它为我们解决复杂场景下业务需求和分布式数据处理提供了有效解决方法。
+            Nosql 目前主流说法已经从 no sql 变为现在的 not only sql,这个不仅仅是因为 nosql 数据库提供了类似 sql 的查询语言,更是因为它为我们解决复杂场景下业务需求和分布式数据处理提供了有效解决方法。
 目前nosql数据库已经有200多个(从 https://hostingdata.co.uk/nosql-database/ 可以看到已经有225个)，但是我们目前常用的数据库有以下四类: KV数据库、文档数据库、列式数据库、全文搜索引擎。本文就以redis、mongodb、hbase、ES为例说明这几种数据的区别以及各自的适用场景。
 Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值存储到数据库中，并将可以按照键读取数据。
 优点:
  轻量且高性能； 支持集群（主从集群，切片集群）； 不仅支持简单的字符串键值对， 它还提供了一系列数据结构类型值，如list、hash、set、sorted set、bitmap、hyperloglog.  缺点:
  主要缺点是事务支持不完整：保证了 ACID 中的一致性（C）和隔离性（I），但并不保证原子性（A）和持久性（D）； 集群使用Slot映射表来决定数据分布，规模有一定限制；  主要场景
  缓存： 其高性能最适合用来做缓存，这也是redis最常用的场景之一; 分布式锁：redis 提供了 Redlock 算法,用来实现基于多个实例的分布式锁; 消息队列：redis 通过list和stream来实现消息队列，数据不大的情况下redis不失为一个好的消息队列方案； 排行榜/计数：redis提供了一些统计模式，常见的有聚合统计、排序统计、二值状态统计和基数统计；  Mongodb MongoDB 是文档数据库，主要提供数据存储和管理服务。最大的特点就是free-schema,可以将存储任意数据，多种信息存储在一个文档中，而不像关系型数据库那样存储在不同的表中。目前最常用的文档格式是JSON.
+优点
+ 灵活的查询语言； 易于水平扩展，高可用复制集，可扩展分片集群； 字段增加简单，可以存储复杂的数据格式；  缺点或者限制
+ 由于没有像关系型数据库的范式要求，所以数据可能会有冗余存储； 每个文档大小限制为16MB; 事务MVCC的旧数据保存在内存中，所以如果涉及大量文档的数据会带来性能问题，而且mongodb 也提供了默认清理时间transactionLifetimeLimitSeconds，指定多文档事务的生存期。超过此限制的事务将被视为已过期，并且将通过定期清理过程中止； 虽然事务锁定了正在修改的文档，但是其他会话修改该文档并不会被block，而是要求终止该事务然后重试，这会造成浪费因为事务中的其他操作也会重新执行；  适用场景 电商、游戏、物流、内容管理、社交、物联网、视频直播等领域都可以使用mongodb;
           
           
         
@@ -338,11 +340,12 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
             什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：
  可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。  Kubernetes 架构 K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端，是控制节点主要控制和管理整个K8s集群;node是客户端,是工作节点，主要处理来自于master的任务。K8s可以设置多master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。
 master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler, cloud-controller-manager; node 包含的组件有: kubelet, kube-proxy;
-Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg
-鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg
-使用 Page Bundles: false
- 图片来源
+    图片来源
 master 组件 kube-apiserver: 提供集群HTTP REST API, 是集群控制的唯一入口,提供访问控制、注册、信息存储功能, 同时也是集群内部模块之间数据交换的枢纽。 etcd: 兼具一致性和高可用性的键值数据库,保存 K8s 所有集群数据;
+kube-scheduler: 对K8s中的Pod资源进行监控调度，为Pod选择合适的工作节点； kube-controller-manager: K8s实现自动化的关键组件，是集群中所有资源的自动化控制中心；
+cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻辑的控制平面组件,使得 K8s 可以直接利用云平台实现持久化卷、负载均衡、网络路由、DNS 解析以及横向扩展等功能。
+node 组件 kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; kube-proxy: 负责K8s集群服务的通信以及负载均衡；
+数据流转      我们以 ReplicaSet 为例，讲述一下K8s的数据流转：
           
           
         
@@ -403,7 +406,8 @@ SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语�
 FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。
 FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。
 栈结构 无参数无本地变量 无参数无本地变量栈结果是如下所示
- Image not found  a.warning-link { color: inherit !
+     通过如下函数来验证
+1#include &amp;#34;textflag.
           
           
         
