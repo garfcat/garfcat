@@ -13,11 +13,18 @@
       <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/test/</guid>
-      <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
+      <description>
+        
+          
+            单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
  功能测试（Test） 性能测试（Benchmark） 示例测试（Example）  测试文件名称一般是源代码文件加上 &amp;quot;_test.go&amp;quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
 在展开单元测试之前先讲下,testing包中的输出函数：
  t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继续运行; t.Fatalf(): 错误日志输出，当前函数立刻退出；  功能测试 测试函数有两点约定：
- 函数名必需以Test为前缀，如需要测试Add函数则名称应该为 TestAdd; 函数参数必需为 t * testing.T; 完整的功能测试如下所示：  1// add.go 2func Add(a int, b int) int { 3 return a + b 4} 5 6// add_tesg.go 7func TestAdd(t *testing.T){ 8 a := 1 9 b := 2 10 want := a + b 11 got := Add(a, b) 12 if want !</description>
+ 函数名必需以Test为前缀，如需要测试Add函数则名称应该为 TestAdd; 函数参数必需为 t * testing.T; 完整的功能测试如下所示：  1// add.go 2func Add(a int, b int) int { 3 return a + b 4} 5 6// add_tesg.go 7func TestAdd(t *testing.T){ 8 a := 1 9 b := 2 10 want := a + b 11 got := Add(a, b) 12 if want !
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -26,9 +33,16 @@
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/sched/</guid>
-      <description>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
+      <description>
+        
+          
+            Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
 GMP调度模型 Go采用的是GMP调度模型。
-核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：  1 go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数； 本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中； 全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；  调度原理 1 +-------------------- sysmon ---------------//------+ 2 | | 3 | | 4 +---+ +---+-------+ +--------+ +---+---+ 5 go func() ---&amp;gt; | G | ---&amp;gt; | P | local | &amp;lt;=== balance ===&amp;gt; | global | &amp;lt;--//--- | P | M | 6 +---+ +---+-------+ +--------+ +---+---+ 7 | | | 8 | +---+ | | 9 +----&amp;gt; | M | &amp;lt;--- findrunnable ---+--- steal &amp;lt;--//--+ 10 +---+ 11 | 12 mstart 13 | 14 +--- execute &amp;lt;----- schedule 15 | | 16 | | 17 +--&amp;gt; G.</description>
+核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：  1 go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数； 本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中； 全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；  调度原理 1 +-------------------- sysmon ---------------//------+ 2 | | 3 | | 4 +---+ +---+-------+ +--------+ +---+---+ 5 go func() ---&amp;gt; | G | ---&amp;gt; | P | local | &amp;lt;=== balance ===&amp;gt; | global | &amp;lt;--//--- | P | M | 6 +---+ +---+-------+ +--------+ +---+---+ 7 | | | 8 | +---+ | | 9 +----&amp;gt; | M | &amp;lt;--- findrunnable ---+--- steal &amp;lt;--//--+ 10 +---+ 11 | 12 mstart 13 | 14 +--- execute &amp;lt;----- schedule 15 | | 16 | | 17 +--&amp;gt; G.
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -37,8 +51,15 @@ GMP调度模型 Go采用的是GMP调度模型。
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/start/</guid>
-      <description>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&amp;#34;fmt&amp;#34; 5) 6 7func main() { 8	fmt.Println(&amp;#34;hello world&amp;#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 7	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 8	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 9	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 10	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.</description>
+      <description>
+        
+          
+            知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&amp;#34;fmt&amp;#34; 5) 6 7func main() { 8	fmt.Println(&amp;#34;hello world&amp;#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 7	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 8	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 9	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 10	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -47,7 +68,10 @@ GMP调度模型 Go采用的是GMP调度模型。
       <pubDate>Sat, 15 Jun 2019 16:41:11 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/plan9/</guid>
-      <description>程序组成 程序由代码和数据组成，数据又有静态与动态之分；
+      <description>
+        
+          
+            程序组成 程序由代码和数据组成，数据又有静态与动态之分；
 动态数据：存放在堆区和栈区；
 静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
 可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
@@ -57,8 +81,11 @@ SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语�
 FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。
 FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。
 栈结构 无参数无本地变量 无参数无本地变量栈结果是如下所示
-通过如下函数来验证
-1#include &amp;#34;textflag.h&amp;#34; // 2 3TEXT ·SpFp(SB),NOSPLIT,$0-32 4 LEAQ (SP), AX // 将硬件SP地址存储到AX 5 LEAQ a+0(SP), BX // 将伪SP地址存储到BX 6 LEAQ b+0(FP), CX // 将FP地址存储到CX 7 MOVQ AX, ret+0(FP) // 将AX地址存储到第一个返回值 8 MOVQ BX, ret+8(FP) // 将BX地址存储到第二个返回值 9 MOVQ CX, ret+16(FP) // 将CX地址存储到第三个返回值 10 MOVQ a+0(SP), AX // 将SP 存储的值存储到AX， 也就是该函数的返回值 11 MOVQ AX, ret+24(FP) //将AX 放到第四个返回值 12 RET 13 1package main 2 3import &amp;#34;fmt&amp;#34; 4 5func SpFp() (int, int, int, int) // 汇编函数声明 6func main() { 7	a,b,c, addr := SpFp() 8	fmt.</description>
+ Image not found  a.warning-link { color: inherit !
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -67,14 +94,21 @@ FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在�
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/module/</guid>
-      <description>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
+      <description>
+        
+          
+            Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
 需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
 本文会介绍Go module的一些基本用法；
  常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令  常见命令 go mod 提供了以下命令
  download: 下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享; edit : 编辑go.mod; graph: 打印模块的依赖图; init: 在当前目录初始化mod; tidy : 添加缺失的依赖包并清理没有使用的包; vendor : 将依赖包复制到vendor目录; verify: 验证依赖是否正确; why : 解释为什么需要这个依赖;  创建一个模块 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;
 执行一下子命令
 1 ~/gomod/hello$ go mod init example.com/hello 2go: creating new go.mod: module example.com/hello 创建hello.go
-1package hello 2 3func Hello()string { 4	return &amp;#34;Hello, world.</description>
+1package hello 2 3func Hello()string { 4	return &amp;#34;Hello, world.
+          
+          
+        
+      </description>
     </item>
     
   </channel>

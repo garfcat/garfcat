@@ -13,14 +13,21 @@
       <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
-      <description>controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
+      <description>
+        
+          
+            controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
 概念   CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
 下面例子是定义了一个crontab 的自定义资源:
 1apiVersion:apiextensions.k8s.io/v12kind:CustomResourceDefinition3metadata:4# 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39;5name:crontabs.stable.example.com6spec:7# 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;8group:stable.example.com9# 列举此 CustomResourceDefinition 所支持的版本10versions:11- name:v112# 每个版本都可以通过 served 标志来独立启用或禁止13served:true14# 其中一个且只有一个版本必需被标记为存储版本15storage:true16schema:17openAPIV3Schema:18type:object19properties:20spec:21type:object22properties:23cronSpec:24type:string25image:26type:string27replicas:28type:integer29# 可以是 Namespaced 或 Cluster30scope:Namespaced31names:32# 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt;33plural:crontabs34# 名称的单数形式，作为命令行使用时和显示时的别名35singular:crontab36# kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。37kind:CronTab38# shortNames 允许你在命令行使用较短的字符串来匹配资源39shortNames:40- ct  GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写
 Group: ApiGroup,是相关API功能的集合。
 Version: ApiGroup的版本， 每个ApiGroup可以对应多个版本。
 Kind：资源类型。 Resource：资源，Kind的具象化，类似于面向对象语言中的类与对象，Kind就是类，Resource就是对象。
-那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：</description>
+那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：
+          
+          
+        
+      </description>
     </item>
     
   </channel>

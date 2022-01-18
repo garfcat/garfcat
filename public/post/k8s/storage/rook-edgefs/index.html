@@ -24,7 +24,7 @@
 <meta property="og:url" content="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" />
 <meta property="og:title" content="Rook Edgefs 介绍" />
 <meta property="og:description" content="Article description." />
-<meta property="og:image" content="https://www.geekgame.site/images/path/share.png" />
+<meta property="og:image" content="https://www.geekgame.site/post/k8s/storage/rook-edgefs/images/path/share.png" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
@@ -36,12 +36,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity = "sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" as="script" integrity=
-    "sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" as="script" integrity=
+    "sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity="sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
@@ -127,12 +127,37 @@
     </span>
   </div>
 
+
+
+
+  
+  
+  
+  
+  
+
+  
+    <div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/edgefs.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/edgefs.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/storage/edgefs.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+  
+
+
     
-    <img src="/static/k8s/storage/edgefs.png" class="image_featured" alt="Rook Edgefs 介绍">
-    
-    
-    <h2>文章目录</h2>
-    <nav id="TableOfContents">
+    <div class="post_toc">
+      <h2>文章目录</h2>
+      <nav id="TableOfContents">
   <ul>
     <li><a href="#什么是-edgefs">什么是 EdgeFS</a></li>
     <li><a href="#现状">现状</a></li>
@@ -143,7 +168,9 @@
     <li><a href="#参考">参考</a></li>
   </ul>
 </nav>
-    <h2 id="什么是-edgefs">什么是 EdgeFS</h2>
+    </div>
+    
+    <div class="post_body"><h2 id="什么是-edgefs">什么是 EdgeFS</h2>
 <p>EdgeFS 是使用Go和C实现的高性能、可容错以及低延迟的对象存储系统，可以对来自本地，私有/公有云或者小型(loT)设备的数据进行地理透明地访问。<br>
 EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点），相互连接，作为在 Kubernetes 平台上运行的一个全局名称空间数据结构，提供持久、容错和高性能的完全兼容的 S3 Object API 有状态的 Kubernetes 应用程序和 CSI 卷。
 在每个Geo站点，EdgeFS 节点在物理或虚拟节点上部署为容器（StatefulSet），汇集可用存储容量并通过兼容的 S3/NFS/iSCSI/etc 存储模拟协议为在相同或专用服务器上运行的云原生应用程序提供存储容量。</p>
@@ -152,14 +179,58 @@ EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点）�
 <p>EdgeFS 原本是 Nexenta 公司的开源项目（当时叫做 &quot;NexentaEdge&quot;，使用 Apache-2.0 License），后来 Nexenta 被名为 DataDirect Networks（DDN）的公司全资收购，然后 DDN 公司将 NexentaEdge 重命名为 EdgeFS，并选择将其闭源。 所以目前 EdgeFS 已经废弃了。不推荐使用。</p>
 <h2 id="设计">设计</h2>
 <p>Rook 支持使用 Kubernetes 原语在 Kubernetes 上轻松部署 EdgeFS 地理站点。
-<img src="/static/k8s/storage/edgefs-rook.png" alt="edgefs-rook"></p>
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/edgefs-rook.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/edgefs-rook.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/storage/edgefs-rook.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>当Rook在 Kubernetes 集群中运行后，Kubernetes PODs 或者外部应用可以 mount Rook管理的块设备和文件系统，也可以通过 S3/S3X API进行对象存储。Rook operator 自动配置存储组件并监控群集，以确保存储健康可用。<br>
 Rook operator 是一个简单的容器，它具有引导和监视存储集群所需的所有功能。operator 将启动并监控 StatefSet storage Targets、gRPC manager 和 Prometheus 多租户仪表板。所有连接的设备（或目录）将提供池存储站点。然后，存储站点可以作为一个全局名称空间数据结构轻松地相互连接。operator 通过初始化POD和运行服务所需的其他工件来管理目标、横向扩展NFS、对象存储（S3/S3X）和iSCSI卷的CRD。
 operator 将监控存储目标，以确保群集正常运行。EdgeFS将动态处理服务故障切换，以及可能随着集群的增长或缩小而进行的其他调整。
 EdgeFS Rook operator 还提供了集成的CSI插件。部署在每个Kubernetes节点上的CSI POD。处理节点上所需的所有存储操作，例如连接网络存储设备、挂载NFS导出和动态资源调配。
 Rook在golang实现。EdgeFS使用Go和C实现，其中数据路径得到高度优化。</p>
 <h2 id="组成">组成</h2>
-<p><img src="/static/k8s/storage/edgefs-components.png" alt="edgefs-components"></p>
+<p>
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/edgefs-components.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/edgefs-components.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/storage/edgefs-components.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>edgefs 主要包含以下几个部分:<br>
 grpc manager: 使用NFS/iSCSI CSI plugin时，提供对CSI plugin的请求进行平衡委托的功能。此外，还可作为可执行efscli命令的toolbox发挥功能。内部包好三个容器：<br>
 - rook-edgefs-mgr<br>
@@ -181,7 +252,29 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
 <p>Nexenta Cloud Copy on Write™ (CCOW™) is an object storage system providing for versioned access to objects with chunk-based distributed deduplication. Nexenta CCOW is composed of a set of software components that can be deployed in various fashions within bare metal and/or Virtual Machine servers.</p>
 </blockquote>
 <p>CCoW 是 Cloud Copy on Write 的缩写， 是一个对象存储系统，通过基于块的分布式重复数据删除提供对对象的版本化访问。Nexenta CCOW 由一组软件组件组成，这些组件可以以各种方式部署在裸机和/或虚拟机服务器中。使用裸机或虚拟机来部署一组“对象存储服务器”。服务器相互联合到持久存储，可以在任何单个服务器丢失的情况下继续存在。</p>
-<p><img src="/static/k8s/storage/CCow.png" alt=""></p>
+<p>
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/CCow.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/CCow.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/storage/CCow.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>每一个对象存储的服务都包含以下几个组件:</p>
 <ul>
 <li>
@@ -201,9 +294,53 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
 <p>Manifest Server:  维护有关对象每个版本的元数据信息。对象组织在对应于传统对象服务容器（又名存储桶）的服务目录中。每个版本都由唯一的版本标识符标识，该标识符可由任何清单服务器根据全局同步时间戳和决胜局生成。唯一的版本标识符保证版本清单可以由不同的清单服务器以不同的顺序应用，同时仍然保证一旦所有事务都应用到所有服务器上，所有清单服务器最终将实现相同的版本清单。</p>
 </li>
 </ul>
-<p><img src="/static/k8s/storage/LocalPermanentObjectStorageServer.png" alt=""></p>
+<p>
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/LocalPermanentObjectStorageServer.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/LocalPermanentObjectStorageServer.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/storage/LocalPermanentObjectStorageServer.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <h2 id="什么是-isgw">什么是 ISGW</h2>
-<p><img src="/static/k8s/storage/ISGW.png" alt=""></p>
+<p>
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/ISGW.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/ISGW.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/storage/ISGW.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>ISGW（Inter-Segment Gateway）用于EdgeFS中Segment和云之间的全局命名空间同步功能。ISGW 跨多个站点异步分发块数据，以实现无缝、地理透明的数据访问。ISGW 提供以下功能。
 当文件对象在 ISGW 链接到的数据的源站点上被修改时，ISGW 端点链接会检测并传播。这可以减少传输的数据量。</p>
 <p>即使执行了文件更改，除非其哈希值是全局唯一的（如果有另一个匹配项），否则它不会被传输。因此，在全局空间进行去重，可以实现对传输数据的去重。</p>
@@ -218,6 +355,10 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
 <a href="https://nexenta.com/solutions/openstack/cloud-copy-write-ccow">Cloud Copy On Write (CCOW)</a><br>
 <a href="https://medium.com/edgefs/multi-segment-distributed-storage-for-kubernetes-fd01e13887d1">Multi-Segment Distributed Storage for Kubernetes</a></p>
 
+    </div>
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
@@ -226,8 +367,12 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -240,6 +385,9 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -260,9 +408,6 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </li>
     </ul>
     <div>
@@ -310,6 +455,11 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -559,6 +709,14 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
             </a>
             
@@ -663,7 +821,7 @@ ISGW： inter-Segment Gateway, 连接其他集群。</p>
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" integrity="sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" integrity="sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous"></script>
     
   </body>
 </html>

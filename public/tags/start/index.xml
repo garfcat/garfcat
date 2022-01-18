@@ -13,8 +13,15 @@
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/start/</guid>
-      <description>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&amp;#34;fmt&amp;#34; 5) 6 7func main() { 8	fmt.Println(&amp;#34;hello world&amp;#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 7	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 8	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 9	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 10	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.</description>
+      <description>
+        
+          
+            知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&amp;#34;fmt&amp;#34; 5) 6 7func main() { 8	fmt.Println(&amp;#34;hello world&amp;#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 7	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 8	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 9	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 10	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.
+          
+          
+        
+      </description>
     </item>
     
   </channel>

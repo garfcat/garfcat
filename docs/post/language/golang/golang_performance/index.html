@@ -38,12 +38,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity = "sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" as="script" integrity=
-    "sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" as="script" integrity=
+    "sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity="sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
@@ -124,8 +124,11 @@
     <span class="post_time"> · 4 min read</span>
   </div>
 
+
+
+
     
-    <p>对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
+    <div class="post_body"><p>对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
 整个分析主要分为三个部分：</p>
 <ol>
 <li>项目中引入相关的包；</li>
@@ -268,19 +271,129 @@ cum%： 当前函数加上该函数调用函数的总耗时占用CPU运行耗时
 <span class="ln">18</span>         .          .     19:	go Bug()
 </code></pre></div><p>由该命令可以看出 for 循环那段代码占用的CPU较高，从而定位问题；</p>
 <p>另外我们还可以通过web 命令查看将采样数据图形化展示出来；</p>
-<p><img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/bug.png" alt="web">
+<p>
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://raw.githubusercontent.com/garfcat/garfcat/master/static/bug.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://raw.githubusercontent.com/garfcat/garfcat/master/static/bug.png</a></p>
+    <p>鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/bug.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 图中的箭头代表的是函数的调用，箭头上的值代表的是该方法的采样值，这里是CPU耗时，框越大的函数CPU占用就越高，框内表示的就是
 flat、flat%、cum、cum%.</p>
 <p>另外我们还可以通过以下命令获取Profile并在启动一个web服务在浏览器中进行分析：</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
 </code></pre></div><p>从浏览器中可以看到top、source、graph、火焰图等信息；
-<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png" alt="top">
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png</a></p>
+    <p>鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pprof-top.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 top 与命令行top显示是基本一致;
-<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png" alt="source">
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png</a></p>
+    <p>鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/web-pporf-source.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 source 与 命令行list 显示基本一致；
-<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png" alt="graph">
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png</a></p>
+    <p>鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/graph.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 graph 与命令web 显示一致；
-<img src="https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png" alt="火焰图">
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png</a></p>
+    <p>鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/performance/flame.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 火焰图的Y轴表示函数调用栈。X轴表示该函数占用的CPU时间的百分比，越宽代表占用的CPU时间就越多。</p>
 <h2 id="内存">内存</h2>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof http://localhost:6060/debug/pprof/heap
@@ -300,6 +413,10 @@ aloc_space:累计的分配空间;</p>
 <a href="https://pkg.go.dev/net/http/pprof">net/http/pprf</a><br>
 <a href="https://coder.today/tech/2018-11-10_profiling-your-golang-app-in-3-steps/">Profiling your Golang app in 3 steps</a></p>
 
+    </div>
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
@@ -308,8 +425,12 @@ aloc_space:累计的分配空间;</p>
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -325,6 +446,9 @@ aloc_space:累计的分配空间;</p>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -345,9 +469,6 @@ aloc_space:累计的分配空间;</p>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
       </li>
     </ul>
     <div>
@@ -395,6 +516,11 @@ aloc_space:累计的分配空间;</p>
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -644,6 +770,14 @@ aloc_space:累计的分配空间;</p>
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
             </a>
             
@@ -748,7 +882,7 @@ aloc_space:累计的分配空间;</p>
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" integrity="sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" integrity="sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous"></script>
     
   </body>
 </html>

@@ -38,12 +38,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity = "sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" as="script" integrity=
-    "sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" as="script" integrity=
+    "sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity="sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
@@ -127,8 +127,11 @@
     </span>
   </div>
 
+
+
+
     
-    <h1 id="概要">概要</h1>
+    <div class="post_body"><h1 id="概要">概要</h1>
 <p>监控分为两个部分:</p>
 <ul>
 <li>核心监控流程由kubelet、资源评估器、metric-server(Heapster 精简版)以及API server 上的master metrics API 组成. 这些监控数据被系统核心组件使用,例如调度逻辑(调度器和基于系统指标的HPA) 和 开箱即用的UI组件(例如 kubectl top), 这条监控管道不适合与第三方监控系统集成.</li>
@@ -211,9 +214,41 @@
 </ul>
 <p>安装 cAdvisor+Prometheus 的命令还应该自动设置从基础设施容器收集指标。这是可能的，因为基础设施容器的名称和感兴趣的指标是 Kubernetes 控制平面配置本身的一部分，并且因为基础设施容器以 Prometheus 格式导出它们的指标。</p>
 <h1 id="附录-架构图">附录： 架构图</h1>
-<p><img src="/static/k8s/monitoring_architecture.png" alt=""></p>
+<p>
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/monitoring_architecture.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/monitoring_architecture.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/monitoring_architecture.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <h1 id="原文">原文</h1>
 <p><a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/monitoring_architecture.md">https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/monitoring_architecture.md</a></p>
+
+    </div>
+
+	<h2 class="post_related">Posts in this Series</h2>
+	<ul>
+	  
+	</ul>
+
+
+
 
   </article>
 <aside class="sidebar">
@@ -223,8 +258,18 @@
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    
+      
+	    <h2 class="mt-4">Posts in this series</h2>
+      <ul>
+        
+      </ul>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -240,6 +285,9 @@
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -260,9 +308,6 @@
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </li>
     </ul>
     <div>
@@ -310,6 +355,11 @@
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -559,6 +609,14 @@
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
             </a>
             
@@ -663,7 +721,7 @@
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" integrity="sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" integrity="sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous"></script>
     
   </body>
 </html>

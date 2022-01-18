@@ -13,14 +13,21 @@
       <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
-      <description>controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
+      <description>
+        
+          
+            controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
 概念   CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
 下面例子是定义了一个crontab 的自定义资源:
 1apiVersion:apiextensions.k8s.io/v12kind:CustomResourceDefinition3metadata:4# 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39;5name:crontabs.stable.example.com6spec:7# 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;8group:stable.example.com9# 列举此 CustomResourceDefinition 所支持的版本10versions:11- name:v112# 每个版本都可以通过 served 标志来独立启用或禁止13served:true14# 其中一个且只有一个版本必需被标记为存储版本15storage:true16schema:17openAPIV3Schema:18type:object19properties:20spec:21type:object22properties:23cronSpec:24type:string25image:26type:string27replicas:28type:integer29# 可以是 Namespaced 或 Cluster30scope:Namespaced31names:32# 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt;33plural:crontabs34# 名称的单数形式，作为命令行使用时和显示时的别名35singular:crontab36# kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。37kind:CronTab38# shortNames 允许你在命令行使用较短的字符串来匹配资源39shortNames:40- ct  GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写
 Group: ApiGroup,是相关API功能的集合。
 Version: ApiGroup的版本， 每个ApiGroup可以对应多个版本。
 Kind：资源类型。 Resource：资源，Kind的具象化，类似于面向对象语言中的类与对象，Kind就是类，Resource就是对象。
-那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：</description>
+那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -29,12 +36,19 @@ Kind：资源类型。 Resource：资源，Kind的具象化，类似于面向对
       <pubDate>Tue, 08 Jun 2021 16:18:40 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/extensions/extend/</guid>
-      <description>Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
+      <description>
+        
+          
+            Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
 Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
  Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点：  变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响；   API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。 自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。 调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。 控制器扩展：一般与自定义资源结合使用，成为 Operator 模式。 网络插件：用来扩展 Pod 网络的插件。 存储插件：用来扩展存储的插件。  Operator 模式 自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。
 在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。
  使用 Operator 可以自动化的事情包括：
- 按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色   控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：</description>
+ 按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色   控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -43,13 +57,20 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
       <pubDate>Tue, 08 Jun 2021 16:18:16 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</guid>
-      <description>Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
+      <description>
+        
+          
+            Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
 Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：
  创建一个项目 创建一个API 定义CRD 实现controller 测试  创建项目   创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。
   执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp
 --domain: 项目的域名
   创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。
-1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：</description>
+1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：
+          
+          
+        
+      </description>
     </item>
     
   </channel>

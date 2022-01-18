@@ -13,7 +13,14 @@
       <pubDate>Mon, 17 Jan 2022 20:13:39 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/container/docker/network01/</guid>
-      <description>Insert Lead paragraph here.</description>
+      <description>
+        
+          
+            Insert Lead paragraph here.
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -22,19 +29,22 @@
       <pubDate>Wed, 17 Nov 2021 20:43:56 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/informer/</guid>
-      <description>概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 在Informer架构设计中,有多个核心组件,分别介绍如下。
+      <description>
+        
+          
+            概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/informer.png
+鏈接到文件: /static//static/k8s/informer.png
+使用 Page Bundles: false
+ 在Informer架构设计中,有多个核心组件,分别介绍如下。
 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。
 3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。
 informer 中支持处理资源的三种回掉方法:
  AddFunc :当创建资源对象时触发的事件回调方法。 UpdateFunc :当更新资源对象时触发的事件回调方法。 DeleteFunc :当删除资源对象时触发的事件回调方法。  通过Informer机制可以很容易地监控我们所关心的资源事件.
 Reflector 1func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration) *Reflector { 2 return NewNamedReflector(naming.GetNameFromCallsite(internalPackages...), lw, expectedType, store, resyncPeriod) 3} 通过NewReflector实例化Reflector对象,实例化过程中须传入ListerWatcher数据接口对象,它拥有List和Watch方法,用于获取及监控资源列表。只要实现了List和Watch方法的对象都可以称为ListerWatcher。 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。
-1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。 a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。
-b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。
-c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。
-d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。
-e. r.setLastSyncResourceVersion用于设置最新的资源版本号。
-2.监控资源对象
-Watch(监控)操作通过HTTP协议与Kubernetes API Server建立长连接,接收Kubernetes API Server 发来的资源变更事件。Watch操作的实现机制使用HTTP协议的分块传输编码(Chunked Transfer Encoding)。当client-go调用Kubernetes API Server时,Kubernetes API Server在Response的HTTP Header中设置Transfer-Encoding的值为chunked,表示采用分块传输编码,客户端收到该信息后,便与服务端进行连接,并等待下一个数据块(即资源的事件信息)。</description>
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -43,13 +53,21 @@ Watch(监控)操作通过HTTP协议与Kubernetes API Server建立长连接,接�
       <pubDate>Fri, 15 Oct 2021 11:47:48 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/karmada/scheduler/</guid>
-      <description>Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。
+      <description>
+        
+          
+            Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。
 注意： 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1
-调度框架 karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；
+调度框架  Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/karmada/scheduler.png
+鏈接到文件: /static//static/k8s/karmada/scheduler.png
+使用 Page Bundles: false
+ karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；
 policyInformer/clusterPolicyInformer 是用来监听 policy/clusterPolicy 的Update事件，将关联的 binding/clusterBinding 添加到调度队列；
 memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。
- 调度队列： 存储了待处理的 binding/clusterBinding 事件，使用的是先进先出队列。 调度缓存： 缓存了 cluster 的信息。  需要根据 binding/clusterBinding 当前状态决定下一步如何处理，共有如下几个状态，以 binding 为例:
- 首次调度(FirstSchedule): resourceBinding 对象中的 spec.Clusters 字段为空，即从未被调度过。 调协调度(ReconcileSchedule)： policy 的 placement 发生变化时就需要进行调协调度。 扩缩容调度(ScaleSchedule): policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。 故障恢复调度(FailoverSchedule): 调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。 无需调度(AvoidSchedule): 默认行为，上面四个调度都未执行，则不进行任何调度。  首次调度（FirstSchedule） 主要通过 scheduleOne 函数来实现，分为以下几个步骤：</description>
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -58,12 +76,18 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。
       <pubDate>Fri, 17 Sep 2021 10:29:11 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/storage/rook-edgefs/</guid>
-      <description>什么是 EdgeFS EdgeFS 是使用Go和C实现的高性能、可容错以及低延迟的对象存储系统，可以对来自本地，私有/公有云或者小型(loT)设备的数据进行地理透明地访问。
+      <description>
+        
+          
+            什么是 EdgeFS EdgeFS 是使用Go和C实现的高性能、可容错以及低延迟的对象存储系统，可以对来自本地，私有/公有云或者小型(loT)设备的数据进行地理透明地访问。
 EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点），相互连接，作为在 Kubernetes 平台上运行的一个全局名称空间数据结构，提供持久、容错和高性能的完全兼容的 S3 Object API 有状态的 Kubernetes 应用程序和 CSI 卷。 在每个Geo站点，EdgeFS 节点在物理或虚拟节点上部署为容器（StatefulSet），汇集可用存储容量并通过兼容的 S3/NFS/iSCSI/etc 存储模拟协议为在相同或专用服务器上运行的云原生应用程序提供存储容量。
 EdgeFS 类似于 &amp;quot;git&amp;quot;, 将所有的修改都完全版本化并且全局不可变，通过模拟存储标准协议（如S3、NFS，甚至iSCSI等块设备）以高性能和低延迟的方式访问 Kubernetes 持久卷。通过完全版本化的修改、完全不可变的元数据和数据，用户数据可以跨多个地理站点透明地复制、分发和动态预取。
 现状 EdgeFS 原本是 Nexenta 公司的开源项目（当时叫做 &amp;quot;NexentaEdge&amp;quot;，使用 Apache-2.0 License），后来 Nexenta 被名为 DataDirect Networks（DDN）的公司全资收购，然后 DDN 公司将 NexentaEdge 重命名为 EdgeFS，并选择将其闭源。 所以目前 EdgeFS 已经废弃了。不推荐使用。
-设计 Rook 支持使用 Kubernetes 原语在 Kubernetes 上轻松部署 EdgeFS 地理站点。 当Rook在 Kubernetes 集群中运行后，Kubernetes PODs 或者外部应用可以 mount Rook管理的块设备和文件系统，也可以通过 S3/S3X API进行对象存储。Rook operator 自动配置存储组件并监控群集，以确保存储健康可用。
-Rook operator 是一个简单的容器，它具有引导和监视存储集群所需的所有功能。operator 将启动并监控 StatefSet storage Targets、gRPC manager 和 Prometheus 多租户仪表板。所有连接的设备（或目录）将提供池存储站点。然后，存储站点可以作为一个全局名称空间数据结构轻松地相互连接。operator 通过初始化POD和运行服务所需的其他工件来管理目标、横向扩展NFS、对象存储（S3/S3X）和iSCSI卷的CRD。 operator 将监控存储目标，以确保群集正常运行。EdgeFS将动态处理服务故障切换，以及可能随着集群的增长或缩小而进行的其他调整。 EdgeFS Rook operator 还提供了集成的CSI插件。部署在每个Kubernetes节点上的CSI POD。处理节点上所需的所有存储操作，例如连接网络存储设备、挂载NFS导出和动态资源调配。 Rook在golang实现。EdgeFS使用Go和C实现，其中数据路径得到高度优化。</description>
+设计 Rook 支持使用 Kubernetes 原语在 Kubernetes 上轻松部署 EdgeFS 地理站点。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -72,11 +96,18 @@ Rook operator 是一个简单的容器，它具有引导和监视存储集群所
       <pubDate>Mon, 13 Sep 2021 20:39:50 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/storage/rook-nfs/</guid>
-      <description>NFS 介绍 NFS(Network File System)即网络文件系统, 是FreeBSD支持的文件系统中的一种。NFS是基于RPC(Remote Procedure Call)远程过程调用实现，其允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序就可以像访问本地文件一样访问远端系统上的文件。NFS是一个非常稳定的，可移植的网络文件系统。具备可扩展和高性能等特性，达到了企业级应用质量标准。由于网络速度的增加和延迟的降低，NFS系统一直是通过网络提供文件系统服务的有竞争力的选择。
+      <description>
+        
+          
+            NFS 介绍 NFS(Network File System)即网络文件系统, 是FreeBSD支持的文件系统中的一种。NFS是基于RPC(Remote Procedure Call)远程过程调用实现，其允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序就可以像访问本地文件一样访问远端系统上的文件。NFS是一个非常稳定的，可移植的网络文件系统。具备可扩展和高性能等特性，达到了企业级应用质量标准。由于网络速度的增加和延迟的降低，NFS系统一直是通过网络提供文件系统服务的有竞争力的选择。
 NFS 使用方式  已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中创建PVC和STorageClass ,一般通过 Kubernetes NFS Subdir External Provisioner 创建动态的provisioner,然后就可以在集群中使用NFS服务了;  2.物理机上手动安装NFS集群, 通过linux命令进行安装, 然后可以按照 1 进行使用;
 3.通过K8S进行安装, 安装方式有多种 NFS Provisioner 以及 rook 等, 通过k8s 管理nfs 集群, 然后对外提供服务;
 此处主要介绍在 k8s 中安装nfs 服务并对集群内外提供服务.
-NFS 安装 主要步骤  Step0: 创建Local Persistent Volume; Step1: 创建StorageClass; Step2: 创建PVC, 关联 Step2 中的StorageClass; Step3: 部署NFS Operator; Step4: 创建NFS Server; Step5: 创建NFS Storage Class; Step6: 创建 Pod 并使用NFS; Step7: 让集群外部服务也可以访问NFS Server;  Step0: 创建 Local Persistent Volume 首先在集群的宿主机(k8s-node2)创建挂载点, 比如 /mnt/disk; 然后 用RAM Disk 来模拟本地磁盘, 如下所示:</description>
+NFS 安装 主要步骤  Step0: 创建Local Persistent Volume; Step1: 创建StorageClass; Step2: 创建PVC, 关联 Step2 中的StorageClass; Step3: 部署NFS Operator; Step4: 创建NFS Server; Step5: 创建NFS Storage Class; Step6: 创建 Pod 并使用NFS; Step7: 让集群外部服务也可以访问NFS Server;  Step0: 创建 Local Persistent Volume 首先在集群的宿主机(k8s-node2)创建挂载点, 比如 /mnt/disk; 然后 用RAM Disk 来模拟本地磁盘, 如下所示:
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -85,17 +116,21 @@ NFS 安装 主要步骤  Step0: 创建Local Persistent Volume; Step1: 创建Stor
       <pubDate>Wed, 18 Aug 2021 15:26:32 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/</guid>
-      <description>什么是knative knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。
-如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。 各个角色之间的关系,如上图所示:
+      <description>
+        
+          
+            什么是knative knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。
+如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://www.geekgame.site/static/k8s/knative_arch.png
+鏈接到文件: /static//static/k8s/knative_arch.png
+使用 Page Bundles: false
+ 各个角色之间的关系,如上图所示:
 何为serverless serverless 中文可以翻译为无服务器架构, 有两个方面的定义: 狭义讲就是你的服务是很少的一段代码或者是一个函数,这个代码或者函数可以通过事件(一个http请求或者消息队列的消息)来触发,总结下来就是 Trigger + FAAS + BAAS(高可用免运维的后端服务);
 广义上来讲serverless是简化运维的一种方案,即服务免运维,可实现 CI/CD,自动扩缩容,灰度等自动化操作;
 knative 就是属于广义上定义的serverless, 它构建在 Kubernetes 的基础上,并为构建和部署无服务器架构(serverless)和基于事件驱动的应用程序提供了一致的标准模式。Knative 减少了这种新的软件开发方法所产生的开销,同时还把路由(routing)和事件(eventing)的复杂性抽象出来。
-核心组件: 为了实现对serverless 的管理, knative 将整个系统划分为三个部分, 主要由三个组件来实现
-构建: 通过灵活的可配置方法将源代码构建为容器;
-服务: 管理应用的部署和服务支持;
-事件: 用户自动完成事件的绑定和触发;
-Knative 服务(kantive Serving) knative serving 主要是用来部署serverless 应用以及为其提供服务支持.其主要特性如下:
- 快速部署Serverless 容器 自动缩放包括将pod缩放到0 支持多个网络组件来提供路由和网络编程, 例如 Ambassador、Contour、Kourier、Gloo 和 Istio。 支持部署快照。  Knative Serving 通过 Kubernetes 自定义资源 (CRD) 来控制serverless 应用在集群中的行为 ：</description>
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -104,12 +139,19 @@ Knative 服务(kantive Serving) knative serving 主要是用来部署serverless 
       <pubDate>Mon, 05 Jul 2021 11:09:37 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/monitoring_arch/</guid>
-      <description>概要 监控分为两个部分:
+      <description>
+        
+          
+            概要 监控分为两个部分:
  核心监控流程由kubelet、资源评估器、metric-server(Heapster 精简版)以及API server 上的master metrics API 组成. 这些监控数据被系统核心组件使用,例如调度逻辑(调度器和基于系统指标的HPA) 和 开箱即用的UI组件(例如 kubectl top), 这条监控管道不适合与第三方监控系统集成. 另一个监控流程用于从系统收集各种指标并将这些指标导出到用户端、HPA(自定义指标)以及通过适配器到处到 infrastore. 用户可以从众多的监控系统中进行选择,也可以不运行监控系统. Kubernetes 不附带监控管道, 但是第三方的选项是很容易被安装的. 我们希望第三方管道通常由每个节点的代理和一个集群级聚合器组成.  该架构在本文档附录中的图表中进行了说明。
 介绍和目标 本文档为Kubernetes 提出了一个高级监控架构. 它涵盖了 Kubernetes Monitoring Architecture 文档中提到的一些问题. 特别关注有望满足大量需求的监控架构(组件以及组件之间的交互), 我们没有为实现这个架构指定任何特定的时间,也没有规划路线图.
 术语 有两种指标系统指标和服务指标, 系统指标是一般的指标,通常可以从每个监控的实体获得(例如容器和节点的CPU和内存使用情况). 服务指标是在应用代码明确定义并导出的(例如API服务器状态码为500的请求数量), 系统指标和服务指标都是从用户的容器或者系统基础组件获取(主节点组件,比如API服务器, 运行在主节点的插件pod, 和运行在用户节点的插件pod)
 我们把系统指标分为:
- 核心指标 这些指标都是Kubernetes理解并用于其内部组件和核心业务的指标 — 例如, 用于调度的指标(包括用于资源评估、初始资源/垂直自动缩放,集群自动缩放, 和Pod水平自动缩放(不包括自定义指标)), Kube 仪表盘, 和 “kubectl top”, 截至目前, 这包括cpu 累计使用情况, 内存瞬时使用情况, pod 磁盘使用情况, 容器的磁盘使用情况. 非核心指标，不被 Kubernetes 解读；我们通常假设它们包括核心指标（尽管不一定采用 Kubernetes 理解的格式）以及其他指标。 我们认为日志记录与监控是分开的，因此日志记录超出了本文档的范围。  要求 监控架构应该是下面这个样子：</description>
+ 核心指标 这些指标都是Kubernetes理解并用于其内部组件和核心业务的指标 — 例如, 用于调度的指标(包括用于资源评估、初始资源/垂直自动缩放,集群自动缩放, 和Pod水平自动缩放(不包括自定义指标)), Kube 仪表盘, 和 “kubectl top”, 截至目前, 这包括cpu 累计使用情况, 内存瞬时使用情况, pod 磁盘使用情况, 容器的磁盘使用情况. 非核心指标，不被 Kubernetes 解读；我们通常假设它们包括核心指标（尽管不一定采用 Kubernetes 理解的格式）以及其他指标。 我们认为日志记录与监控是分开的，因此日志记录超出了本文档的范围。  要求 监控架构应该是下面这个样子：
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -118,14 +160,21 @@ Knative 服务(kantive Serving) knative serving 主要是用来部署serverless 
       <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
-      <description>controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
+      <description>
+        
+          
+            controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
 概念   CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
 下面例子是定义了一个crontab 的自定义资源:
 1apiVersion:apiextensions.k8s.io/v12kind:CustomResourceDefinition3metadata:4# 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39;5name:crontabs.stable.example.com6spec:7# 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;8group:stable.example.com9# 列举此 CustomResourceDefinition 所支持的版本10versions:11- name:v112# 每个版本都可以通过 served 标志来独立启用或禁止13served:true14# 其中一个且只有一个版本必需被标记为存储版本15storage:true16schema:17openAPIV3Schema:18type:object19properties:20spec:21type:object22properties:23cronSpec:24type:string25image:26type:string27replicas:28type:integer29# 可以是 Namespaced 或 Cluster30scope:Namespaced31names:32# 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt;33plural:crontabs34# 名称的单数形式，作为命令行使用时和显示时的别名35singular:crontab36# kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。37kind:CronTab38# shortNames 允许你在命令行使用较短的字符串来匹配资源39shortNames:40- ct  GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写
 Group: ApiGroup,是相关API功能的集合。
 Version: ApiGroup的版本， 每个ApiGroup可以对应多个版本。
 Kind：资源类型。 Resource：资源，Kind的具象化，类似于面向对象语言中的类与对象，Kind就是类，Resource就是对象。
-那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：</description>
+那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -134,12 +183,19 @@ Kind：资源类型。 Resource：资源，Kind的具象化，类似于面向对
       <pubDate>Tue, 08 Jun 2021 16:18:40 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/extensions/extend/</guid>
-      <description>Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
+      <description>
+        
+          
+            Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
 Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
  Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点：  变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响；   API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。 自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。 调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。 控制器扩展：一般与自定义资源结合使用，成为 Operator 模式。 网络插件：用来扩展 Pod 网络的插件。 存储插件：用来扩展存储的插件。  Operator 模式 自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。
 在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。
  使用 Operator 可以自动化的事情包括：
- 按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色   控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：</description>
+ 按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色   控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -148,13 +204,20 @@ Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
       <pubDate>Tue, 08 Jun 2021 16:18:16 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</guid>
-      <description>Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
+      <description>
+        
+          
+            Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
 Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：
  创建一个项目 创建一个API 定义CRD 实现controller 测试  创建项目   创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。
   执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp
 --domain: 项目的域名
   创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。
-1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：</description>
+1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -163,14 +226,21 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 
       <pubDate>Mon, 07 Jun 2021 10:15:54 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/linux/io/</guid>
-      <description>阻塞/非阻塞与同步/异步I/O区别 阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
+      <description>
+        
+          
+            阻塞/非阻塞与同步/异步I/O区别 阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。
 阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分： 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程就会被阻塞，不能执行其他任务。
 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程不会被阻塞，还能继续执行其他任务。
 同步/异步I/O 是根据I/O响应方式而划分的：
 同步I/O 是指系统收到I/O请求后，不会立刻响应，而是处理玩成之后才会响应。
 异步I/O 是指系统收到I/O请求后，立刻响应告诉程序已经收到请求，随后再去异步处理，处理完成之后，通过事件通知的方式通知应用该程序I/O处理结果。
 参考 linux 性能优化实战
-Linux中的异步I/O模型</description>
+Linux中的异步I/O模型
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -179,11 +249,18 @@ Linux中的异步I/O模型</description>
       <pubDate>Mon, 29 Mar 2021 20:30:20 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/golang_performance/</guid>
-      <description>对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。 整个分析主要分为三个部分：
+      <description>
+        
+          
+            对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。 整个分析主要分为三个部分：
  项目中引入相关的包； 编译程序运行并收集运行时的数据； 分析相关数据  引入并收集数据 Golang标准库中提供了两种引入方式：
  runtime/pprof: 将程序运行时的性能分析数据写入到文件中，然后可通过pprof可视化分析工具进行分析；支持使用标准测试包构建的性能分析基准测试； net/http/pporf: 通过HTTP Server的方式提供pprof可视化工具所需要的性能分析数据；  runtime/pprof 支持基准测试：以下命令在当前目录中运行基准测试并将 CPU 和内存配置文件写入 cpu.prof 和 mem.prof：
 1 go test -cpuprofile cpu.prof -memprofile mem.prof -bench . 独立程序分析：需要将以下代码添加到主函数中：
-1var cpuprofile = flag.String(&amp;#34;cpuprofile&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;write cpu profile `file`&amp;#34;) 2var memprofile = flag.String(&amp;#34;memprofile&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;write memory profile to `file`&amp;#34;) 3 4func main() { 5 flag.Parse() 6 if *cpuprofile != &amp;#34;&amp;#34; { 7 f, err := os.Create(*cpuprofile) 8 if err !</description>
+1var cpuprofile = flag.String(&amp;#34;cpuprofile&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;write cpu profile `file`&amp;#34;) 2var memprofile = flag.String(&amp;#34;memprofile&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;write memory profile to `file`&amp;#34;) 3 4func main() { 5 flag.Parse() 6 if *cpuprofile != &amp;#34;&amp;#34; { 7 f, err := os.Create(*cpuprofile) 8 if err !
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -192,19 +269,23 @@ Linux中的异步I/O模型</description>
       <pubDate>Sat, 13 Mar 2021 20:58:49 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/nosql/select/</guid>
-      <description>Nosql 目前主流说法已经从 no sql 变为现在的 not only sql,这个不仅仅是因为 nosql 数据库提供了类似 sql 的查询语言,更是因为它为我们解决复杂场景下业务需求和分布式数据处理提供了有效解决方法。
+      <description>
+        
+          
+            Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://raw.githubusercontent.com/garfcat/garfcat/master/static/history-of-nosql.jpg
+鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/history-of-nosql.jpg
+使用 Page Bundles: false
+ Nosql 目前主流说法已经从 no sql 变为现在的 not only sql,这个不仅仅是因为 nosql 数据库提供了类似 sql 的查询语言,更是因为它为我们解决复杂场景下业务需求和分布式数据处理提供了有效解决方法。
 目前nosql数据库已经有200多个(从 https://hostingdata.co.uk/nosql-database/ 可以看到已经有225个)，但是我们目前常用的数据库有以下四类: KV数据库、文档数据库、列式数据库、全文搜索引擎。本文就以redis、mongodb、hbase、ES为例说明这几种数据的区别以及各自的适用场景。
 Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值存储到数据库中，并将可以按照键读取数据。
 优点:
  轻量且高性能； 支持集群（主从集群，切片集群）； 不仅支持简单的字符串键值对， 它还提供了一系列数据结构类型值，如list、hash、set、sorted set、bitmap、hyperloglog.  缺点:
  主要缺点是事务支持不完整：保证了 ACID 中的一致性（C）和隔离性（I），但并不保证原子性（A）和持久性（D）； 集群使用Slot映射表来决定数据分布，规模有一定限制；  主要场景
  缓存： 其高性能最适合用来做缓存，这也是redis最常用的场景之一; 分布式锁：redis 提供了 Redlock 算法,用来实现基于多个实例的分布式锁; 消息队列：redis 通过list和stream来实现消息队列，数据不大的情况下redis不失为一个好的消息队列方案； 排行榜/计数：redis提供了一些统计模式，常见的有聚合统计、排序统计、二值状态统计和基数统计；  Mongodb MongoDB 是文档数据库，主要提供数据存储和管理服务。最大的特点就是free-schema,可以将存储任意数据，多种信息存储在一个文档中，而不像关系型数据库那样存储在不同的表中。目前最常用的文档格式是JSON.
-优点
- 灵活的查询语言； 易于水平扩展，高可用复制集，可扩展分片集群； 字段增加简单，可以存储复杂的数据格式；  缺点或者限制
- 由于没有像关系型数据库的范式要求，所以数据可能会有冗余存储； 每个文档大小限制为16MB; 事务MVCC的旧数据保存在内存中，所以如果涉及大量文档的数据会带来性能问题，而且mongodb 也提供了默认清理时间transactionLifetimeLimitSeconds，指定多文档事务的生存期。超过此限制的事务将被视为已过期，并且将通过定期清理过程中止； 虽然事务锁定了正在修改的文档，但是其他会话修改该文档并不会被block，而是要求终止该事务然后重试，这会造成浪费因为事务中的其他操作也会重新执行；  适用场景 电商、游戏、物流、内容管理、社交、物联网、视频直播等领域都可以使用mongodb;
-hbase hbase是一种key/value分布式存储系统，仅能按照主键(row key)和主键的range来检索数据，属于列式数据库，是按照列来存储数据的；
-优点
- 海量数据存储： 一个表可以有上亿行数据，上百万列； 准实时查询：1s内或者百毫秒内返回查询结果； 横向扩展能力强；  缺点</description>
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -213,11 +294,18 @@ hbase hbase是一种key/value分布式存储系统，仅能按照主键(row key)
       <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/test/</guid>
-      <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
+      <description>
+        
+          
+            单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
  功能测试（Test） 性能测试（Benchmark） 示例测试（Example）  测试文件名称一般是源代码文件加上 &amp;quot;_test.go&amp;quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
 在展开单元测试之前先讲下,testing包中的输出函数：
  t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继续运行; t.Fatalf(): 错误日志输出，当前函数立刻退出；  功能测试 测试函数有两点约定：
- 函数名必需以Test为前缀，如需要测试Add函数则名称应该为 TestAdd; 函数参数必需为 t * testing.T; 完整的功能测试如下所示：  1// add.go 2func Add(a int, b int) int { 3 return a + b 4} 5 6// add_tesg.go 7func TestAdd(t *testing.T){ 8 a := 1 9 b := 2 10 want := a + b 11 got := Add(a, b) 12 if want !</description>
+ 函数名必需以Test为前缀，如需要测试Add函数则名称应该为 TestAdd; 函数参数必需为 t * testing.T; 完整的功能测试如下所示：  1// add.go 2func Add(a int, b int) int { 3 return a + b 4} 5 6// add_tesg.go 7func TestAdd(t *testing.T){ 8 a := 1 9 b := 2 10 want := a + b 11 got := Add(a, b) 12 if want !
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -226,9 +314,16 @@ hbase hbase是一种key/value分布式存储系统，仅能按照主键(row key)
       <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/protocol/tcp_1/</guid>
-      <description>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
+      <description>
+        
+          
+            要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
 TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&amp;gt; &amp;lt;SEQ=100&amp;gt;&amp;lt;CTL=SYN&amp;gt; --&amp;gt; SYN-RECEIVED 6 7 3. ESTABLISHED &amp;lt;-- &amp;lt;SEQ=300&amp;gt;&amp;lt;ACK=101&amp;gt;&amp;lt;CTL=SYN,ACK&amp;gt; &amp;lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&amp;gt; &amp;lt;SEQ=101&amp;gt;&amp;lt;ACK=301&amp;gt;&amp;lt;CTL=ACK&amp;gt; --&amp;gt; ESTABLISHED 10 11 5. ESTABLISHED --&amp;gt; &amp;lt;SEQ=101&amp;gt;&amp;lt;ACK=301&amp;gt;&amp;lt;CTL=ACK&amp;gt;&amp;lt;DATA&amp;gt; --&amp;gt; ESTABLISHED 一般的关闭流程如下所示：
-1 TCP A TCP B 2 3 1. ESTABLISHED ESTABLISHED 4 5 2. (Close) 6 FIN-WAIT-1 --&amp;gt; &amp;lt;SEQ=100&amp;gt;&amp;lt;ACK=300&amp;gt;&amp;lt;CTL=FIN,ACK&amp;gt; --&amp;gt; CLOSE-WAIT 7 8 3.</description>
+1 TCP A TCP B 2 3 1. ESTABLISHED ESTABLISHED 4 5 2. (Close) 6 FIN-WAIT-1 --&amp;gt; &amp;lt;SEQ=100&amp;gt;&amp;lt;ACK=300&amp;gt;&amp;lt;CTL=FIN,ACK&amp;gt; --&amp;gt; CLOSE-WAIT 7 8 3.
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -237,17 +332,21 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
       <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/k8s/k8s/</guid>
-      <description>什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：
+      <description>
+        
+          
+            什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：
  可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。  Kubernetes 架构 K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端，是控制节点主要控制和管理整个K8s集群;node是客户端,是工作节点，主要处理来自于master的任务。K8s可以设置多master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。
 master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler, cloud-controller-manager; node 包含的组件有: kubelet, kube-proxy;
-图片来源
+Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !important; }  網站鏈接: https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg
+鏈接到文件: /static/https://raw.githubusercontent.com/garfcat/garfcat/master/static/k8s/Kubernetes-101-Architecture-Diagram-768x555.jpeg
+使用 Page Bundles: false
+ 图片来源
 master 组件 kube-apiserver: 提供集群HTTP REST API, 是集群控制的唯一入口,提供访问控制、注册、信息存储功能, 同时也是集群内部模块之间数据交换的枢纽。 etcd: 兼具一致性和高可用性的键值数据库,保存 K8s 所有集群数据;
-kube-scheduler: 对K8s中的Pod资源进行监控调度，为Pod选择合适的工作节点； kube-controller-manager: K8s实现自动化的关键组件，是集群中所有资源的自动化控制中心；
-cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻辑的控制平面组件,使得 K8s 可以直接利用云平台实现持久化卷、负载均衡、网络路由、DNS 解析以及横向扩展等功能。
-node 组件 kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; kube-proxy: 负责K8s集群服务的通信以及负载均衡；
-数据流转 我们以 ReplicaSet 为例，讲述一下K8s的数据流转：
-0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；
- API作为集群入口，接收命令请求； Deployment 控制器通过 watch 获取到 Deployment 的创建事件; Deployment 控制器创建 ReplicaSet 资源; ReplicaSet 控制器通过 watch 获取到 ReplicaSet 的创建事件; ReplicaSet 控制器创建 POD 资源； Scheduler 通过 watch 获取 Pod 创建事件以及获取未绑定Node的Pod； Scheduler 通过调度算法为 Pod 选择合适的Node； kubelet 通过 watch 获取部署在当前Node的 Pod; kubelet 通过 CRI 通知container runtime 创建 Pod； container runtime 成功创建Pod；  观察POD创建过程相关事件 我们可以通过kubectl get events --watch 来观察POD创建过程所产生的事件。使用watch 选项可以监听整个过程。 以下是创建nginx的过程：</description>
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -256,9 +355,16 @@ node 组件 kubelet: 负责与master节点通信，处理master下发的任务�
       <pubDate>Sun, 11 Aug 2019 10:23:01 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/sched/</guid>
-      <description>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
+      <description>
+        
+          
+            Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
 GMP调度模型 Go采用的是GMP调度模型。
-核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：  1 go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数； 本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中； 全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；  调度原理 1 +-------------------- sysmon ---------------//------+ 2 | | 3 | | 4 +---+ +---+-------+ +--------+ +---+---+ 5 go func() ---&amp;gt; | G | ---&amp;gt; | P | local | &amp;lt;=== balance ===&amp;gt; | global | &amp;lt;--//--- | P | M | 6 +---+ +---+-------+ +--------+ +---+---+ 7 | | | 8 | +---+ | | 9 +----&amp;gt; | M | &amp;lt;--- findrunnable ---+--- steal &amp;lt;--//--+ 10 +---+ 11 | 12 mstart 13 | 14 +--- execute &amp;lt;----- schedule 15 | | 16 | | 17 +--&amp;gt; G.</description>
+核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：  1 go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数； 本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中； 全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中；  调度原理 1 +-------------------- sysmon ---------------//------+ 2 | | 3 | | 4 +---+ +---+-------+ +--------+ +---+---+ 5 go func() ---&amp;gt; | G | ---&amp;gt; | P | local | &amp;lt;=== balance ===&amp;gt; | global | &amp;lt;--//--- | P | M | 6 +---+ +---+-------+ +--------+ +---+---+ 7 | | | 8 | +---+ | | 9 +----&amp;gt; | M | &amp;lt;--- findrunnable ---+--- steal &amp;lt;--//--+ 10 +---+ 11 | 12 mstart 13 | 14 +--- execute &amp;lt;----- schedule 15 | | 16 | | 17 +--&amp;gt; G.
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -267,8 +373,15 @@ GMP调度模型 Go采用的是GMP调度模型。
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/start/</guid>
-      <description>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&amp;#34;fmt&amp;#34; 5) 6 7func main() { 8	fmt.Println(&amp;#34;hello world&amp;#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 7	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 8	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 9	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 10	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.</description>
+      <description>
+        
+          
+            知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&amp;#34;fmt&amp;#34; 5) 6 7func main() { 8	fmt.Println(&amp;#34;hello world&amp;#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6	0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 7	0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 8	0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 9	0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 10	0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -277,7 +390,10 @@ GMP调度模型 Go采用的是GMP调度模型。
       <pubDate>Sat, 15 Jun 2019 16:41:11 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/plan9/</guid>
-      <description>程序组成 程序由代码和数据组成，数据又有静态与动态之分；
+      <description>
+        
+          
+            程序组成 程序由代码和数据组成，数据又有静态与动态之分；
 动态数据：存放在堆区和栈区；
 静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
 可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
@@ -287,8 +403,11 @@ SB 全局静态起始地址, foo(SB)表示foo在内存中的地址。这个语�
 FP 用来引用程序的参数，这些引用是由编译器维护，通过该寄存器的偏移量来引用参数。在64位的机器上，0(FP)表示第一个参数，8(FP)表示第二个参数等等。为了程序的清晰与可读性，编译器强制在引用参数时使用名称。
 FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在栈桢为0的情况下 伪SP与硬件寄存器SP相等。可以使用有无symbol来区分是哪个寄存器： 有symbol 例如 foo-8(SP)表示伪寄存器，8(SP)表示硬件寄存器。
 栈结构 无参数无本地变量 无参数无本地变量栈结果是如下所示
-通过如下函数来验证
-1#include &amp;#34;textflag.h&amp;#34; // 2 3TEXT ·SpFp(SB),NOSPLIT,$0-32 4 LEAQ (SP), AX // 将硬件SP地址存储到AX 5 LEAQ a+0(SP), BX // 将伪SP地址存储到BX 6 LEAQ b+0(FP), CX // 将FP地址存储到CX 7 MOVQ AX, ret+0(FP) // 将AX地址存储到第一个返回值 8 MOVQ BX, ret+8(FP) // 将BX地址存储到第二个返回值 9 MOVQ CX, ret+16(FP) // 将CX地址存储到第三个返回值 10 MOVQ a+0(SP), AX // 将SP 存储的值存储到AX， 也就是该函数的返回值 11 MOVQ AX, ret+24(FP) //将AX 放到第四个返回值 12 RET 13 1package main 2 3import &amp;#34;fmt&amp;#34; 4 5func SpFp() (int, int, int, int) // 汇编函数声明 6func main() { 7	a,b,c, addr := SpFp() 8	fmt.</description>
+ Image not found  a.warning-link { color: inherit !
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -297,14 +416,21 @@ FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在�
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/language/golang/module/</guid>
-      <description>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
+      <description>
+        
+          
+            Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
 需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
 本文会介绍Go module的一些基本用法；
  常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令  常见命令 go mod 提供了以下命令
  download: 下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享; edit : 编辑go.mod; graph: 打印模块的依赖图; init: 在当前目录初始化mod; tidy : 添加缺失的依赖包并清理没有使用的包; vendor : 将依赖包复制到vendor目录; verify: 验证依赖是否正确; why : 解释为什么需要这个依赖;  创建一个模块 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;
 执行一下子命令
 1 ~/gomod/hello$ go mod init example.com/hello 2go: creating new go.mod: module example.com/hello 创建hello.go
-1package hello 2 3func Hello()string { 4	return &amp;#34;Hello, world.</description>
+1package hello 2 3func Hello()string { 4	return &amp;#34;Hello, world.
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -313,8 +439,15 @@ FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在�
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/shell/effective_shell/</guid>
-      <description>shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
- oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；  命令  hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里  </description>
+      <description>
+        
+          
+            shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
+ oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；  命令  hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里  
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -323,8 +456,15 @@ FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在�
       <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/protocol/mqtt/</guid>
-      <description>&lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
-低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;</description>
+      <description>
+        
+          
+            &lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
+低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;
+          
+          
+        
+      </description>
     </item>
     
     <item>
@@ -333,40 +473,18 @@ FP、 伪SP、 硬件SP之间的关系 SP分为伪SP和硬件寄存器SP，在�
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
       
       <guid>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
-      <description>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
+      <description>
+        
+          
+            mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
 1$sed -i &amp;#39;s/xxxx/yyy/g&amp;#39; test 2sed: 1: &amp;#34;test&amp;#34;: extra characters at the end of p command 解决方法
 1sed -i &amp;#34;&amp;#34; &amp;#34;s/XX/YY/g&amp;#34; test ============================================
 sed 用法
-1sed: illegal option -- - 2usage: sed script [-Ealn] [-i extension] [file ...] 3 sed [-Ealn] [-i extension] [-e script] ... [-f script_file] ... [file ...] 4 5 6-i 后边需要添加备份文件的后缀名,如果不需要可以使用&amp;#34;&amp;#34;,但是不可以忽略 7 8如 sed -i &amp;#34;.bak&amp;#34; &amp;#39;s/xxxx/yyy/g&amp;#39; test 会将替换后的文本写入test.bak </description>
-    </item>
-    
-    <item>
-      <title>Archive</title>
-      <link>https://www.geekgame.site/archives/</link>
-      <pubDate>Mon, 13 May 2019 12:22:44 +0800</pubDate>
-      
-      <guid>https://www.geekgame.site/archives/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://www.geekgame.site/about/</link>
-      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.geekgame.site/about/</guid>
-      <description>程序员一枚；
-这个博客主要用来总结工作遇到和学习到的一些知识。
-主要关注技术：云原生、边缘计算、容器等</description>
-    </item>
-    
-    <item>
-      <title>搜索</title>
-      <link>https://www.geekgame.site/search/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.geekgame.site/search/</guid>
-      <description></description>
+1sed: illegal option -- - 2usage: sed script [-Ealn] [-i extension] [file ...] 3 sed [-Ealn] [-i extension] [-e script] ... [-f script_file] ... [file ...] 4 5 6-i 后边需要添加备份文件的后缀名,如果不需要可以使用&amp;#34;&amp;#34;,但是不可以忽略 7 8如 sed -i &amp;#34;.bak&amp;#34; &amp;#39;s/xxxx/yyy/g&amp;#39; test 会将替换后的文本写入test.bak 
+          
+          
+        
+      </description>
     </item>
     
   </channel>

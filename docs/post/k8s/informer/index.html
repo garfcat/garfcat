@@ -24,7 +24,7 @@
 <meta property="og:url" content="https://www.geekgame.site/post/k8s/informer/" />
 <meta property="og:title" content="Kubernetes Informer 机制" />
 <meta property="og:description" content="Kubernetes Informer 机制" />
-<meta property="og:image" content="https://www.geekgame.site/images/path/share.png" />
+<meta property="og:image" content="https://www.geekgame.site/post/k8s/informer/images/path/share.png" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
@@ -36,12 +36,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity = "sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" as="script" integrity=
-    "sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" as="script" integrity=
+    "sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity="sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
@@ -120,18 +120,43 @@
 </svg></span>
     <span class="post_date">
       Nov 17, 2021</span>
-    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
         </a><a href='https://www.geekgame.site/tags/informer' title="informer" class="post_tag button button_translucent">informer
         </a>
     </span>
   </div>
 
+
+
+
+  
+  
+  
+  
+  
+
+  
+    <div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/images/bridge.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/images/bridge.png</a></p>
+    <p>鏈接到文件: /static//static/images/bridge.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+  
+
+
     
-    <img src="/static/images/bridge.png" class="image_featured" alt="Kubernetes Informer 机制">
-    
-    
-    <h2>文章目录</h2>
-    <nav id="TableOfContents">
+    <div class="post_toc">
+      <h2>文章目录</h2>
+      <nav id="TableOfContents">
   <ul>
     <li><a href="#概述">概述</a></li>
     <li><a href="#reflector">Reflector</a></li>
@@ -145,9 +170,33 @@
     <li><a href="#总结">总结</a></li>
   </ul>
 </nav>
-    <h2 id="概述">概述</h2>
+    </div>
+    
+    <div class="post_body"><h2 id="概述">概述</h2>
 <p>Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。
-<img src="/static/k8s/informer.png" alt="informer"></p>
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/informer.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/informer.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/informer.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>在Informer架构设计中,有多个核心组件,分别介绍如下。<br>
 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 <br>
 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。<br>
@@ -167,7 +216,29 @@
 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。
 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。</p>
 <p>1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。
-<img src="/static/k8s/listAndWatch.png" alt="listAndWatch"></p>
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/listAndWatch.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/listAndWatch.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/listAndWatch.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。<br>
 b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。<br>
 c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。<br>
@@ -189,7 +260,29 @@ e. r.setLastSyncResourceVersion用于设置最新的资源版本号。</p>
 <span class="ln"> 9</span>
 <span class="ln">10</span><span class="p">}</span>
 </code></pre></div><p>queue字段存储资源对象的key,该key通过KeyOf函数计算得到。items字段通过map数据结构的方式存储,value存储的是对象的Deltas数组。</p>
-<p><img src="/static/k8s/deltafifo.png" alt="deltafifo">
+<p>
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/deltafifo.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/deltafifo.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/deltafifo.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 key 是 <namespace>/<name> 组合, 如果namespace 为空,则 key是 <name>.</p>
 <p>DeltaFIFO 本质上是一个先进先出的队列, 有生产者和消费者, 其中生产者是 Reflector 调用的Add 方法, 消费者是Controller 调用的Pop 方法.</p>
 <h3 id="生产者">生产者</h3>
@@ -303,7 +396,29 @@ indexers 存储索引函数,</p>
 <p>indices 存储缓存器, key 为缓存名称, 和索引名字相同, value为缓存数据;
 index 为缓存数据, 结构为key/value</p>
 <p>indices 结构如下所示:
-<img src="/static/k8s/indices.png" alt="indices"></p>
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/indices.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/indices.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/indices.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>从index 中获取数据的核心逻辑如下所示:</p>
 <div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span>
 <span class="ln"> 2</span>
@@ -332,6 +447,10 @@ index 为缓存数据, 结构为key/value</p>
 <h2 id="总结">总结</h2>
 <p>通过本文我们了解到了 informer 核心实现逻辑，informer 通过本地缓存大大减轻了对API的压力。</p>
 
+    </div>
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
@@ -340,8 +459,12 @@ index 为缓存数据, 结构为key/value</p>
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
       </li>
@@ -354,6 +477,9 @@ index 为缓存数据, 结构为key/value</p>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
       </li>
@@ -374,9 +500,6 @@ index 为缓存数据, 结构为key/value</p>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </li>
     </ul>
     <div>
@@ -424,6 +547,11 @@ index 为缓存数据, 结构为key/value</p>
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -673,6 +801,14 @@ index 为缓存数据, 结构为key/value</p>
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
             </a>
             
@@ -777,7 +913,7 @@ index 为缓存数据, 结构为key/value</p>
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" integrity="sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" integrity="sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous"></script>
     
   </body>
 </html>

@@ -36,12 +36,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity = "sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" as="script" integrity=
-    "sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" as="script" integrity=
+    "sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.ee3b9488ef041710052f5c22837bf044d13ac251377aac559881157179229b04be4ae0027ad7b3c9b0cf469d0b37c82b8fcc5956709efe67b73f0e08a76bba3d.css" integrity="sha512-7juUiO8EFxAFL1wig3vwRNE6wlE3eqxVmIEVcXkimwS&#43;SuACetezybDPRp0LN8grj8xZVnCe/me3Pw4Ip2u6PQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
@@ -125,11 +125,36 @@
     </span>
   </div>
 
+
+
+
     
-    <h1 id="什么是knative">什么是knative</h1>
+    <div class="post_body"><h1 id="什么是knative">什么是knative</h1>
 <p>knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。</p>
 <p>如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。
-<img src="/static/k8s/knative_arch.png" alt="">
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/knative_arch.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/knative_arch.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/knative_arch.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 各个角色之间的关系,如上图所示:</p>
 <h1 id="何为serverless">何为serverless</h1>
 <p>serverless 中文可以翻译为无服务器架构, 有两个方面的定义: <br>
@@ -166,7 +191,29 @@
 </ul>
 <p>如果单独控制 Route 和 Configuration,那么就可以不使用Service，但是knative 推荐使用service,因为它会帮你自动管理 Route 和 Configuration.</p>
 <p>资源关系图:
-<img src="/static/k8s/knative_serving_resource.png" alt=""></p>
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/knative_serving_resource.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/knative_serving_resource.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/knative_serving_resource.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <h3 id="knative-service-测试">knative service 测试</h3>
 <p>一个 knative service 的 helloworld-go.yaml 如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">serving.knative.dev/v1</span><span class="w">
@@ -321,7 +368,29 @@ Knative 中的 Route 提供了一种将流量路由到正在运行的代码的�
 在上面的Route定义中 100% 流量发送到名称为helloworld-go的 Configuration 最新就绪的Revision ,即 latestReadyRevisionName: helloworld-go-shphd；</p>
 <h4 id="那么到底如何进行访问服务呢">那么到底如何进行访问服务呢？</h4>
 <p>首先看一下流量转发路径：
-<img src="/static/k8s/flow.png" alt="">
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/flow.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/flow.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/flow.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
 用户发起的请求首先会打到 Gateway 上面,然后 Istio 通过 VirtualService 再把请求转发到具体的 Revision 上面。当然用户的流量还会经过.
 Knative 的 queue 容器才能真正转发到业务容器, 这里我们直接使用 ClusterIP进行测试。</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span><span class="o">[</span>root@test ~<span class="o">]</span><span class="c1"># kubectl get svc istio-ingressgateway -n istio-system</span>
@@ -338,7 +407,29 @@ Knative 的 queue 容器才能真正转发到业务容器, 这里我们直接使
 <span class="ln">12</span>Hello World!
 </code></pre></div><h4 id="如何进行扩缩容">如何进行扩缩容？</h4>
 <p>主要依靠两个组件 Autoscaler(自动伸缩器)和 Activator(激活器)， 具体如下所示：
-<img src="/static/k8s/scale.png" alt=""></p>
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/scale.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/scale.png</a></p>
+    <p>鏈接到文件: /static//static/k8s/scale.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+</p>
 <p>Autoscaler 收集打到 Revision 并发请求数量的有关信息。为了做到这一点,它在 Revision Pod 内运行一个称之为queue-proxy  的容器,该 Pod 中也运行用户提供的 (user-provided) 镜像。
 queue-proxy  检测该 Revision 上观察到的并发量,然后它每隔一秒将此数据发送到 Autoscaler。Autoscaler 每两秒对这些指标进行评估。基于评估的结果,它增加或者减少 Revision 部署的规模。
 Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接受请求。当一个 Revision 停止接受请求时, Autoscaler 将其置为 Reserve (待命) 状态,条件是每 Pod 平均并发必须持续 30 秒保持为 0 (这是默认设置,但可以配置)。
@@ -346,6 +437,16 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
 <h1 id="参考">参考</h1>
 <p>《knative 云原生应用开发指南》<br>
 <a href="https://knative.dev/docs/serving/">Knative Serving</a></p>
+
+    </div>
+
+	<h2 class="post_related">Posts in this Series</h2>
+	<ul>
+	  
+	</ul>
+
+
+
 
   </article>
 <aside class="sidebar">
@@ -355,8 +456,18 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+    
+      
+	    <h2 class="mt-4">Posts in this series</h2>
+      <ul>
+        
+      </ul>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -372,6 +483,9 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/container/docker/network01/" class="nav-link" title="Network01">Network01</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
       </li>
@@ -392,9 +506,6 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/extensions/extend/" class="nav-link" title="Kubernetes 扩展">Kubernetes 扩展</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/" class="nav-link" title="Kubebuilder 使用教程">Kubebuilder 使用教程</a>
       </li>
     </ul>
     <div>
@@ -442,6 +553,11 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
         
         <a href='https://www.geekgame.site/categories/nosql/' class="post_tag button button_translucent" title="nosql">
           NOSQL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
           <span class="button_tally">1</span>
         </a>
         
@@ -691,6 +807,14 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/tag_name1/' class=" post_tag button button_translucent" data-position=1 title="tag_name1">TAG_NAME1<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/tag_name2/' class=" post_tag button button_translucent" data-position=1 title="tag_name2">TAG_NAME2<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/tcp/' class=" post_tag button button_translucent" data-position=1 title="tcp">TCP<span class="button_tally">1</span>
             </a>
             
@@ -795,7 +919,7 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.f1d570fb1b108d173be2273d24e131d7306f622130db98a2a189d1b7d93dc723dc6b4cb6f81cf31a40088138b5d6db2126a680aff2ec45bf7bc51b9702afaab1.js" integrity="sha512-8dVw&#43;xsQjRc74ic9JOEx1zBvYiEw25iioYnRt9k9xyPca0y2&#43;BzzGkAIgTi11tshJqaAr/LsRb97xRuXAq&#43;qsQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" integrity="sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous"></script>
     
   </body>
 </html>
