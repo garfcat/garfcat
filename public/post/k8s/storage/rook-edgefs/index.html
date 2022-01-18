@@ -187,20 +187,57 @@ EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点）�
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/edgefs-rook.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/edgefs-rook.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/storage/edgefs-rook.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/storage/edgefs-rook.png" alt="edgefs-rook" loading="lazy" decoding="async" width="1138" height="581"  />
+      
+
+    </picture>
+  </figure>
 </p>
 <p>当Rook在 Kubernetes 集群中运行后，Kubernetes PODs 或者外部应用可以 mount Rook管理的块设备和文件系统，也可以通过 S3/S3X API进行对象存储。Rook operator 自动配置存储组件并监控群集，以确保存储健康可用。<br>
 Rook operator 是一个简单的容器，它具有引导和监视存储集群所需的所有功能。operator 将启动并监控 StatefSet storage Targets、gRPC manager 和 Prometheus 多租户仪表板。所有连接的设备（或目录）将提供池存储站点。然后，存储站点可以作为一个全局名称空间数据结构轻松地相互连接。operator 通过初始化POD和运行服务所需的其他工件来管理目标、横向扩展NFS、对象存储（S3/S3X）和iSCSI卷的CRD。
@@ -216,20 +253,57 @@ Rook在golang实现。EdgeFS使用Go和C实现，其中数据路径得到高度�
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>網站鏈接: <a href='https://www.geekgame.site/static/k8s/storage/edgefs-components.png' title='在新選項卡中打開此網站鏈接' target='_blank' class='warning-link'>https://www.geekgame.site/static/k8s/storage/edgefs-components.png</a></p>
-    <p>鏈接到文件: /static//static/k8s/storage/edgefs-components.png</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相關信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
 
+
+  <figure>
+    <picture>
+
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+
+      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/storage/edgefs-components.png" alt="edgefs-components" loading="lazy" decoding="async" width="960" height="720"  />
+      
+
+    </picture>
+  </figure>
 </p>
 <p>edgefs 主要包含以下几个部分:<br>
 grpc manager: 使用NFS/iSCSI CSI plugin时，提供对CSI plugin的请求进行平衡委托的功能。此外，还可作为可执行efscli命令的toolbox发挥功能。内部包好三个容器：<br>

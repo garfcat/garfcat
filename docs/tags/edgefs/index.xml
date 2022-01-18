@@ -20,7 +20,7 @@
 EdgeFS 能够跨越无限数量的地理位置分布的站点（地理站点），相互连接，作为在 Kubernetes 平台上运行的一个全局名称空间数据结构，提供持久、容错和高性能的完全兼容的 S3 Object API 有状态的 Kubernetes 应用程序和 CSI 卷。 在每个Geo站点，EdgeFS 节点在物理或虚拟节点上部署为容器（StatefulSet），汇集可用存储容量并通过兼容的 S3/NFS/iSCSI/etc 存储模拟协议为在相同或专用服务器上运行的云原生应用程序提供存储容量。
 EdgeFS 类似于 &amp;quot;git&amp;quot;, 将所有的修改都完全版本化并且全局不可变，通过模拟存储标准协议（如S3、NFS，甚至iSCSI等块设备）以高性能和低延迟的方式访问 Kubernetes 持久卷。通过完全版本化的修改、完全不可变的元数据和数据，用户数据可以跨多个地理站点透明地复制、分发和动态预取。
 现状 EdgeFS 原本是 Nexenta 公司的开源项目（当时叫做 &amp;quot;NexentaEdge&amp;quot;，使用 Apache-2.0 License），后来 Nexenta 被名为 DataDirect Networks（DDN）的公司全资收购，然后 DDN 公司将 NexentaEdge 重命名为 EdgeFS，并选择将其闭源。 所以目前 EdgeFS 已经废弃了。不推荐使用。
-设计 Rook 支持使用 Kubernetes 原语在 Kubernetes 上轻松部署 EdgeFS 地理站点。 Image not found  a.warning-link { color: inherit !important; font-weight: inherit !important; text-decoration: underline !important; border-bottom: none !
+设计 Rook 支持使用 Kubernetes 原语在 Kubernetes 上轻松部署 EdgeFS 地理站点。     当Rook在 Kubernetes 集群中运行后，Kubernetes PODs 或者外部应用可以 mount Rook管理的块设备和文件系统，也可以通过 S3/S3X API进行对象存储。Rook operator 自动配置存储组件并监控群集，以确保存储健康可用。
           
           
         
