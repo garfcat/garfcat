@@ -33,15 +33,26 @@ tags:
 ## 定位过程
 ###  确认服务是否正常  
 1. 查看容器运行是否正常:  
-![查看容器是否运行正常](/container/container_service.png)  
+```shell
+
+CONTAINER ID        IMAGE                                                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
+cfde73945bf6        ***:1.0.7   "/bin/sh -c /opt/boo…"   27 hours ago        Up 27 hours         0.0.0.0:7788->7788/tcp   ***
+ 
+```
 2. 查看服务运行是否正常:  
-![查看容器是否运行正常](/container/service.png)  
+```shell
+[root@my-ti-johnkl06 ~]# curl 172.17.0.2:7788
+hello world 
+```
 
 由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。  
 
 ## 确认容器的网络模式
 通过命令 **docker inspect <container_id>  -f "{{json .NetworkSettings.Networks }}"** 来查看容器的网络模式。
-![查看容器网络模式](/container/网络模式.png)  
+```shell
+[root@my-ti-johnkl06 ~]#  docker inspect cfde73945bf6  -f "{{json .NetworkSettings.Networks }}"
+{"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"NetworkID":"c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327","EndpointID":"6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d","Gateway":"172.17.0.1","IPAddress":"172.17.0.2","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"MacAddress":"02:42:ac:11:00:02","DriverOpts":null}}
+```
 
 由上可以得出 容器网络模式是 bridge。  
 
@@ -185,4 +196,7 @@ Jan 12 16:51:14 my-ti-johnkl06 kernel: TRACE: filter:INPUT:policy:1 IN=ppp0 OUT=
 ```
 ##  验证
 再次验证  
-![ok](/container/ok.png) 
+```shell
+➜  ~ curl  外网IP:7788
+hello world
+```
