@@ -15,11 +15,19 @@
       <guid>https://www.geekgame.site/post/shell/effective_shell/</guid>
       <description>
         
-          
-            shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
- oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；  命令  hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里  
-          
-          
+          &lt;h2 id=&#34;shell&#34;&gt;shell&lt;/h2&gt;
+&lt;p&gt;使用超强组合 &lt;a href=&#34;https://ohmyz.sh/&#34;&gt;oh-my-zsh&lt;/a&gt; + &lt;a href=&#34;https://github.com/zsh-users/zsh-autosuggestions&#34;&gt;zsh-autosuggestions&lt;/a&gt; + &lt;a href=&#34;https://github.com/rupa/z&#34;&gt;z - jump around&lt;/a&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用；&lt;/li&gt;
+&lt;li&gt;autosuggestions: 补全已经输入过的命令；&lt;/li&gt;
+&lt;li&gt;jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;命令&#34;&gt;命令&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/dvorka/hstr&#34;&gt;hstr&lt;/a&gt;: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ；&lt;/li&gt;
+&lt;li&gt;htop: 加强版的top, 安装与介绍可以看一下&lt;a href=&#34;https://cloud.tencent.com/developer/article/1115041&#34;&gt;这里&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
         
       </description>
     </item>

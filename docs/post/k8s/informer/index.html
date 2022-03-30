@@ -4,6 +4,7 @@
   <head>
 <title>Kubernetes Informer 机制 | 有趣</title>
 <meta charset="utf-8">
+<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -13,7 +14,6 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
-
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -24,11 +24,13 @@
 <meta property="og:url" content="https://www.geekgame.site/post/k8s/informer/" />
 <meta property="og:title" content="Kubernetes Informer 机制" />
 <meta property="og:description" content="Kubernetes Informer 机制" />
-<meta property="og:image" content="https://www.geekgame.site/post/k8s/informer/images/path/share.png" />
-
-<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
-<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
+<meta property="og:image" content="https://www.geekgame.site/images/path/share.png" />
+<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
+<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
+<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
+<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
+<meta name="msapplication-TileColor" content="#002538">
+<meta name="theme-color" content="#002538">
 
 <link rel="canonical" href="https://www.geekgame.site/post/k8s/informer/">
 
@@ -36,12 +38,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" as="script" integrity=
-    "sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
+    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
     
   </head>
   
@@ -61,7 +63,6 @@
 </svg></div>
   </div>
 </a>
-
     <div class='nav_body nav_body_left'>
       
       
@@ -113,89 +114,27 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">Kubernetes Informer 机制</h1>
-  <div class="post_meta">
-    <span><svg class="icon">
+    <h1 class="post_title">Kubernetes Informer 机制</h1><div class="post_meta">
+  
+    <svg class="icon">
   <use xlink:href="#calendar"></use>
-</svg></span>
+</svg>
     <span class="post_date">
       Nov 17, 2021</span>
-    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
-        </a><a href='https://www.geekgame.site/tags/informer' title="informer" class="post_tag button button_translucent">informer
-        </a>
-    </span>
-  </div>
-
-
-
-
-  
-  
-  
-  
-  
-
-  
-
-    <div class="post_featured">
-      <figure>
-        <picture>
-
-          
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-          
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-          
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-          
-
-          <img class="image_featured image_internal" src="https://www.geekgame.site/images/bridge.png" alt="Kubernetes Informer 机制" width="1388" height="726" />
-          
-
-        </picture>
-      </figure>
-
-    </div>
-  
-
+      <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+      </a>
+      <a href='https://www.geekgame.site/tags/informer' title="informer" class="post_tag button button_translucent">informer
+      </a>
+</div>
 
     
-    <div class="post_toc">
-      <h2>文章目录</h2>
-      <nav id="TableOfContents">
+
+    
+    <img src="/images/bridge.png" class="image_featured" alt="Kubernetes Informer 机制">
+    
+    
+    <h2>文章目录</h2>
+    <nav id="TableOfContents">
   <ul>
     <li><a href="#概述">概述</a></li>
     <li><a href="#reflector">Reflector</a></li>
@@ -209,70 +148,9 @@
     <li><a href="#总结">总结</a></li>
   </ul>
 </nav>
-    </div>
-    
-    <div class="post_body"><h2 id="概述">概述</h2>
+    <h2 id="概述">概述</h2>
 <p>Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。
-
-
-
-
-
-
-
-
-
-
-  <figure>
-    <picture>
-
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-
-      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/informer.png" alt="informer" loading="lazy" decoding="async" width="1882" height="1572"  />
-      
-
-    </picture>
-  </figure>
-</p>
+<img src="/k8s/informer.png" alt="informer"></p>
 <p>在Informer架构设计中,有多个核心组件,分别介绍如下。<br>
 1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 <br>
 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。<br>
@@ -292,66 +170,7 @@
 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。
 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。</p>
 <p>1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。
-
-
-
-
-
-
-
-
-
-
-  <figure>
-    <picture>
-
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-
-      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/listAndWatch.png" alt="listAndWatch" loading="lazy" decoding="async" width="1450" height="1240"  />
-      
-
-    </picture>
-  </figure>
-</p>
+<img src="/k8s/listAndWatch.png" alt="listAndWatch"></p>
 <p>a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。<br>
 b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。<br>
 c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。<br>
@@ -373,66 +192,7 @@ e. r.setLastSyncResourceVersion用于设置最新的资源版本号。</p>
 <span class="ln"> 9</span>
 <span class="ln">10</span><span class="p">}</span>
 </code></pre></div><p>queue字段存储资源对象的key,该key通过KeyOf函数计算得到。items字段通过map数据结构的方式存储,value存储的是对象的Deltas数组。</p>
-<p>
-
-
-
-
-
-
-
-
-
-  <figure>
-    <picture>
-
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-
-      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/deltafifo.png" alt="deltafifo" loading="lazy" decoding="async" width="778" height="248"  />
-      
-
-    </picture>
-  </figure>
-
+<p><img src="/k8s/deltafifo.png" alt="deltafifo">
 key 是 <namespace>/<name> 组合, 如果namespace 为空,则 key是 <name>.</p>
 <p>DeltaFIFO 本质上是一个先进先出的队列, 有生产者和消费者, 其中生产者是 Reflector 调用的Add 方法, 消费者是Controller 调用的Pop 方法.</p>
 <h3 id="生产者">生产者</h3>
@@ -546,66 +306,7 @@ indexers 存储索引函数,</p>
 <p>indices 存储缓存器, key 为缓存名称, 和索引名字相同, value为缓存数据;
 index 为缓存数据, 结构为key/value</p>
 <p>indices 结构如下所示:
-
-
-
-
-
-
-
-
-
-
-  <figure>
-    <picture>
-
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-
-      <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/indices.png" alt="indices" loading="lazy" decoding="async" width="2288" height="946"  />
-      
-
-    </picture>
-  </figure>
-</p>
+<img src="/k8s/indices.png" alt="indices"></p>
 <p>从index 中获取数据的核心逻辑如下所示:</p>
 <div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span>
 <span class="ln"> 2</span>
@@ -634,19 +335,15 @@ index 为缓存数据, 结构为key/value</p>
 <h2 id="总结">总结</h2>
 <p>通过本文我们了解到了 informer 核心实现逻辑，informer 通过本地缓存大大减轻了对API的压力。</p>
 
-    </div>
-
-
-
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
-        <h2>Garfcat</h2>
-      <div class="author_bio">
+    
+      <h2>Garfcat</h2>
+      <div class="sidebar_description">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
-    
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
@@ -1105,14 +802,14 @@ index 为缓存数据, 结构为key/value</p>
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#arrow"></use>
+  <use xlink:href="#open-menu"></use>
 </svg>
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.da0313a21911386c83a3ac1292945219a043acb97b47a4a9f491890f81a8a94381d0a21a63ae910c05135033e52cac73a1bd5be668d695235a5361f238d4ccb0.js" integrity="sha512-2gMTohkROGyDo6wSkpRSGaBDrLl7R6Sp9JGJD4GoqUOB0KIaY66RDAUTUDPlLKxzob1b5mjWlSNaU2HyONTMsA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
     
   </body>
 </html>

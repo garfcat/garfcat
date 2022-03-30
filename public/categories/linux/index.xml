@@ -15,14 +15,23 @@
       <guid>https://www.geekgame.site/post/linux/command/command/</guid>
       <description>
         
-          
-            find find 多个条件 AND 使用多个条件查找，默认是 AND 操作
-1$ find . -name &amp;#34;*.bash&amp;#34; -mtime +180 -size +2K -exec ls -l {} \; 在上面的命令中，我们告诉 find 搜索名称中带有字符串 .bash 的文件/目录，它们应该超过 180 天并且大小应该大于 2KB。
-最后，我们使用 -exec 选项对 find 命令产生的结果执行 ls -l 命令。
-find 多个条件 OR 让我们考虑一个场景，我们需要修改我们之前使用的示例并获取带有字符串 .bash 和 .txt 的文件。要满足此要求，请在 find 命令中使用 -o 选项来指示逻辑 OR 操作。 给出的是完整的命令
-1 find . \( -name &amp;#34;*.bash&amp;#34; -o -name &amp;#34;*.txt&amp;#34; \) -mtime +180 -size +2k -exec ls -lh {} \; find 逻辑 非 查找列出过去 30 天内修改的所有文件并排除 .
-          
-          
+          &lt;h2 id=&#34;find&#34;&gt;find&lt;/h2&gt;
+&lt;h3 id=&#34;find-多个条件-and&#34;&gt;find 多个条件 AND&lt;/h3&gt;
+&lt;p&gt;使用多个条件查找，默认是 AND 操作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ find . -name &lt;span class=&#34;s2&#34;&gt;&amp;#34;*.bash&amp;#34;&lt;/span&gt; -mtime +180 -size +2K -exec ls -l &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在上面的命令中，我们告诉 find 搜索名称中带有字符串 .bash 的文件/目录，它们应该超过 180 天并且大小应该大于 2KB。&lt;br&gt;
+最后，我们使用 -exec 选项对 find 命令产生的结果执行 ls -l 命令。&lt;/p&gt;
+&lt;h3 id=&#34;find-多个条件-or&#34;&gt;find 多个条件 OR&lt;/h3&gt;
+&lt;p&gt;让我们考虑一个场景，我们需要修改我们之前使用的示例并获取带有字符串 .bash 和 .txt 的文件。要满足此要求，请在 find 命令中使用 -o 选项来指示逻辑 OR 操作。
+给出的是完整的命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt; find . &lt;span class=&#34;se&#34;&gt;\(&lt;/span&gt; -name &lt;span class=&#34;s2&#34;&gt;&amp;#34;*.bash&amp;#34;&lt;/span&gt; -o -name &lt;span class=&#34;s2&#34;&gt;&amp;#34;*.txt&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\)&lt;/span&gt; -mtime +180 -size +2k -exec ls -lh &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;find-逻辑-非&#34;&gt;find 逻辑 非&lt;/h3&gt;
+&lt;p&gt;查找列出过去 30 天内修改的所有文件并排除 .txt 扩展名的示例, 需要在条件前添加符号 !.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ find . -type f ! -name &lt;span class=&#34;s2&#34;&gt;&amp;#34;*.txt&amp;#34;&lt;/span&gt; -mtime -30 -exec ls -l &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;tr&#34;&gt;tr&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://arkit.co.in/find-command-logical-and-or-and-not-examples/&#34;&gt;find Command Logical AND, OR and NOT Examples&lt;/a&gt;&lt;/p&gt;
+
         
       </description>
     </item>
