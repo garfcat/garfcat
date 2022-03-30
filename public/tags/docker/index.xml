@@ -26,16 +26,23 @@
 &lt;h2 id=&#34;定位过程&#34;&gt;定位过程&lt;/h2&gt;
 &lt;h3 id=&#34;确认服务是否正常&#34;&gt;确认服务是否正常&lt;/h3&gt;
 &lt;ol&gt;
-&lt;li&gt;查看容器运行是否正常:&lt;br&gt;
-&lt;img src=&#34;https://www.geekgame.site/container/container_service.png&#34; alt=&#34;查看容器是否运行正常&#34;&gt;&lt;/li&gt;
-&lt;li&gt;查看服务运行是否正常:&lt;br&gt;
-&lt;img src=&#34;https://www.geekgame.site/container/service.png&#34; alt=&#34;查看容器是否运行正常&#34;&gt;&lt;/li&gt;
+&lt;li&gt;查看容器运行是否正常:&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;CONTAINER ID        IMAGE                                                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;cfde73945bf6        ***:1.0.7   &lt;span class=&#34;s2&#34;&gt;&amp;#34;/bin/sh -c /opt/boo…&amp;#34;&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; hours ago        Up &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; hours         0.0.0.0:7788-&amp;gt;7788/tcp   ***
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;查看服务运行是否正常:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@my-ti-johnkl06 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# curl 172.17.0.2:7788&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;hello world 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。&lt;/p&gt;
 &lt;h2 id=&#34;确认容器的网络模式&#34;&gt;确认容器的网络模式&lt;/h2&gt;
-&lt;p&gt;通过命令 &lt;strong&gt;docker inspect &amp;lt;container_id&amp;gt;  -f &amp;quot;{{json .NetworkSettings.Networks }}&amp;quot;&lt;/strong&gt; 来查看容器的网络模式。
-&lt;img src=&#34;https://www.geekgame.site/container/%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F.png&#34; alt=&#34;查看容器网络模式&#34;&gt;&lt;/p&gt;
-&lt;p&gt;由上可以得出 容器网络模式是 bridge。&lt;/p&gt;
+&lt;p&gt;通过命令 &lt;strong&gt;docker inspect &amp;lt;container_id&amp;gt;  -f &amp;quot;{{json .NetworkSettings.Networks }}&amp;quot;&lt;/strong&gt; 来查看容器的网络模式。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@my-ti-johnkl06 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;#  docker inspect cfde73945bf6  -f &amp;#34;{{json .NetworkSettings.Networks }}&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;bridge&amp;#34;&lt;/span&gt;:&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPAMConfig&amp;#34;&lt;/span&gt;:null,&lt;span class=&#34;s2&#34;&gt;&amp;#34;Links&amp;#34;&lt;/span&gt;:null,&lt;span class=&#34;s2&#34;&gt;&amp;#34;Aliases&amp;#34;&lt;/span&gt;:null,&lt;span class=&#34;s2&#34;&gt;&amp;#34;NetworkID&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;EndpointID&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;Gateway&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;172.17.0.1&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPAddress&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;172.17.0.2&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPPrefixLen&amp;#34;&lt;/span&gt;:16,&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPv6Gateway&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;GlobalIPv6Address&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;GlobalIPv6PrefixLen&amp;#34;&lt;/span&gt;:0,&lt;span class=&#34;s2&#34;&gt;&amp;#34;MacAddress&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;02:42:ac:11:00:02&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;DriverOpts&amp;#34;&lt;/span&gt;:null&lt;span class=&#34;o&#34;&gt;}}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由上可以得出 容器网络模式是 bridge。&lt;/p&gt;
 &lt;h2 id=&#34;容器如何与外面的节点通讯&#34;&gt;容器如何与外面的节点通讯&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&#34;https://www.geekgame.site/container/path.png&#34; alt=&#34;容器如何与外面的节点通讯&#34;&gt;&lt;/p&gt;
 &lt;p&gt;这里我们主要分析 bridge 网络模式, 容器启动时默认使用虚接口 veth 连接到宿主机 docker0 网桥,  容器和 docker0 组成了一个子网,docker0 上的 IP 就是这个子网的网关 IP。, 所以外部访问容器走的路线:
@@ -160,9 +167,10 @@ centos6 按照下面的方式修改:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# 当收到到达本机的报文时跳转到 DOCKER chain&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;验证&#34;&gt;验证&lt;/h2&gt;
-&lt;p&gt;再次验证&lt;br&gt;
-&lt;img src=&#34;https://www.geekgame.site/container/ok.png&#34; alt=&#34;ok&#34;&gt;&lt;/p&gt;
-
+&lt;p&gt;再次验证&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;➜  ~ curl  外网IP:7788
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;hello world
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         
       </description>
     </item>

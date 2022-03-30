@@ -148,10 +148,7 @@
 2. 确认容器的网络模式
 3. 容器如何与外面的节点通讯
 4. 数据包在设备上实际流转
-定位过程 确认服务是否正常  查看容器运行是否正常:
- 查看服务运行是否正常:
-  由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。
-确认容器的网络模式 通过命令 docker inspect &lt;container_id&gt; -f &quot;{{json .NetworkSettings.Networks }}&quot; 来查看容器的网络模式。 …
+定位过程 确认服务是否正常  查看容器运行是否正常:  1 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3cfde73945bf6 ***:1.0.7 &#34;/bin/sh -c /opt/boo…&#34; 27 hours ago Up 27 hours 0.0.0.0:7788-&gt;7788/tcp *** 4 查看服务运行是否正 …
             
           </p>
           <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" title="阅读更多" class="excerpt_more button">阅读更多</a>
