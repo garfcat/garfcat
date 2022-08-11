@@ -15,162 +15,18 @@
       <guid>https://www.geekgame.site/post/container/docker/network_can_not_access/</guid>
       <description>
         
-          &lt;h2 id=&#34;现象&#34;&gt;现象&lt;/h2&gt;
-&lt;p&gt;最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。&lt;/p&gt;
-&lt;h2 id=&#34;分析&#34;&gt;分析&lt;/h2&gt;
-&lt;p&gt;要定位该问题首先要确认以下几个事情：&lt;br&gt;
-1. 服务是否正常启动&lt;br&gt;
-2. 确认容器的网络模式&lt;br&gt;
-3. 容器如何与外面的节点通讯&lt;br&gt;
-4. 数据包在设备上实际流转&lt;/p&gt;
-&lt;h2 id=&#34;定位过程&#34;&gt;定位过程&lt;/h2&gt;
-&lt;h3 id=&#34;确认服务是否正常&#34;&gt;确认服务是否正常&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;查看容器运行是否正常:&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;CONTAINER ID        IMAGE                                                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;cfde73945bf6        ***:1.0.7   &lt;span class=&#34;s2&#34;&gt;&amp;#34;/bin/sh -c /opt/boo…&amp;#34;&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; hours ago        Up &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; hours         0.0.0.0:7788-&amp;gt;7788/tcp   ***
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;查看服务运行是否正常:&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@my-ti-johnkl06 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# curl 172.17.0.2:7788&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;hello world 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。&lt;/p&gt;
-&lt;h2 id=&#34;确认容器的网络模式&#34;&gt;确认容器的网络模式&lt;/h2&gt;
-&lt;p&gt;通过命令 &lt;strong&gt;docker inspect &amp;lt;container_id&amp;gt;  -f &amp;quot;{{json .NetworkSettings.Networks }}&amp;quot;&lt;/strong&gt; 来查看容器的网络模式。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;root@my-ti-johnkl06 ~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;#  docker inspect cfde73945bf6  -f &amp;#34;{{json .NetworkSettings.Networks }}&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;bridge&amp;#34;&lt;/span&gt;:&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPAMConfig&amp;#34;&lt;/span&gt;:null,&lt;span class=&#34;s2&#34;&gt;&amp;#34;Links&amp;#34;&lt;/span&gt;:null,&lt;span class=&#34;s2&#34;&gt;&amp;#34;Aliases&amp;#34;&lt;/span&gt;:null,&lt;span class=&#34;s2&#34;&gt;&amp;#34;NetworkID&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;EndpointID&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;Gateway&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;172.17.0.1&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPAddress&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;172.17.0.2&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPPrefixLen&amp;#34;&lt;/span&gt;:16,&lt;span class=&#34;s2&#34;&gt;&amp;#34;IPv6Gateway&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;GlobalIPv6Address&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;GlobalIPv6PrefixLen&amp;#34;&lt;/span&gt;:0,&lt;span class=&#34;s2&#34;&gt;&amp;#34;MacAddress&amp;#34;&lt;/span&gt;:&lt;span class=&#34;s2&#34;&gt;&amp;#34;02:42:ac:11:00:02&amp;#34;&lt;/span&gt;,&lt;span class=&#34;s2&#34;&gt;&amp;#34;DriverOpts&amp;#34;&lt;/span&gt;:null&lt;span class=&#34;o&#34;&gt;}}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;由上可以得出 容器网络模式是 bridge。&lt;/p&gt;
-&lt;h2 id=&#34;容器如何与外面的节点通讯&#34;&gt;容器如何与外面的节点通讯&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://www.geekgame.site/container/path.png&#34; alt=&#34;容器如何与外面的节点通讯&#34;&gt;&lt;/p&gt;
-&lt;p&gt;这里我们主要分析 bridge 网络模式, 容器启动时默认使用虚接口 veth 连接到宿主机 docker0 网桥,  容器和 docker0 组成了一个子网,docker0 上的 IP 就是这个子网的网关 IP。, 所以外部访问容器走的路线:
-eth0 -&amp;gt; docker0 -&amp;gt; veth_host -&amp;gt; veth_container。&lt;/p&gt;
-&lt;h2 id=&#34;确认数据包如何流转&#34;&gt;确认数据包如何流转&lt;/h2&gt;
-&lt;p&gt;通过抓包确定数据包是否到达相应的接口:&lt;br&gt;
-&lt;img src=&#34;https://www.geekgame.site/container/test.png&#34; alt=&#34;确认数据包如何流转&#34;&gt;&lt;/p&gt;
-&lt;p&gt;从抓包来看报文到达了 ppp1, 但是没有到达docker0, 那么 ppp1 如何发送到docker0呢，答案就是通过iptables规则 , 接下来我们来看一下iptables 是否配置正确。&lt;/p&gt;
-&lt;h2 id=&#34;iptables&#34;&gt;iptables&lt;/h2&gt;
-&lt;p&gt;检查 iptables 配置, 这里隐藏了部分敏感信息，具体配置如下:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;*raw
-&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;:PREROUTING ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;482398345:242296465803&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;:OUTPUT ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;335960682:958525745066&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;-A PREROUTING -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j TRACE
-&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;-A OUTPUT -p tcp -m tcp --sport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j TRACE
-&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;-A OUTPUT -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j TRACE
-&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;COMMIT
-&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Completed on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;*nat
-&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;:PREROUTING ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;37750:4171203&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;:INPUT ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1448717:86057410&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;:OUTPUT ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;737914:44585663&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;:POSTROUTING ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18628:1809317&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;:DOCKER - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0:0&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;-A PREROUTING ! -i p1p1 -p tcp -m multiport --dports 80,443,2238,7788,7799,8947:8949,9173,8400,19999 -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;-A PREROUTING ! -i p1p1 -p udp -m multiport --dports 53,50000:50010,51280:51319 -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;-A PREROUTING ! -i p1p1 -j DNAT --to-destination 192.168.200.2
-&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;-A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
-&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;-A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
-&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;-A POSTROUTING ! -o p1p1 -j MASQUERADE
-&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;-A POSTROUTING -s 192.168.200.0/30 -d 192.168.200.0/30 -o p1p1 -j MASQUERADE
-&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;-A POSTROUTING -s 172.17.0.2/32 -d 172.17.0.2/32 -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j MASQUERADE
-&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;-A POSTROUTING -s 172.17.0.2/32 -d 172.17.0.2/32 -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7799&lt;/span&gt; -j MASQUERADE
-&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;-A DOCKER -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j DNAT --to-destination 172.17.0.2:7788
-&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;-A DOCKER -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7799&lt;/span&gt; -j DNAT --to-destination 172.17.0.2:7799
-&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;-A DOCKER -i docker0 -j RETURN
-&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;COMMIT
-&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Completed on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt;*mangle
-&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt;:PREROUTING ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;651360808:317546315397&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;:INPUT ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;644642546:312913563883&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;:FORWARD ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;6717763:4632715906&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;:OUTPUT ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;456834563:1310363483378&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt;:POSTROUTING ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;463560653:1314996798828&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt;COMMIT
-&lt;span class=&#34;ln&#34;&gt;39&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Completed on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;40&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;41&lt;/span&gt;*filter
-&lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;:INPUT ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;454683740:230909596704&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;:FORWARD ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;5433044:3649513313&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;44&lt;/span&gt;:OUTPUT ACCEPT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;320137097:908885273741&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;45&lt;/span&gt;:DOCKER - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0:0&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;46&lt;/span&gt;:DOCKER-ISOLATION-STAGE-1 - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0:0&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;47&lt;/span&gt;:DOCKER-ISOLATION-STAGE-2 - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0:0&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;48&lt;/span&gt;:DOCKER-USER - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0:0&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;49&lt;/span&gt;-A INPUT -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;50&lt;/span&gt;-A INPUT -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;51&lt;/span&gt;-A FORWARD -j DOCKER-USER
-&lt;span class=&#34;ln&#34;&gt;52&lt;/span&gt;-A FORWARD -j DOCKER-ISOLATION-STAGE-1
-&lt;span class=&#34;ln&#34;&gt;53&lt;/span&gt;-A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;54&lt;/span&gt;-A FORWARD -o docker0 -j DOCKER
-&lt;span class=&#34;ln&#34;&gt;55&lt;/span&gt;-A FORWARD -i docker0 ! -o docker0 -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;56&lt;/span&gt;-A FORWARD -i docker0 -o docker0 -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;57&lt;/span&gt;-A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;58&lt;/span&gt;-A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport &lt;span class=&#34;m&#34;&gt;7799&lt;/span&gt; -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;59&lt;/span&gt;-A DOCKER-ISOLATION-STAGE-1 -i docker0 ! -o docker0 -j DOCKER-ISOLATION-STAGE-2
-&lt;span class=&#34;ln&#34;&gt;60&lt;/span&gt;-A DOCKER-ISOLATION-STAGE-1 -j RETURN
-&lt;span class=&#34;ln&#34;&gt;61&lt;/span&gt;-A DOCKER-ISOLATION-STAGE-2 -o docker0 -j DROP
-&lt;span class=&#34;ln&#34;&gt;62&lt;/span&gt;-A DOCKER-ISOLATION-STAGE-2 -j RETURN
-&lt;span class=&#34;ln&#34;&gt;63&lt;/span&gt;-A DOCKER-USER -j RETURN
-&lt;span class=&#34;ln&#34;&gt;64&lt;/span&gt;COMMIT
-&lt;span class=&#34;ln&#34;&gt;65&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Completed on Thu Jan 13 11:03:16 2022&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;合作商为了对端口流量做限制，修改了iptables, 这里如果对iptables 比较了解的话应该可以看出问题所在， 当时查问题时只关注了 DNAT 配置是否有问题，并没有关注是否能执行到，所以&lt;strong&gt;当时没有看出问题所在.&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;调试-iptables&#34;&gt;调试 iptables&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;添加日志规则&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;iptables -t raw -A PREROUTING -p tcp  --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt;     -j TRACE
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;iptables -t raw -A OUTPUT -p tcp --dport &lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt;  -j TRACE
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;加载内核模块&lt;br&gt;
-iptables的调试日志输出依赖于内核模块，这些内核模块并不是开机就加载的，因此我们需要手动加载，centos6 与 centos7 方式有所不同:&lt;br&gt;
-centos6 按照下面的方式修改:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# modprobe ipt_LOG&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# sysctl net.netfilter.nf_log.2=ipt_LOG&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# sysctl net.netfilter.nf_log.2&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;net.netfilter.nf_log.2 &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; ipt_LOG 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;centos7 按照下面的方式修改:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# modprobe nf_log_ipv4&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# sysctl net.netfilter.nf_log.2=nf_log_ipv4&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# sysctl net.netfilter.nf_log.2&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;net.netfilter.nf_log.2 &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; ipt_LOG  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
-&lt;li&gt;打开日志并输出到 /var/log/iptables.log&lt;br&gt;
-在 /etc/rsyslog.conf 中开启内核日志&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;kern.*         /var/log/iptables.log
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;重启日志服务&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo systemctl restart rsyslog.service
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;4&#34;&gt;
-&lt;li&gt;查看日志
-由于带有公网地址， 这里将SRC 改为1.1.1.1 , DST 改为2.2.2.2:&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;Jan &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; 16:51:14 my-ti-johnkl06 kernel: TRACE: raw:PREROUTING:policy:2 &lt;span class=&#34;nv&#34;&gt;IN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ppp0 &lt;span class=&#34;nv&#34;&gt;OUT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;MAC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1.1.1.1 &lt;span class=&#34;nv&#34;&gt;DST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2.2.2.2 &lt;span class=&#34;nv&#34;&gt;LEN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;PREC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;TTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;41&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; DF &lt;span class=&#34;nv&#34;&gt;PROTO&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;TCP &lt;span class=&#34;nv&#34;&gt;SPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;19327&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;DPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3930627540&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;WINDOW&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;65535&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;RES&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 SYN &lt;span class=&#34;nv&#34;&gt;URGP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; OPT &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0204056A010303060101080AC2E362FB0000000004020000&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Jan &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; 16:51:14 my-ti-johnkl06 kernel: TRACE: mangle:PREROUTING:policy:1 &lt;span class=&#34;nv&#34;&gt;IN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ppp0 &lt;span class=&#34;nv&#34;&gt;OUT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;MAC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1.1.1.1 &lt;span class=&#34;nv&#34;&gt;DST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2.2.2.2 &lt;span class=&#34;nv&#34;&gt;LEN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;PREC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;TTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;41&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; DF &lt;span class=&#34;nv&#34;&gt;PROTO&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;TCP &lt;span class=&#34;nv&#34;&gt;SPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;19327&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;DPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3930627540&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;WINDOW&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;65535&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;RES&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 SYN &lt;span class=&#34;nv&#34;&gt;URGP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; OPT &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0204056A010303060101080AC2E362FB0000000004020000&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;Jan &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; 16:51:14 my-ti-johnkl06 kernel: TRACE: nat:PREROUTING:rule:1 &lt;span class=&#34;nv&#34;&gt;IN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ppp0 &lt;span class=&#34;nv&#34;&gt;OUT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;MAC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1.1.1.1 &lt;span class=&#34;nv&#34;&gt;DST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2.2.2.2 &lt;span class=&#34;nv&#34;&gt;LEN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;PREC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;TTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;41&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; DF &lt;span class=&#34;nv&#34;&gt;PROTO&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;TCP &lt;span class=&#34;nv&#34;&gt;SPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;19327&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;DPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3930627540&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;WINDOW&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;65535&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;RES&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 SYN &lt;span class=&#34;nv&#34;&gt;URGP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; OPT &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0204056A010303060101080AC2E362FB0000000004020000&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;Jan &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; 16:51:14 my-ti-johnkl06 kernel: TRACE: mangle:INPUT:policy:1 &lt;span class=&#34;nv&#34;&gt;IN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ppp0 &lt;span class=&#34;nv&#34;&gt;OUT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;MAC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1.1.1.1 &lt;span class=&#34;nv&#34;&gt;DST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2.2.2.2 &lt;span class=&#34;nv&#34;&gt;LEN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;PREC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;TTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;41&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; DF &lt;span class=&#34;nv&#34;&gt;PROTO&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;TCP &lt;span class=&#34;nv&#34;&gt;SPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;19327&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;DPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3930627540&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;WINDOW&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;65535&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;RES&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 SYN &lt;span class=&#34;nv&#34;&gt;URGP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; OPT &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0204056A010303060101080AC2E362FB0000000004020000&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;Jan &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; 16:51:14 my-ti-johnkl06 kernel: TRACE: filter:INPUT:policy:1 &lt;span class=&#34;nv&#34;&gt;IN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ppp0 &lt;span class=&#34;nv&#34;&gt;OUT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;MAC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SRC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1.1.1.1 &lt;span class=&#34;nv&#34;&gt;DST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2.2.2.2 &lt;span class=&#34;nv&#34;&gt;LEN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;PREC&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 &lt;span class=&#34;nv&#34;&gt;TTL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;41&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; DF &lt;span class=&#34;nv&#34;&gt;PROTO&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;TCP &lt;span class=&#34;nv&#34;&gt;SPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;19327&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;DPT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;7788&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SEQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3930627540&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;WINDOW&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;65535&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;RES&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0x00 SYN &lt;span class=&#34;nv&#34;&gt;URGP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; OPT &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0204056A010303060101080AC2E362FB0000000004020000&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;从日志可以看出收到的报文直接上送到本机协议栈(INPUT)，并没有进行转发，所以问题应该出现在 iptables PREROUTING , 应该在 PREROUTEING 将容器的报文转发到docker0 。
-我们再来看一下 PREROUTEING的规则:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;-A PREROUTING ! -i p1p1 -p tcp -m multiport --dports 80,443,2238,7788,7799,8947:8949,9173,8400,19999 -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;-A PREROUTING ! -i p1p1 -p udp -m multiport --dports 53,50000:50010,51280:51319 -j ACCEPT
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;-A PREROUTING ! -i p1p1 -j DNAT --to-destination 192.168.200.2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;数据包在匹配到第一条规则，就不再匹配， 所以PREROUTING 并没有进行DNAT处理， 我们需要添加一个策略将数据包优先进行 chain docker 处理，&lt;/p&gt;
-&lt;h2 id=&#34;解决方案&#34;&gt;解决方案&lt;/h2&gt;
-&lt;p&gt;添加如下规则：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# 当收到到达本机的报文时跳转到 DOCKER chain&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;验证&#34;&gt;验证&lt;/h2&gt;
-&lt;p&gt;再次验证&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;➜  ~ curl  外网IP:7788
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;hello world
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+          
+            现象 最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。
+分析 要定位该问题首先要确认以下几个事情：
+1. 服务是否正常启动
+2. 确认容器的网络模式
+3. 容器如何与外面的节点通讯
+4. 数据包在设备上实际流转
+定位过程 确认服务是否正常 查看容器运行是否正常: 1 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3cfde73945bf6 ***:1.0.7 &amp;#34;/bin/sh -c /opt/boo…&amp;#34; 27 hours ago Up 27 hours 0.0.0.0:7788-&amp;gt;7788/tcp *** 4 查看服务运行是否正常: 1[root@my-ti-johnkl06 ~]# curl 172.17.0.2:7788 2hello world 由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。
+确认容器的网络模式 通过命令 docker inspect &amp;lt;container_id&amp;gt; -f &amp;quot;{{json .NetworkSettings.Networks }}&amp;quot; 来查看容器的网络模式。
+1[root@my-ti-johnkl06 ~]# docker inspect cfde73945bf6 -f &amp;#34;{{json .NetworkSettings.Networks }}&amp;#34; 2{&amp;#34;bridge&amp;#34;:{&amp;#34;IPAMConfig&amp;#34;:null,&amp;#34;Links&amp;#34;:null,&amp;#34;Aliases&amp;#34;:null,&amp;#34;NetworkID&amp;#34;:&amp;#34;c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327&amp;#34;,&amp;#34;EndpointID&amp;#34;:&amp;#34;6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d&amp;#34;,&amp;#34;Gateway&amp;#34;:&amp;#34;172.17.0.1&amp;#34;,&amp;#34;IPAddress&amp;#34;:&amp;#34;172.17.0.2&amp;#34;,&amp;#34;IPPrefixLen&amp;#34;:16,&amp;#34;IPv6Gateway&amp;#34;:&amp;#34;&amp;#34;,&amp;#34;GlobalIPv6Address&amp;#34;:&amp;#34;&amp;#34;,&amp;#34;GlobalIPv6PrefixLen&amp;#34;:0,&amp;#34;MacAddress&amp;#34;:&amp;#34;02:42:ac:11:00:02&amp;#34;,&amp;#34;DriverOpts&amp;#34;:null}} 由上可以得出 容器网络模式是 bridge。
+          
+          
         
       </description>
     </item>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://www.geekgame.site/en/about/</loc>
     <lastmod>2019-02-28T00:00:00+00:00</lastmod>
@@ -15,9 +14,7 @@
                 hreflang="en"
                 href="https://www.geekgame.site/en/about/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.geekgame.site/en/categories/</loc>
     <xhtml:link
                 rel="alternate"
@@ -34,9 +31,7 @@
                 hreflang="en"
                 href="https://www.geekgame.site/en/categories/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.geekgame.site/en/</loc>
     <xhtml:link
                 rel="alternate"
@@ -53,9 +48,7 @@
                 hreflang="en"
                 href="https://www.geekgame.site/en/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.geekgame.site/en/series/</loc>
     <xhtml:link
                 rel="alternate"
@@ -72,9 +65,7 @@
                 hreflang="en"
                 href="https://www.geekgame.site/en/series/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.geekgame.site/en/tags/</loc>
     <xhtml:link
                 rel="alternate"
@@ -92,5 +83,4 @@
                 href="https://www.geekgame.site/en/tags/"
                 />
   </url>
-  
 </urlset>

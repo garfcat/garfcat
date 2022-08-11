@@ -15,115 +15,13 @@
       <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
       <description>
         
-          &lt;p&gt;controller-runtime(&lt;a href=&#34;https://github.com/kubernetes-sigs/controller-runtime&#34;&gt;https://github.com/kubernetes-sigs/controller-runtime&lt;/a&gt;) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。&lt;/p&gt;
-&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;CRD:
-自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。&lt;br&gt;
-下面例子是定义了一个crontab 的自定义资源:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;apiextensions.k8s.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;CustomResourceDefinition&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;crontabs.stable.example.com&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;group&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;stable.example.com&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 列举此 CustomResourceDefinition 所支持的版本&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;versions&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 每个版本都可以通过 served 标志来独立启用或禁止&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;served&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 其中一个且只有一个版本必需被标记为存储版本&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;storage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;          &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;openAPIV3Schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;            &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;properties&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;              &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;properties&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;cronSpec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;replicas&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;                    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;integer&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 可以是 Namespaced 或 Cluster&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;scope&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Namespaced&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;names&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;plural&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;crontabs&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 名称的单数形式，作为命令行使用时和显示时的别名&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;singular&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;crontab&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;CronTab&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# shortNames 允许你在命令行使用较短的字符串来匹配资源&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;39&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;shortNames&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;40&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;ct&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写&lt;br&gt;
-Group: ApiGroup,是相关API功能的集合。&lt;br&gt;
-Version: ApiGroup的版本， 每个ApiGroup可以对应多个版本。&lt;br&gt;
-Kind：资源类型。
-Resource：资源，Kind的具象化，类似于面向对象语言中的类与对象，Kind就是类，Resource就是对象。&lt;/p&gt;
-&lt;p&gt;那么在创建 CRD 后，我们如何向 K8s 创建具体资源呢？我们只需要定义一个 yaml 文件，里面指明 GVK 就可以了，如下所示：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# group/version: group 是 stable.example.com， version 是 v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;stable.example.com/v1&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; 
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;CronTab  &lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;my-new-cron-object&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;cronSpec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;* * * * */5&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;my-awesome-cron-image&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Schema: 定义了资源序列化和反序列化的方法以及资源类型和版本的对应关系,可以根据GVK找到Go Type, 也可以通过Go Type找到GVK。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Informer机制&lt;br&gt;
-Kubernetes的其他组件都是通过client-go(K8s系统使用client-go作为Go语言的官方编程式交互客户端库,提供对 K8s API Server服务的交互访问)的Informer机制与Kubernetes API Server进行通信的。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Clients
-提供访问API对象的客户端。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Caches
-默认情况下客户端从本地缓存读取对象。缓存将自动缓存需要Watch的对象，同时也会缓存其他被请求的结构化对象。Cache内部是通过Informer负责监听对应 GVK 的 GVR 的创建/删除/更新操作,然后通知所有 Watch 该 GVK 的 Controller, Controller 将对应的资源名称添加到 Queue 里面,最终触发 Reconciler 的调协。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Managers&lt;br&gt;
-Controller runtime抽象的最外层的管理对象，负责管理 Controller、Caches、Client，以及 leader 选举。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Controllers&lt;br&gt;
-控制器响应事件(Create/Update/Delete)来触发调协(reconcile)请求,与要实现的调协逻辑一一对应，会创建限速Queue, 一个 Controller 可以关注很多 GVK,然后根据 GVK 到 Cache 里面找到对应的 Share Informer 去 Watch 资源,Watch 到的事件会加入到 Queue里面, Queue 最终触发开发者的 Reconciler 的调和。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Reconcilers&lt;br&gt;
-开发者主要实现的逻辑，用来接收Controller的GVK事件，然后获取GVR 进行协调并决定是否更新或者重新入队。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;整体设计&#34;&gt;整体设计&lt;/h1&gt;
-&lt;p&gt;Controller-runtime设计图如下所示：
-&lt;img src=&#34;https://www.geekgame.site/k8s/controller_runtime.jpg&#34; alt=&#34;&#34;&gt;
-controller 的整理流程：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;首先会初始化Schema, 注册原生资源以及自定义资源;&lt;/li&gt;
-&lt;li&gt;创建并初始化manager，将schema传入，并在内部初始化cache和client等其他资源;&lt;/li&gt;
-&lt;li&gt;创建并初始化 Reconciler, 传入 client 和 schema&lt;/li&gt;
-&lt;li&gt;将 Reconciler 注册到 manager，并创建controller 与 Reconciler 绑定;&lt;/li&gt;
-&lt;li&gt;Controller Watch 自定义资源，此时 controller 会从 Cache 里面去获取 Share Informer,如果没有则创建,然后对该 Share Informer 进行 Watch,将得到的资源的名字和 Namespace存入到Queue中；&lt;/li&gt;
-&lt;li&gt;Controller 不断获取 Queue 中的数据并调用 Reconciler 进行调协；&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&#34;参考文献&#34;&gt;参考文献&lt;/h1&gt;
-&lt;p&gt;&lt;a href=&#34;https://kubernetes.io/zh/docs/concepts/extend-kubernetes/api-extension/custom-resources/&#34;&gt;1. 定制资源&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://jishuin.proginn.com/p/763bfbd2f5b9&#34;&gt;2. controller-runtime 之控制器实现&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://my.oschina.net/u/4657223/blog/4792083&#34;&gt;3. 还在手写 Operator?是时候使用 Kubebuilder 了&lt;/a&gt;&lt;/p&gt;
-
+          
+            controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
+概念 CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
+下面例子是定义了一个crontab 的自定义资源:
+1 apiVersion: apiextensions.k8s.io/v1 2 kind: CustomResourceDefinition 3 metadata: 4 # 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39; 5 name: crontabs.stable.example.com 6 spec: 7 # 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt; 8 group: stable.example.com 9 # 列举此 CustomResourceDefinition 所支持的版本 10 versions: 11 - name: v1 12 # 每个版本都可以通过 served 标志来独立启用或禁止 13 served: true 14 # 其中一个且只有一个版本必需被标记为存储版本 15 storage: true 16 schema: 17 openAPIV3Schema: 18 type: object 19 properties: 20 spec: 21 type: object 22 properties: 23 cronSpec: 24 type: string 25 image: 26 type: string 27 replicas: 28 type: integer 29 # 可以是 Namespaced 或 Cluster 30 scope: Namespaced 31 names: 32 # 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt; 33 plural: crontabs 34 # 名称的单数形式，作为命令行使用时和显示时的别名 35 singular: crontab 36 # kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。 37 kind: CronTab 38 # shortNames 允许你在命令行使用较短的字符串来匹配资源 39 shortNames: 40 - ct GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写
+          
+          
         
       </description>
     </item>
@@ -136,57 +34,16 @@ controller 的整理流程：&lt;/p&gt;
       <guid>https://www.geekgame.site/post/k8s/extensions/extend/</guid>
       <description>
         
-          &lt;p&gt;Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。&lt;/p&gt;
-&lt;h1 id=&#34;kubernetes-扩展点&#34;&gt;Kubernetes 扩展点&lt;/h1&gt;
-&lt;p&gt;Kubernetes 在官网给出了7个扩展点：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点：
-&lt;ul&gt;
-&lt;li&gt;变量传递：所有环境变量也按原样传递给可执行文件；&lt;/li&gt;
-&lt;li&gt;命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称;&lt;/li&gt;
-&lt;li&gt;影响范围： 只对本地环境造成影响；&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。&lt;/li&gt;
-&lt;li&gt;自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。&lt;/li&gt;
-&lt;li&gt;调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。&lt;/li&gt;
-&lt;li&gt;控制器扩展：一般与自定义资源结合使用，成为 &lt;strong&gt;Operator 模式&lt;/strong&gt;。&lt;/li&gt;
-&lt;li&gt;网络插件：用来扩展 Pod 网络的插件。&lt;/li&gt;
-&lt;li&gt;存储插件：用来扩展存储的插件。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&#34;operator-模式&#34;&gt;Operator 模式&lt;/h1&gt;
-&lt;p&gt;自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。&lt;br&gt;
-在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;使用 Operator 可以自动化的事情包括：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;按需部署应用&lt;/li&gt;
-&lt;li&gt;获取/还原应用状态的备份&lt;/li&gt;
-&lt;li&gt;处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置&lt;/li&gt;
-&lt;li&gt;发布一个 service，要求不支持 Kubernetes API 的应用也能发现它&lt;/li&gt;
-&lt;li&gt;模拟整个或部分集群中的故障以测试其稳定性&lt;/li&gt;
-&lt;li&gt;在没有内部成员选举程序的情况下，为分布式应用选择首领角色&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;控制器-reconcile-loop&#34;&gt;控制器 Reconcile loop&lt;/h1&gt;
-&lt;p&gt;控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;nx&#34;&gt;expectState&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;GetExpectState&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;  &lt;span class=&#34;nx&#34;&gt;actualState&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;GetActualState&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;expectState&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;actualState&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// do nothing
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// adjust the state to the expect state
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。&lt;/p&gt;
-&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
-&lt;p&gt;Kubernetes 提供了7个扩展点, 其中自定义资源和控制器组成了 Operator 模式，Operator 的工作原理,实际上是利用了 Kubernetes 的自定义 API 资源(CRD),来描述我们想要部署的应用;然后在自定义控制器里,根据自定义 API 对象的变化,来完成具体的部署和运维工作,其中控制的调协循环更是编排的核心。&lt;/p&gt;
-&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
-&lt;p&gt;&lt;a href=&#34;https://krvarma.medium.com/extending-kubernetes-part-1-custom-operator-b6745c42be4f&#34;&gt;Extending Kubernetes — Part 1 — Custom Operator&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://kubernetes.io/zh/docs/concepts/extend-kubernetes/#user-defined-types&#34;&gt;扩展 Kubernetes&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://trstringer.com/extending-k8s-custom-controllers/&#34;&gt;Extending Kubernetes - Create Controllers for Core and Custom Resources&lt;/a&gt;&lt;/p&gt;
-
+          
+            Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
+Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
+Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点： 变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响； API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。 自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。 调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。 控制器扩展：一般与自定义资源结合使用，成为 Operator 模式。 网络插件：用来扩展 Pod 网络的插件。 存储插件：用来扩展存储的插件。 Operator 模式 自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。
+在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。
+使用 Operator 可以自动化的事情包括：
+按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色 控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：
+1for { 2 expectState := GetExpectState() 3 actualState := GetActualState() 4 if expectState == actualState { 5 // do nothing 6 } else { 7 // adjust the state to the expect state 8 } 9} 调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。
+          
+          
         
       </description>
     </item>
@@ -199,180 +56,17 @@ controller 的整理流程：&lt;/p&gt;
       <guid>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</guid>
       <description>
         
-          &lt;h1 id=&#34;kubebuilder-是什么&#34;&gt;Kubebuilder 是什么&lt;/h1&gt;
-&lt;p&gt;kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。&lt;/p&gt;
-&lt;h1 id=&#34;kubebuilder-如何使用&#34;&gt;Kubebuilder 如何使用&lt;/h1&gt;
-&lt;p&gt;我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。
-其主要步骤如下：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;创建一个项目&lt;/li&gt;
-&lt;li&gt;创建一个API&lt;/li&gt;
-&lt;li&gt;定义CRD&lt;/li&gt;
-&lt;li&gt;实现controller&lt;/li&gt;
-&lt;li&gt;测试&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;创建项目&#34;&gt;创建项目&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;执行 kubebuilder init 命令，初始化一个新项目。示例如下。
-kubebuilder init --domain ipes-cmp&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;--domain&lt;/strong&gt;: 项目的域名&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;创建一个api&#34;&gt;创建一个API&lt;/h2&gt;
-&lt;p&gt;运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;   kubebuilder create api --group cluster --version v1 --kind Cluster
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;目录结构：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.go ，
-&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;该文件中定义相关 API ，而针对于这一类型 (CRD) 的对账业务逻辑生成在 controller/cluster_controller.go 文件中。
-&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;.
-&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;├── Dockerfile
-&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;├── Makefile       # 这里定义了很多脚本命令，例如运行测试，开始执行等
-&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;├── PROJECT    # 这里是 kubebuilder 的一些元数据信息
-&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;├── api
-&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;│   └── v1
-&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;│       ├── cluster_types.go   #定义 Spec 和 Status
-&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;│       ├── groupversion_info.go  # 包含了关于 group-version 的一些元数据
-&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;│       └── zz_generated.deepcopy.go
-&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;├── bin
-&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;│   └── controller-gen
-&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;├── config
-&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;│   ├── crd   # 部署 crd 所需的 yaml, 自动生成, 只需要修改了 v1 中的 go 文件之后执行 make generate 即可
-&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;│   │   ├── kustomization.yaml
-&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;│   │   ├── kustomizeconfig.yaml
-&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;│   │   └── patches
-&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;│   │       ├── cainjection_in_clusters.yaml
-&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;│   │       └── webhook_in_clusters.yaml
-&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;│   ├── default     # 一些默认配置
-&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;│   │   ├── kustomization.yaml
-&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;│   │   ├── manager_auth_proxy_patch.yaml
-&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;│   │   └── manager_config_patch.yaml
-&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;│   ├── manager
-&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;│   │   ├── controller_manager_config.yaml
-&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;│   │   ├── kustomization.yaml
-&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;│   │   └── manager.yaml
-&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;│   ├── prometheus   # 监控指标数据采集配置
-&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;│   │   ├── kustomization.yaml
-&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt;│   │   └── monitor.yaml
-&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt;│   ├── rbac   # 部署所需的 rbac 授权 yaml
-&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;│   │   ├── auth_proxy_client_clusterrole.yaml
-&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;│   │   ├── auth_proxy_role.yaml
-&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;│   │   ├── auth_proxy_role_binding.yaml
-&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt;│   │   ├── auth_proxy_service.yaml
-&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt;│   │   ├── cluster_editor_role.yaml
-&lt;span class=&#34;ln&#34;&gt;39&lt;/span&gt;│   │   ├── cluster_viewer_role.yaml
-&lt;span class=&#34;ln&#34;&gt;40&lt;/span&gt;│   │   ├── kustomization.yaml
-&lt;span class=&#34;ln&#34;&gt;41&lt;/span&gt;│   │   ├── leader_election_role.yaml
-&lt;span class=&#34;ln&#34;&gt;42&lt;/span&gt;│   │   ├── leader_election_role_binding.yaml
-&lt;span class=&#34;ln&#34;&gt;43&lt;/span&gt;│   │   ├── role_binding.yaml
-&lt;span class=&#34;ln&#34;&gt;44&lt;/span&gt;│   │   └── service_account.yaml
-&lt;span class=&#34;ln&#34;&gt;45&lt;/span&gt;│   └── samples  # 这里是 crd 示例文件，可以用来部署到集群当中
-&lt;span class=&#34;ln&#34;&gt;46&lt;/span&gt;│       └── cluster_v1_cluster.yaml
-&lt;span class=&#34;ln&#34;&gt;47&lt;/span&gt;├── controllers
-&lt;span class=&#34;ln&#34;&gt;48&lt;/span&gt;│   ├── cluster_controller.go
-&lt;span class=&#34;ln&#34;&gt;49&lt;/span&gt;│   └── suite_test.go
-&lt;span class=&#34;ln&#34;&gt;50&lt;/span&gt;├── go.mod
-&lt;span class=&#34;ln&#34;&gt;51&lt;/span&gt;├── go.sum
-&lt;span class=&#34;ln&#34;&gt;52&lt;/span&gt;├── hack
-&lt;span class=&#34;ln&#34;&gt;53&lt;/span&gt;│   └── boilerplate.go.txt
-&lt;span class=&#34;ln&#34;&gt;54&lt;/span&gt;└── main.go
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;定义crd&#34;&gt;定义CRD&lt;/h2&gt;
-&lt;p&gt;修改 cluster_type.go 文件添加地域信息：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// ClusterSpec defines the desired state of Cluster
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ClusterSpec&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// Important: Run &amp;#34;make&amp;#34; to regenerate code after modifying this file
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// Foo is an example field of Cluster. Edit cluster_types.go to remove/update
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Foo&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;foo,omitempty&amp;#34;`&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// Region represents the region of the member cluster locate in.
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// +optional
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Region&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;region,omitempty&amp;#34;`&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改完之后执行 make manifests generate ，可以生成对应的config/bases/cluster.ipes.io_clusters.yaml文件。可以看到spec信息如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;  spec:
-&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;    description: ClusterSpec defines the desired state of Cluster
-&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;    properties:
-&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;      foo:
-&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;        description: Foo is an example field of Cluster. Edit cluster_types.go
-&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;          to remove/update
-&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;        type: string
-&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;      region:
-&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;        description: Region represents the region of the member cluster locate
-&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;          in.
-&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;        type: string
-&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;    type: object
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;实现controller&#34;&gt;实现controller&lt;/h1&gt;
-&lt;p&gt;controller的逻辑框架kubebuilder已经帮我们完成，我们只需要完成最核心的函数 &lt;em&gt;Reconcile&lt;/em&gt;即可；&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;controllers&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;cluser_controller&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;go&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ClusterReconciler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Reconcile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctx&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Request&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;WithValues&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;cluster&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;NamespacedName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{},&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在这里我们获取cluster信息并打印&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ClusterReconciler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Reconcile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctx&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Request&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;WithValues&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;cluster&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;NamespacedName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;clusterv1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Client&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;TODO&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;NamespacedName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// The resource may no longer exist, in which case we stop processing.
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;apierrors&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;IsNotFound&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;			&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{},&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;		&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;		&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Requeue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// your logic here
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Info&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;ipes cluster status change&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;region&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;cluster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Region&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ctrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{},&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;测试&#34;&gt;测试&lt;/h2&gt;
-&lt;h3 id=&#34;部署crd资源&#34;&gt;部署CRD资源&lt;/h3&gt;
-&lt;p&gt;我们在实现了controller 的核心逻辑之后， 需要先将CRD注册到集群中, 具体命令：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里make install ; 是执行了以下两步：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;make manifests  # 生成CRD资源&lt;/li&gt;
-&lt;li&gt;bin/kustomize build config/crd | kubectl apply -f - #生成部署CRD， 并部署到集群中
-如果集群不在本地， 可以分开执行这两步。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;运行-controller&#34;&gt;运行 controller&lt;/h3&gt;
-&lt;p&gt;本地直接执行 make run 即可，我这里需要编译后，放到服务器上执行：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;➜  ~ ./ipes-cmp
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;2021-06-08T19:22:38.187+0800	INFO	controller-runtime.metrics	metrics server is starting to listen	{&amp;#34;addr&amp;#34;: &amp;#34;:8080&amp;#34;}
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;2021-06-08T19:22:38.188+0800	INFO	setup	starting manager
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager	starting metrics server	{&amp;#34;path&amp;#34;: &amp;#34;/metrics&amp;#34;}
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager.controller.cluster	Starting EventSource	{&amp;#34;reconciler group&amp;#34;: &amp;#34;cluster.ipes.io&amp;#34;, &amp;#34;reconciler kind&amp;#34;: &amp;#34;Cluster&amp;#34;, &amp;#34;source&amp;#34;: &amp;#34;kind source: /, Kind=&amp;#34;}
-&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting Controller	{&amp;#34;reconciler group&amp;#34;: &amp;#34;cluster.ipes.io&amp;#34;, &amp;#34;reconciler kind&amp;#34;: &amp;#34;Cluster&amp;#34;}
-&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting workers	{&amp;#34;reconciler group&amp;#34;: &amp;#34;cluster.ipes.io&amp;#34;, &amp;#34;reconciler kind&amp;#34;: &amp;#34;Cluster&amp;#34;, &amp;#34;worker count&amp;#34;: 1}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;添加一个测试例子&#34;&gt;添加一个测试例子&lt;/h3&gt;
-&lt;p&gt;创建一个测试的集群&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;apiVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;cluster.ipes.io/v1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;kind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;Cluster&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;metadata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;test-cluster&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;spec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Add fields here&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;region&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;beijing&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;kubectl apply -f bj_cluster.yml # 部署测试集群
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看到controller 输入日志，controller已经获取到关于cluster的信息。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2021-06-08T19:35:49.562&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;+0800&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;	&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;INFO	controllers.Cluster	ipes cluster status change	{&amp;#34;name&amp;#34;: &amp;#34;test-cluster&amp;#34;, &amp;#34;region&amp;#34;: &amp;#34;beijing&amp;#34;}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;目前扩展 Kubernetes 的 API 的方式有创建 CRD、使用 Operator SDK 等方式，都需要写很多的样本文件（boilerplate），使用起来十分麻烦。为了能够更方便构建 Kubernetes API 和工具，就需要一款能够事半功倍的工具，与其他 Kubernetes API 扩展方案相比，kubebuilder 更加简单易用，并获得了社区的广泛支持。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
-&lt;p&gt;&lt;a href=&#34;https://developer.aliyun.com/article/719215&#34;&gt;深入解析 Kubebuilder：让编写 CRD 变得更简单&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://cloudnative.to/kubebuilder/quick-start.html&#34;&gt;Kubebuilder&lt;/a&gt;&lt;br&gt;
-&lt;a href=&#34;https://www.bookstack.cn/read/kubernetes-handbook-201910/develop-kubebuilder.md&#34;&gt;Kubernetes中文指南/云原生应用架构实践手册(201910)&lt;/a&gt;&lt;/p&gt;
-
+          
+            Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
+Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：
+创建一个项目 创建一个API 定义CRD 实现controller 测试 创建项目 创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。
+执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp
+--domain: 项目的域名
+创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。
+1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：
+1 2在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.
+          
+          
         
       </description>
     </item>

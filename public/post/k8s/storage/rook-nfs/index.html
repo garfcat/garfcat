@@ -4,7 +4,6 @@
   <head>
 <title>NFS 通过 rook 进行部署 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -24,13 +24,11 @@
 <meta property="og:url" content="https://www.geekgame.site/post/k8s/storage/rook-nfs/" />
 <meta property="og:title" content="NFS 通过 rook 进行部署" />
 <meta property="og:description" content="rook nfs." />
-<meta property="og:image" content="https://www.geekgame.site/images/path/share.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+<meta property="og:image" content="https://www.geekgame.site/post/k8s/storage/rook-nfs/images/path/share.png" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/k8s/storage/rook-nfs/">
 
@@ -38,12 +36,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -57,12 +55,17 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -114,29 +117,117 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">NFS 通过 rook 进行部署</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">NFS 通过 rook 进行部署</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Sep 13, 2021</span>
-      <a href='https://www.geekgame.site/tags/nfs' title="NFS" class="post_tag button button_translucent">NFS
-      </a>
-      <a href='https://www.geekgame.site/tags/rook' title="rook" class="post_tag button button_translucent">rook
-      </a>
-      <a href='https://www.geekgame.site/tags/rook-nfs' title="rook-nfs" class="post_tag button button_translucent">rook-nfs
-      </a>
-</div>
+    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/nfs' title="NFS" class="post_tag button button_translucent">NFS
+        </a><a href='https://www.geekgame.site/tags/rook' title="rook" class="post_tag button button_translucent">rook
+        </a><a href='https://www.geekgame.site/tags/rook-nfs' title="rook-nfs" class="post_tag button button_translucent">rook-nfs
+        </a>
+    </span>
+  </div>
+<div class="post_featured">
 
-    
 
+
+
+
+
+
+
+
+  
     
-    <img src="/k8s/rook.png" class="image_featured" alt="NFS 通过 rook 进行部署">
-    
-    
-    <h2>文章目录</h2>
-    <nav id="TableOfContents">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_featured image_internal" src="https://www.geekgame.site/k8s/rook.png" alt="" loading="lazy" decoding="async" width="717" height="418"  />
+      
+
+    </picture>
+  </figure>
+
+
+      </div>
+    <div class="post_toc">
+      <h2>文章目录</h2>
+      <nav id="TableOfContents">
   <ul>
     <li><a href="#nfs-介绍">NFS 介绍</a></li>
     <li><a href="#nfs-使用方式">NFS 使用方式</a></li>
@@ -156,7 +247,9 @@
     <li><a href="#参考">参考</a></li>
   </ul>
 </nav>
-    <h2 id="nfs-介绍">NFS 介绍</h2>
+    </div>
+    
+    <div class="post_body"><h2 id="nfs-介绍">NFS 介绍</h2>
 <p>NFS(Network File System)即网络文件系统, 是FreeBSD支持的文件系统中的一种。NFS是基于RPC(Remote Procedure Call)远程过程调用实现，其允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序就可以像访问本地文件一样访问远端系统上的文件。NFS是一个非常稳定的，可移植的网络文件系统。具备可扩展和高性能等特性，达到了企业级应用质量标准。由于网络速度的增加和延迟的降低，NFS系统一直是通过网络提供文件系统服务的有竞争力的选择。</p>
 <h2 id="nfs-使用方式">NFS 使用方式</h2>
 <ol>
@@ -179,158 +272,150 @@
 </ul>
 <h3 id="step0-创建-local-persistent-volume">Step0: 创建 Local Persistent Volume</h3>
 <p>首先在集群的宿主机(k8s-node2)创建挂载点, 比如 /mnt/disk; 然后 用RAM Disk 来模拟本地磁盘, 如下所示:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="c1"># 在 k8s-node2 上执行</span>
-<span class="ln">2</span>$ mkdir /mnt/disks
-<span class="ln">3</span>$ <span class="k">for</span> vol in vol1 vol2 vol3<span class="p">;</span> <span class="k">do</span>
-<span class="ln">4</span>      mkdir -p /mnt/disks/<span class="nv">$vol</span>
-<span class="ln">5</span>      mount -t tmpfs <span class="nv">$vol</span> /mnt/disks/<span class="nv">$vol</span>
-<span class="ln">6</span>   <span class="k">done</span>
-<span class="ln">7</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ df 查看
-<span class="ln">2</span>vol3            7.8G     0  7.8G   0% /mnt/disks/vol3
-<span class="ln">3</span>vol1            7.8G     0  7.8G   0% /mnt/disks/vol1
-<span class="ln">4</span>vol2            7.8G     0  7.8G   0% /mnt/disks/vol2
-</code></pre></div><p>注意: 其他机器如果也要创建 Local Persistent Volume, 那就执行相同的操作,但是磁盘名字不能重复.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 在 k8s-node2 上执行</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ mkdir /mnt/disks
+</span></span><span class="line"><span class="ln">3</span><span class="cl">$ <span class="k">for</span> vol in vol1 vol2 vol3<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      mkdir -p /mnt/disks/<span class="nv">$vol</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">      mount -t tmpfs <span class="nv">$vol</span> /mnt/disks/<span class="nv">$vol</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">   <span class="k">done</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ df 查看
+</span></span><span class="line"><span class="ln">2</span><span class="cl">vol3            7.8G     0  7.8G   0% /mnt/disks/vol3
+</span></span><span class="line"><span class="ln">3</span><span class="cl">vol1            7.8G     0  7.8G   0% /mnt/disks/vol1
+</span></span><span class="line"><span class="ln">4</span><span class="cl">vol2            7.8G     0  7.8G   0% /mnt/disks/vol2
+</span></span></code></pre></div><p>注意: 其他机器如果也要创建 Local Persistent Volume, 那就执行相同的操作,但是磁盘名字不能重复.</p>
 <p>接下来,定义PV, 如下所示:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
-</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv</span><span class="w">
-</span><span class="ln"> 5</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 6</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 7</span><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
-</span><span class="ln"> 8</span><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 9</span><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
-</span><span class="ln">10</span><span class="w">  </span><span class="nt">local</span><span class="p">:</span><span class="w">
-</span><span class="ln">11</span><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/mnt/disks/vol1</span><span class="w">
-</span><span class="ln">12</span><span class="w">  </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w">
-</span><span class="ln">13</span><span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w">
-</span><span class="ln">14</span><span class="w">      </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w">
-</span><span class="ln">15</span><span class="w">      </span>- <span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
-</span><span class="ln">16</span><span class="w">        </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/hostname</span><span class="w">
-</span><span class="ln">17</span><span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
-</span><span class="ln">18</span><span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w">
-</span><span class="ln">19</span><span class="w">          </span>- <span class="l">k8s-node2</span><span class="w">
-</span><span class="ln">20</span><span class="w">  </span><span class="nt">persistentVolumeReclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
-</span><span class="ln">21</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
-</span><span class="ln">22</span><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
-</span><span class="ln">23</span><span class="w">
-</span><span class="ln">24</span><span class="w">
-</span></code></pre></div><p>这个 PV 的定义里:local 字段,指定了它是一个 Local Persistent Volume; 而 path 字段,指定的正是这个 PV 对应的本地磁盘的路径,即:/mnt/disks/vol1。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="nt">local</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/mnt/disks/vol1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">      </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">      </span>- <span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">        </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/hostname</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">          </span>- <span class="l">k8s-node2</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">  </span><span class="nt">persistentVolumeReclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
+</span></span></span></code></pre></div><p>这个 PV 的定义里:local 字段,指定了它是一个 Local Persistent Volume; 而 path 字段,指定的正是这个 PV 对应的本地磁盘的路径,即:/mnt/disks/vol1。</p>
 <p>接下来, 我们使用 kubectl create 来创建这个PV, 如下所示:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜   kubectl get pv 
-<span class="ln">2</span>NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                       STORAGECLASS      REASON   AGE
-<span class="ln">3</span>example-pv                                 5Gi        RWO            Delete           Available                               local-storage              6s
-</code></pre></div><p>可以看到,example-pv创建后已经变成可用可用状态了.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜   kubectl get pv 
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                       STORAGECLASS      REASON   AGE
+</span></span><span class="line"><span class="ln">3</span><span class="cl">example-pv                                 5Gi        RWO            Delete           Available                               local-storage              6s
+</span></span></code></pre></div><p>可以看到,example-pv创建后已经变成可用可用状态了.</p>
 <h3 id="step1-创建storageclass">Step1: 创建StorageClass</h3>
 <p>通过StorageClass 描述 PV, 如下所示:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln">1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
-</span><span class="ln">2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
-</span><span class="ln">3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln">4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
-</span><span class="ln">5</span><span class="w"></span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/no-provisioner</span><span class="w">
-</span><span class="ln">6</span><span class="w"></span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
-</span><span class="ln">7</span><span class="w"></span><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l">WaitForFirstConsumer</span><span class="w">
-</span></code></pre></div><p>这里有两个重要的字段:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w"></span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/no-provisioner</span><span class="w">
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w"></span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w"></span><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l">WaitForFirstConsumer</span><span class="w">
+</span></span></span></code></pre></div><p>这里有两个重要的字段:
 provisioner: 我们使用no-provisioner, 这是因为 Local Persistent Volume 目前尚不支持Dynamic Provisioning,所以它没办法在用户创建 PVC 的时候,就自动创建出对应的PV。
 volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persistent 需要等到调度时才可以进行绑定操作.
 通过 kubectl create 来创建 StorageClass, 如下所示:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f sc.yaml
-<span class="ln">2</span>storageclass.storage.k8s.io/local-storage created
-<span class="ln">3</span>➜  kubectl get sc
-<span class="ln">4</span>NAME              PROVISIONER                                     RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
-<span class="ln">5</span>local-storage     kubernetes.io/no-provisioner                    Delete          WaitForFirstConsumer   <span class="nb">false</span>                  25s
-</code></pre></div><h3 id="step2-创建pvc">Step2: 创建PVC</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  kubectl create -f sc.yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">storageclass.storage.k8s.io/local-storage created
+</span></span><span class="line"><span class="ln">3</span><span class="cl">➜  kubectl get sc
+</span></span><span class="line"><span class="ln">4</span><span class="cl">NAME              PROVISIONER                                     RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+</span></span><span class="line"><span class="ln">5</span><span class="cl">local-storage     kubernetes.io/no-provisioner                    Delete          WaitForFirstConsumer   <span class="nb">false</span>                  25s
+</span></span></code></pre></div><h3 id="step2-创建pvc">Step2: 创建PVC</h3>
 <p>这里我们定义一个PVC来使用之前定义好的Local PV, 如下所示:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
-</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-local-claim</span><span class="w">
-</span><span class="ln"> 5</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
-</span><span class="ln"> 6</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 7</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 8</span><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
-</span><span class="ln"> 9</span><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
-</span><span class="ln">10</span><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span><span class="ln">11</span><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
-</span><span class="ln">12</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
-</span><span class="ln">13</span><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
-</span><span class="ln">14</span><span class="w">  </span><span class="nt">volumeName</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv</span><span class="w">
-</span></code></pre></div><p>接下来创建这个PVC:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f example-local-claim.yaml
-<span class="ln">2</span>persistentvolumeclaim/example-local-claim created
-<span class="ln">3</span>➜  kubectl get pvc -n rook-nfs
-<span class="ln">4</span>NAME                  STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS    AGE
-<span class="ln">5</span>example-local-claim   Bound    example-pv   5Gi        RWO            local-storage   25s
-<span class="ln">6</span>
-<span class="ln">7</span>
-</code></pre></div><p>注意: 这里我们指定了namespace 为rook-nfs , 这是为了方便nfs operator 使用.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">example-local-claim</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">  </span><span class="nt">volumeName</span><span class="p">:</span><span class="w"> </span><span class="l">example-pv</span><span class="w">
+</span></span></span></code></pre></div><p>接下来创建这个PVC:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  kubectl create -f example-local-claim.yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">persistentvolumeclaim/example-local-claim created
+</span></span><span class="line"><span class="ln">3</span><span class="cl">➜  kubectl get pvc -n rook-nfs
+</span></span><span class="line"><span class="ln">4</span><span class="cl">NAME                  STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS    AGE
+</span></span><span class="line"><span class="ln">5</span><span class="cl">example-local-claim   Bound    example-pv   5Gi        RWO            local-storage   25s
+</span></span></code></pre></div><p>注意: 这里我们指定了namespace 为rook-nfs , 这是为了方便nfs operator 使用.</p>
 <h3 id="step3-部署nfs-operator">Step3: 部署NFS Operator</h3>
 <p>安装 rook 之前需要先安装 NFS Client 安装包。在 CentOS 节点上安装 nf-utils，在 Ubuntu 节点上安装 nf-common。然后就可以安装 Rook 了。</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>$ git clone --single-branch --branch v1.7.3 https://github.com/rook/nfs.git
-<span class="ln">2</span><span class="nb">cd</span> rook/cluster/examples/kubernetes/nfs
-<span class="ln">3</span>kubectl create -f crds.yaml
-<span class="ln">4</span>kubectl create -f operator.yaml
-<span class="ln">5</span>
-</code></pre></div><p>检查operator 是否运行正常:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜   kubectl -n rook-nfs-system get pod
-<span class="ln">2</span>NAME                                READY   STATUS    RESTARTS   AGE
-<span class="ln">3</span>rook-nfs-operator-d489f8c4b-4hr9m   1/1     Running   <span class="m">0</span>          33s
-</code></pre></div><h3 id="step4-创建nfs-server">Step4: 创建NFS Server</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">$ git clone --single-branch --branch v1.7.3 https://github.com/rook/nfs.git
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">cd</span> rook/cluster/examples/kubernetes/nfs
+</span></span><span class="line"><span class="ln">3</span><span class="cl">kubectl create -f crds.yaml
+</span></span><span class="line"><span class="ln">4</span><span class="cl">kubectl create -f operator.yaml
+</span></span></code></pre></div><p>检查operator 是否运行正常:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜   kubectl -n rook-nfs-system get pod
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME                                READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="ln">3</span><span class="cl">rook-nfs-operator-d489f8c4b-4hr9m   1/1     Running   <span class="m">0</span>          33s
+</span></span></code></pre></div><h3 id="step4-创建nfs-server">Step4: 创建NFS Server</h3>
 <p>现在 operator 已经运行起来了,我们可以通过创建 nfsservers.nfs.rook.io 资源的实例来创建NFS服务器的实例,在这之前我们需要创建 ServiceAccount 和 RBAC规则:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f rbac.yaml
-<span class="ln">2</span>namespace/rook-nfs created
-<span class="ln">3</span>serviceaccount/rook-nfs-server created
-<span class="ln">4</span>clusterrole.rbac.authorization.k8s.io/rook-nfs-provisioner-runner created
-<span class="ln">5</span>clusterrolebinding.rbac.authorization.k8s.io/rook-nfs-provisioner-runner created
-</code></pre></div><p>接下来 将以下内容保存到nfs.yaml:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">nfs.rook.io/v1alpha1</span><span class="w">
-</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NFSServer</span><span class="w">
-</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
-</span><span class="ln"> 5</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
-</span><span class="ln"> 6</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 7</span><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span><span class="ln"> 8</span><span class="w">  </span><span class="nt">exports</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 9</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">share1</span><span class="w">
-</span><span class="ln">10</span><span class="w">      </span><span class="nt">server</span><span class="p">:</span><span class="w">
-</span><span class="ln">11</span><span class="w">        </span><span class="nt">accessMode</span><span class="p">:</span><span class="w"> </span><span class="l">ReadWrite</span><span class="w">
-</span><span class="ln">12</span><span class="w">        </span><span class="nt">squash</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;none&#34;</span><span class="w">
-</span><span class="ln">13</span><span class="w">      </span><span class="c"># A Persistent Volume Claim must be created before creating NFS CRD instance.</span><span class="w">
-</span><span class="ln">14</span><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
-</span><span class="ln">15</span><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">example-local-claim</span><span class="w">
-</span><span class="ln">16</span><span class="w">        </span><span class="c">#claimName: nfs-default-claim</span><span class="w">
-</span><span class="ln">17</span><span class="w">  </span><span class="c"># A key/value list of annotations</span><span class="w">
-</span><span class="ln">18</span><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span><span class="ln">19</span><span class="w">    </span><span class="nt">rook</span><span class="p">:</span><span class="w"> </span><span class="l">nfs</span><span class="w">
-</span><span class="ln">20</span><span class="w">
-</span><span class="ln">21</span><span class="w">
-</span></code></pre></div><p>然后通过kubectl create 创建 NFSf 服务器:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f nfs.yaml
-<span class="ln">2</span>nfsserver.nfs.rook.io/rook-nfs created
-</code></pre></div><p>验证 nfs server 是否运行正常:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl get pod -n rook-nfs
-<span class="ln">2</span>NAME         READY   STATUS    RESTARTS   AGE
-<span class="ln">3</span>rook-nfs-0   2/2     Running   <span class="m">0</span>          6m9s
-</code></pre></div><h3 id="step5-创建nfs-storage-class">Step5: 创建NFS Storage Class</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  kubectl create -f rbac.yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">namespace/rook-nfs created
+</span></span><span class="line"><span class="ln">3</span><span class="cl">serviceaccount/rook-nfs-server created
+</span></span><span class="line"><span class="ln">4</span><span class="cl">clusterrole.rbac.authorization.k8s.io/rook-nfs-provisioner-runner created
+</span></span><span class="line"><span class="ln">5</span><span class="cl">clusterrolebinding.rbac.authorization.k8s.io/rook-nfs-provisioner-runner created
+</span></span></code></pre></div><p>接下来 将以下内容保存到nfs.yaml:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">nfs.rook.io/v1alpha1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NFSServer</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">exports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">share1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">      </span><span class="nt">server</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">        </span><span class="nt">accessMode</span><span class="p">:</span><span class="w"> </span><span class="l">ReadWrite</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">        </span><span class="nt">squash</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;none&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">      </span><span class="c"># A Persistent Volume Claim must be created before creating NFS CRD instance.</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">example-local-claim</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">        </span><span class="c">#claimName: nfs-default-claim</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">  </span><span class="c"># A key/value list of annotations</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">    </span><span class="nt">rook</span><span class="p">:</span><span class="w"> </span><span class="l">nfs</span><span class="w">
+</span></span></span></code></pre></div><p>然后通过kubectl create 创建 NFSf 服务器:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  kubectl create -f nfs.yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">nfsserver.nfs.rook.io/rook-nfs created
+</span></span></code></pre></div><p>验证 nfs server 是否运行正常:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  kubectl get pod -n rook-nfs
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME         READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="ln">3</span><span class="cl">rook-nfs-0   2/2     Running   <span class="m">0</span>          6m9s
+</span></span></code></pre></div><h3 id="step5-创建nfs-storage-class">Step5: 创建NFS Storage Class</h3>
 <p>部署OPerator 和 NFSServer实例之后,. 必须创建 StrorageClass 来动态配置 Volume:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
-</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
-</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 5</span><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
-</span><span class="ln"> 6</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs-share1</span><span class="w">
-</span><span class="ln"> 7</span><span class="w"></span><span class="nt">parameters</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 8</span><span class="w">  </span><span class="nt">exportName</span><span class="p">:</span><span class="w"> </span><span class="l">share1</span><span class="w">
-</span><span class="ln"> 9</span><span class="w">  </span><span class="nt">nfsServerName</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
-</span><span class="ln">10</span><span class="w">  </span><span class="nt">nfsServerNamespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
-</span><span class="ln">11</span><span class="w"></span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">nfs.rook.io/rook-nfs-provisioner</span><span class="w">
-</span><span class="ln">12</span><span class="w"></span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
-</span><span class="ln">13</span><span class="w"></span><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l">Immediate</span><span class="w">
-</span></code></pre></div><p>通过 kubectl create 创建:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f sc.yaml
-<span class="ln">2</span>storageclass.storage.k8s.io/rook-nfs-share1 created
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs-share1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w"></span><span class="nt">parameters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">exportName</span><span class="p">:</span><span class="w"> </span><span class="l">share1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">nfsServerName</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="nt">nfsServerNamespace</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w"></span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">nfs.rook.io/rook-nfs-provisioner</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w"></span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w"></span><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l">Immediate</span><span class="w">
+</span></span></span></code></pre></div><p>通过 kubectl create 创建:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  kubectl create -f sc.yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">storageclass.storage.k8s.io/rook-nfs-share1 created
+</span></span></code></pre></div><blockquote>
 <p>这里 StorageClass 需要传递以下三个参数:</p>
 <ol>
 <li>exportName: 告诉provisioner 使用那个 export;</li>
@@ -339,21 +424,21 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
 </ol>
 </blockquote>
 <p>StorageClass创建之后, 我们接下来就可以创建PVC来引用它:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
-</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs-pv-claim</span><span class="w">
-</span><span class="ln"> 5</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 6</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;rook-nfs-share1&#34;</span><span class="w">
-</span><span class="ln"> 7</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 8</span><span class="w">    </span>- <span class="l">ReadWriteMany</span><span class="w">
-</span><span class="ln"> 9</span><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
-</span><span class="ln">10</span><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span><span class="ln">11</span><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">1Mi</span><span class="w">
-</span></code></pre></div><p>通过kubectl create 进行创建:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  kubectl create -f pvc.yaml
-<span class="ln">2</span>persistentvolumeclaim/rook-nfs-pv-claim created
-</code></pre></div><h3 id="step6-创建-pod-并使用nfs">Step6: 创建 Pod 并使用NFS</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rook-nfs-pv-claim</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;rook-nfs-share1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteMany</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">1Mi</span><span class="w">
+</span></span></span></code></pre></div><p>通过kubectl create 进行创建:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  kubectl create -f pvc.yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">persistentvolumeclaim/rook-nfs-pv-claim created
+</span></span></code></pre></div><h3 id="step6-创建-pod-并使用nfs">Step6: 创建 Pod 并使用NFS</h3>
 <p>官方给出的例子 是通过 busybox-rc.yaml 和 web-rc.yaml 创建出两个POD:</p>
 <ol>
 <li>web server 用来读取和展示 NFS share 的内容;</li>
@@ -361,45 +446,56 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
 然后通过 web-service.yaml 创建一个service;</li>
 </ol>
 <p>最后通过以下命令查看内容:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>
-<span class="ln">2</span>
-<span class="ln">3</span>$ echo<span class="p">;</span> kubectl <span class="nb">exec</span> <span class="k">$(</span>kubectl get pod -l <span class="nv">app</span><span class="o">=</span>nfs-demo,role<span class="o">=</span>busybox -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span> -- wget -qO- http://<span class="k">$(</span>kubectl get services nfs-web -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span><span class="p">;</span> <span class="nb">echo</span>
-<span class="ln">4</span>Mon Sep <span class="m">13</span> 12:20:59 UTC <span class="m">2021</span>
-<span class="ln">5</span>nfs-busybox-77c79b4b7b-5fc2w
-<span class="ln">6</span>
-<span class="ln">7</span>
-</code></pre></div><h3 id="step7-让集群外部服务也可以访问nfs-server">Step7: 让集群外部服务也可以访问NFS Server</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">$ echo<span class="p">;</span> kubectl <span class="nb">exec</span> <span class="k">$(</span>kubectl get pod -l <span class="nv">app</span><span class="o">=</span>nfs-demo,role<span class="o">=</span>busybox -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span> -- wget -qO- http://<span class="k">$(</span>kubectl get services nfs-web -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span><span class="p">;</span> <span class="nb">echo</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Mon Sep <span class="m">13</span> 12:20:59 UTC <span class="m">2021</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">nfs-busybox-77c79b4b7b-5fc2w
+</span></span></code></pre></div><h3 id="step7-让集群外部服务也可以访问nfs-server">Step7: 让集群外部服务也可以访问NFS Server</h3>
 <p>如果外部服务也可以访问NFS Server ,则可以通过修改 rook-nfs 的Service 类型为NodePort 来暴露 NFS 服务:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>
-<span class="ln">2</span>
-<span class="ln">3</span>➜  kubectl get svc -n rook-nfs
-<span class="ln">4</span>NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                        AGE
-<span class="ln">5</span>rook-nfs   NodePort   10.1.191.178   &lt;none&gt;        2049:32401/TCP,111:31081/TCP   45m
-</code></pre></div><p>换到其他机器上 通过 mount 进行连接:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>
-<span class="ln">2</span>➜  ~ mkdir -p  /mnt/nfs/share
-<span class="ln">3</span>➜  ~ mount -t nfs -o <span class="nv">port</span><span class="o">=</span><span class="m">32401</span>  10.41.24.236:/ /mnt/nfs/share
-<span class="ln">4</span>➜  ~ <span class="nb">cd</span> /mnt/nfs/share
-<span class="ln">5</span>➜  share ls
-<span class="ln">6</span>example-local-claim
-<span class="ln">7</span>➜  share <span class="nb">cd</span> example-local-claim
-<span class="ln">8</span>➜  example-local-claim ls
-<span class="ln">9</span>default-rook-nfs-pv-claim-pvc-476a215e-120c-4f76-a73f-3641a5f2af9f
-</code></pre></div><h2 id="参考">参考</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">➜  kubectl get svc -n rook-nfs
+</span></span><span class="line"><span class="ln">4</span><span class="cl">NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                        AGE
+</span></span><span class="line"><span class="ln">5</span><span class="cl">rook-nfs   NodePort   10.1.191.178   &lt;none&gt;        2049:32401/TCP,111:31081/TCP   45m
+</span></span></code></pre></div><p>换到其他机器上 通过 mount 进行连接:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">
+</span></span><span class="line"><span class="ln">2</span><span class="cl">➜  ~ mkdir -p  /mnt/nfs/share
+</span></span><span class="line"><span class="ln">3</span><span class="cl">➜  ~ mount -t nfs -o <span class="nv">port</span><span class="o">=</span><span class="m">32401</span>  10.41.24.236:/ /mnt/nfs/share
+</span></span><span class="line"><span class="ln">4</span><span class="cl">➜  ~ <span class="nb">cd</span> /mnt/nfs/share
+</span></span><span class="line"><span class="ln">5</span><span class="cl">➜  share ls
+</span></span><span class="line"><span class="ln">6</span><span class="cl">example-local-claim
+</span></span><span class="line"><span class="ln">7</span><span class="cl">➜  share <span class="nb">cd</span> example-local-claim
+</span></span><span class="line"><span class="ln">8</span><span class="cl">➜  example-local-claim ls
+</span></span><span class="line"><span class="ln">9</span><span class="cl">default-rook-nfs-pv-claim-pvc-476a215e-120c-4f76-a73f-3641a5f2af9f
+</span></span></code></pre></div><h2 id="参考">参考</h2>
 <p><a href="https://rook.io/docs/nfs/v1.7/quickstart.html#network-filesystem-nfs-quickstart">Network Filesystem (NFS) Quickstart</a><br>
 <a href="https://medium.com/jacky-life/%E9%80%8F%E9%81%8E-k8s-%E5%BB%BA%E7%AB%8B-nfs-%E6%9C%8D%E5%8B%99-6bbe4aeaf2cf">透過 K8S 建立 NFS 服務</a></p>
+
+    </div>
+
+
+
 
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -418,6 +514,9 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -438,9 +537,6 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
       </li>
     </ul>
     <div>
@@ -501,6 +597,11 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -558,8 +659,18 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -603,16 +714,6 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -647,7 +748,7 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -707,7 +808,7 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -823,7 +924,7 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -848,6 +949,9 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -856,14 +960,16 @@ volumeBindingMode: WaitForFirstConsumer, 指定了延迟绑定.因为Local Persi
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

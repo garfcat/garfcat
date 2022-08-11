@@ -4,7 +4,6 @@
   <head>
 <title>TCP timewait 过多怎么办 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -27,12 +27,10 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
 <meta property="og:description" content="要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
 TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; …" />
 <meta property="og:image" content="https://www.geekgame.site/images/thumbnail.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/protocol/tcp_1/">
 
@@ -40,12 +38,12 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -58,12 +56,17 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -115,68 +118,68 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">TCP timewait 过多怎么办</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">TCP timewait 过多怎么办</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       May 7, 2020</span>
-      <a href='https://www.geekgame.site/tags/tcp' title="tcp" class="post_tag button button_translucent">tcp
-      </a>
-</div>
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/tcp' title="tcp" class="post_tag button button_translucent">tcp
+        </a>
+    </span>
+  </div>
 
-    
-
-    
-    <p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</p>
+    <div class="post_body"><p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；</p>
 <h1 id="tcp-三次握手四次挥手状态迁移">TCP 三次握手四次挥手状态迁移</h1>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln"> 1</span>     TCP A                                                TCP B
-<span class="ln"> 2</span>
-<span class="ln"> 3</span>  1.  CLOSED                                               LISTEN
-<span class="ln"> 4</span>
-<span class="ln"> 5</span>  2.  SYN-SENT    --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>SYN&gt;               --&gt; SYN-RECEIVED
-<span class="ln"> 6</span>
-<span class="ln"> 7</span>  3.  ESTABLISHED &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>SYN,ACK&gt;  &lt;-- SYN-RECEIVED
-<span class="ln"> 8</span>
-<span class="ln"> 9</span>  4.  ESTABLISHED --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;       --&gt; ESTABLISHED
-<span class="ln">10</span>
-<span class="ln">11</span>  5.  ESTABLISHED --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;&lt;DATA&gt; --&gt; ESTABLISHED
-</code></pre></div><p>一般的关闭流程如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln"> 1</span>      TCP A                                                TCP B
-<span class="ln"> 2</span>
-<span class="ln"> 3</span>  1.  ESTABLISHED                                          ESTABLISHED
-<span class="ln"> 4</span>
-<span class="ln"> 5</span>  2.  <span class="o">(</span>Close<span class="o">)</span>
-<span class="ln"> 6</span>      FIN-WAIT-1  --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>300&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  --&gt; CLOSE-WAIT
-<span class="ln"> 7</span>
-<span class="ln"> 8</span>  3.  FIN-WAIT-2  &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      &lt;-- CLOSE-WAIT
-<span class="ln"> 9</span>
-<span class="ln">10</span>  4.                                                       <span class="o">(</span>Close<span class="o">)</span>
-<span class="ln">11</span>      TIME-WAIT   &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  &lt;-- LAST-ACK
-<span class="ln">12</span>
-<span class="ln">13</span>  5.  TIME-WAIT   --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      --&gt; CLOSED
-<span class="ln">14</span>
-<span class="ln">15</span>  6.  <span class="o">(</span><span class="m">2</span> MSL<span class="o">)</span>
-<span class="ln">16</span>      CLOSED   
-</code></pre></div><p>两边同时关闭流程如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln"> 1</span>      TCP A                                                TCP B
-<span class="ln"> 2</span>
-<span class="ln"> 3</span>  1.  ESTABLISHED                                          ESTABLISHED
-<span class="ln"> 4</span>
-<span class="ln"> 5</span>  2.  <span class="o">(</span>Close<span class="o">)</span>                                              <span class="o">(</span>Close<span class="o">)</span>
-<span class="ln"> 6</span>      FIN-WAIT-1  --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>300&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  ... FIN-WAIT-1
-<span class="ln"> 7</span>                  &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>100&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  &lt;--
-<span class="ln"> 8</span>                  ... &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>300&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  --&gt;
-<span class="ln"> 9</span>
-<span class="ln">10</span>  3.  CLOSING     --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      ... CLOSING
-<span class="ln">11</span>                  &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>301&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      &lt;--
-<span class="ln">12</span>                  ... &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      --&gt;
-<span class="ln">13</span>
-<span class="ln">14</span>  4.  TIME-WAIT                                            TIME-WAIT
-<span class="ln">15</span>      <span class="o">(</span><span class="m">2</span> MSL<span class="o">)</span>                                              <span class="o">(</span><span class="m">2</span> MSL<span class="o">)</span>
-<span class="ln">16</span>      CLOSED                                               CLOSED
-</code></pre></div><p>TIME-WAIT 是在主动关闭一方(一般是客户端)收到对端FIN包并回复最后一个ACK后进入的状态；随后等待2MSL时间后CLOSED.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">     TCP A                                                TCP B
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  1.  CLOSED                                               LISTEN
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  2.  SYN-SENT    --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>SYN&gt;               --&gt; SYN-RECEIVED
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  3.  ESTABLISHED &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>SYN,ACK&gt;  &lt;-- SYN-RECEIVED
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  4.  ESTABLISHED --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;       --&gt; ESTABLISHED
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">  5.  ESTABLISHED --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;&lt;DATA&gt; --&gt; ESTABLISHED
+</span></span></code></pre></div><p>一般的关闭流程如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">      TCP A                                                TCP B
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  1.  ESTABLISHED                                          ESTABLISHED
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  2.  <span class="o">(</span>Close<span class="o">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">      FIN-WAIT-1  --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>300&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  --&gt; CLOSE-WAIT
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  3.  FIN-WAIT-2  &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      &lt;-- CLOSE-WAIT
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  4.                                                       <span class="o">(</span>Close<span class="o">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">      TIME-WAIT   &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  &lt;-- LAST-ACK
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">  5.  TIME-WAIT   --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      --&gt; CLOSED
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">  6.  <span class="o">(</span><span class="m">2</span> MSL<span class="o">)</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">      CLOSED   
+</span></span></code></pre></div><p>两边同时关闭流程如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">      TCP A                                                TCP B
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  1.  ESTABLISHED                                          ESTABLISHED
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  2.  <span class="o">(</span>Close<span class="o">)</span>                                              <span class="o">(</span>Close<span class="o">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">      FIN-WAIT-1  --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>300&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  ... FIN-WAIT-1
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">                  &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>300&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>100&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  &lt;--
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                  ... &lt;<span class="nv">SEQ</span><span class="o">=</span>100&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>300&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>FIN,ACK&gt;  --&gt;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  3.  CLOSING     --&gt; &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      ... CLOSING
+</span></span><span class="line"><span class="ln">11</span><span class="cl">                  &lt;-- &lt;<span class="nv">SEQ</span><span class="o">=</span>301&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>101&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      &lt;--
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                  ... &lt;<span class="nv">SEQ</span><span class="o">=</span>101&gt;&lt;<span class="nv">ACK</span><span class="o">=</span>301&gt;&lt;<span class="nv">CTL</span><span class="o">=</span>ACK&gt;      --&gt;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">  4.  TIME-WAIT                                            TIME-WAIT
+</span></span><span class="line"><span class="ln">15</span><span class="cl">      <span class="o">(</span><span class="m">2</span> MSL<span class="o">)</span>                                              <span class="o">(</span><span class="m">2</span> MSL<span class="o">)</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">      CLOSED                                               CLOSED
+</span></span></code></pre></div><p>TIME-WAIT 是在主动关闭一方(一般是客户端)收到对端FIN包并回复最后一个ACK后进入的状态；随后等待2MSL时间后CLOSED.
 MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文一来一回的最大时间；TIME-WAIT的作用主要有两个：a) 确保 ack 可以被对端接收，如未收到可以返回FIN 包；b)确保对端发送的报文被接收或者超时被丢弃，防止未送达的报文对新连接造成影响；</p>
 <p>由此可以看出，这个状态是必不可少的，但是并发量比较大的机器上会造成无法新建连接，服务不可用的后果；因此我们要对TIME-WAIT过多的情况做一些调优；<br>
 主要通过设置内核参数来调整：</p>
@@ -198,86 +201,98 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
 <p>而且在最新的内核中已经删除了tcp_tw_recycle， 删除记录的commit 如下所示：</p>
 </li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln"> 1</span>
-<span class="ln"> 2</span>  commit 4396e46187ca5070219b81773c4e65088dac50cc
-<span class="ln"> 3</span>  Author: Soheil Hassas Yeganeh &lt;soheil@google.com&gt;
-<span class="ln"> 4</span>  Date:   Wed Mar <span class="m">15</span> 16:30:46 <span class="m">2017</span> -0400
-<span class="ln"> 5</span>  
-<span class="ln"> 6</span>      tcp: remove tcp_tw_recycle
-<span class="ln"> 7</span>      The tcp_tw_recycle was already broken <span class="k">for</span> connections
-<span class="ln"> 8</span>      behind NAT, since the per-destination timestamp is not
-<span class="ln"> 9</span>      monotonically increasing <span class="k">for</span> multiple machines behind
-<span class="ln">10</span>      a single destination address.
-</code></pre></div><ol start="3">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  commit 4396e46187ca5070219b81773c4e65088dac50cc
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  Author: Soheil Hassas Yeganeh &lt;soheil@google.com&gt;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  Date:   Wed Mar <span class="m">15</span> 16:30:46 <span class="m">2017</span> -0400
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">      tcp: remove tcp_tw_recycle
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">      The tcp_tw_recycle was already broken <span class="k">for</span> connections
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">      behind NAT, since the per-destination timestamp is not
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">      monotonically increasing <span class="k">for</span> multiple machines behind
+</span></span><span class="line"><span class="ln">10</span><span class="cl">      a single destination address.
+</span></span></code></pre></div><ol start="3">
 <li>tcp_max_tw_buckets<br>
 这个参数是控制TIME_WAIT的并发数量。</li>
 </ol>
 <h1 id="完整状态迁移图如下">完整状态迁移图如下</h1>
 <p>以下状态图来自于 <a href="http://www.rfc-editor.org/rfc/rfc793.txt">rfc793  TRANSMISSION CONTROL PROTOCOL</a></p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln"> 1</span>                               
-<span class="ln"> 2</span>                              +---------+ ---------<span class="se">\ </span>     active OPEN  
-<span class="ln"> 3</span>                              <span class="p">|</span>  CLOSED <span class="p">|</span>            <span class="se">\ </span>   -----------  
-<span class="ln"> 4</span>                              +---------+&lt;---------<span class="se">\ </span>  <span class="se">\ </span>  create TCB  
-<span class="ln"> 5</span>                                <span class="p">|</span>     ^              <span class="se">\ </span>  <span class="se">\ </span> snd SYN    
-<span class="ln"> 6</span>                   passive OPEN <span class="p">|</span>     <span class="p">|</span>   CLOSE        <span class="se">\ </span>  <span class="se">\ </span>          
-<span class="ln"> 7</span>                   ------------ <span class="p">|</span>     <span class="p">|</span> ----------       <span class="se">\ </span>  <span class="se">\ </span>        
-<span class="ln"> 8</span>                    create TCB  <span class="p">|</span>     <span class="p">|</span> delete TCB         <span class="se">\ </span>  <span class="se">\ </span>      
-<span class="ln"> 9</span>                                V     <span class="p">|</span>                      <span class="se">\ </span>  <span class="se">\ </span>    
-<span class="ln">10</span>                              +---------+            CLOSE    <span class="p">|</span>    <span class="se">\ </span>  
-<span class="ln">11</span>                              <span class="p">|</span>  LISTEN <span class="p">|</span>          ---------- <span class="p">|</span>     <span class="p">|</span>  
-<span class="ln">12</span>                              +---------+          delete TCB <span class="p">|</span>     <span class="p">|</span>  
-<span class="ln">13</span>                   rcv SYN      <span class="p">|</span>     <span class="p">|</span>     SEND              <span class="p">|</span>     <span class="p">|</span>  
-<span class="ln">14</span>                  -----------   <span class="p">|</span>     <span class="p">|</span>    -------            <span class="p">|</span>     V  
-<span class="ln">15</span> +---------+      snd SYN,ACK  /       <span class="se">\ </span>  snd SYN          +---------+
-<span class="ln">16</span> <span class="p">|</span>         <span class="p">|</span>&lt;-----------------           ------------------&gt;<span class="p">|</span>         <span class="p">|</span>
-<span class="ln">17</span> <span class="p">|</span>   SYN   <span class="p">|</span>                    rcv SYN                     <span class="p">|</span>   SYN   <span class="p">|</span>
-<span class="ln">18</span> <span class="p">|</span>   RCVD  <span class="p">|</span>&lt;-----------------------------------------------<span class="p">|</span>   SENT  <span class="p">|</span>
-<span class="ln">19</span> <span class="p">|</span>         <span class="p">|</span>                    snd ACK                     <span class="p">|</span>         <span class="p">|</span>
-<span class="ln">20</span> <span class="p">|</span>         <span class="p">|</span>------------------           -------------------<span class="p">|</span>         <span class="p">|</span>
-<span class="ln">21</span> +---------+   rcv ACK of SYN  <span class="se">\ </span>      /  rcv SYN,ACK       +---------+
-<span class="ln">22</span>   <span class="p">|</span>           --------------   <span class="p">|</span>     <span class="p">|</span>   -----------                  
-<span class="ln">23</span>   <span class="p">|</span>                  x         <span class="p">|</span>     <span class="p">|</span>     snd ACK                    
-<span class="ln">24</span>   <span class="p">|</span>                            V     V                                
-<span class="ln">25</span>   <span class="p">|</span>  CLOSE                   +---------+                              
-<span class="ln">26</span>   <span class="p">|</span> -------                  <span class="p">|</span>  ESTAB  <span class="p">|</span>                              
-<span class="ln">27</span>   <span class="p">|</span> snd FIN                  +---------+                              
-<span class="ln">28</span>   <span class="p">|</span>                   CLOSE    <span class="p">|</span>     <span class="p">|</span>    rcv FIN                     
-<span class="ln">29</span>   V                  -------   <span class="p">|</span>     <span class="p">|</span>    -------                     
-<span class="ln">30</span> +---------+          snd FIN  /       <span class="se">\ </span>  snd ACK          +---------+
-<span class="ln">31</span> <span class="p">|</span>  FIN    <span class="p">|</span>&lt;-----------------           ------------------&gt;<span class="p">|</span>  CLOSE  <span class="p">|</span>
-<span class="ln">32</span> <span class="p">|</span> WAIT-1  <span class="p">|</span>------------------                              <span class="p">|</span>   WAIT  <span class="p">|</span>
-<span class="ln">33</span> +---------+          rcv FIN  <span class="se">\ </span>                           +---------+
-<span class="ln">34</span>   <span class="p">|</span> rcv ACK of FIN   -------   <span class="p">|</span>                            CLOSE  <span class="p">|</span>  
-<span class="ln">35</span>   <span class="p">|</span> --------------   snd ACK   <span class="p">|</span>                           ------- <span class="p">|</span>  
-<span class="ln">36</span>   V        x                   V                           snd FIN V  
-<span class="ln">37</span> +---------+                  +---------+                   +---------+
-<span class="ln">38</span> <span class="p">|</span>FINWAIT-2<span class="p">|</span>                  <span class="p">|</span> CLOSING <span class="p">|</span>                   <span class="p">|</span> LAST-ACK<span class="p">|</span>
-<span class="ln">39</span> +---------+                  +---------+                   +---------+
-<span class="ln">40</span>   <span class="p">|</span>                rcv ACK of FIN <span class="p">|</span>                 rcv ACK of FIN <span class="p">|</span>  
-<span class="ln">41</span>   <span class="p">|</span>  rcv FIN       -------------- <span class="p">|</span>    <span class="nv">Timeout</span><span class="o">=</span>2MSL -------------- <span class="p">|</span>  
-<span class="ln">42</span>   <span class="p">|</span>  -------              x       V    ------------        x       V  
-<span class="ln">43</span>    <span class="se">\ </span>snd ACK                 +---------+delete TCB         +---------+
-<span class="ln">44</span>     ------------------------&gt;<span class="p">|</span>TIME WAIT<span class="p">|</span>------------------&gt;<span class="p">|</span> CLOSED  <span class="p">|</span>
-<span class="ln">45</span>                              +---------+                   +---------+
-<span class="ln">46</span>
-</code></pre></div><h1 id="参考">参考</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">                               
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">                              +---------+ ---------<span class="se">\ </span>     active OPEN  
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">                              <span class="p">|</span>  CLOSED <span class="p">|</span>            <span class="se">\ </span>   -----------  
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">                              +---------+&lt;---------<span class="se">\ </span>  <span class="se">\ </span>  create TCB  
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">                                <span class="p">|</span>     ^              <span class="se">\ </span>  <span class="se">\ </span> snd SYN    
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">                   passive OPEN <span class="p">|</span>     <span class="p">|</span>   CLOSE        <span class="se">\ </span>  <span class="se">\ </span>          
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">                   ------------ <span class="p">|</span>     <span class="p">|</span> ----------       <span class="se">\ </span>  <span class="se">\ </span>        
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                    create TCB  <span class="p">|</span>     <span class="p">|</span> delete TCB         <span class="se">\ </span>  <span class="se">\ </span>      
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                                V     <span class="p">|</span>                      <span class="se">\ </span>  <span class="se">\ </span>    
+</span></span><span class="line"><span class="ln">10</span><span class="cl">                              +---------+            CLOSE    <span class="p">|</span>    <span class="se">\ </span>  
+</span></span><span class="line"><span class="ln">11</span><span class="cl">                              <span class="p">|</span>  LISTEN <span class="p">|</span>          ---------- <span class="p">|</span>     <span class="p">|</span>  
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                              +---------+          delete TCB <span class="p">|</span>     <span class="p">|</span>  
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                   rcv SYN      <span class="p">|</span>     <span class="p">|</span>     SEND              <span class="p">|</span>     <span class="p">|</span>  
+</span></span><span class="line"><span class="ln">14</span><span class="cl">                  -----------   <span class="p">|</span>     <span class="p">|</span>    -------            <span class="p">|</span>     V  
+</span></span><span class="line"><span class="ln">15</span><span class="cl"> +---------+      snd SYN,ACK  /       <span class="se">\ </span>  snd SYN          +---------+
+</span></span><span class="line"><span class="ln">16</span><span class="cl"> <span class="p">|</span>         <span class="p">|</span>&lt;-----------------           ------------------&gt;<span class="p">|</span>         <span class="p">|</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl"> <span class="p">|</span>   SYN   <span class="p">|</span>                    rcv SYN                     <span class="p">|</span>   SYN   <span class="p">|</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl"> <span class="p">|</span>   RCVD  <span class="p">|</span>&lt;-----------------------------------------------<span class="p">|</span>   SENT  <span class="p">|</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"> <span class="p">|</span>         <span class="p">|</span>                    snd ACK                     <span class="p">|</span>         <span class="p">|</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"> <span class="p">|</span>         <span class="p">|</span>------------------           -------------------<span class="p">|</span>         <span class="p">|</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl"> +---------+   rcv ACK of SYN  <span class="se">\ </span>      /  rcv SYN,ACK       +---------+
+</span></span><span class="line"><span class="ln">22</span><span class="cl">   <span class="p">|</span>           --------------   <span class="p">|</span>     <span class="p">|</span>   -----------                  
+</span></span><span class="line"><span class="ln">23</span><span class="cl">   <span class="p">|</span>                  x         <span class="p">|</span>     <span class="p">|</span>     snd ACK                    
+</span></span><span class="line"><span class="ln">24</span><span class="cl">   <span class="p">|</span>                            V     V                                
+</span></span><span class="line"><span class="ln">25</span><span class="cl">   <span class="p">|</span>  CLOSE                   +---------+                              
+</span></span><span class="line"><span class="ln">26</span><span class="cl">   <span class="p">|</span> -------                  <span class="p">|</span>  ESTAB  <span class="p">|</span>                              
+</span></span><span class="line"><span class="ln">27</span><span class="cl">   <span class="p">|</span> snd FIN                  +---------+                              
+</span></span><span class="line"><span class="ln">28</span><span class="cl">   <span class="p">|</span>                   CLOSE    <span class="p">|</span>     <span class="p">|</span>    rcv FIN                     
+</span></span><span class="line"><span class="ln">29</span><span class="cl">   V                  -------   <span class="p">|</span>     <span class="p">|</span>    -------                     
+</span></span><span class="line"><span class="ln">30</span><span class="cl"> +---------+          snd FIN  /       <span class="se">\ </span>  snd ACK          +---------+
+</span></span><span class="line"><span class="ln">31</span><span class="cl"> <span class="p">|</span>  FIN    <span class="p">|</span>&lt;-----------------           ------------------&gt;<span class="p">|</span>  CLOSE  <span class="p">|</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl"> <span class="p">|</span> WAIT-1  <span class="p">|</span>------------------                              <span class="p">|</span>   WAIT  <span class="p">|</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl"> +---------+          rcv FIN  <span class="se">\ </span>                           +---------+
+</span></span><span class="line"><span class="ln">34</span><span class="cl">   <span class="p">|</span> rcv ACK of FIN   -------   <span class="p">|</span>                            CLOSE  <span class="p">|</span>  
+</span></span><span class="line"><span class="ln">35</span><span class="cl">   <span class="p">|</span> --------------   snd ACK   <span class="p">|</span>                           ------- <span class="p">|</span>  
+</span></span><span class="line"><span class="ln">36</span><span class="cl">   V        x                   V                           snd FIN V  
+</span></span><span class="line"><span class="ln">37</span><span class="cl"> +---------+                  +---------+                   +---------+
+</span></span><span class="line"><span class="ln">38</span><span class="cl"> <span class="p">|</span>FINWAIT-2<span class="p">|</span>                  <span class="p">|</span> CLOSING <span class="p">|</span>                   <span class="p">|</span> LAST-ACK<span class="p">|</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl"> +---------+                  +---------+                   +---------+
+</span></span><span class="line"><span class="ln">40</span><span class="cl">   <span class="p">|</span>                rcv ACK of FIN <span class="p">|</span>                 rcv ACK of FIN <span class="p">|</span>  
+</span></span><span class="line"><span class="ln">41</span><span class="cl">   <span class="p">|</span>  rcv FIN       -------------- <span class="p">|</span>    <span class="nv">Timeout</span><span class="o">=</span>2MSL -------------- <span class="p">|</span>  
+</span></span><span class="line"><span class="ln">42</span><span class="cl">   <span class="p">|</span>  -------              x       V    ------------        x       V  
+</span></span><span class="line"><span class="ln">43</span><span class="cl">    <span class="se">\ </span>snd ACK                 +---------+delete TCB         +---------+
+</span></span><span class="line"><span class="ln">44</span><span class="cl">     ------------------------&gt;<span class="p">|</span>TIME WAIT<span class="p">|</span>------------------&gt;<span class="p">|</span> CLOSED  <span class="p">|</span>
+</span></span><span class="line"><span class="ln">45</span><span class="cl">                              +---------+                   +---------+
+</span></span></code></pre></div><h1 id="参考">参考</h1>
 <ol>
 <li><a href="https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux">Coping with the TCP TIME-WAIT state on busy Linux servers
 </a></li>
 <li><a href="https://saview.wordpress.com/2011/09/27/tcp_tw_recycle%E5%92%8Cnat%E9%80%A0%E6%88%90syn_ack%E9%97%AE%E9%A2%98/">tcp_tw_recycle和NAT造成SYN_ACK问题</a></li>
 </ol>
 
+    </div>
+
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -300,6 +315,9 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
       <li>
@@ -319,9 +337,6 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
       </li>
     </ul>
     <div>
@@ -382,6 +397,11 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -439,8 +459,18 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -484,16 +514,6 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -528,7 +548,7 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -588,7 +608,7 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -704,7 +724,7 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -729,6 +749,9 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -737,14 +760,16 @@ MSL 是Maximum Segment Lifetime 报文最长生存时间，2MSL正好是报文�
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

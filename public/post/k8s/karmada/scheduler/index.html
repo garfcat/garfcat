@@ -4,7 +4,6 @@
   <head>
 <title>Karmada Scheduler核心实现 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -24,13 +24,11 @@
 <meta property="og:url" content="https://www.geekgame.site/post/k8s/karmada/scheduler/" />
 <meta property="og:title" content="Karmada Scheduler核心实现" />
 <meta property="og:description" content="Karmada Scheduler核心实现" />
-<meta property="og:image" content="https://www.geekgame.site/images/path/share.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+<meta property="og:image" content="https://www.geekgame.site/post/k8s/karmada/scheduler/images/path/share.png" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/k8s/karmada/scheduler/">
 
@@ -38,12 +36,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -55,12 +53,17 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -112,27 +115,116 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">Karmada Scheduler核心实现</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">Karmada Scheduler核心实现</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Oct 15, 2021</span>
-      <a href='https://www.geekgame.site/tags/karmada' title="karmada" class="post_tag button button_translucent">karmada
-      </a>
-      <a href='https://www.geekgame.site/tags/cmp' title="cmp" class="post_tag button button_translucent">cmp
-      </a>
-</div>
+    <span class="post_time"> · 6 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/karmada' title="karmada" class="post_tag button button_translucent">karmada
+        </a><a href='https://www.geekgame.site/tags/cmp' title="cmp" class="post_tag button button_translucent">cmp
+        </a>
+    </span>
+  </div>
+<div class="post_featured">
 
-    
 
+
+
+
+
+
+
+
+  
     
-    <img src="/images/cat.png" class="image_featured" alt="Karmada Scheduler核心实现">
-    
-    
-    <h2>文章目录</h2>
-    <nav id="TableOfContents">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_featured image_internal" src="https://www.geekgame.site/images/cat.png" alt="" loading="lazy" decoding="async" width="1350" height="756"  />
+      
+
+    </picture>
+  </figure>
+
+
+      </div>
+    <div class="post_toc">
+      <h2>文章目录</h2>
+      <nav id="TableOfContents">
   <ul>
     <li><a href="#调度框架">调度框架</a></li>
     <li><a href="#首次调度firstschedule">首次调度（FirstSchedule）</a>
@@ -149,11 +241,102 @@
     <li><a href="#总结">总结</a></li>
   </ul>
 </nav>
-    <p>Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。
+    </div>
+    
+    <div class="post_body"><p>Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。
 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。</p>
 <p><strong>注意：</strong> 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1</p>
 <h2 id="调度框架">调度框架</h2>
-<p><img src="/k8s/karmada/scheduler.png" alt="karmada scheduler arch"></p>
+<p>
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/karmada/scheduler.png" alt="karmada scheduler arch" loading="lazy" decoding="async" width="2946" height="2058"  />
+      
+
+    </picture>
+  </figure>
+
+</p>
 <p>karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 <br>
 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；<br>
 policyInformer/clusterPolicyInformer 是用来监听 policy/clusterPolicy 的Update事件，将关联的 binding/clusterBinding 添加到调度队列；<br>
@@ -182,28 +365,28 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。<
 <h3 id="预选算法">预选算法</h3>
 <p>通过 findClustersThatFit 找到符合基本条件的集群;<br>
 代码路径 pkg/scheduler/core/generic_scheduler.go</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="c1">// findClustersThatFit finds the clusters that are fit for the placement based on running the filter plugins.
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">findClustersThatFit</span><span class="p">(</span>
-<span class="ln"> 3</span>	<span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span>
-<span class="ln"> 4</span>	<span class="nx">fwk</span> <span class="nx">framework</span><span class="p">.</span><span class="nx">Framework</span><span class="p">,</span>
-<span class="ln"> 5</span>	<span class="nx">placement</span> <span class="o">*</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">Placement</span><span class="p">,</span>
-<span class="ln"> 6</span>	<span class="nx">resource</span> <span class="o">*</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">ObjectReference</span><span class="p">,</span>
-<span class="ln"> 7</span>	<span class="nx">clusterInfo</span> <span class="o">*</span><span class="nx">cache</span><span class="p">.</span><span class="nx">Snapshot</span><span class="p">)</span> <span class="p">([]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 8</span>	<span class="kd">var</span> <span class="nx">out</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span>
-<span class="ln"> 9</span>	<span class="nx">clusters</span> <span class="o">:=</span> <span class="nx">clusterInfo</span><span class="p">.</span><span class="nf">GetReadyClusters</span><span class="p">()</span>
-<span class="ln">10</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
-<span class="ln">11</span>		<span class="nx">resMap</span> <span class="o">:=</span> <span class="nx">fwk</span><span class="p">.</span><span class="nf">RunFilterPlugins</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">placement</span><span class="p">,</span> <span class="nx">resource</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Cluster</span><span class="p">())</span>
-<span class="ln">12</span>		<span class="nx">res</span> <span class="o">:=</span> <span class="nx">resMap</span><span class="p">.</span><span class="nf">Merge</span><span class="p">()</span>
-<span class="ln">13</span>		<span class="k">if</span> <span class="p">!</span><span class="nx">res</span><span class="p">.</span><span class="nf">IsSuccess</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">14</span>			<span class="nx">klog</span><span class="p">.</span><span class="nf">V</span><span class="p">(</span><span class="mi">4</span><span class="p">).</span><span class="nf">Infof</span><span class="p">(</span><span class="s">&#34;cluster %q is not fit&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Cluster</span><span class="p">().</span><span class="nx">Name</span><span class="p">)</span>
-<span class="ln">15</span>		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="ln">16</span>			<span class="nx">out</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Cluster</span><span class="p">())</span>
-<span class="ln">17</span>		<span class="p">}</span>
-<span class="ln">18</span>	<span class="p">}</span>
-<span class="ln">19</span>
-<span class="ln">20</span>	<span class="k">return</span> <span class="nx">out</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln">21</span><span class="p">}</span>
-</code></pre></div><p>通过 RunFilterPlugins 执行 filter 的扩展函数从而过滤掉不符合条件的集群， 扩展点包含三个插件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// findClustersThatFit finds the clusters that are fit for the placement based on running the filter plugins.
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">findClustersThatFit</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="nx">fwk</span> <span class="nx">framework</span><span class="p">.</span><span class="nx">Framework</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="nx">placement</span> <span class="o">*</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">Placement</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nx">resource</span> <span class="o">*</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">ObjectReference</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="nx">clusterInfo</span> <span class="o">*</span><span class="nx">cache</span><span class="p">.</span><span class="nx">Snapshot</span><span class="p">)</span> <span class="p">([]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="kd">var</span> <span class="nx">out</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">clusters</span> <span class="o">:=</span> <span class="nx">clusterInfo</span><span class="p">.</span><span class="nf">GetReadyClusters</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">resMap</span> <span class="o">:=</span> <span class="nx">fwk</span><span class="p">.</span><span class="nf">RunFilterPlugins</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">placement</span><span class="p">,</span> <span class="nx">resource</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Cluster</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="nx">res</span> <span class="o">:=</span> <span class="nx">resMap</span><span class="p">.</span><span class="nf">Merge</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="k">if</span> <span class="p">!</span><span class="nx">res</span><span class="p">.</span><span class="nf">IsSuccess</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">			<span class="nx">klog</span><span class="p">.</span><span class="nf">V</span><span class="p">(</span><span class="mi">4</span><span class="p">).</span><span class="nf">Infof</span><span class="p">(</span><span class="s">&#34;cluster %q is not fit&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Cluster</span><span class="p">().</span><span class="nx">Name</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">			<span class="nx">out</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Cluster</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="k">return</span> <span class="nx">out</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>通过 RunFilterPlugins 执行 filter 的扩展函数从而过滤掉不符合条件的集群， 扩展点包含三个插件：</p>
 <ol>
 <li>clusteraffinity:  集群亲缘性过滤，通过 ExcludeClusters 可以明确排除某些集群， 也可以通过 LabelSelector FieldSelector 进行匹配，也可以直接通过 cluster name 进行匹配；</li>
 <li>tainttoleration:  污点容忍性，过滤掉带有 tanit 但是 无法容忍的集群；</li>
@@ -221,105 +404,103 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。<
 </ol>
 <h4 id="划分不同的组">划分不同的组</h4>
 <p>SpreadConstraint 的类型有： cluster、region、zone、provider, 目前只支持 cluster。</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span>
-<span class="ln"> 2</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">selectClusters</span><span class="p">(</span><span class="nx">clustersScore</span> <span class="nx">framework</span><span class="p">.</span><span class="nx">ClusterScoreList</span><span class="p">,</span> <span class="nx">spreadConstraints</span> <span class="p">[]</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">,</span> <span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span> <span class="p">{</span>
-<span class="ln"> 3</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">spreadConstraints</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln"> 4</span>		<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">matchSpreadConstraints</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">spreadConstraints</span><span class="p">)</span>
-<span class="ln"> 5</span>	<span class="p">}</span>
-<span class="ln"> 6</span>
-<span class="ln"> 7</span>	<span class="k">return</span> <span class="nx">clusters</span>
-<span class="ln"> 8</span><span class="p">}</span>
-<span class="ln"> 9</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">matchSpreadConstraints</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">spreadConstraints</span> <span class="p">[]</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span> <span class="p">{</span>
-<span class="ln">10</span>	<span class="nx">state</span> <span class="o">:=</span> <span class="nx">util</span><span class="p">.</span><span class="nf">NewSpreadGroup</span><span class="p">()</span>
-<span class="ln">11</span>	<span class="nx">g</span><span class="p">.</span><span class="nf">runSpreadConstraintsFilter</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">spreadConstraints</span><span class="p">,</span> <span class="nx">state</span><span class="p">)</span>
-<span class="ln">12</span>	<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">calSpreadResult</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span>
-<span class="ln">13</span><span class="p">}</span>
-<span class="ln">14</span>
-<span class="ln">15</span><span class="c1">// Now support spread by cluster. More rules will be implemented later.
-</span><span class="ln">16</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">runSpreadConstraintsFilter</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">spreadConstraints</span> <span class="p">[]</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">,</span> <span class="nx">spreadGroup</span> <span class="o">*</span><span class="nx">util</span><span class="p">.</span><span class="nx">SpreadGroup</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">17</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">spreadConstraint</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spreadConstraints</span> <span class="p">{</span>
-<span class="ln">18</span>		<span class="nx">spreadGroup</span><span class="p">.</span><span class="nf">InitialGroupRecord</span><span class="p">(</span><span class="nx">spreadConstraint</span><span class="p">)</span>
-<span class="ln">19</span>		<span class="k">if</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">SpreadByField</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadByFieldCluster</span> <span class="p">{</span>
-<span class="ln">20</span>			<span class="nx">g</span><span class="p">.</span><span class="nf">groupByFieldCluster</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">spreadConstraint</span><span class="p">,</span> <span class="nx">spreadGroup</span><span class="p">)</span>
-<span class="ln">21</span>		<span class="p">}</span>
-<span class="ln">22</span>	<span class="p">}</span>
-<span class="ln">23</span><span class="p">}</span>
-<span class="ln">24</span>
-<span class="ln">25</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">groupByFieldCluster</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">spreadConstraint</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">,</span> <span class="nx">spreadGroup</span> <span class="o">*</span><span class="nx">util</span><span class="p">.</span><span class="nx">SpreadGroup</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">26</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">cluster</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
-<span class="ln">27</span>		<span class="nx">clusterGroup</span> <span class="o">:=</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span>
-<span class="ln">28</span>		<span class="nx">spreadGroup</span><span class="p">.</span><span class="nx">GroupRecord</span><span class="p">[</span><span class="nx">spreadConstraint</span><span class="p">][</span><span class="nx">clusterGroup</span><span class="p">]</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">spreadGroup</span><span class="p">.</span><span class="nx">GroupRecord</span><span class="p">[</span><span class="nx">spreadConstraint</span><span class="p">][</span><span class="nx">clusterGroup</span><span class="p">],</span> <span class="nx">cluster</span><span class="p">)</span>
-<span class="ln">29</span>	<span class="p">}</span>
-<span class="ln">30</span><span class="p">}</span>
-<span class="ln">31</span>
-</code></pre></div><h4 id="从不同的组选择出集群">从不同的组选择出集群</h4>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">chooseSpreadGroup</span><span class="p">(</span><span class="nx">spreadGroup</span> <span class="o">*</span><span class="nx">util</span><span class="p">.</span><span class="nx">SpreadGroup</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="kd">var</span> <span class="nx">feasibleClusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span>
-<span class="ln"> 3</span>	<span class="k">for</span> <span class="nx">spreadConstraint</span><span class="p">,</span> <span class="nx">clusterGroups</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spreadGroup</span><span class="p">.</span><span class="nx">GroupRecord</span> <span class="p">{</span>
-<span class="ln"> 4</span>        <span class="c1">//  目前支持cluster name 进行的分组
-</span><span class="ln"> 5</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">SpreadByField</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadByFieldCluster</span> <span class="p">{</span>
-<span class="ln"> 6</span>            <span class="c1">// 如果小于最小组的数量，则返回nil
-</span><span class="ln"> 7</span><span class="c1"></span>			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterGroups</span><span class="p">)</span> <span class="p">&lt;</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MinGroups</span> <span class="p">{</span>
-<span class="ln"> 8</span>				<span class="k">return</span> <span class="kc">nil</span>
-<span class="ln"> 9</span>			<span class="p">}</span>
-<span class="ln">10</span>            <span class="c1">// 如果划分的组数 在最小-最大之间， 则将所有集群添加的结果集合
-</span><span class="ln">11</span><span class="c1"></span>			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterGroups</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span> <span class="p">{</span>
-<span class="ln">12</span>				<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterGroups</span> <span class="p">{</span>
-<span class="ln">13</span>					<span class="nx">feasibleClusters</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">feasibleClusters</span><span class="p">,</span> <span class="nx">v</span><span class="o">...</span><span class="p">)</span>
-<span class="ln">14</span>				<span class="p">}</span>
-<span class="ln">15</span>				<span class="k">break</span>
-<span class="ln">16</span>			<span class="p">}</span>
-<span class="ln">17</span>            <span class="c1">// 如果划分的组大于限制的最大组数，则将分组数限制为 MaxGroups
-</span><span class="ln">18</span><span class="c1"></span>			<span class="k">if</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterGroups</span><span class="p">)</span> <span class="p">&gt;</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span> <span class="p">{</span>
-<span class="ln">19</span>				<span class="kd">var</span> <span class="nx">groups</span> <span class="p">[]</span><span class="kt">string</span>
-<span class="ln">20</span>				<span class="k">for</span> <span class="nx">group</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterGroups</span> <span class="p">{</span>
-<span class="ln">21</span>					<span class="nx">groups</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">groups</span><span class="p">,</span> <span class="nx">group</span><span class="p">)</span>
-<span class="ln">22</span>				<span class="p">}</span>
-<span class="ln">23</span>
-<span class="ln">24</span>				<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln">25</span>					<span class="nx">feasibleClusters</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">feasibleClusters</span><span class="p">,</span> <span class="nx">clusterGroups</span><span class="p">[</span><span class="nx">groups</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span><span class="o">...</span><span class="p">)</span>
-<span class="ln">26</span>				<span class="p">}</span>
-<span class="ln">27</span>			<span class="p">}</span>
-<span class="ln">28</span>		<span class="p">}</span>
-<span class="ln">29</span>	<span class="p">}</span>
-<span class="ln">30</span>	<span class="k">return</span> <span class="nx">feasibleClusters</span>
-<span class="ln">31</span><span class="p">}</span>
-<span class="ln">32</span>
-</code></pre></div><h3 id="为选择的集群分配replicas">为选择的集群分配Replicas</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">selectClusters</span><span class="p">(</span><span class="nx">clustersScore</span> <span class="nx">framework</span><span class="p">.</span><span class="nx">ClusterScoreList</span><span class="p">,</span> <span class="nx">spreadConstraints</span> <span class="p">[]</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">,</span> <span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">spreadConstraints</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">matchSpreadConstraints</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">spreadConstraints</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="k">return</span> <span class="nx">clusters</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">matchSpreadConstraints</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">spreadConstraints</span> <span class="p">[]</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">state</span> <span class="o">:=</span> <span class="nx">util</span><span class="p">.</span><span class="nf">NewSpreadGroup</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nf">runSpreadConstraintsFilter</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">spreadConstraints</span><span class="p">,</span> <span class="nx">state</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">calSpreadResult</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// Now support spread by cluster. More rules will be implemented later.
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">runSpreadConstraintsFilter</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">spreadConstraints</span> <span class="p">[]</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">,</span> <span class="nx">spreadGroup</span> <span class="o">*</span><span class="nx">util</span><span class="p">.</span><span class="nx">SpreadGroup</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">spreadConstraint</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spreadConstraints</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="nx">spreadGroup</span><span class="p">.</span><span class="nf">InitialGroupRecord</span><span class="p">(</span><span class="nx">spreadConstraint</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="k">if</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">SpreadByField</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadByFieldCluster</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">			<span class="nx">g</span><span class="p">.</span><span class="nf">groupByFieldCluster</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">spreadConstraint</span><span class="p">,</span> <span class="nx">spreadGroup</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">groupByFieldCluster</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">spreadConstraint</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadConstraint</span><span class="p">,</span> <span class="nx">spreadGroup</span> <span class="o">*</span><span class="nx">util</span><span class="p">.</span><span class="nx">SpreadGroup</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">cluster</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">		<span class="nx">clusterGroup</span> <span class="o">:=</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">		<span class="nx">spreadGroup</span><span class="p">.</span><span class="nx">GroupRecord</span><span class="p">[</span><span class="nx">spreadConstraint</span><span class="p">][</span><span class="nx">clusterGroup</span><span class="p">]</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">spreadGroup</span><span class="p">.</span><span class="nx">GroupRecord</span><span class="p">[</span><span class="nx">spreadConstraint</span><span class="p">][</span><span class="nx">clusterGroup</span><span class="p">],</span> <span class="nx">cluster</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="从不同的组选择出集群">从不同的组选择出集群</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">chooseSpreadGroup</span><span class="p">(</span><span class="nx">spreadGroup</span> <span class="o">*</span><span class="nx">util</span><span class="p">.</span><span class="nx">SpreadGroup</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="kd">var</span> <span class="nx">feasibleClusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">for</span> <span class="nx">spreadConstraint</span><span class="p">,</span> <span class="nx">clusterGroups</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spreadGroup</span><span class="p">.</span><span class="nx">GroupRecord</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="c1">//  目前支持cluster name 进行的分组
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">SpreadByField</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">SpreadByFieldCluster</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            <span class="c1">// 如果小于最小组的数量，则返回nil
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterGroups</span><span class="p">)</span> <span class="p">&lt;</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MinGroups</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">				<span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">            <span class="c1">// 如果划分的组数 在最小-最大之间， 则将所有集群添加的结果集合
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"></span>			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterGroups</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">				<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterGroups</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">					<span class="nx">feasibleClusters</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">feasibleClusters</span><span class="p">,</span> <span class="nx">v</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">				<span class="p">}</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">				<span class="k">break</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">            <span class="c1">// 如果划分的组大于限制的最大组数，则将分组数限制为 MaxGroups
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"></span>			<span class="k">if</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterGroups</span><span class="p">)</span> <span class="p">&gt;</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">				<span class="kd">var</span> <span class="nx">groups</span> <span class="p">[]</span><span class="kt">string</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">				<span class="k">for</span> <span class="nx">group</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterGroups</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">					<span class="nx">groups</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">groups</span><span class="p">,</span> <span class="nx">group</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">				<span class="p">}</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">
+</span></span><span class="line"><span class="ln">24</span><span class="cl">				<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">spreadConstraint</span><span class="p">.</span><span class="nx">MaxGroups</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">					<span class="nx">feasibleClusters</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">feasibleClusters</span><span class="p">,</span> <span class="nx">clusterGroups</span><span class="p">[</span><span class="nx">groups</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">				<span class="p">}</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">	<span class="k">return</span> <span class="nx">feasibleClusters</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="为选择的集群分配replicas">为选择的集群分配Replicas</h3>
 <p>为选择的集群分配Replicas，是通过 <strong>assignReplicas</strong> 方法实现，该方法是根据 replicaSchedulingStrategy（在 propagation policy中定义 placement时,同时指定replica scheduling strategy） 策略进行分配。</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">assignReplicas</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">replicaSchedulingStrategy</span> <span class="o">*</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaSchedulingStrategy</span><span class="p">,</span> <span class="nx">object</span> <span class="o">*</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">ObjectReference</span><span class="p">)</span> <span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln"> 3</span>		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;no clusters available to schedule&#34;</span><span class="p">)</span>
-<span class="ln"> 4</span>	<span class="p">}</span>
-<span class="ln"> 5</span>	<span class="nx">targetClusters</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusters</span><span class="p">))</span>
-<span class="ln"> 6</span>
-<span class="ln"> 7</span>	<span class="k">if</span> <span class="nx">object</span><span class="p">.</span><span class="nx">Replicas</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">replicaSchedulingStrategy</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln"> 8</span>		<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaSchedulingType</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaSchedulingTypeDuplicated</span> <span class="p">{</span>
-<span class="ln"> 9</span>			<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">cluster</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
-<span class="ln">10</span>				<span class="nx">targetClusters</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">Replicas</span><span class="p">:</span> <span class="nx">object</span><span class="p">.</span><span class="nx">Replicas</span><span class="p">}</span>
-<span class="ln">11</span>			<span class="p">}</span>
-<span class="ln">12</span>			<span class="k">return</span> <span class="nx">targetClusters</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln">13</span>		<span class="p">}</span>
-<span class="ln">14</span>		<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaSchedulingType</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaSchedulingTypeDivided</span> <span class="p">{</span>
-<span class="ln">15</span>			<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaDivisionPreference</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaDivisionPreferenceWeighted</span> <span class="p">{</span>
-<span class="ln">16</span>				<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">WeightPreference</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">17</span>					<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;no WeightPreference find to divide replicas&#34;</span><span class="p">)</span>
-<span class="ln">18</span>				<span class="p">}</span>
-<span class="ln">19</span>				<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">divideReplicasByStaticWeight</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">WeightPreference</span><span class="p">.</span><span class="nx">StaticWeightList</span><span class="p">,</span> <span class="nx">object</span><span class="p">.</span><span class="nx">Replicas</span><span class="p">)</span>
-<span class="ln">20</span>			<span class="p">}</span>
-<span class="ln">21</span>			<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaDivisionPreference</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaDivisionPreferenceAggregated</span> <span class="p">{</span>
-<span class="ln">22</span>				<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">divideReplicasAggregatedWithResource</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">object</span><span class="p">)</span>
-<span class="ln">23</span>			<span class="p">}</span>
-<span class="ln">24</span>			<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">divideReplicasAggregatedWithResource</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">object</span><span class="p">)</span> <span class="c1">//default policy for ReplicaSchedulingTypeDivided
-</span><span class="ln">25</span><span class="c1"></span>		<span class="p">}</span>
-<span class="ln">26</span>	<span class="p">}</span>
-<span class="ln">27</span>
-<span class="ln">28</span>	<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">cluster</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
-<span class="ln">29</span>		<span class="nx">targetClusters</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span><span class="p">}</span>
-<span class="ln">30</span>	<span class="p">}</span>
-<span class="ln">31</span>	<span class="k">return</span> <span class="nx">targetClusters</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln">32</span><span class="p">}</span>
-</code></pre></div><p>replica scheduler 支持两种类型的调度：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">assignReplicas</span><span class="p">(</span><span class="nx">clusters</span> <span class="p">[]</span><span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">replicaSchedulingStrategy</span> <span class="o">*</span><span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaSchedulingStrategy</span><span class="p">,</span> <span class="nx">object</span> <span class="o">*</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">ObjectReference</span><span class="p">)</span> <span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;no clusters available to schedule&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="nx">targetClusters</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusters</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="k">if</span> <span class="nx">object</span><span class="p">.</span><span class="nx">Replicas</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">replicaSchedulingStrategy</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaSchedulingType</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaSchedulingTypeDuplicated</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">cluster</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">				<span class="nx">targetClusters</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">Replicas</span><span class="p">:</span> <span class="nx">object</span><span class="p">.</span><span class="nx">Replicas</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">			<span class="k">return</span> <span class="nx">targetClusters</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaSchedulingType</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaSchedulingTypeDivided</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">			<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaDivisionPreference</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaDivisionPreferenceWeighted</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">				<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">WeightPreference</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">					<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;no WeightPreference find to divide replicas&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">				<span class="p">}</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">				<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">divideReplicasByStaticWeight</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">WeightPreference</span><span class="p">.</span><span class="nx">StaticWeightList</span><span class="p">,</span> <span class="nx">object</span><span class="p">.</span><span class="nx">Replicas</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">			<span class="k">if</span> <span class="nx">replicaSchedulingStrategy</span><span class="p">.</span><span class="nx">ReplicaDivisionPreference</span> <span class="o">==</span> <span class="nx">policyv1alpha1</span><span class="p">.</span><span class="nx">ReplicaDivisionPreferenceAggregated</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">				<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">divideReplicasAggregatedWithResource</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">object</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">			<span class="k">return</span> <span class="nx">g</span><span class="p">.</span><span class="nf">divideReplicasAggregatedWithResource</span><span class="p">(</span><span class="nx">clusters</span><span class="p">,</span> <span class="nx">object</span><span class="p">)</span> <span class="c1">//default policy for ReplicaSchedulingTypeDivided
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"></span>		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">
+</span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">cluster</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusters</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">		<span class="nx">targetClusters</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">	<span class="k">return</span> <span class="nx">targetClusters</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>replica scheduler 支持两种类型的调度：</p>
 <ol>
 <li>复制(ReplicaSchedulingTypeDuplicated): 不对 deployment 中的replica 数量做修改，直接复制到各个子集群；</li>
 <li>切分(ReplicaSchedulingTypeDivided): 将 deployment 中定义的 replica数量，按照策略进行切分，然后分发到不同的子集群，目前支持的切分策略有： 权重（ReplicaDivisionPreferenceWeighted）、子集群资源(ReplicaDivisionPreferenceAggregated);</li>
@@ -327,132 +508,132 @@ memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。<
 <p>复制类型的调度很简单此处不展开介绍，我们重点介绍切分的不同策略：</p>
 <h5 id="按照权重进行切分">按照权重进行切分</h5>
 <p>下面是按照权重划分的 策略定义， 特别注意的是，如果按照权重划分之后还有未分配的replica, 剩余的 replica 会按照顺序分配到各个集群（集群按照权重排序）上。</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">policy.karmada.io/v1alpha1</span><span class="w">
-</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ReplicaSchedulingPolicy</span><span class="w">
-</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">foo</span><span class="w">
-</span><span class="ln"> 5</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">foons</span><span class="w">
-</span><span class="ln"> 6</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 7</span><span class="w">  </span><span class="nt">resourceSelectors</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 8</span><span class="w">    </span>- <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
-</span><span class="ln"> 9</span><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
-</span><span class="ln">10</span><span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">foons</span><span class="w">
-</span><span class="ln">11</span><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">deployment-1</span><span class="w">
-</span><span class="ln">12</span><span class="w">  </span><span class="nt">totalReplicas</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
-</span><span class="ln">13</span><span class="w">  </span><span class="nt">preferences</span><span class="p">:</span><span class="w">
-</span><span class="ln">14</span><span class="w">    </span><span class="nt">staticWeightList</span><span class="p">:</span><span class="w">
-</span><span class="ln">15</span><span class="w">      </span>- <span class="nt">targetCluster</span><span class="p">:</span><span class="w">
-</span><span class="ln">16</span><span class="w">          </span><span class="nt">clusterNames</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">cluster1]</span><span class="w">
-</span><span class="ln">17</span><span class="w">        </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span><span class="ln">18</span><span class="w">      </span>- <span class="nt">targetCluster</span><span class="p">:</span><span class="w">
-</span><span class="ln">19</span><span class="w">          </span><span class="nt">clusterNames</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">cluster2]</span><span class="w">
-</span><span class="ln">20</span><span class="w">        </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
-</span></code></pre></div><h5 id="按照子集群资源进行分配">按照子集群资源进行分配</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">policy.karmada.io/v1alpha1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ReplicaSchedulingPolicy</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">foo</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">foons</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">  </span><span class="nt">resourceSelectors</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">    </span>- <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">foons</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">deployment-1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">totalReplicas</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">  </span><span class="nt">preferences</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">    </span><span class="nt">staticWeightList</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">      </span>- <span class="nt">targetCluster</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">          </span><span class="nt">clusterNames</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">cluster1]</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">        </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">      </span>- <span class="nt">targetCluster</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">          </span><span class="nt">clusterNames</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">cluster2]</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">        </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span></code></pre></div><h5 id="按照子集群资源进行分配">按照子集群资源进行分配</h5>
 <p>如果 deployment 中资源的请求则按照子集群资源的使用情况进行分配，其核心逻辑如下所示：</p>
 <ol>
 <li>计算每个子集群最大可以分配的replica;</li>
 <li>按照比例分配replica;</li>
 </ol>
 <h6 id="计算每个子集群最大可以分配的replica">计算每个子集群最大可以分配的replica</h6>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">calClusterAvailableReplicas</span><span class="p">(</span><span class="nx">cluster</span> <span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">resourcePerReplicas</span> <span class="nx">corev1</span><span class="p">.</span><span class="nx">ResourceList</span><span class="p">)</span> <span class="kt">int32</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="kd">var</span> <span class="nx">maximumReplicas</span> <span class="kt">int64</span> <span class="p">=</span> <span class="nx">math</span><span class="p">.</span><span class="nx">MaxInt32</span>
-<span class="ln"> 3</span>	<span class="nx">resourceSummary</span> <span class="o">:=</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Status</span><span class="p">.</span><span class="nx">ResourceSummary</span>
-<span class="ln"> 4</span>
-<span class="ln"> 5</span>	<span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">resourcePerReplicas</span> <span class="p">{</span>
-<span class="ln"> 6</span>		<span class="nx">requestedQuantity</span> <span class="o">:=</span> <span class="nx">value</span><span class="p">.</span><span class="nf">Value</span><span class="p">()</span>
-<span class="ln"> 7</span>		<span class="k">if</span> <span class="nx">requestedQuantity</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln"> 8</span>			<span class="k">continue</span>
-<span class="ln"> 9</span>		<span class="p">}</span>
-<span class="ln">10</span>
-<span class="ln">11</span>		<span class="c1">// calculates available resource quantity
-</span><span class="ln">12</span><span class="c1"></span>		<span class="c1">// available = allocatable - allocated - allocating
-</span><span class="ln">13</span><span class="c1"></span>		<span class="nx">allocatable</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">resourceSummary</span><span class="p">.</span><span class="nx">Allocatable</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
-<span class="ln">14</span>		<span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
-<span class="ln">15</span>			<span class="k">return</span> <span class="mi">0</span>
-<span class="ln">16</span>		<span class="p">}</span>
-<span class="ln">17</span>		<span class="nx">allocated</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">resourceSummary</span><span class="p">.</span><span class="nx">Allocated</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
-<span class="ln">18</span>		<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
-<span class="ln">19</span>			<span class="nx">allocatable</span><span class="p">.</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">allocated</span><span class="p">)</span>
-<span class="ln">20</span>		<span class="p">}</span>
-<span class="ln">21</span>		<span class="nx">allocating</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">resourceSummary</span><span class="p">.</span><span class="nx">Allocating</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
-<span class="ln">22</span>		<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
-<span class="ln">23</span>			<span class="nx">allocatable</span><span class="p">.</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">allocating</span><span class="p">)</span>
-<span class="ln">24</span>		<span class="p">}</span>
-<span class="ln">25</span>		<span class="nx">availableQuantity</span> <span class="o">:=</span> <span class="nx">allocatable</span><span class="p">.</span><span class="nf">Value</span><span class="p">()</span>
-<span class="ln">26</span>		<span class="c1">// short path: no more resource left.
-</span><span class="ln">27</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">availableQuantity</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">28</span>			<span class="k">return</span> <span class="mi">0</span>
-<span class="ln">29</span>		<span class="p">}</span>
-<span class="ln">30</span>
-<span class="ln">31</span>		<span class="k">if</span> <span class="nx">key</span> <span class="o">==</span> <span class="nx">corev1</span><span class="p">.</span><span class="nx">ResourceCPU</span> <span class="p">{</span>
-<span class="ln">32</span>			<span class="nx">requestedQuantity</span> <span class="p">=</span> <span class="nx">value</span><span class="p">.</span><span class="nf">MilliValue</span><span class="p">()</span>
-<span class="ln">33</span>			<span class="nx">availableQuantity</span> <span class="p">=</span> <span class="nx">allocatable</span><span class="p">.</span><span class="nf">MilliValue</span><span class="p">()</span>
-<span class="ln">34</span>		<span class="p">}</span>
-<span class="ln">35</span>
-<span class="ln">36</span>		<span class="nx">maximumReplicasForResource</span> <span class="o">:=</span> <span class="nx">availableQuantity</span> <span class="o">/</span> <span class="nx">requestedQuantity</span>
-<span class="ln">37</span>		<span class="k">if</span> <span class="nx">maximumReplicasForResource</span> <span class="p">&lt;</span> <span class="nx">maximumReplicas</span> <span class="p">{</span>
-<span class="ln">38</span>			<span class="nx">maximumReplicas</span> <span class="p">=</span> <span class="nx">maximumReplicasForResource</span>
-<span class="ln">39</span>		<span class="p">}</span>
-<span class="ln">40</span>	<span class="p">}</span>
-<span class="ln">41</span>
-<span class="ln">42</span>	<span class="k">return</span> <span class="nb">int32</span><span class="p">(</span><span class="nx">maximumReplicas</span><span class="p">)</span>
-<span class="ln">43</span><span class="p">}</span>
-</code></pre></div><ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">calClusterAvailableReplicas</span><span class="p">(</span><span class="nx">cluster</span> <span class="o">*</span><span class="nx">clusterv1alpha1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">,</span> <span class="nx">resourcePerReplicas</span> <span class="nx">corev1</span><span class="p">.</span><span class="nx">ResourceList</span><span class="p">)</span> <span class="kt">int32</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="kd">var</span> <span class="nx">maximumReplicas</span> <span class="kt">int64</span> <span class="p">=</span> <span class="nx">math</span><span class="p">.</span><span class="nx">MaxInt32</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="nx">resourceSummary</span> <span class="o">:=</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Status</span><span class="p">.</span><span class="nx">ResourceSummary</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">resourcePerReplicas</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">requestedQuantity</span> <span class="o">:=</span> <span class="nx">value</span><span class="p">.</span><span class="nf">Value</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="k">if</span> <span class="nx">requestedQuantity</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">			<span class="k">continue</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="c1">// calculates available resource quantity
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>		<span class="c1">// available = allocatable - allocated - allocating
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>		<span class="nx">allocatable</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">resourceSummary</span><span class="p">.</span><span class="nx">Allocatable</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">			<span class="k">return</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">		<span class="nx">allocated</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">resourceSummary</span><span class="p">.</span><span class="nx">Allocated</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">			<span class="nx">allocatable</span><span class="p">.</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">allocated</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="nx">allocating</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">resourceSummary</span><span class="p">.</span><span class="nx">Allocating</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">		<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">			<span class="nx">allocatable</span><span class="p">.</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">allocating</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">		<span class="nx">availableQuantity</span> <span class="o">:=</span> <span class="nx">allocatable</span><span class="p">.</span><span class="nf">Value</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">		<span class="c1">// short path: no more resource left.
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">availableQuantity</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">			<span class="k">return</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">
+</span></span><span class="line"><span class="ln">31</span><span class="cl">		<span class="k">if</span> <span class="nx">key</span> <span class="o">==</span> <span class="nx">corev1</span><span class="p">.</span><span class="nx">ResourceCPU</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">			<span class="nx">requestedQuantity</span> <span class="p">=</span> <span class="nx">value</span><span class="p">.</span><span class="nf">MilliValue</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">			<span class="nx">availableQuantity</span> <span class="p">=</span> <span class="nx">allocatable</span><span class="p">.</span><span class="nf">MilliValue</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl">		<span class="nx">maximumReplicasForResource</span> <span class="o">:=</span> <span class="nx">availableQuantity</span> <span class="o">/</span> <span class="nx">requestedQuantity</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">		<span class="k">if</span> <span class="nx">maximumReplicasForResource</span> <span class="p">&lt;</span> <span class="nx">maximumReplicas</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">			<span class="nx">maximumReplicas</span> <span class="p">=</span> <span class="nx">maximumReplicasForResource</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">
+</span></span><span class="line"><span class="ln">42</span><span class="cl">	<span class="k">return</span> <span class="nb">int32</span><span class="p">(</span><span class="nx">maximumReplicas</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ol>
 <li>通过  available = allocatable - allocated - allocating 得到子集群目前可用资源；</li>
 <li>通过如下计算得到该集群最大的replica:
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln">1</span>    <span class="nx">maximumReplicasForResource</span> <span class="o">:=</span> <span class="nx">availableQuantity</span> <span class="o">/</span> <span class="nx">requestedQuantity</span>
-<span class="ln">2</span>    <span class="k">if</span> <span class="nx">maximumReplicasForResource</span> <span class="p">&lt;</span> <span class="nx">maximumReplicas</span> <span class="p">{</span>
-<span class="ln">3</span>        <span class="nx">maximumReplicas</span> <span class="p">=</span> <span class="nx">maximumReplicasForResource</span>
-<span class="ln">4</span>    <span class="p">}</span> 
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln">1</span><span class="cl">	<span class="nx">maximumReplicasForResource</span> <span class="o">:=</span> <span class="nx">availableQuantity</span> <span class="o">/</span> <span class="nx">requestedQuantity</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="k">if</span> <span class="nx">maximumReplicasForResource</span> <span class="p">&lt;</span> <span class="nx">maximumReplicas</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">		<span class="nx">maximumReplicas</span> <span class="p">=</span> <span class="nx">maximumReplicasForResource</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	<span class="p">}</span> 
+</span></span></code></pre></div></li>
 </ol>
 <h6 id="按照比例分配replica">按照比例分配replica</h6>
 <p>这块逻辑与权重分配类似，只不过这里的权重是 每个集群可以分配的最大replica.
 其核心逻辑如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">divideReplicasAggregatedWithClusterReplicas</span><span class="p">(</span><span class="nx">clusterAvailableReplicas</span> <span class="p">[]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="nx">replicas</span> <span class="kt">int32</span><span class="p">)</span> <span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">clustersNum</span> <span class="o">:=</span> <span class="mi">0</span>
-<span class="ln"> 3</span>	<span class="nx">clustersMaxReplicas</span> <span class="o">:=</span> <span class="nb">int32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="ln"> 4</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">clusterInfo</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterAvailableReplicas</span> <span class="p">{</span>
-<span class="ln"> 5</span>		<span class="nx">clustersNum</span><span class="o">++</span>
-<span class="ln"> 6</span>		<span class="nx">clustersMaxReplicas</span> <span class="o">+=</span> <span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Replicas</span>
-<span class="ln"> 7</span>		<span class="k">if</span> <span class="nx">clustersMaxReplicas</span> <span class="o">&gt;=</span> <span class="nx">replicas</span> <span class="p">{</span>
-<span class="ln"> 8</span>			<span class="k">break</span>
-<span class="ln"> 9</span>		<span class="p">}</span>
-<span class="ln">10</span>	<span class="p">}</span>
-<span class="ln">11</span>	<span class="k">if</span> <span class="nx">clustersMaxReplicas</span> <span class="p">&lt;</span> <span class="nx">replicas</span> <span class="p">{</span>
-<span class="ln">12</span>		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;clusters resources are not enough to schedule, max %v replicas are support&#34;</span><span class="p">,</span> <span class="nx">clustersMaxReplicas</span><span class="p">)</span>
-<span class="ln">13</span>	<span class="p">}</span>
-<span class="ln">14</span>
-<span class="ln">15</span>	<span class="nx">desireReplicaInfos</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int32</span><span class="p">)</span>
-<span class="ln">16</span>	<span class="nx">allocatedReplicas</span> <span class="o">:=</span> <span class="nb">int32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="ln">17</span>	<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">clusterInfo</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterAvailableReplicas</span> <span class="p">{</span>
-<span class="ln">18</span>		<span class="k">if</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nx">clustersNum</span> <span class="p">{</span>
-<span class="ln">19</span>			<span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Name</span><span class="p">]</span> <span class="p">=</span> <span class="mi">0</span>
-<span class="ln">20</span>			<span class="k">continue</span>
-<span class="ln">21</span>		<span class="p">}</span>
-<span class="ln">22</span>		<span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Replicas</span> <span class="o">*</span> <span class="nx">replicas</span> <span class="o">/</span> <span class="nx">clustersMaxReplicas</span>
-<span class="ln">23</span>		<span class="nx">allocatedReplicas</span> <span class="o">+=</span> <span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Name</span><span class="p">]</span>
-<span class="ln">24</span>	<span class="p">}</span>
-<span class="ln">25</span>
-<span class="ln">26</span>	<span class="k">if</span> <span class="nx">remainReplicas</span> <span class="o">:=</span> <span class="nx">replicas</span> <span class="o">-</span> <span class="nx">allocatedReplicas</span><span class="p">;</span> <span class="nx">remainReplicas</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">27</span>		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">remainReplicas</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln">28</span>			<span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterAvailableReplicas</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Name</span><span class="p">]</span><span class="o">++</span>
-<span class="ln">29</span>			<span class="nx">remainReplicas</span><span class="o">--</span>
-<span class="ln">30</span>			<span class="k">if</span> <span class="nx">i</span> <span class="o">==</span> <span class="nx">clustersNum</span> <span class="p">{</span>
-<span class="ln">31</span>				<span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span>
-<span class="ln">32</span>			<span class="p">}</span>
-<span class="ln">33</span>		<span class="p">}</span>
-<span class="ln">34</span>	<span class="p">}</span>
-<span class="ln">35</span>
-<span class="ln">36</span>	<span class="nx">targetClusters</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterAvailableReplicas</span><span class="p">))</span>
-<span class="ln">37</span>	<span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span>
-<span class="ln">38</span>	<span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">desireReplicaInfos</span> <span class="p">{</span>
-<span class="ln">39</span>		<span class="nx">targetClusters</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">Replicas</span><span class="p">:</span> <span class="nx">value</span><span class="p">}</span>
-<span class="ln">40</span>		<span class="nx">i</span><span class="o">++</span>
-<span class="ln">41</span>	<span class="p">}</span>
-<span class="ln">42</span>	<span class="k">return</span> <span class="nx">targetClusters</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln">43</span><span class="p">}</span>
-</code></pre></div><h2 id="调协调度reconcileschedule">调协调度(ReconcileSchedule)</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">genericScheduler</span><span class="p">)</span> <span class="nf">divideReplicasAggregatedWithClusterReplicas</span><span class="p">(</span><span class="nx">clusterAvailableReplicas</span> <span class="p">[]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="nx">replicas</span> <span class="kt">int32</span><span class="p">)</span> <span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">clustersNum</span> <span class="o">:=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="nx">clustersMaxReplicas</span> <span class="o">:=</span> <span class="nb">int32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">clusterInfo</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterAvailableReplicas</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="nx">clustersNum</span><span class="o">++</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">clustersMaxReplicas</span> <span class="o">+=</span> <span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Replicas</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="k">if</span> <span class="nx">clustersMaxReplicas</span> <span class="o">&gt;=</span> <span class="nx">replicas</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">			<span class="k">break</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="k">if</span> <span class="nx">clustersMaxReplicas</span> <span class="p">&lt;</span> <span class="nx">replicas</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;clusters resources are not enough to schedule, max %v replicas are support&#34;</span><span class="p">,</span> <span class="nx">clustersMaxReplicas</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="nx">desireReplicaInfos</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int32</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="nx">allocatedReplicas</span> <span class="o">:=</span> <span class="nb">int32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">clusterInfo</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clusterAvailableReplicas</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="k">if</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nx">clustersNum</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">			<span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Name</span><span class="p">]</span> <span class="p">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">			<span class="k">continue</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">		<span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Replicas</span> <span class="o">*</span> <span class="nx">replicas</span> <span class="o">/</span> <span class="nx">clustersMaxReplicas</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">		<span class="nx">allocatedReplicas</span> <span class="o">+=</span> <span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterInfo</span><span class="p">.</span><span class="nx">Name</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="k">if</span> <span class="nx">remainReplicas</span> <span class="o">:=</span> <span class="nx">replicas</span> <span class="o">-</span> <span class="nx">allocatedReplicas</span><span class="p">;</span> <span class="nx">remainReplicas</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">remainReplicas</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">			<span class="nx">desireReplicaInfos</span><span class="p">[</span><span class="nx">clusterAvailableReplicas</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Name</span><span class="p">]</span><span class="o">++</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">			<span class="nx">remainReplicas</span><span class="o">--</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">			<span class="k">if</span> <span class="nx">i</span> <span class="o">==</span> <span class="nx">clustersNum</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">				<span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl">	<span class="nx">targetClusters</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">clusterAvailableReplicas</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">	<span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">	<span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">desireReplicaInfos</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">		<span class="nx">targetClusters</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">workv1alpha1</span><span class="p">.</span><span class="nx">TargetCluster</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">Replicas</span><span class="p">:</span> <span class="nx">value</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">		<span class="nx">i</span><span class="o">++</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">	<span class="k">return</span> <span class="nx">targetClusters</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="调协调度reconcileschedule">调协调度(ReconcileSchedule)</h2>
 <p>policy 的 placement 发生变化时就需要进行调协调度，与 <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/#%E9%A6%96%E6%AC%A1%E8%B0%83%E5%BA%A6firstschedule">首次调度</a> 逻辑是一样的,都是通过函数 scheduleOne 来实现。</p>
 <h2 id="扩缩容调度scaleschedule">扩缩容调度(ScaleSchedule)</h2>
 <p>policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。主要是通过 scaleScheduleOne 函数来实现，分为以下几个步骤:</p>
@@ -481,17 +662,30 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
 <h2 id="总结">总结</h2>
 <p>通过本文我们了解到了karmada调度器的核心实现逻辑：为resource binding选择合适的集群，并为根据不同的策略设置replica。</p>
 
+    </div>
+
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -510,6 +704,9 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -530,9 +727,6 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
       </li>
     </ul>
     <div>
@@ -593,6 +787,11 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -650,8 +849,18 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -695,16 +904,6 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -739,7 +938,7 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -799,7 +998,7 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -915,7 +1114,7 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -940,6 +1139,9 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -948,14 +1150,16 @@ c.如果 ReplicaSchedulingType 为切分并且按照子集群资源切分，则�
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

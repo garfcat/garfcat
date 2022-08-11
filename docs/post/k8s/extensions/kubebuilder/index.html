@@ -4,7 +4,6 @@
   <head>
 <title>Kubebuilder 使用教程 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -27,12 +27,10 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添 …">
 <meta property="og:description" content="Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
 Kubebuilder 如何使用 我们通过向 Kubernetes 集群添 …" />
 <meta property="og:image" content="https://www.geekgame.site/images/thumbnail.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/k8s/extensions/kubebuilder/">
 
@@ -40,12 +38,12 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添 …" />
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -58,12 +56,17 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添 …" />
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -115,25 +118,23 @@ Kubebuilder 如何使用 我们通过向 Kubernetes 集群添 …" />
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">Kubebuilder 使用教程</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">Kubebuilder 使用教程</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Jun 8, 2021</span>
-      <a href='https://www.geekgame.site/tags/kubebuilder' title="kubebuilder" class="post_tag button button_translucent">kubebuilder
-      </a>
-      <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
-      </a>
-      <a href='https://www.geekgame.site/tags/extend' title="extend" class="post_tag button button_translucent">extend
-      </a>
-</div>
+    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubebuilder' title="kubebuilder" class="post_tag button button_translucent">kubebuilder
+        </a><a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
+        </a><a href='https://www.geekgame.site/tags/extend' title="extend" class="post_tag button button_translucent">extend
+        </a>
+    </span>
+  </div>
 
-    
-
-    
-    <h1 id="kubebuilder-是什么">Kubebuilder 是什么</h1>
+    <div class="post_body"><h1 id="kubebuilder-是什么">Kubebuilder 是什么</h1>
 <p>kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。</p>
 <h1 id="kubebuilder-如何使用">Kubebuilder 如何使用</h1>
 <p>我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。
@@ -158,120 +159,120 @@ kubebuilder init --domain ipes-cmp</p>
 </ol>
 <h2 id="创建一个api">创建一个API</h2>
 <p>运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>   kubebuilder create api --group cluster --version v1 --kind Cluster
-</code></pre></div><p>目录结构：</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>
-<span class="ln"> 2</span>在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.go ，
-<span class="ln"> 3</span>该文件中定义相关 API ，而针对于这一类型 (CRD) 的对账业务逻辑生成在 controller/cluster_controller.go 文件中。
-<span class="ln"> 4</span>.
-<span class="ln"> 5</span>├── Dockerfile
-<span class="ln"> 6</span>├── Makefile       # 这里定义了很多脚本命令，例如运行测试，开始执行等
-<span class="ln"> 7</span>├── PROJECT    # 这里是 kubebuilder 的一些元数据信息
-<span class="ln"> 8</span>├── api
-<span class="ln"> 9</span>│   └── v1
-<span class="ln">10</span>│       ├── cluster_types.go   #定义 Spec 和 Status
-<span class="ln">11</span>│       ├── groupversion_info.go  # 包含了关于 group-version 的一些元数据
-<span class="ln">12</span>│       └── zz_generated.deepcopy.go
-<span class="ln">13</span>├── bin
-<span class="ln">14</span>│   └── controller-gen
-<span class="ln">15</span>├── config
-<span class="ln">16</span>│   ├── crd   # 部署 crd 所需的 yaml, 自动生成, 只需要修改了 v1 中的 go 文件之后执行 make generate 即可
-<span class="ln">17</span>│   │   ├── kustomization.yaml
-<span class="ln">18</span>│   │   ├── kustomizeconfig.yaml
-<span class="ln">19</span>│   │   └── patches
-<span class="ln">20</span>│   │       ├── cainjection_in_clusters.yaml
-<span class="ln">21</span>│   │       └── webhook_in_clusters.yaml
-<span class="ln">22</span>│   ├── default     # 一些默认配置
-<span class="ln">23</span>│   │   ├── kustomization.yaml
-<span class="ln">24</span>│   │   ├── manager_auth_proxy_patch.yaml
-<span class="ln">25</span>│   │   └── manager_config_patch.yaml
-<span class="ln">26</span>│   ├── manager
-<span class="ln">27</span>│   │   ├── controller_manager_config.yaml
-<span class="ln">28</span>│   │   ├── kustomization.yaml
-<span class="ln">29</span>│   │   └── manager.yaml
-<span class="ln">30</span>│   ├── prometheus   # 监控指标数据采集配置
-<span class="ln">31</span>│   │   ├── kustomization.yaml
-<span class="ln">32</span>│   │   └── monitor.yaml
-<span class="ln">33</span>│   ├── rbac   # 部署所需的 rbac 授权 yaml
-<span class="ln">34</span>│   │   ├── auth_proxy_client_clusterrole.yaml
-<span class="ln">35</span>│   │   ├── auth_proxy_role.yaml
-<span class="ln">36</span>│   │   ├── auth_proxy_role_binding.yaml
-<span class="ln">37</span>│   │   ├── auth_proxy_service.yaml
-<span class="ln">38</span>│   │   ├── cluster_editor_role.yaml
-<span class="ln">39</span>│   │   ├── cluster_viewer_role.yaml
-<span class="ln">40</span>│   │   ├── kustomization.yaml
-<span class="ln">41</span>│   │   ├── leader_election_role.yaml
-<span class="ln">42</span>│   │   ├── leader_election_role_binding.yaml
-<span class="ln">43</span>│   │   ├── role_binding.yaml
-<span class="ln">44</span>│   │   └── service_account.yaml
-<span class="ln">45</span>│   └── samples  # 这里是 crd 示例文件，可以用来部署到集群当中
-<span class="ln">46</span>│       └── cluster_v1_cluster.yaml
-<span class="ln">47</span>├── controllers
-<span class="ln">48</span>│   ├── cluster_controller.go
-<span class="ln">49</span>│   └── suite_test.go
-<span class="ln">50</span>├── go.mod
-<span class="ln">51</span>├── go.sum
-<span class="ln">52</span>├── hack
-<span class="ln">53</span>│   └── boilerplate.go.txt
-<span class="ln">54</span>└── main.go
-</code></pre></div><h2 id="定义crd">定义CRD</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">   kubebuilder create api --group cluster --version v1 --kind Cluster
+</span></span></code></pre></div><p>目录结构：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.go ，
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">该文件中定义相关 API ，而针对于这一类型 (CRD) 的对账业务逻辑生成在 controller/cluster_controller.go 文件中。
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">.
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">├── Dockerfile
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">├── Makefile       # 这里定义了很多脚本命令，例如运行测试，开始执行等
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">├── PROJECT    # 这里是 kubebuilder 的一些元数据信息
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">├── api
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">│   └── v1
+</span></span><span class="line"><span class="ln">10</span><span class="cl">│       ├── cluster_types.go   #定义 Spec 和 Status
+</span></span><span class="line"><span class="ln">11</span><span class="cl">│       ├── groupversion_info.go  # 包含了关于 group-version 的一些元数据
+</span></span><span class="line"><span class="ln">12</span><span class="cl">│       └── zz_generated.deepcopy.go
+</span></span><span class="line"><span class="ln">13</span><span class="cl">├── bin
+</span></span><span class="line"><span class="ln">14</span><span class="cl">│   └── controller-gen
+</span></span><span class="line"><span class="ln">15</span><span class="cl">├── config
+</span></span><span class="line"><span class="ln">16</span><span class="cl">│   ├── crd   # 部署 crd 所需的 yaml, 自动生成, 只需要修改了 v1 中的 go 文件之后执行 make generate 即可
+</span></span><span class="line"><span class="ln">17</span><span class="cl">│   │   ├── kustomization.yaml
+</span></span><span class="line"><span class="ln">18</span><span class="cl">│   │   ├── kustomizeconfig.yaml
+</span></span><span class="line"><span class="ln">19</span><span class="cl">│   │   └── patches
+</span></span><span class="line"><span class="ln">20</span><span class="cl">│   │       ├── cainjection_in_clusters.yaml
+</span></span><span class="line"><span class="ln">21</span><span class="cl">│   │       └── webhook_in_clusters.yaml
+</span></span><span class="line"><span class="ln">22</span><span class="cl">│   ├── default     # 一些默认配置
+</span></span><span class="line"><span class="ln">23</span><span class="cl">│   │   ├── kustomization.yaml
+</span></span><span class="line"><span class="ln">24</span><span class="cl">│   │   ├── manager_auth_proxy_patch.yaml
+</span></span><span class="line"><span class="ln">25</span><span class="cl">│   │   └── manager_config_patch.yaml
+</span></span><span class="line"><span class="ln">26</span><span class="cl">│   ├── manager
+</span></span><span class="line"><span class="ln">27</span><span class="cl">│   │   ├── controller_manager_config.yaml
+</span></span><span class="line"><span class="ln">28</span><span class="cl">│   │   ├── kustomization.yaml
+</span></span><span class="line"><span class="ln">29</span><span class="cl">│   │   └── manager.yaml
+</span></span><span class="line"><span class="ln">30</span><span class="cl">│   ├── prometheus   # 监控指标数据采集配置
+</span></span><span class="line"><span class="ln">31</span><span class="cl">│   │   ├── kustomization.yaml
+</span></span><span class="line"><span class="ln">32</span><span class="cl">│   │   └── monitor.yaml
+</span></span><span class="line"><span class="ln">33</span><span class="cl">│   ├── rbac   # 部署所需的 rbac 授权 yaml
+</span></span><span class="line"><span class="ln">34</span><span class="cl">│   │   ├── auth_proxy_client_clusterrole.yaml
+</span></span><span class="line"><span class="ln">35</span><span class="cl">│   │   ├── auth_proxy_role.yaml
+</span></span><span class="line"><span class="ln">36</span><span class="cl">│   │   ├── auth_proxy_role_binding.yaml
+</span></span><span class="line"><span class="ln">37</span><span class="cl">│   │   ├── auth_proxy_service.yaml
+</span></span><span class="line"><span class="ln">38</span><span class="cl">│   │   ├── cluster_editor_role.yaml
+</span></span><span class="line"><span class="ln">39</span><span class="cl">│   │   ├── cluster_viewer_role.yaml
+</span></span><span class="line"><span class="ln">40</span><span class="cl">│   │   ├── kustomization.yaml
+</span></span><span class="line"><span class="ln">41</span><span class="cl">│   │   ├── leader_election_role.yaml
+</span></span><span class="line"><span class="ln">42</span><span class="cl">│   │   ├── leader_election_role_binding.yaml
+</span></span><span class="line"><span class="ln">43</span><span class="cl">│   │   ├── role_binding.yaml
+</span></span><span class="line"><span class="ln">44</span><span class="cl">│   │   └── service_account.yaml
+</span></span><span class="line"><span class="ln">45</span><span class="cl">│   └── samples  # 这里是 crd 示例文件，可以用来部署到集群当中
+</span></span><span class="line"><span class="ln">46</span><span class="cl">│       └── cluster_v1_cluster.yaml
+</span></span><span class="line"><span class="ln">47</span><span class="cl">├── controllers
+</span></span><span class="line"><span class="ln">48</span><span class="cl">│   ├── cluster_controller.go
+</span></span><span class="line"><span class="ln">49</span><span class="cl">│   └── suite_test.go
+</span></span><span class="line"><span class="ln">50</span><span class="cl">├── go.mod
+</span></span><span class="line"><span class="ln">51</span><span class="cl">├── go.sum
+</span></span><span class="line"><span class="ln">52</span><span class="cl">├── hack
+</span></span><span class="line"><span class="ln">53</span><span class="cl">│   └── boilerplate.go.txt
+</span></span><span class="line"><span class="ln">54</span><span class="cl">└── main.go
+</span></span></code></pre></div><h2 id="定义crd">定义CRD</h2>
 <p>修改 cluster_type.go 文件添加地域信息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="c1">// ClusterSpec defines the desired state of Cluster
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">type</span> <span class="nx">ClusterSpec</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln"> 3</span>	<span class="c1">// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-</span><span class="ln"> 4</span><span class="c1"></span>	<span class="c1">// Important: Run &#34;make&#34; to regenerate code after modifying this file
-</span><span class="ln"> 5</span><span class="c1"></span>
-<span class="ln"> 6</span>	<span class="c1">// Foo is an example field of Cluster. Edit cluster_types.go to remove/update
-</span><span class="ln"> 7</span><span class="c1"></span>	<span class="nx">Foo</span> <span class="kt">string</span> <span class="s">`json:&#34;foo,omitempty&#34;`</span>
-<span class="ln"> 8</span>
-<span class="ln"> 9</span>	<span class="c1">// Region represents the region of the member cluster locate in.
-</span><span class="ln">10</span><span class="c1"></span>	<span class="c1">// +optional
-</span><span class="ln">11</span><span class="c1"></span>	<span class="nx">Region</span> <span class="kt">string</span> <span class="s">`json:&#34;region,omitempty&#34;`</span>
-<span class="ln">12</span><span class="p">}</span>
-</code></pre></div><p>修改完之后执行 make manifests generate ，可以生成对应的config/bases/cluster.ipes.io_clusters.yaml文件。可以看到spec信息如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>  spec:
-<span class="ln"> 2</span>    description: ClusterSpec defines the desired state of Cluster
-<span class="ln"> 3</span>    properties:
-<span class="ln"> 4</span>      foo:
-<span class="ln"> 5</span>        description: Foo is an example field of Cluster. Edit cluster_types.go
-<span class="ln"> 6</span>          to remove/update
-<span class="ln"> 7</span>        type: string
-<span class="ln"> 8</span>      region:
-<span class="ln"> 9</span>        description: Region represents the region of the member cluster locate
-<span class="ln">10</span>          in.
-<span class="ln">11</span>        type: string
-<span class="ln">12</span>    type: object
-</code></pre></div><h1 id="实现controller">实现controller</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// ClusterSpec defines the desired state of Cluster
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">ClusterSpec</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="c1">// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span>	<span class="c1">// Important: Run &#34;make&#34; to regenerate code after modifying this file
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="c1">// Foo is an example field of Cluster. Edit cluster_types.go to remove/update
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>	<span class="nx">Foo</span> <span class="kt">string</span> <span class="s">`json:&#34;foo,omitempty&#34;`</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// Region represents the region of the member cluster locate in.
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="c1">// +optional
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"></span>	<span class="nx">Region</span> <span class="kt">string</span> <span class="s">`json:&#34;region,omitempty&#34;`</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>修改完之后执行 make manifests generate ，可以生成对应的config/bases/cluster.ipes.io_clusters.yaml文件。可以看到spec信息如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">  spec:
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    description: ClusterSpec defines the desired state of Cluster
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    properties:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">      foo:
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        description: Foo is an example field of Cluster. Edit cluster_types.go
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">          to remove/update
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        type: string
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">      region:
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        description: Region represents the region of the member cluster locate
+</span></span><span class="line"><span class="ln">10</span><span class="cl">          in.
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        type: string
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    type: object
+</span></span></code></pre></div><h1 id="实现controller">实现controller</h1>
 <p>controller的逻辑框架kubebuilder已经帮我们完成，我们只需要完成最核心的函数 <em>Reconcile</em>即可；</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln">1</span><span class="err">#</span><span class="nx">controllers</span><span class="o">/</span><span class="nx">cluser_controller</span><span class="p">.</span><span class="k">go</span>
-<span class="ln">2</span><span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">ClusterReconciler</span><span class="p">)</span> <span class="nf">Reconcile</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">req</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">3</span>	<span class="nx">_</span> <span class="p">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Log</span><span class="p">.</span><span class="nf">WithValues</span><span class="p">(</span><span class="s">&#34;cluster&#34;</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">NamespacedName</span><span class="p">)</span>
-<span class="ln">4</span>
-<span class="ln">5</span>	<span class="nx">r</span><span class="p">.</span>
-<span class="ln">6</span>
-<span class="ln">7</span>	<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{},</span> <span class="kc">nil</span>
-<span class="ln">8</span><span class="p">}</span>
-</code></pre></div><p>在这里我们获取cluster信息并打印</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">ClusterReconciler</span><span class="p">)</span> <span class="nf">Reconcile</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">req</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">_</span> <span class="p">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Log</span><span class="p">.</span><span class="nf">WithValues</span><span class="p">(</span><span class="s">&#34;cluster&#34;</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">NamespacedName</span><span class="p">)</span>
-<span class="ln"> 3</span>
-<span class="ln"> 4</span>	<span class="nx">cluster</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">clusterv1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">{}</span>
-<span class="ln"> 5</span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Client</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">TODO</span><span class="p">(),</span> <span class="nx">req</span><span class="p">.</span><span class="nx">NamespacedName</span><span class="p">,</span> <span class="nx">cluster</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln"> 6</span>		<span class="c1">// The resource may no longer exist, in which case we stop processing.
-</span><span class="ln"> 7</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">apierrors</span><span class="p">.</span><span class="nf">IsNotFound</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 8</span>			<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{},</span> <span class="kc">nil</span>
-<span class="ln"> 9</span>		<span class="p">}</span>
-<span class="ln">10</span>		<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{</span><span class="nx">Requeue</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span> <span class="nx">err</span>
-<span class="ln">11</span>	<span class="p">}</span>
-<span class="ln">12</span>	<span class="c1">// your logic here
-</span><span class="ln">13</span><span class="c1"></span>	<span class="nx">r</span><span class="p">.</span><span class="nx">Log</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;ipes cluster status change&#34;</span><span class="p">,</span> <span class="s">&#34;name&#34;</span><span class="p">,</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="s">&#34;region&#34;</span><span class="p">,</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Spec</span><span class="p">.</span><span class="nx">Region</span><span class="p">)</span>
-<span class="ln">14</span>	<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{},</span> <span class="kc">nil</span>
-<span class="ln">15</span><span class="p">}</span>
-</code></pre></div><h2 id="测试">测试</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln">1</span><span class="cl"><span class="err">#</span><span class="nx">controllers</span><span class="o">/</span><span class="nx">cluser_controller</span><span class="p">.</span><span class="k">go</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">ClusterReconciler</span><span class="p">)</span> <span class="nf">Reconcile</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">req</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="nx">_</span> <span class="p">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Log</span><span class="p">.</span><span class="nf">WithValues</span><span class="p">(</span><span class="s">&#34;cluster&#34;</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">NamespacedName</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="nx">r</span><span class="p">.</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl">	<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{},</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在这里我们获取cluster信息并打印</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">ClusterReconciler</span><span class="p">)</span> <span class="nf">Reconcile</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">req</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">_</span> <span class="p">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Log</span><span class="p">.</span><span class="nf">WithValues</span><span class="p">(</span><span class="s">&#34;cluster&#34;</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">NamespacedName</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="nx">cluster</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">clusterv1</span><span class="p">.</span><span class="nx">Cluster</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Client</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">TODO</span><span class="p">(),</span> <span class="nx">req</span><span class="p">.</span><span class="nx">NamespacedName</span><span class="p">,</span> <span class="nx">cluster</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="c1">// The resource may no longer exist, in which case we stop processing.
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">apierrors</span><span class="p">.</span><span class="nf">IsNotFound</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">			<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{},</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{</span><span class="nx">Requeue</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="c1">// your logic here
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>	<span class="nx">r</span><span class="p">.</span><span class="nx">Log</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;ipes cluster status change&#34;</span><span class="p">,</span> <span class="s">&#34;name&#34;</span><span class="p">,</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="s">&#34;region&#34;</span><span class="p">,</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">Spec</span><span class="p">.</span><span class="nx">Region</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="k">return</span> <span class="nx">ctrl</span><span class="p">.</span><span class="nx">Result</span><span class="p">{},</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="测试">测试</h2>
 <h3 id="部署crd资源">部署CRD资源</h3>
 <p>我们在实现了controller 的核心逻辑之后， 需要先将CRD注册到集群中, 具体命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>make install
-</code></pre></div><p>这里make install ; 是执行了以下两步：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">make install
+</span></span></code></pre></div><p>这里make install ; 是执行了以下两步：</p>
 <ol>
 <li>make manifests  # 生成CRD资源</li>
 <li>bin/kustomize build config/crd | kubectl apply -f - #生成部署CRD， 并部署到集群中
@@ -279,26 +280,26 @@ kubebuilder init --domain ipes-cmp</p>
 </ol>
 <h3 id="运行-controller">运行 controller</h3>
 <p>本地直接执行 make run 即可，我这里需要编译后，放到服务器上执行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>➜  ~ ./ipes-cmp
-<span class="ln">2</span>2021-06-08T19:22:38.187+0800	INFO	controller-runtime.metrics	metrics server is starting to listen	{&#34;addr&#34;: &#34;:8080&#34;}
-<span class="ln">3</span>2021-06-08T19:22:38.188+0800	INFO	setup	starting manager
-<span class="ln">4</span>2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager	starting metrics server	{&#34;path&#34;: &#34;/metrics&#34;}
-<span class="ln">5</span>2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager.controller.cluster	Starting EventSource	{&#34;reconciler group&#34;: &#34;cluster.ipes.io&#34;, &#34;reconciler kind&#34;: &#34;Cluster&#34;, &#34;source&#34;: &#34;kind source: /, Kind=&#34;}
-<span class="ln">6</span>2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting Controller	{&#34;reconciler group&#34;: &#34;cluster.ipes.io&#34;, &#34;reconciler kind&#34;: &#34;Cluster&#34;}
-<span class="ln">7</span>2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting workers	{&#34;reconciler group&#34;: &#34;cluster.ipes.io&#34;, &#34;reconciler kind&#34;: &#34;Cluster&#34;, &#34;worker count&#34;: 1}
-</code></pre></div><h3 id="添加一个测试例子">添加一个测试例子</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">➜  ~ ./ipes-cmp
+</span></span><span class="line"><span class="ln">2</span><span class="cl">2021-06-08T19:22:38.187+0800	INFO	controller-runtime.metrics	metrics server is starting to listen	{&#34;addr&#34;: &#34;:8080&#34;}
+</span></span><span class="line"><span class="ln">3</span><span class="cl">2021-06-08T19:22:38.188+0800	INFO	setup	starting manager
+</span></span><span class="line"><span class="ln">4</span><span class="cl">2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager	starting metrics server	{&#34;path&#34;: &#34;/metrics&#34;}
+</span></span><span class="line"><span class="ln">5</span><span class="cl">2021-06-08T19:22:38.188+0800	INFO	controller-runtime.manager.controller.cluster	Starting EventSource	{&#34;reconciler group&#34;: &#34;cluster.ipes.io&#34;, &#34;reconciler kind&#34;: &#34;Cluster&#34;, &#34;source&#34;: &#34;kind source: /, Kind=&#34;}
+</span></span><span class="line"><span class="ln">6</span><span class="cl">2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting Controller	{&#34;reconciler group&#34;: &#34;cluster.ipes.io&#34;, &#34;reconciler kind&#34;: &#34;Cluster&#34;}
+</span></span><span class="line"><span class="ln">7</span><span class="cl">2021-06-08T19:22:38.289+0800	INFO	controller-runtime.manager.controller.cluster	Starting workers	{&#34;reconciler group&#34;: &#34;cluster.ipes.io&#34;, &#34;reconciler kind&#34;: &#34;Cluster&#34;, &#34;worker count&#34;: 1}
+</span></span></code></pre></div><h3 id="添加一个测试例子">添加一个测试例子</h3>
 <p>创建一个测试的集群</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln">1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.ipes.io/v1</span><span class="w">
-</span><span class="ln">2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Cluster</span><span class="w">
-</span><span class="ln">3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln">4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-cluster</span><span class="w">
-</span><span class="ln">5</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln">6</span><span class="w">  </span><span class="c"># Add fields here</span><span class="w">
-</span><span class="ln">7</span><span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l">beijing</span><span class="w">
-</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>kubectl apply -f bj_cluster.yml # 部署测试集群
-</code></pre></div><p>可以看到controller 输入日志，controller已经获取到关于cluster的信息。</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln">1</span><span class="ld">2021-06-08T19:35:49.562</span><span class="m">+0800</span><span class="w">	</span><span class="l">INFO	controllers.Cluster	ipes cluster status change	{&#34;name&#34;: &#34;test-cluster&#34;, &#34;region&#34;: &#34;beijing&#34;}</span><span class="w">
-</span></code></pre></div><h1 id="总结">总结</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.ipes.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Cluster</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w">  </span><span class="c"># Add fields here</span><span class="w">
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l">beijing</span><span class="w">
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl apply -f bj_cluster.yml # 部署测试集群
+</span></span></code></pre></div><p>可以看到controller 输入日志，controller已经获取到关于cluster的信息。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="ld">2021-06-08T19:35:49.562</span><span class="m">+0800</span><span class="w">	</span><span class="l">INFO	controllers.Cluster	ipes cluster status change	{&#34;name&#34;: &#34;test-cluster&#34;, &#34;region&#34;: &#34;beijing&#34;}</span><span class="w">
+</span></span></span></code></pre></div><h1 id="总结">总结</h1>
 <blockquote>
 <p>目前扩展 Kubernetes 的 API 的方式有创建 CRD、使用 Operator SDK 等方式，都需要写很多的样本文件（boilerplate），使用起来十分麻烦。为了能够更方便构建 Kubernetes API 和工具，就需要一款能够事半功倍的工具，与其他 Kubernetes API 扩展方案相比，kubebuilder 更加简单易用，并获得了社区的广泛支持。</p>
 </blockquote>
@@ -307,17 +308,42 @@ kubebuilder init --domain ipes-cmp</p>
 <a href="https://cloudnative.to/kubebuilder/quick-start.html">Kubebuilder</a><br>
 <a href="https://www.bookstack.cn/read/kubernetes-handbook-201910/develop-kubebuilder.md">Kubernetes中文指南/云原生应用架构实践手册(201910)</a></p>
 
+    </div>
+
+	<h2 class="post_related">Posts in this Series</h2>
+	<ul>
+	  
+	</ul>
+
+
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
+      
+	    <h2 class="mt-4">Posts in this series</h2>
+      <ul>
+        
+      </ul>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -340,6 +366,9 @@ kubebuilder init --domain ipes-cmp</p>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
       <li>
@@ -359,9 +388,6 @@ kubebuilder init --domain ipes-cmp</p>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
       </li>
     </ul>
     <div>
@@ -422,6 +448,11 @@ kubebuilder init --domain ipes-cmp</p>
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -479,8 +510,18 @@ kubebuilder init --domain ipes-cmp</p>
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -524,16 +565,6 @@ kubebuilder init --domain ipes-cmp</p>
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -568,7 +599,7 @@ kubebuilder init --domain ipes-cmp</p>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -628,7 +659,7 @@ kubebuilder init --domain ipes-cmp</p>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -744,7 +775,7 @@ kubebuilder init --domain ipes-cmp</p>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -769,6 +800,9 @@ kubebuilder init --domain ipes-cmp</p>
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -777,14 +811,16 @@ kubebuilder init --domain ipes-cmp</p>
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

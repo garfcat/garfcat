@@ -4,7 +4,6 @@
   <head>
 <title>golang | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -25,12 +25,10 @@
 <meta property="og:title" content="golang" />
 <meta property="og:description" content="" />
 <meta property="og:image" content="https://www.geekgame.site/images/thumbnail.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/series/golang/">
 <link rel="alternate" type="application/rss+xml" href="https://www.geekgame.site/series/golang/index.xml" title="有趣" />
@@ -39,12 +37,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -57,12 +55,17 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -113,204 +116,216 @@
     <main>
 
 <div class="grid-inverse wrap content">
-  <ul class="posts" id="posts">
-      <li class="post_item">
+  <div>
+    <ul class="posts" id="posts">
+        <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
         <a href="https://www.geekgame.site/post/language/golang/test/" title="golang testing 使用教程">golang testing 使用教程</a>
       </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Sep 27, 2020</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/test' title="test" class="post_tag button button_translucent">test
-      </a>
-      <a href='https://www.geekgame.site/tags/testing' title="testing" class="post_tag button button_translucent">testing
-      </a>
-</div>
+    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+        </a><a href='https://www.geekgame.site/tags/test' title="test" class="post_tag button button_translucent">test
+        </a><a href='https://www.geekgame.site/tags/testing' title="testing" class="post_tag button button_translucent">testing
+        </a>
+    </span>
+  </div>
 
     </div>
       <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
- 功能测试（Test） 性能测试（Benchmark） 示例测试（Example）  测试文件名称一般是源代码文件加上 &quot;_test.go&quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
+        <div class="pale">
+          
+            <p>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
+功能测试（Test） 性能测试（Benchmark） 示例测试（Example） 测试文件名称一般是源代码文件加上 &quot;_test.go&quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
 在展开单元测试之前先讲下,testing包中的输出函数：
- t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前 …
-            
-          </p>
+t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继 …</p>
+          
+          <br>
           <a href="https://www.geekgame.site/post/language/golang/test/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-      <li class="post_item">
+        <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
         <a href="https://www.geekgame.site/post/language/golang/sched/" title="golang 协程调度原理">golang 协程调度原理</a>
       </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Aug 11, 2019</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/sched' title="sched" class="post_tag button button_translucent">sched
-      </a>
-</div>
+    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+        </a><a href='https://www.geekgame.site/tags/sched' title="sched" class="post_tag button button_translucent">sched
+        </a>
+    </span>
+  </div>
 
     </div>
       <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
+        <div class="pale">
+          
+            <p>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
 GMP调度模型 Go采用的是GMP调度模型。
-核心概念  G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示：  1 go func() //创建协程来执行函数  M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量 …
-            
-          </p>
+核心概念 G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示： 1 go func() //创建协程来执行函数 M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通 …</p>
+          
+          <br>
           <a href="https://www.geekgame.site/post/language/golang/sched/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-      <li class="post_item">
+        <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
         <a href="https://www.geekgame.site/post/language/golang/start/" title="通过 hello world 寻找 golang 启动过程">通过 hello world 寻找 golang 启动过程</a>
       </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Jun 20, 2019</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/start' title="start" class="post_tag button button_translucent">start
-      </a>
-</div>
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+        </a><a href='https://www.geekgame.site/tags/start' title="start" class="post_tag button button_translucent">start
+        </a>
+    </span>
+  </div>
 
     </div>
       <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&#34;fmt&#34; 5) 6 7func main() { 8	fmt.Println(&#34;hello world&#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6 …
-            
-          </p>
+        <div class="pale">
+          
+            <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&#34;fmt&#34; 5) 6 7func main() { 8	fmt.Println(&#34;hello world&#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6 …</p>
+          
+          <br>
           <a href="https://www.geekgame.site/post/language/golang/start/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-      <li class="post_item">
+        <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
         <a href="https://www.geekgame.site/post/language/golang/plan9/" title="golang 栈结构">golang 栈结构</a>
       </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Jun 15, 2019</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/stack' title="stack" class="post_tag button button_translucent">stack
-      </a>
-</div>
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+        </a><a href='https://www.geekgame.site/tags/stack' title="stack" class="post_tag button button_translucent">stack
+        </a>
+    </span>
+  </div>
 
     </div>
       <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              程序组成 程序由代码和数据组成，数据又有静态与动态之分；
+        <div class="pale">
+          
+            <p>程序组成 程序由代码和数据组成，数据又有静态与动态之分；
 动态数据：存放在堆区和栈区；
 静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
 可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
-寄存器 伪寄存器  FP(Frame pointer): 表示参数以及返回值的基地址； 通过 SYMBOL+/-ffset(FP) PC(Program counter): 跳转寄存器，存储下一条指令地址； SB(Static base pointer): 全局静态起始地址. SP(Stack pointer): 表示本地变量的起始地址；
-使用方式 symbol + offset(SP), 例如第一个 …
-            
-          </p>
+寄存器 伪寄存器 FP(Frame pointer): 表示参数以及返回值的基地址； 通过 SYMBOL+/-ffset(FP) PC(Program counter): 跳转寄存器，存储下一条指令地址； SB(Static base pointer): 全局静态起始地址. SP(Stack pointer): 表示本地变量的起始地址；
+使用方式 symbol + offset(SP), 例如第一个变 …</p>
+          
+          <br>
           <a href="https://www.geekgame.site/post/language/golang/plan9/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-      <li class="post_item">
+        <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
         <a href="https://www.geekgame.site/post/language/golang/module/" title="golang module 使用教程">golang module 使用教程</a>
       </h3>
-      <div class="post_meta">
-  
-    <svg class="icon">
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       May 30, 2019</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/module' title="module" class="post_tag button button_translucent">module
-      </a>
-</div>
+    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+        </a><a href='https://www.geekgame.site/tags/module' title="module" class="post_tag button button_translucent">module
+        </a>
+    </span>
+  </div>
 
     </div>
       <div class="excerpt_footer">
-        <div>
-          <p class="pale">
-            
-              Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
+        <div class="pale">
+          
+            <p>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
 需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
 本文会介绍Go module的一些基本用法；
- 常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令  常见命令 go mod 提供了以下命令
- download: 下载 …
-            
-          </p>
+常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令 常见命令 go mod 提供了以下命令
+download: 下载依赖包 …</p>
+          
+          <br>
           <a href="https://www.geekgame.site/post/language/golang/module/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-    <li>
-
-
-    </li>
-  </ul>
+      <li>
+      </li>
+    </ul>
+  </div>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -333,6 +348,9 @@ GMP调度模型 Go采用的是GMP调度模型。
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
       <li>
@@ -352,9 +370,6 @@ GMP调度模型 Go采用的是GMP调度模型。
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
       </li>
     </ul>
     <div>
@@ -415,6 +430,11 @@ GMP调度模型 Go采用的是GMP调度模型。
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -472,8 +492,18 @@ GMP调度模型 Go采用的是GMP调度模型。
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -517,16 +547,6 @@ GMP调度模型 Go采用的是GMP调度模型。
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -561,7 +581,7 @@ GMP调度模型 Go采用的是GMP调度模型。
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -621,7 +641,7 @@ GMP调度模型 Go采用的是GMP调度模型。
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -738,7 +758,7 @@ GMP调度模型 Go采用的是GMP调度模型。
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -763,6 +783,9 @@ GMP调度模型 Go采用的是GMP调度模型。
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -771,14 +794,16 @@ GMP调度模型 Go采用的是GMP调度模型。
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

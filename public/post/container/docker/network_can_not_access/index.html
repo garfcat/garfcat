@@ -4,7 +4,6 @@
   <head>
 <title>DOCKER 容器访问不通问题定位 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -24,13 +24,11 @@
 <meta property="og:url" content="https://www.geekgame.site/post/container/docker/network_can_not_access/" />
 <meta property="og:title" content="DOCKER 容器访问不通问题定位" />
 <meta property="og:description" content="Article description." />
-<meta property="og:image" content="https://www.geekgame.site/images/path/share.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+<meta property="og:image" content="https://www.geekgame.site/post/container/docker/network_can_not_access/images/path/share.png" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/container/docker/network_can_not_access/">
 
@@ -38,12 +36,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -57,12 +55,17 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -114,27 +117,80 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">DOCKER 容器访问不通问题定位</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">DOCKER 容器访问不通问题定位</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Jan 13, 2022</span>
-      <a href='https://www.geekgame.site/tags/network' title="network" class="post_tag button button_translucent">network
-      </a>
-      <a href='https://www.geekgame.site/tags/docker' title="docker" class="post_tag button button_translucent">docker
-      </a>
+    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/network' title="network" class="post_tag button button_translucent">network
+        </a><a href='https://www.geekgame.site/tags/docker' title="docker" class="post_tag button button_translucent">docker
+        </a>
+    </span>
+  </div>
+<div class="post_featured">
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>网站链接: <a href='https://www.geekgame.site/images/path/file.jpg' title='在新选项卡中打开此网站链接' target='_blank' class='warning-link'>https://www.geekgame.site/images/path/file.jpg</a></p>
+    <p>链接到文件: static/images/path/file.jpg</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相关信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
 </div>
 
-    
 
-    
-    <img src="/images/path/file.jpg" class="image_featured" alt="DOCKER 容器访问不通问题定位">
-    
-    
-    <h2>文章目录</h2>
-    <nav id="TableOfContents">
+      </div>
+    <div class="post_toc">
+      <h2>文章目录</h2>
+      <nav id="TableOfContents">
   <ul>
     <li><a href="#现象">现象</a></li>
     <li><a href="#分析">分析</a></li>
@@ -155,7 +211,9 @@
     <li><a href="#验证">验证</a></li>
   </ul>
 </nav>
-    <h2 id="现象">现象</h2>
+    </div>
+    
+    <div class="post_body"><h2 id="现象">现象</h2>
 <p>最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。</p>
 <h2 id="分析">分析</h2>
 <p>要定位该问题首先要确认以下几个事情：<br>
@@ -168,160 +226,351 @@
 <ol>
 <li>查看容器运行是否正常:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>
-<span class="ln">2</span>CONTAINER ID        IMAGE                                                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
-<span class="ln">3</span>cfde73945bf6        ***:1.0.7   <span class="s2">&#34;/bin/sh -c /opt/boo…&#34;</span>   <span class="m">27</span> hours ago        Up <span class="m">27</span> hours         0.0.0.0:7788-&gt;7788/tcp   ***
-<span class="ln">4</span> 
-</code></pre></div><ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">
+</span></span><span class="line"><span class="ln">2</span><span class="cl">CONTAINER ID        IMAGE                                                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
+</span></span><span class="line"><span class="ln">3</span><span class="cl">cfde73945bf6        ***:1.0.7   <span class="s2">&#34;/bin/sh -c /opt/boo…&#34;</span>   <span class="m">27</span> hours ago        Up <span class="m">27</span> hours         0.0.0.0:7788-&gt;7788/tcp   ***
+</span></span><span class="line"><span class="ln">4</span><span class="cl"> 
+</span></span></code></pre></div><ol start="2">
 <li>查看服务运行是否正常:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="o">[</span>root@my-ti-johnkl06 ~<span class="o">]</span><span class="c1"># curl 172.17.0.2:7788</span>
-<span class="ln">2</span>hello world 
-</code></pre></div><p>由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">[</span>root@my-ti-johnkl06 ~<span class="o">]</span><span class="c1"># curl 172.17.0.2:7788</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">hello world 
+</span></span></code></pre></div><p>由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。</p>
 <h2 id="确认容器的网络模式">确认容器的网络模式</h2>
 <p>通过命令 <strong>docker inspect &lt;container_id&gt;  -f &quot;{{json .NetworkSettings.Networks }}&quot;</strong> 来查看容器的网络模式。</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="o">[</span>root@my-ti-johnkl06 ~<span class="o">]</span><span class="c1">#  docker inspect cfde73945bf6  -f &#34;{{json .NetworkSettings.Networks }}&#34;</span>
-<span class="ln">2</span><span class="o">{</span><span class="s2">&#34;bridge&#34;</span>:<span class="o">{</span><span class="s2">&#34;IPAMConfig&#34;</span>:null,<span class="s2">&#34;Links&#34;</span>:null,<span class="s2">&#34;Aliases&#34;</span>:null,<span class="s2">&#34;NetworkID&#34;</span>:<span class="s2">&#34;c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327&#34;</span>,<span class="s2">&#34;EndpointID&#34;</span>:<span class="s2">&#34;6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d&#34;</span>,<span class="s2">&#34;Gateway&#34;</span>:<span class="s2">&#34;172.17.0.1&#34;</span>,<span class="s2">&#34;IPAddress&#34;</span>:<span class="s2">&#34;172.17.0.2&#34;</span>,<span class="s2">&#34;IPPrefixLen&#34;</span>:16,<span class="s2">&#34;IPv6Gateway&#34;</span>:<span class="s2">&#34;&#34;</span>,<span class="s2">&#34;GlobalIPv6Address&#34;</span>:<span class="s2">&#34;&#34;</span>,<span class="s2">&#34;GlobalIPv6PrefixLen&#34;</span>:0,<span class="s2">&#34;MacAddress&#34;</span>:<span class="s2">&#34;02:42:ac:11:00:02&#34;</span>,<span class="s2">&#34;DriverOpts&#34;</span>:null<span class="o">}}</span>
-</code></pre></div><p>由上可以得出 容器网络模式是 bridge。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">[</span>root@my-ti-johnkl06 ~<span class="o">]</span><span class="c1">#  docker inspect cfde73945bf6  -f &#34;{{json .NetworkSettings.Networks }}&#34;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="o">{</span><span class="s2">&#34;bridge&#34;</span>:<span class="o">{</span><span class="s2">&#34;IPAMConfig&#34;</span>:null,<span class="s2">&#34;Links&#34;</span>:null,<span class="s2">&#34;Aliases&#34;</span>:null,<span class="s2">&#34;NetworkID&#34;</span>:<span class="s2">&#34;c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327&#34;</span>,<span class="s2">&#34;EndpointID&#34;</span>:<span class="s2">&#34;6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d&#34;</span>,<span class="s2">&#34;Gateway&#34;</span>:<span class="s2">&#34;172.17.0.1&#34;</span>,<span class="s2">&#34;IPAddress&#34;</span>:<span class="s2">&#34;172.17.0.2&#34;</span>,<span class="s2">&#34;IPPrefixLen&#34;</span>:16,<span class="s2">&#34;IPv6Gateway&#34;</span>:<span class="s2">&#34;&#34;</span>,<span class="s2">&#34;GlobalIPv6Address&#34;</span>:<span class="s2">&#34;&#34;</span>,<span class="s2">&#34;GlobalIPv6PrefixLen&#34;</span>:0,<span class="s2">&#34;MacAddress&#34;</span>:<span class="s2">&#34;02:42:ac:11:00:02&#34;</span>,<span class="s2">&#34;DriverOpts&#34;</span>:null<span class="o">}}</span>
+</span></span></code></pre></div><p>由上可以得出 容器网络模式是 bridge。</p>
 <h2 id="容器如何与外面的节点通讯">容器如何与外面的节点通讯</h2>
-<p><img src="/container/path.png" alt="容器如何与外面的节点通讯"></p>
+<p>
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/container/path.png" alt="容器如何与外面的节点通讯" loading="lazy" decoding="async" width="1070" height="762"  />
+      
+
+    </picture>
+  </figure>
+
+</p>
 <p>这里我们主要分析 bridge 网络模式, 容器启动时默认使用虚接口 veth 连接到宿主机 docker0 网桥,  容器和 docker0 组成了一个子网,docker0 上的 IP 就是这个子网的网关 IP。, 所以外部访问容器走的路线:
 eth0 -&gt; docker0 -&gt; veth_host -&gt; veth_container。</p>
 <h2 id="确认数据包如何流转">确认数据包如何流转</h2>
 <p>通过抓包确定数据包是否到达相应的接口:<br>
-<img src="/container/test.png" alt="确认数据包如何流转"></p>
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/container/test.png" alt="确认数据包如何流转" loading="lazy" decoding="async" width="1828" height="621"  />
+      
+
+    </picture>
+  </figure>
+
+</p>
 <p>从抓包来看报文到达了 ppp1, 但是没有到达docker0, 那么 ppp1 如何发送到docker0呢，答案就是通过iptables规则 , 接下来我们来看一下iptables 是否配置正确。</p>
 <h2 id="iptables">iptables</h2>
 <p>检查 iptables 配置, 这里隐藏了部分敏感信息，具体配置如下:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
-<span class="ln"> 2</span>*raw
-<span class="ln"> 3</span>:PREROUTING ACCEPT <span class="o">[</span>482398345:242296465803<span class="o">]</span>
-<span class="ln"> 4</span>:OUTPUT ACCEPT <span class="o">[</span>335960682:958525745066<span class="o">]</span>
-<span class="ln"> 5</span>-A PREROUTING -p tcp -m tcp --dport <span class="m">7788</span> -j TRACE
-<span class="ln"> 6</span>-A OUTPUT -p tcp -m tcp --sport <span class="m">7788</span> -j TRACE
-<span class="ln"> 7</span>-A OUTPUT -p tcp -m tcp --dport <span class="m">7788</span> -j TRACE
-<span class="ln"> 8</span>COMMIT
-<span class="ln"> 9</span><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
-<span class="ln">10</span><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
-<span class="ln">11</span>*nat
-<span class="ln">12</span>:PREROUTING ACCEPT <span class="o">[</span>37750:4171203<span class="o">]</span>
-<span class="ln">13</span>:INPUT ACCEPT <span class="o">[</span>1448717:86057410<span class="o">]</span>
-<span class="ln">14</span>:OUTPUT ACCEPT <span class="o">[</span>737914:44585663<span class="o">]</span>
-<span class="ln">15</span>:POSTROUTING ACCEPT <span class="o">[</span>18628:1809317<span class="o">]</span>
-<span class="ln">16</span>:DOCKER - <span class="o">[</span>0:0<span class="o">]</span>
-<span class="ln">17</span>-A PREROUTING ! -i p1p1 -p tcp -m multiport --dports 80,443,2238,7788,7799,8947:8949,9173,8400,19999 -j ACCEPT
-<span class="ln">18</span>-A PREROUTING ! -i p1p1 -p udp -m multiport --dports 53,50000:50010,51280:51319 -j ACCEPT
-<span class="ln">19</span>-A PREROUTING ! -i p1p1 -j DNAT --to-destination 192.168.200.2
-<span class="ln">20</span>-A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
-<span class="ln">21</span>-A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
-<span class="ln">22</span>-A POSTROUTING ! -o p1p1 -j MASQUERADE
-<span class="ln">23</span>-A POSTROUTING -s 192.168.200.0/30 -d 192.168.200.0/30 -o p1p1 -j MASQUERADE
-<span class="ln">24</span>-A POSTROUTING -s 172.17.0.2/32 -d 172.17.0.2/32 -p tcp -m tcp --dport <span class="m">7788</span> -j MASQUERADE
-<span class="ln">25</span>-A POSTROUTING -s 172.17.0.2/32 -d 172.17.0.2/32 -p tcp -m tcp --dport <span class="m">7799</span> -j MASQUERADE
-<span class="ln">26</span>-A DOCKER -p tcp -m tcp --dport <span class="m">7788</span> -j DNAT --to-destination 172.17.0.2:7788
-<span class="ln">27</span>-A DOCKER -p tcp -m tcp --dport <span class="m">7799</span> -j DNAT --to-destination 172.17.0.2:7799
-<span class="ln">28</span>-A DOCKER -i docker0 -j RETURN
-<span class="ln">29</span>COMMIT
-<span class="ln">30</span><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
-<span class="ln">31</span><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
-<span class="ln">32</span>*mangle
-<span class="ln">33</span>:PREROUTING ACCEPT <span class="o">[</span>651360808:317546315397<span class="o">]</span>
-<span class="ln">34</span>:INPUT ACCEPT <span class="o">[</span>644642546:312913563883<span class="o">]</span>
-<span class="ln">35</span>:FORWARD ACCEPT <span class="o">[</span>6717763:4632715906<span class="o">]</span>
-<span class="ln">36</span>:OUTPUT ACCEPT <span class="o">[</span>456834563:1310363483378<span class="o">]</span>
-<span class="ln">37</span>:POSTROUTING ACCEPT <span class="o">[</span>463560653:1314996798828<span class="o">]</span>
-<span class="ln">38</span>COMMIT
-<span class="ln">39</span><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
-<span class="ln">40</span><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
-<span class="ln">41</span>*filter
-<span class="ln">42</span>:INPUT ACCEPT <span class="o">[</span>454683740:230909596704<span class="o">]</span>
-<span class="ln">43</span>:FORWARD ACCEPT <span class="o">[</span>5433044:3649513313<span class="o">]</span>
-<span class="ln">44</span>:OUTPUT ACCEPT <span class="o">[</span>320137097:908885273741<span class="o">]</span>
-<span class="ln">45</span>:DOCKER - <span class="o">[</span>0:0<span class="o">]</span>
-<span class="ln">46</span>:DOCKER-ISOLATION-STAGE-1 - <span class="o">[</span>0:0<span class="o">]</span>
-<span class="ln">47</span>:DOCKER-ISOLATION-STAGE-2 - <span class="o">[</span>0:0<span class="o">]</span>
-<span class="ln">48</span>:DOCKER-USER - <span class="o">[</span>0:0<span class="o">]</span>
-<span class="ln">49</span>-A INPUT -p tcp -m tcp --dport <span class="m">7788</span> -j ACCEPT
-<span class="ln">50</span>-A INPUT -p tcp -m tcp --dport <span class="m">7788</span> -j ACCEPT
-<span class="ln">51</span>-A FORWARD -j DOCKER-USER
-<span class="ln">52</span>-A FORWARD -j DOCKER-ISOLATION-STAGE-1
-<span class="ln">53</span>-A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-<span class="ln">54</span>-A FORWARD -o docker0 -j DOCKER
-<span class="ln">55</span>-A FORWARD -i docker0 ! -o docker0 -j ACCEPT
-<span class="ln">56</span>-A FORWARD -i docker0 -o docker0 -j ACCEPT
-<span class="ln">57</span>-A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport <span class="m">7788</span> -j ACCEPT
-<span class="ln">58</span>-A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport <span class="m">7799</span> -j ACCEPT
-<span class="ln">59</span>-A DOCKER-ISOLATION-STAGE-1 -i docker0 ! -o docker0 -j DOCKER-ISOLATION-STAGE-2
-<span class="ln">60</span>-A DOCKER-ISOLATION-STAGE-1 -j RETURN
-<span class="ln">61</span>-A DOCKER-ISOLATION-STAGE-2 -o docker0 -j DROP
-<span class="ln">62</span>-A DOCKER-ISOLATION-STAGE-2 -j RETURN
-<span class="ln">63</span>-A DOCKER-USER -j RETURN
-<span class="ln">64</span>COMMIT
-<span class="ln">65</span><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
-</code></pre></div><p>合作商为了对端口流量做限制，修改了iptables, 这里如果对iptables 比较了解的话应该可以看出问题所在， 当时查问题时只关注了 DNAT 配置是否有问题，并没有关注是否能执行到，所以<strong>当时没有看出问题所在.</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">*raw
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">:PREROUTING ACCEPT <span class="o">[</span>482398345:242296465803<span class="o">]</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">:OUTPUT ACCEPT <span class="o">[</span>335960682:958525745066<span class="o">]</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">-A PREROUTING -p tcp -m tcp --dport <span class="m">7788</span> -j TRACE
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">-A OUTPUT -p tcp -m tcp --sport <span class="m">7788</span> -j TRACE
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">-A OUTPUT -p tcp -m tcp --dport <span class="m">7788</span> -j TRACE
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">COMMIT
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">*nat
+</span></span><span class="line"><span class="ln">12</span><span class="cl">:PREROUTING ACCEPT <span class="o">[</span>37750:4171203<span class="o">]</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">:INPUT ACCEPT <span class="o">[</span>1448717:86057410<span class="o">]</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">:OUTPUT ACCEPT <span class="o">[</span>737914:44585663<span class="o">]</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">:POSTROUTING ACCEPT <span class="o">[</span>18628:1809317<span class="o">]</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">:DOCKER - <span class="o">[</span>0:0<span class="o">]</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">-A PREROUTING ! -i p1p1 -p tcp -m multiport --dports 80,443,2238,7788,7799,8947:8949,9173,8400,19999 -j ACCEPT
+</span></span><span class="line"><span class="ln">18</span><span class="cl">-A PREROUTING ! -i p1p1 -p udp -m multiport --dports 53,50000:50010,51280:51319 -j ACCEPT
+</span></span><span class="line"><span class="ln">19</span><span class="cl">-A PREROUTING ! -i p1p1 -j DNAT --to-destination 192.168.200.2
+</span></span><span class="line"><span class="ln">20</span><span class="cl">-A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
+</span></span><span class="line"><span class="ln">21</span><span class="cl">-A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
+</span></span><span class="line"><span class="ln">22</span><span class="cl">-A POSTROUTING ! -o p1p1 -j MASQUERADE
+</span></span><span class="line"><span class="ln">23</span><span class="cl">-A POSTROUTING -s 192.168.200.0/30 -d 192.168.200.0/30 -o p1p1 -j MASQUERADE
+</span></span><span class="line"><span class="ln">24</span><span class="cl">-A POSTROUTING -s 172.17.0.2/32 -d 172.17.0.2/32 -p tcp -m tcp --dport <span class="m">7788</span> -j MASQUERADE
+</span></span><span class="line"><span class="ln">25</span><span class="cl">-A POSTROUTING -s 172.17.0.2/32 -d 172.17.0.2/32 -p tcp -m tcp --dport <span class="m">7799</span> -j MASQUERADE
+</span></span><span class="line"><span class="ln">26</span><span class="cl">-A DOCKER -p tcp -m tcp --dport <span class="m">7788</span> -j DNAT --to-destination 172.17.0.2:7788
+</span></span><span class="line"><span class="ln">27</span><span class="cl">-A DOCKER -p tcp -m tcp --dport <span class="m">7799</span> -j DNAT --to-destination 172.17.0.2:7799
+</span></span><span class="line"><span class="ln">28</span><span class="cl">-A DOCKER -i docker0 -j RETURN
+</span></span><span class="line"><span class="ln">29</span><span class="cl">COMMIT
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">*mangle
+</span></span><span class="line"><span class="ln">33</span><span class="cl">:PREROUTING ACCEPT <span class="o">[</span>651360808:317546315397<span class="o">]</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">:INPUT ACCEPT <span class="o">[</span>644642546:312913563883<span class="o">]</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">:FORWARD ACCEPT <span class="o">[</span>6717763:4632715906<span class="o">]</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">:OUTPUT ACCEPT <span class="o">[</span>456834563:1310363483378<span class="o">]</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">:POSTROUTING ACCEPT <span class="o">[</span>463560653:1314996798828<span class="o">]</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">COMMIT
+</span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="c1"># Generated by iptables-save v1.4.21 on Thu Jan 13 11:03:16 2022</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">*filter
+</span></span><span class="line"><span class="ln">42</span><span class="cl">:INPUT ACCEPT <span class="o">[</span>454683740:230909596704<span class="o">]</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">:FORWARD ACCEPT <span class="o">[</span>5433044:3649513313<span class="o">]</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">:OUTPUT ACCEPT <span class="o">[</span>320137097:908885273741<span class="o">]</span>
+</span></span><span class="line"><span class="ln">45</span><span class="cl">:DOCKER - <span class="o">[</span>0:0<span class="o">]</span>
+</span></span><span class="line"><span class="ln">46</span><span class="cl">:DOCKER-ISOLATION-STAGE-1 - <span class="o">[</span>0:0<span class="o">]</span>
+</span></span><span class="line"><span class="ln">47</span><span class="cl">:DOCKER-ISOLATION-STAGE-2 - <span class="o">[</span>0:0<span class="o">]</span>
+</span></span><span class="line"><span class="ln">48</span><span class="cl">:DOCKER-USER - <span class="o">[</span>0:0<span class="o">]</span>
+</span></span><span class="line"><span class="ln">49</span><span class="cl">-A INPUT -p tcp -m tcp --dport <span class="m">7788</span> -j ACCEPT
+</span></span><span class="line"><span class="ln">50</span><span class="cl">-A INPUT -p tcp -m tcp --dport <span class="m">7788</span> -j ACCEPT
+</span></span><span class="line"><span class="ln">51</span><span class="cl">-A FORWARD -j DOCKER-USER
+</span></span><span class="line"><span class="ln">52</span><span class="cl">-A FORWARD -j DOCKER-ISOLATION-STAGE-1
+</span></span><span class="line"><span class="ln">53</span><span class="cl">-A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+</span></span><span class="line"><span class="ln">54</span><span class="cl">-A FORWARD -o docker0 -j DOCKER
+</span></span><span class="line"><span class="ln">55</span><span class="cl">-A FORWARD -i docker0 ! -o docker0 -j ACCEPT
+</span></span><span class="line"><span class="ln">56</span><span class="cl">-A FORWARD -i docker0 -o docker0 -j ACCEPT
+</span></span><span class="line"><span class="ln">57</span><span class="cl">-A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport <span class="m">7788</span> -j ACCEPT
+</span></span><span class="line"><span class="ln">58</span><span class="cl">-A DOCKER -d 172.17.0.2/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport <span class="m">7799</span> -j ACCEPT
+</span></span><span class="line"><span class="ln">59</span><span class="cl">-A DOCKER-ISOLATION-STAGE-1 -i docker0 ! -o docker0 -j DOCKER-ISOLATION-STAGE-2
+</span></span><span class="line"><span class="ln">60</span><span class="cl">-A DOCKER-ISOLATION-STAGE-1 -j RETURN
+</span></span><span class="line"><span class="ln">61</span><span class="cl">-A DOCKER-ISOLATION-STAGE-2 -o docker0 -j DROP
+</span></span><span class="line"><span class="ln">62</span><span class="cl">-A DOCKER-ISOLATION-STAGE-2 -j RETURN
+</span></span><span class="line"><span class="ln">63</span><span class="cl">-A DOCKER-USER -j RETURN
+</span></span><span class="line"><span class="ln">64</span><span class="cl">COMMIT
+</span></span><span class="line"><span class="ln">65</span><span class="cl"><span class="c1"># Completed on Thu Jan 13 11:03:16 2022</span>
+</span></span></code></pre></div><p>合作商为了对端口流量做限制，修改了iptables, 这里如果对iptables 比较了解的话应该可以看出问题所在， 当时查问题时只关注了 DNAT 配置是否有问题，并没有关注是否能执行到，所以<strong>当时没有看出问题所在.</strong></p>
 <h3 id="调试-iptables">调试 iptables</h3>
 <ol>
 <li>添加日志规则</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>iptables -t raw -A PREROUTING -p tcp  --dport <span class="m">7788</span>     -j TRACE
-<span class="ln">2</span>iptables -t raw -A OUTPUT -p tcp --dport <span class="m">7788</span>  -j TRACE
-</code></pre></div><ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">iptables -t raw -A PREROUTING -p tcp  --dport <span class="m">7788</span>     -j TRACE
+</span></span><span class="line"><span class="ln">2</span><span class="cl">iptables -t raw -A OUTPUT -p tcp --dport <span class="m">7788</span>  -j TRACE
+</span></span></code></pre></div><ol start="2">
 <li>加载内核模块<br>
 iptables的调试日志输出依赖于内核模块，这些内核模块并不是开机就加载的，因此我们需要手动加载，centos6 与 centos7 方式有所不同:<br>
 centos6 按照下面的方式修改:
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="c1"># modprobe ipt_LOG</span>
-<span class="ln">2</span><span class="c1"># sysctl net.netfilter.nf_log.2=ipt_LOG</span>
-<span class="ln">3</span><span class="c1"># sysctl net.netfilter.nf_log.2</span>
-<span class="ln">4</span>net.netfilter.nf_log.2 <span class="o">=</span> ipt_LOG 
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># modprobe ipt_LOG</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"># sysctl net.netfilter.nf_log.2=ipt_LOG</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># sysctl net.netfilter.nf_log.2</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">net.netfilter.nf_log.2 <span class="o">=</span> ipt_LOG 
+</span></span></code></pre></div></li>
 </ol>
 <p>centos7 按照下面的方式修改:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="c1"># modprobe nf_log_ipv4</span>
-<span class="ln">2</span><span class="c1"># sysctl net.netfilter.nf_log.2=nf_log_ipv4</span>
-<span class="ln">3</span><span class="c1"># sysctl net.netfilter.nf_log.2</span>
-<span class="ln">4</span>net.netfilter.nf_log.2 <span class="o">=</span> ipt_LOG  
-</code></pre></div><ol start="3">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># modprobe nf_log_ipv4</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"># sysctl net.netfilter.nf_log.2=nf_log_ipv4</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># sysctl net.netfilter.nf_log.2</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">net.netfilter.nf_log.2 <span class="o">=</span> ipt_LOG  
+</span></span></code></pre></div><ol start="3">
 <li>打开日志并输出到 /var/log/iptables.log<br>
 在 /etc/rsyslog.conf 中开启内核日志</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>kern.*         /var/log/iptables.log
-</code></pre></div><p>重启日志服务</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>sudo systemctl restart rsyslog.service
-</code></pre></div><ol start="4">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">kern.*         /var/log/iptables.log
+</span></span></code></pre></div><p>重启日志服务</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">sudo systemctl restart rsyslog.service
+</span></span></code></pre></div><ol start="4">
 <li>查看日志
 由于带有公网地址， 这里将SRC 改为1.1.1.1 , DST 改为2.2.2.2:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: raw:PREROUTING:policy:2 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
-<span class="ln">2</span>Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: mangle:PREROUTING:policy:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
-<span class="ln">3</span>Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: nat:PREROUTING:rule:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
-<span class="ln">4</span>Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: mangle:INPUT:policy:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
-<span class="ln">5</span>Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: filter:INPUT:policy:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
-</code></pre></div><p>从日志可以看出收到的报文直接上送到本机协议栈(INPUT)，并没有进行转发，所以问题应该出现在 iptables PREROUTING , 应该在 PREROUTEING 将容器的报文转发到docker0 。
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: raw:PREROUTING:policy:2 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: mangle:PREROUTING:policy:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: nat:PREROUTING:rule:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: mangle:INPUT:policy:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">Jan <span class="m">12</span> 16:51:14 my-ti-johnkl06 kernel: TRACE: filter:INPUT:policy:1 <span class="nv">IN</span><span class="o">=</span>ppp0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>1.1.1.1 <span class="nv">DST</span><span class="o">=</span>2.2.2.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">64</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">41</span> <span class="nv">ID</span><span class="o">=</span><span class="m">0</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">19327</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7788</span> <span class="nv">SEQ</span><span class="o">=</span><span class="m">3930627540</span> <span class="nv">ACK</span><span class="o">=</span><span class="m">0</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> OPT <span class="o">(</span>0204056A010303060101080AC2E362FB0000000004020000<span class="o">)</span>
+</span></span></code></pre></div><p>从日志可以看出收到的报文直接上送到本机协议栈(INPUT)，并没有进行转发，所以问题应该出现在 iptables PREROUTING , 应该在 PREROUTEING 将容器的报文转发到docker0 。
 我们再来看一下 PREROUTEING的规则:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>-A PREROUTING ! -i p1p1 -p tcp -m multiport --dports 80,443,2238,7788,7799,8947:8949,9173,8400,19999 -j ACCEPT
-<span class="ln">2</span>-A PREROUTING ! -i p1p1 -p udp -m multiport --dports 53,50000:50010,51280:51319 -j ACCEPT
-<span class="ln">3</span>-A PREROUTING ! -i p1p1 -j DNAT --to-destination 192.168.200.2
-</code></pre></div><p>数据包在匹配到第一条规则，就不再匹配， 所以PREROUTING 并没有进行DNAT处理， 我们需要添加一个策略将数据包优先进行 chain docker 处理，</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">-A PREROUTING ! -i p1p1 -p tcp -m multiport --dports 80,443,2238,7788,7799,8947:8949,9173,8400,19999 -j ACCEPT
+</span></span><span class="line"><span class="ln">2</span><span class="cl">-A PREROUTING ! -i p1p1 -p udp -m multiport --dports 53,50000:50010,51280:51319 -j ACCEPT
+</span></span><span class="line"><span class="ln">3</span><span class="cl">-A PREROUTING ! -i p1p1 -j DNAT --to-destination 192.168.200.2
+</span></span></code></pre></div><p>数据包在匹配到第一条规则，就不再匹配， 所以PREROUTING 并没有进行DNAT处理， 我们需要添加一个策略将数据包优先进行 chain docker 处理，</p>
 <h2 id="解决方案">解决方案</h2>
 <p>添加如下规则：</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="c1"># 当收到到达本机的报文时跳转到 DOCKER chain</span>
-<span class="ln">2</span>-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
-</code></pre></div><h2 id="验证">验证</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 当收到到达本机的报文时跳转到 DOCKER chain</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
+</span></span></code></pre></div><h2 id="验证">验证</h2>
 <p>再次验证</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  ~ curl  外网IP:7788
-<span class="ln">2</span>hello world
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  ~ curl  外网IP:7788
+</span></span><span class="line"><span class="ln">2</span><span class="cl">hello world
+</span></span></code></pre></div>
+    </div>
+
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/linux/command/command/" class="nav-link" title="Linux 常用命令">Linux 常用命令</a>
       </li>
@@ -340,6 +589,9 @@ centos6 按照下面的方式修改:
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/linux/command/command/" class="nav-link" title="Linux 常用命令">Linux 常用命令</a>
       </li>
@@ -360,9 +612,6 @@ centos6 按照下面的方式修改:
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
       </li>
     </ul>
     <div>
@@ -423,6 +672,11 @@ centos6 按照下面的方式修改:
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -480,8 +734,18 @@ centos6 按照下面的方式修改:
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -525,16 +789,6 @@ centos6 按照下面的方式修改:
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -569,7 +823,7 @@ centos6 按照下面的方式修改:
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -629,7 +883,7 @@ centos6 按照下面的方式修改:
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -745,7 +999,7 @@ centos6 按照下面的方式修改:
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -770,6 +1024,9 @@ centos6 按照下面的方式修改:
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -778,14 +1035,16 @@ centos6 按照下面的方式修改:
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

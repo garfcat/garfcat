@@ -19,4 +19,4 @@ tags:
   - Tag_name2
 # comment: false # Disable comment if false.
 ---
-最近迁移服务到k8s 集群，发现边缘端 http 投递数据经常失败报EOF错误
+最近迁移服务，发现客户端 http 投递数据经常失败，报错为EOF错误。分析该问题

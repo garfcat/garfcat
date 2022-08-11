@@ -4,7 +4,6 @@
   <head>
 <title>Golang程序性能pprof使用介绍 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,25 +13,24 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
 <meta name="description" content="对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。 整个分析主要分为三个部分：
- 项目中引入相关的包； 编译程序运行并收集运行时的数据； 分析相关数据  引入并收集数据 Golang标准库中提供了两种引入方式： …">
+项目中引入相关的包； 编译程序运行并收集运行时的数据； 分析相关数据 引入并收集数据 Golang标准库中提供了两种引入方式： …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="">
 <meta name="twitter:title" content="Golang程序性能pprof使用介绍" />
 <meta property="og:url" content="https://www.geekgame.site/post/language/golang/golang_performance/" />
 <meta property="og:title" content="Golang程序性能pprof使用介绍" />
 <meta property="og:description" content="对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。 整个分析主要分为三个部分：
- 项目中引入相关的包； 编译程序运行并收集运行时的数据； 分析相关数据  引入并收集数据 Golang标准库中提供了两种引入方式： …" />
+项目中引入相关的包； 编译程序运行并收集运行时的数据； 分析相关数据 引入并收集数据 Golang标准库中提供了两种引入方式： …" />
 <meta property="og:image" content="https://www.geekgame.site/images/thumbnail.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/language/golang/golang_performance/">
 
@@ -40,12 +38,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -58,12 +56,17 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -115,19 +118,19 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">Golang程序性能pprof使用介绍</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">Golang程序性能pprof使用介绍</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Mar 29, 2021</span>
-</div>
+    <span class="post_time"> · 4 min read</span>
+  </div>
 
-    
-
-    
-    <p>对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
+    <div class="post_body"><p>对于Golang程序性能分析，pprof 可以说是一大利器，它是用来性能分析的工具，主要可以分析CPU使用情况、内存使用情况、阻塞情况、竞争互斥锁等性能问题。
 整个分析主要分为三个部分：</p>
 <ol>
 <li>项目中引入相关的包；</li>
@@ -142,152 +145,597 @@
 </ol>
 <h2 id="runtimepprof">runtime/pprof</h2>
 <p><strong>支持基准测试</strong>：以下命令在当前目录中运行基准测试并将 CPU 和内存配置文件写入 cpu.prof 和 mem.prof：</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span> go <span class="nb">test</span> -cpuprofile cpu.prof -memprofile mem.prof -bench .
-</code></pre></div><p><strong>独立程序分析</strong>：需要将以下代码添加到主函数中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kd">var</span> <span class="nx">cpuprofile</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;cpuprofile&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;write cpu profile `file`&#34;</span><span class="p">)</span>
-<span class="ln"> 2</span><span class="kd">var</span> <span class="nx">memprofile</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;memprofile&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;write memory profile to `file`&#34;</span><span class="p">)</span>
-<span class="ln"> 3</span>
-<span class="ln"> 4</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 5</span>    <span class="nx">flag</span><span class="p">.</span><span class="nf">Parse</span><span class="p">()</span>
-<span class="ln"> 6</span>    <span class="k">if</span> <span class="o">*</span><span class="nx">cpuprofile</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-<span class="ln"> 7</span>        <span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="o">*</span><span class="nx">cpuprofile</span><span class="p">)</span>
-<span class="ln"> 8</span>        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln"> 9</span>            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not create CPU profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">10</span>        <span class="p">}</span>
-<span class="ln">11</span>        <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">pprof</span><span class="p">.</span><span class="nf">StartCPUProfile</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">12</span>            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not start CPU profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">13</span>        <span class="p">}</span>
-<span class="ln">14</span>        <span class="k">defer</span> <span class="nx">pprof</span><span class="p">.</span><span class="nf">StopCPUProfile</span><span class="p">()</span>
-<span class="ln">15</span>    <span class="p">}</span>
-<span class="ln">16</span>
-<span class="ln">17</span>    <span class="c1">// ... rest of the program ...
-</span><span class="ln">18</span><span class="c1"></span>
-<span class="ln">19</span>    <span class="k">if</span> <span class="o">*</span><span class="nx">memprofile</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-<span class="ln">20</span>        <span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="o">*</span><span class="nx">memprofile</span><span class="p">)</span>
-<span class="ln">21</span>        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">22</span>            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not create memory profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">23</span>        <span class="p">}</span>
-<span class="ln">24</span>        <span class="nx">runtime</span><span class="p">.</span><span class="nf">GC</span><span class="p">()</span> <span class="c1">// get up-to-date statistics
-</span><span class="ln">25</span><span class="c1"></span>        <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">pprof</span><span class="p">.</span><span class="nf">WriteHeapProfile</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">26</span>            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not write memory profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">27</span>        <span class="p">}</span>
-<span class="ln">28</span>        <span class="nx">f</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
-<span class="ln">29</span>    <span class="p">}</span>
-<span class="ln">30</span><span class="p">}</span>
-</code></pre></div><h2 id="nethttppporf">net/http/pporf</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl"> go <span class="nb">test</span> -cpuprofile cpu.prof -memprofile mem.prof -bench .
+</span></span></code></pre></div><p><strong>独立程序分析</strong>：需要将以下代码添加到主函数中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">var</span> <span class="nx">cpuprofile</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;cpuprofile&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;write cpu profile `file`&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="kd">var</span> <span class="nx">memprofile</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;memprofile&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;write memory profile to `file`&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nx">flag</span><span class="p">.</span><span class="nf">Parse</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="k">if</span> <span class="o">*</span><span class="nx">cpuprofile</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="o">*</span><span class="nx">cpuprofile</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not create CPU profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">pprof</span><span class="p">.</span><span class="nf">StartCPUProfile</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not start CPU profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        <span class="k">defer</span> <span class="nx">pprof</span><span class="p">.</span><span class="nf">StopCPUProfile</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="c1">// ... rest of the program ...
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="k">if</span> <span class="o">*</span><span class="nx">memprofile</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="o">*</span><span class="nx">memprofile</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not create memory profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">        <span class="nx">runtime</span><span class="p">.</span><span class="nf">GC</span><span class="p">()</span> <span class="c1">// get up-to-date statistics
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">pprof</span><span class="p">.</span><span class="nf">WriteHeapProfile</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">            <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;could not write memory profile: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">        <span class="nx">f</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="nethttppporf">net/http/pporf</h2>
 <p>通过 import _ &quot;net/http/pprof&quot; 可以引入该包，如果你的程序没有http server,则需要添加类似以下代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln">1</span><span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">2</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:6060&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
-<span class="ln">3</span><span class="p">}()</span>
-</code></pre></div><p>http server所有路径都是以 /debug/pprof/ 开头；本地访问 http://localhost:6060/debug/pprof 可以看到一个概览，展示的是pprof可以采集数据；</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span>/debug/pprof/
-<span class="ln"> 2</span>
-<span class="ln"> 3</span>Types of profiles available:
-<span class="ln"> 4</span>Count	Profile
-<span class="ln"> 5</span>1	allocs              <span class="c1">## 内存分配情况的采样</span>
-<span class="ln"> 6</span>0	block               <span class="c1">## 阻塞情况的采样</span>
-<span class="ln"> 7</span>0	cmdline             <span class="c1">## 显示命令启动信息</span>
-<span class="ln"> 8</span>7	goroutine           <span class="c1">## 当前所有goroutines的堆栈信息</span>
-<span class="ln"> 9</span>1	heap                <span class="c1">## 堆上内存申请情况的采样</span>
-<span class="ln">10</span>0	mutex               <span class="c1">## 锁竞争的采样信息</span>
-<span class="ln">11</span>0	profile             <span class="c1">## CPU使用情况的采样</span>
-<span class="ln">12</span>8	threadcreate        <span class="c1">## 系统线程创建的堆栈跟踪信息</span>
-<span class="ln">13</span>0	trace               <span class="c1">## 程序运行跟踪信息</span>
-<span class="ln">14</span>full goroutine stack dump
-<span class="ln">15</span>Profile Descriptions:
-<span class="ln">16</span>
-<span class="ln">17</span>allocs: A sampling of all past memory allocations
-<span class="ln">18</span>block: Stack traces that led to blocking on synchronization primitives
-<span class="ln">19</span>cmdline: The <span class="nb">command</span> line invocation of the current program
-<span class="ln">20</span>goroutine: Stack traces of all current goroutines
-<span class="ln">21</span>heap: A sampling of memory allocations of live objects. You can specify the gc GET parameter to run GC before taking the heap sample.
-<span class="ln">22</span>mutex: Stack traces of holders of contended mutexes
-<span class="ln">23</span>profile: CPU profile. You can specify the duration in the seconds GET parameter. After you get the profile file, use the go tool pprof <span class="nb">command</span> to investigate the profile.
-<span class="ln">24</span>threadcreate: Stack traces that led to the creation of new OS threads
-<span class="ln">25</span>trace: A trace of execution of the current program. You can specify the duration in the seconds GET parameter. After you get the trace file, use the go tool trace <span class="nb">command</span> to investigate the trace.
-</code></pre></div><h1 id="分析">分析</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:6060&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="p">}()</span>
+</span></span></code></pre></div><p>http server所有路径都是以 /debug/pprof/ 开头；本地访问 http://localhost:6060/debug/pprof 可以看到一个概览，展示的是pprof可以采集数据；</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln"> 1</span><span class="cl">/debug/pprof/
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">Types of profiles available:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">Count	Profile
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">1	allocs              <span class="c1">## 内存分配情况的采样</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">0	block               <span class="c1">## 阻塞情况的采样</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">0	cmdline             <span class="c1">## 显示命令启动信息</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">7	goroutine           <span class="c1">## 当前所有goroutines的堆栈信息</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">1	heap                <span class="c1">## 堆上内存申请情况的采样</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">0	mutex               <span class="c1">## 锁竞争的采样信息</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">0	profile             <span class="c1">## CPU使用情况的采样</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">8	threadcreate        <span class="c1">## 系统线程创建的堆栈跟踪信息</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">0	trace               <span class="c1">## 程序运行跟踪信息</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">full goroutine stack dump
+</span></span><span class="line"><span class="ln">15</span><span class="cl">Profile Descriptions:
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">allocs: A sampling of all past memory allocations
+</span></span><span class="line"><span class="ln">18</span><span class="cl">block: Stack traces that led to blocking on synchronization primitives
+</span></span><span class="line"><span class="ln">19</span><span class="cl">cmdline: The <span class="nb">command</span> line invocation of the current program
+</span></span><span class="line"><span class="ln">20</span><span class="cl">goroutine: Stack traces of all current goroutines
+</span></span><span class="line"><span class="ln">21</span><span class="cl">heap: A sampling of memory allocations of live objects. You can specify the gc GET parameter to run GC before taking the heap sample.
+</span></span><span class="line"><span class="ln">22</span><span class="cl">mutex: Stack traces of holders of contended mutexes
+</span></span><span class="line"><span class="ln">23</span><span class="cl">profile: CPU profile. You can specify the duration in the seconds GET parameter. After you get the profile file, use the go tool pprof <span class="nb">command</span> to investigate the profile.
+</span></span><span class="line"><span class="ln">24</span><span class="cl">threadcreate: Stack traces that led to the creation of new OS threads
+</span></span><span class="line"><span class="ln">25</span><span class="cl">trace: A trace of execution of the current program. You can specify the duration in the seconds GET parameter. After you get the trace file, use the go tool trace <span class="nb">command</span> to investigate the trace.
+</span></span></code></pre></div><h1 id="分析">分析</h1>
 <p>无论是 runtime/pprof 还是net/http/pporf 都是为收集程序运行时的采样数据，对于分析数据我们还要借助工具 go tool pprof， 以下以http server为例：</p>
 <ol>
 <li>CPU分析
 Demo如下：</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
-<span class="ln"> 4</span>	<span class="s">&#34;log&#34;</span>
-<span class="ln"> 5</span>	<span class="s">&#34;net/http&#34;</span>
-<span class="ln"> 6</span>	<span class="nx">_</span> <span class="s">&#34;net/http/pprof&#34;</span>
-<span class="ln"> 7</span>	<span class="s">&#34;time&#34;</span>
-<span class="ln"> 8</span><span class="p">)</span>
-<span class="ln"> 9</span>
-<span class="ln">10</span><span class="kd">func</span> <span class="nf">Bug</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">11</span>	<span class="k">for</span> <span class="p">{</span>
-<span class="ln">12</span>		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10000000000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln">13</span>		<span class="p">}</span>
-<span class="ln">14</span>		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
-<span class="ln">15</span>	<span class="p">}</span>
-<span class="ln">16</span><span class="p">}</span>
-<span class="ln">17</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">18</span>	<span class="k">go</span> <span class="nf">Bug</span><span class="p">()</span>
-<span class="ln">19</span>	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:6060&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
-<span class="ln">20</span><span class="p">}</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof http://localhost:6060/debug/pprof/profile
-</code></pre></div><p>执行以上命令，可以通过http 获取到CPU的采样信息并通过go tool pprof进行分析，在进入交互式命令行后，可以输入top来查看占用CPU较高的函数</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>(pprof) top
-<span class="ln"> 2</span>Showing nodes accounting for 19990ms, 99.65% of 20060ms total
-<span class="ln"> 3</span>Dropped 19 nodes (cum &lt;= 100.30ms)
-<span class="ln"> 4</span>      flat  flat%   sum%        cum   cum%
-<span class="ln"> 5</span>   18740ms 93.42% 93.42%    19760ms 98.50%  main.Bug
-<span class="ln"> 6</span>    1010ms  5.03% 98.45%     1010ms  5.03%  runtime.asyncPreempt
-<span class="ln"> 7</span>     240ms  1.20% 99.65%      240ms  1.20%  runtime.nanotime1
-<span class="ln"> 8</span>         0     0% 99.65%      250ms  1.25%  runtime.mstart
-<span class="ln"> 9</span>         0     0% 99.65%      250ms  1.25%  runtime.mstart1
-<span class="ln">10</span>         0     0% 99.65%      240ms  1.20%  runtime.nanotime (inline)
-<span class="ln">11</span>         0     0% 99.65%      250ms  1.25%  runtime.sysmon
-</code></pre></div><p>flat：当前函数上运行耗时；<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="s">&#34;log&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="s">&#34;net/http&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nx">_</span> <span class="s">&#34;net/http/pprof&#34;</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="kd">func</span> <span class="nf">Bug</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10000000000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="k">go</span> <span class="nf">Bug</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;localhost:6060&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">go tool pprof http://localhost:6060/debug/pprof/profile
+</span></span></code></pre></div><p>执行以上命令，可以通过http 获取到CPU的采样信息并通过go tool pprof进行分析，在进入交互式命令行后，可以输入top来查看占用CPU较高的函数</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">(pprof) top
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">Showing nodes accounting for 19990ms, 99.65% of 20060ms total
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">Dropped 19 nodes (cum &lt;= 100.30ms)
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">      flat  flat%   sum%        cum   cum%
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">   18740ms 93.42% 93.42%    19760ms 98.50%  main.Bug
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    1010ms  5.03% 98.45%     1010ms  5.03%  runtime.asyncPreempt
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">     240ms  1.20% 99.65%      240ms  1.20%  runtime.nanotime1
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">         0     0% 99.65%      250ms  1.25%  runtime.mstart
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">         0     0% 99.65%      250ms  1.25%  runtime.mstart1
+</span></span><span class="line"><span class="ln">10</span><span class="cl">         0     0% 99.65%      240ms  1.20%  runtime.nanotime (inline)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">         0     0% 99.65%      250ms  1.25%  runtime.sysmon
+</span></span></code></pre></div><p>flat：当前函数上运行耗时；<br>
 flat%：当前函数的运行耗时占 CPU 运行耗时比例；<br>
 sum%： 前面每一行的 flat 占比总和；<br>
 cum： 当前函数加上该函数调用函数的总耗时；<br>
 cum%： 当前函数加上该函数调用函数的总耗时占用CPU运行耗时的比例；</p>
 <p>通过top 可以看到占用CPU较高的函数，然后可以通过 <em>list 函数名</em> 命令来查看某个函数的更细致的分析</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>(pprof) list Bug
-<span class="ln"> 2</span>Total: 20.06s
-<span class="ln"> 3</span>ROUTINE ======================== main.Bug in /Users/xiefei/repo/post/debug/main.go
-<span class="ln"> 4</span>    18.74s     19.76s (flat, cum) 98.50% of Total
-<span class="ln"> 5</span>         .          .      6:	_ &#34;net/http/pprof&#34;
-<span class="ln"> 6</span>         .          .      7:	&#34;time&#34;
-<span class="ln"> 7</span>         .          .      8:)
-<span class="ln"> 8</span>         .          .      9:
-<span class="ln"> 9</span>         .          .     10:func Bug() {
-<span class="ln">10</span>         .      770ms     11:	for {
-<span class="ln">11</span>    18.74s     18.98s     12:		for i := 0; i &lt; 10000000000; i++ {
-<span class="ln">12</span>         .          .     13:		}
-<span class="ln">13</span>         .       10ms     14:		time.Sleep(1 * time.Second)
-<span class="ln">14</span>         .          .     15:	}
-<span class="ln">15</span>         .          .     16:}
-<span class="ln">16</span>         .          .     17:
-<span class="ln">17</span>         .          .     18:func main() {
-<span class="ln">18</span>         .          .     19:	go Bug()
-</code></pre></div><p>由该命令可以看出 for 循环那段代码占用的CPU较高，从而定位问题；</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">(pprof) list Bug
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">Total: 20.06s
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">ROUTINE ======================== main.Bug in /Users/xiefei/repo/post/debug/main.go
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    18.74s     19.76s (flat, cum) 98.50% of Total
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">         .          .      6:	_ &#34;net/http/pprof&#34;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">         .          .      7:	&#34;time&#34;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">         .          .      8:)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">         .          .      9:
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">         .          .     10:func Bug() {
+</span></span><span class="line"><span class="ln">10</span><span class="cl">         .      770ms     11:	for {
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    18.74s     18.98s     12:		for i := 0; i &lt; 10000000000; i++ {
+</span></span><span class="line"><span class="ln">12</span><span class="cl">         .          .     13:		}
+</span></span><span class="line"><span class="ln">13</span><span class="cl">         .       10ms     14:		time.Sleep(1 * time.Second)
+</span></span><span class="line"><span class="ln">14</span><span class="cl">         .          .     15:	}
+</span></span><span class="line"><span class="ln">15</span><span class="cl">         .          .     16:}
+</span></span><span class="line"><span class="ln">16</span><span class="cl">         .          .     17:
+</span></span><span class="line"><span class="ln">17</span><span class="cl">         .          .     18:func main() {
+</span></span><span class="line"><span class="ln">18</span><span class="cl">         .          .     19:	go Bug()
+</span></span></code></pre></div><p>由该命令可以看出 for 循环那段代码占用的CPU较高，从而定位问题；</p>
 <p>另外我们还可以通过web 命令查看将采样数据图形化展示出来；</p>
-<p><img src="/bug.png" alt="web">
+<p>
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/bug.png" alt="web" loading="lazy" decoding="async" width="1072" height="524"  />
+      
+
+    </picture>
+  </figure>
+
+
 图中的箭头代表的是函数的调用，箭头上的值代表的是该方法的采样值，这里是CPU耗时，框越大的函数CPU占用就越高，框内表示的就是
 flat、flat%、cum、cum%.</p>
 <p>另外我们还可以通过以下命令获取Profile并在启动一个web服务在浏览器中进行分析：</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
-</code></pre></div><p>从浏览器中可以看到top、source、graph、火焰图等信息；
-<img src="/performance/web-pprof-top.png" alt="top">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">go tool pprof -http=:8888 http://localhost:6060/debug/pprof/profile?second=10s
+</span></span></code></pre></div><p>从浏览器中可以看到top、source、graph、火焰图等信息；
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/performance/web-pprof-top.png" alt="top" loading="lazy" decoding="async" width="679" height="260"  />
+      
+
+    </picture>
+  </figure>
+
+
 top 与命令行top显示是基本一致;
-<img src="/performance/web-pporf-source.png" alt="source">
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/performance/web-pporf-source.png" alt="source" loading="lazy" decoding="async" width="873" height="425"  />
+      
+
+    </picture>
+  </figure>
+
+
 source 与 命令行list 显示基本一致；
-<img src="/performance/graph.png" alt="graph">
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/performance/graph.png" alt="graph" loading="lazy" decoding="async" width="1155" height="876"  />
+      
+
+    </picture>
+  </figure>
+
+
 graph 与命令web 显示一致；
-<img src="/performance/flame.png" alt="火焰图">
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/performance/flame.png" alt="火焰图" loading="lazy" decoding="async" width="1918" height="179"  />
+      
+
+    </picture>
+  </figure>
+
+
 火焰图的Y轴表示函数调用栈。X轴表示该函数占用的CPU时间的百分比，越宽代表占用的CPU时间就越多。</p>
 <h2 id="内存">内存</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof http://localhost:6060/debug/pprof/heap
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>go tool pprof -http=:8888 http://localhost:6060/debug/pprof/heap
-</code></pre></div><p>内存分析通过以上命令获取相应的数据，分析方法与CPU基本一样，不过有几个术语需要解释以下：<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">go tool pprof http://localhost:6060/debug/pprof/heap
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">go tool pprof -http=:8888 http://localhost:6060/debug/pprof/heap
+</span></span></code></pre></div><p>内存分析通过以上命令获取相应的数据，分析方法与CPU基本一样，不过有几个术语需要解释以下：<br>
 inuse_space:正在使用的分配空间;<br>
 inuse_objects:正在使用的分配对象数;<br>
 aloc_objects:累计的分配对象数;<br>
@@ -302,17 +750,30 @@ aloc_space:累计的分配空间;</p>
 <a href="https://pkg.go.dev/net/http/pprof">net/http/pprf</a><br>
 <a href="https://coder.today/tech/2018-11-10_profiling-your-golang-app-in-3-steps/">Profiling your Golang app in 3 steps</a></p>
 
+    </div>
+
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -335,6 +796,9 @@ aloc_space:累计的分配空间;</p>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
       <li>
@@ -354,9 +818,6 @@ aloc_space:累计的分配空间;</p>
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
       </li>
     </ul>
     <div>
@@ -417,6 +878,11 @@ aloc_space:累计的分配空间;</p>
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -474,8 +940,18 @@ aloc_space:累计的分配空间;</p>
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -519,16 +995,6 @@ aloc_space:累计的分配空间;</p>
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -563,7 +1029,7 @@ aloc_space:累计的分配空间;</p>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -623,7 +1089,7 @@ aloc_space:累计的分配空间;</p>
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -739,7 +1205,7 @@ aloc_space:累计的分配空间;</p>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -764,6 +1230,9 @@ aloc_space:累计的分配空间;</p>
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -772,14 +1241,16 @@ aloc_space:累计的分配空间;</p>
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

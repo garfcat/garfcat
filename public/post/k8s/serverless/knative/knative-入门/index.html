@@ -4,7 +4,6 @@
   <head>
 <title>knative入门 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -25,12 +25,10 @@
 <meta property="og:title" content="knative入门" />
 <meta property="og:description" content="什么是knative knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘 …" />
 <meta property="og:image" content="https://www.geekgame.site/images/thumbnail.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/">
 
@@ -38,12 +36,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -56,12 +54,17 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -113,26 +116,114 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">knative入门</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">knative入门</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Aug 18, 2021</span>
-      <a href='https://www.geekgame.site/tags/kubernetes-serverless' title="kubernetes serverless" class="post_tag button button_translucent">kubernetes serverless
-      </a>
-      <a href='https://www.geekgame.site/tags/knative' title="knative" class="post_tag button button_translucent">knative
-      </a>
-</div>
+    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes-serverless' title="kubernetes serverless" class="post_tag button button_translucent">kubernetes serverless
+        </a><a href='https://www.geekgame.site/tags/knative' title="knative" class="post_tag button button_translucent">knative
+        </a>
+    </span>
+  </div>
 
-    
-
-    
-    <h1 id="什么是knative">什么是knative</h1>
+    <div class="post_body"><h1 id="什么是knative">什么是knative</h1>
 <p>knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。</p>
 <p>如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。
-<img src="/k8s/knative_arch.png" alt="">
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/knative_arch.png" alt="" loading="lazy" decoding="async" width="1694" height="964"  />
+      
+
+    </picture>
+  </figure>
+
+
 各个角色之间的关系,如上图所示:</p>
 <h1 id="何为serverless">何为serverless</h1>
 <p>serverless 中文可以翻译为无服务器架构, 有两个方面的定义: <br>
@@ -169,179 +260,446 @@
 </ul>
 <p>如果单独控制 Route 和 Configuration,那么就可以不使用Service，但是knative 推荐使用service,因为它会帮你自动管理 Route 和 Configuration.</p>
 <p>资源关系图:
-<img src="/k8s/knative_serving_resource.png" alt=""></p>
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/knative_serving_resource.png" alt="" loading="lazy" decoding="async" width="1662" height="1084"  />
+      
+
+    </picture>
+  </figure>
+
+</p>
 <h3 id="knative-service-测试">knative service 测试</h3>
 <p>一个 knative service 的 helloworld-go.yaml 如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="ln"> 1</span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">serving.knative.dev/v1</span><span class="w">
-</span><span class="ln"> 2</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
-</span><span class="ln"> 3</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 4</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">helloworld-go</span><span class="w">
-</span><span class="ln"> 5</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 6</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 7</span><span class="w">   </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 8</span><span class="w">     </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span><span class="ln"> 9</span><span class="w">       </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">helloworld-go</span><span class="w">
-</span><span class="ln">10</span><span class="w">     </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span><span class="ln">11</span><span class="w">       </span><span class="nt">autoscaling.knative.dev/target</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;10&#34;</span><span class="w">  </span><span class="c"># 单个pod可以处理的最大并发数</span><span class="w">
-</span><span class="ln">12</span><span class="w">   </span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span><span class="ln">13</span><span class="w">     </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span><span class="ln">14</span><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">registry.cn-hangzhou.aliyuncs.com/knative-sample/helloworld-go:160e4dc8</span><span class="w">
-</span><span class="ln">15</span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span><span class="ln">16</span><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http1</span><span class="w">
-</span><span class="ln">17</span><span class="w">            </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
-</span><span class="ln">18</span><span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w">
-</span><span class="ln">19</span><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">TARGET</span><span class="w">
-</span><span class="ln">20</span><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;World&#34;</span><span class="w">
-</span></code></pre></div><p>提交yaml文件到Kubernetes集群：</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  <span class="nb">test</span> kubectl apply -f helloworld-go.yaml
-<span class="ln">2</span>service.serving.knative.dev/helloworld-go created
-</code></pre></div><p>查看service状态</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  <span class="nb">test</span> kubectl get service.serving.knative.dev
-<span class="ln">2</span>NAME            URL                                        LATESTCREATED         LATESTREADY           READY   REASON
-<span class="ln">3</span>helloworld-go   http://helloworld-go.default.example.com   helloworld-go-shphd   helloworld-go-shphd   True
-</code></pre></div><p>提交service 之后就会创建出 route 和 configuration, 如下所示:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span>➜  <span class="nb">test</span> kubectl  get route helloworld-go -o yaml
-<span class="ln"> 2</span>apiVersion: serving.knative.dev/v1
-<span class="ln"> 3</span>kind: Route
-<span class="ln"> 4</span>metadata:
-<span class="ln"> 5</span>  annotations:
-<span class="ln"> 6</span>    serving.knative.dev/creator: kubernetes-admin
-<span class="ln"> 7</span>    serving.knative.dev/lastModifier: kubernetes-admin
-<span class="ln"> 8</span>  creationTimestamp: <span class="s2">&#34;2021-08-19T14:09:02Z&#34;</span>
-<span class="ln"> 9</span>  finalizers:
-<span class="ln">10</span>  - routes.serving.knative.dev
-<span class="ln">11</span>  generation: <span class="m">1</span>
-<span class="ln">12</span>  labels:
-<span class="ln">13</span>    serving.knative.dev/service: helloworld-go
-<span class="ln">14</span>  name: helloworld-go
-<span class="ln">15</span>  namespace: default
-<span class="ln">16</span>  ownerReferences:
-<span class="ln">17</span>  - apiVersion: serving.knative.dev/v1
-<span class="ln">18</span>    blockOwnerDeletion: <span class="nb">true</span>
-<span class="ln">19</span>    controller: <span class="nb">true</span>
-<span class="ln">20</span>    kind: Service
-<span class="ln">21</span>    name: helloworld-go
-<span class="ln">22</span>    uid: d45f60a7-c588-4fb0-8072-fb07f8b4bfd9
-<span class="ln">23</span>  resourceVersion: <span class="s2">&#34;299550247&#34;</span>
-<span class="ln">24</span>  selfLink: /apis/serving.knative.dev/v1/namespaces/default/routes/helloworld-go
-<span class="ln">25</span>  uid: bb5c65e1-1d4f-4cf8-82b5-792be2ee110f
-<span class="ln">26</span>spec:
-<span class="ln">27</span>  traffic:
-<span class="ln">28</span>  - configurationName: helloworld-go
-<span class="ln">29</span>    latestRevision: <span class="nb">true</span>
-<span class="ln">30</span>    percent: <span class="m">100</span>
-<span class="ln">31</span>status:
-<span class="ln">32</span>  address:
-<span class="ln">33</span>    url: http://helloworld-go.default.svc.cluster.local
-<span class="ln">34</span>  conditions:
-<span class="ln">35</span>  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:39Z&#34;</span>
-<span class="ln">36</span>    status: <span class="s2">&#34;True&#34;</span>
-<span class="ln">37</span>    type: AllTrafficAssigned
-<span class="ln">38</span>  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:39Z&#34;</span>
-<span class="ln">39</span>    message: autoTLS is not enabled
-<span class="ln">40</span>    reason: TLSNotEnabled
-<span class="ln">41</span>    status: <span class="s2">&#34;True&#34;</span>
-<span class="ln">42</span>    type: CertificateProvisioned
-<span class="ln">43</span>  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:42Z&#34;</span>
-<span class="ln">44</span>    status: <span class="s2">&#34;True&#34;</span>
-<span class="ln">45</span>    type: IngressReady
-<span class="ln">46</span>  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:42Z&#34;</span>
-<span class="ln">47</span>    status: <span class="s2">&#34;True&#34;</span>
-<span class="ln">48</span>    type: Ready
-<span class="ln">49</span>  observedGeneration: <span class="m">1</span>
-<span class="ln">50</span>  traffic:
-<span class="ln">51</span>  - latestRevision: <span class="nb">true</span>
-<span class="ln">52</span>    percent: <span class="m">100</span>
-<span class="ln">53</span>    revisionName: helloworld-go-shphd
-<span class="ln">54</span>  url: http://helloworld-go.default.example.com
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span>➜  <span class="nb">test</span> kubectl get config helloworld-go  -o yaml
-<span class="ln"> 2</span>apiVersion: serving.knative.dev/v1
-<span class="ln"> 3</span>kind: Configuration
-<span class="ln"> 4</span>metadata:
-<span class="ln"> 5</span>  annotations:
-<span class="ln"> 6</span>    serving.knative.dev/creator: kubernetes-admin
-<span class="ln"> 7</span>    serving.knative.dev/lastModifier: kubernetes-admin
-<span class="ln"> 8</span>    serving.knative.dev/routes: helloworld-go
-<span class="ln"> 9</span>  creationTimestamp: <span class="s2">&#34;2021-08-19T14:09:02Z&#34;</span>
-<span class="ln">10</span>  generation: <span class="m">3</span>
-<span class="ln">11</span>  labels:
-<span class="ln">12</span>    serving.knative.dev/route: helloworld-go
-<span class="ln">13</span>    serving.knative.dev/service: helloworld-go
-<span class="ln">14</span>  name: helloworld-go
-<span class="ln">15</span>  namespace: default
-<span class="ln">16</span>  ownerReferences:
-<span class="ln">17</span>  - apiVersion: serving.knative.dev/v1
-<span class="ln">18</span>    blockOwnerDeletion: <span class="nb">true</span>
-<span class="ln">19</span>    controller: <span class="nb">true</span>
-<span class="ln">20</span>    kind: Service
-<span class="ln">21</span>    name: helloworld-go
-<span class="ln">22</span>    uid: d45f60a7-c588-4fb0-8072-fb07f8b4bfd9
-<span class="ln">23</span>  resourceVersion: <span class="s2">&#34;299550167&#34;</span>
-<span class="ln">24</span>  selfLink: /apis/serving.knative.dev/v1/namespaces/default/configurations/helloworld-go
-<span class="ln">25</span>  uid: 7fe6974b-1eb6-475d-9a13-f675e2849c4b
-<span class="ln">26</span>spec:
-<span class="ln">27</span>  template:
-<span class="ln">28</span>    metadata:
-<span class="ln">29</span>      annotations:
-<span class="ln">30</span>        autoscaling.knative.dev/target: <span class="s2">&#34;10&#34;</span>
-<span class="ln">31</span>      creationTimestamp: null
-<span class="ln">32</span>      labels:
-<span class="ln">33</span>        app: helloworld-go
-<span class="ln">34</span>    spec:
-<span class="ln">35</span>      containerConcurrency: <span class="m">0</span>
-<span class="ln">36</span>      containers:
-<span class="ln">37</span>      - env:
-<span class="ln">38</span>        - name: TARGET
-<span class="ln">39</span>          value: World
-<span class="ln">40</span>        image: registry.cn-hangzhou.aliyuncs.com/knative-sample/helloworld-go:160e4dc8
-<span class="ln">41</span>        name: user-container
-<span class="ln">42</span>        ports:
-<span class="ln">43</span>        - containerPort: <span class="m">8080</span>
-<span class="ln">44</span>          name: http1
-<span class="ln">45</span>        readinessProbe:
-<span class="ln">46</span>          successThreshold: <span class="m">1</span>
-<span class="ln">47</span>          tcpSocket:
-<span class="ln">48</span>            port: <span class="m">0</span>
-<span class="ln">49</span>        resources: <span class="o">{}</span>
-<span class="ln">50</span>      timeoutSeconds: <span class="m">300</span>
-<span class="ln">51</span>status:
-<span class="ln">52</span>  conditions:
-<span class="ln">53</span>  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:39Z&#34;</span>
-<span class="ln">54</span>    status: <span class="s2">&#34;True&#34;</span>
-<span class="ln">55</span>    type: Ready
-<span class="ln">56</span>  latestCreatedRevisionName: helloworld-go-shphd
-<span class="ln">57</span>  latestReadyRevisionName: helloworld-go-shphd
-<span class="ln">58</span>  observedGeneration: <span class="m">3</span>
-</code></pre></div><p>创建Configuration 之后，就会创建出相应的Deployment、ReplicaSet 和 Pod。</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>➜  <span class="nb">test</span> kubectl get deployment -o name <span class="p">|</span> grep helloworld
-<span class="ln">2</span>deployment.apps/helloworld-go-shphd-deployment
-<span class="ln">3</span>➜  <span class="nb">test</span> kubectl get replicasets -o name <span class="p">|</span> grep helloworld
-<span class="ln">4</span>replicaset.apps/helloworld-go-shphd-deployment-776b6c5578
-<span class="ln">5</span>➜  <span class="nb">test</span> kubectl get pod <span class="p">|</span> grep helloworld
-<span class="ln">6</span>helloworld-go-shphd-deployment-776b6c5578-r4gpk          2/2     Running            <span class="m">0</span>          50s
-</code></pre></div><p>可以看到pod 已经创建成功， 我们该如何访问helloworld的服务呢？这正是 Route 的用武之地。<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">serving.knative.dev/v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">helloworld-go</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">   </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">     </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">       </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">helloworld-go</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">     </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">       </span><span class="nt">autoscaling.knative.dev/target</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;10&#34;</span><span class="w">  </span><span class="c"># 单个pod可以处理的最大并发数</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">   </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">     </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">registry.cn-hangzhou.aliyuncs.com/knative-sample/helloworld-go:160e4dc8</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">            </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">TARGET</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;World&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>提交yaml文件到Kubernetes集群：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  <span class="nb">test</span> kubectl apply -f helloworld-go.yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">service.serving.knative.dev/helloworld-go created
+</span></span></code></pre></div><p>查看service状态</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  <span class="nb">test</span> kubectl get service.serving.knative.dev
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME            URL                                        LATESTCREATED         LATESTREADY           READY   REASON
+</span></span><span class="line"><span class="ln">3</span><span class="cl">helloworld-go   http://helloworld-go.default.example.com   helloworld-go-shphd   helloworld-go-shphd   True
+</span></span></code></pre></div><p>提交service 之后就会创建出 route 和 configuration, 如下所示:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln"> 1</span><span class="cl">➜  <span class="nb">test</span> kubectl  get route helloworld-go -o yaml
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">apiVersion: serving.knative.dev/v1
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">kind: Route
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">metadata:
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  annotations:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    serving.knative.dev/creator: kubernetes-admin
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    serving.knative.dev/lastModifier: kubernetes-admin
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  creationTimestamp: <span class="s2">&#34;2021-08-19T14:09:02Z&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  finalizers:
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  - routes.serving.knative.dev
+</span></span><span class="line"><span class="ln">11</span><span class="cl">  generation: <span class="m">1</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">  labels:
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    serving.knative.dev/service: helloworld-go
+</span></span><span class="line"><span class="ln">14</span><span class="cl">  name: helloworld-go
+</span></span><span class="line"><span class="ln">15</span><span class="cl">  namespace: default
+</span></span><span class="line"><span class="ln">16</span><span class="cl">  ownerReferences:
+</span></span><span class="line"><span class="ln">17</span><span class="cl">  - apiVersion: serving.knative.dev/v1
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    blockOwnerDeletion: <span class="nb">true</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    controller: <span class="nb">true</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    kind: Service
+</span></span><span class="line"><span class="ln">21</span><span class="cl">    name: helloworld-go
+</span></span><span class="line"><span class="ln">22</span><span class="cl">    uid: d45f60a7-c588-4fb0-8072-fb07f8b4bfd9
+</span></span><span class="line"><span class="ln">23</span><span class="cl">  resourceVersion: <span class="s2">&#34;299550247&#34;</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">  selfLink: /apis/serving.knative.dev/v1/namespaces/default/routes/helloworld-go
+</span></span><span class="line"><span class="ln">25</span><span class="cl">  uid: bb5c65e1-1d4f-4cf8-82b5-792be2ee110f
+</span></span><span class="line"><span class="ln">26</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln">27</span><span class="cl">  traffic:
+</span></span><span class="line"><span class="ln">28</span><span class="cl">  - configurationName: helloworld-go
+</span></span><span class="line"><span class="ln">29</span><span class="cl">    latestRevision: <span class="nb">true</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">    percent: <span class="m">100</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">status:
+</span></span><span class="line"><span class="ln">32</span><span class="cl">  address:
+</span></span><span class="line"><span class="ln">33</span><span class="cl">    url: http://helloworld-go.default.svc.cluster.local
+</span></span><span class="line"><span class="ln">34</span><span class="cl">  conditions:
+</span></span><span class="line"><span class="ln">35</span><span class="cl">  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:39Z&#34;</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">    status: <span class="s2">&#34;True&#34;</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">    type: AllTrafficAssigned
+</span></span><span class="line"><span class="ln">38</span><span class="cl">  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:39Z&#34;</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">    message: autoTLS is not enabled
+</span></span><span class="line"><span class="ln">40</span><span class="cl">    reason: TLSNotEnabled
+</span></span><span class="line"><span class="ln">41</span><span class="cl">    status: <span class="s2">&#34;True&#34;</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">    type: CertificateProvisioned
+</span></span><span class="line"><span class="ln">43</span><span class="cl">  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:42Z&#34;</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">    status: <span class="s2">&#34;True&#34;</span>
+</span></span><span class="line"><span class="ln">45</span><span class="cl">    type: IngressReady
+</span></span><span class="line"><span class="ln">46</span><span class="cl">  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:42Z&#34;</span>
+</span></span><span class="line"><span class="ln">47</span><span class="cl">    status: <span class="s2">&#34;True&#34;</span>
+</span></span><span class="line"><span class="ln">48</span><span class="cl">    type: Ready
+</span></span><span class="line"><span class="ln">49</span><span class="cl">  observedGeneration: <span class="m">1</span>
+</span></span><span class="line"><span class="ln">50</span><span class="cl">  traffic:
+</span></span><span class="line"><span class="ln">51</span><span class="cl">  - latestRevision: <span class="nb">true</span>
+</span></span><span class="line"><span class="ln">52</span><span class="cl">    percent: <span class="m">100</span>
+</span></span><span class="line"><span class="ln">53</span><span class="cl">    revisionName: helloworld-go-shphd
+</span></span><span class="line"><span class="ln">54</span><span class="cl">  url: http://helloworld-go.default.example.com
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln"> 1</span><span class="cl">➜  <span class="nb">test</span> kubectl get config helloworld-go  -o yaml
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">apiVersion: serving.knative.dev/v1
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">kind: Configuration
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">metadata:
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  annotations:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    serving.knative.dev/creator: kubernetes-admin
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    serving.knative.dev/lastModifier: kubernetes-admin
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    serving.knative.dev/routes: helloworld-go
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  creationTimestamp: <span class="s2">&#34;2021-08-19T14:09:02Z&#34;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  generation: <span class="m">3</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">  labels:
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    serving.knative.dev/route: helloworld-go
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    serving.knative.dev/service: helloworld-go
+</span></span><span class="line"><span class="ln">14</span><span class="cl">  name: helloworld-go
+</span></span><span class="line"><span class="ln">15</span><span class="cl">  namespace: default
+</span></span><span class="line"><span class="ln">16</span><span class="cl">  ownerReferences:
+</span></span><span class="line"><span class="ln">17</span><span class="cl">  - apiVersion: serving.knative.dev/v1
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    blockOwnerDeletion: <span class="nb">true</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    controller: <span class="nb">true</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    kind: Service
+</span></span><span class="line"><span class="ln">21</span><span class="cl">    name: helloworld-go
+</span></span><span class="line"><span class="ln">22</span><span class="cl">    uid: d45f60a7-c588-4fb0-8072-fb07f8b4bfd9
+</span></span><span class="line"><span class="ln">23</span><span class="cl">  resourceVersion: <span class="s2">&#34;299550167&#34;</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">  selfLink: /apis/serving.knative.dev/v1/namespaces/default/configurations/helloworld-go
+</span></span><span class="line"><span class="ln">25</span><span class="cl">  uid: 7fe6974b-1eb6-475d-9a13-f675e2849c4b
+</span></span><span class="line"><span class="ln">26</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln">27</span><span class="cl">  template:
+</span></span><span class="line"><span class="ln">28</span><span class="cl">    metadata:
+</span></span><span class="line"><span class="ln">29</span><span class="cl">      annotations:
+</span></span><span class="line"><span class="ln">30</span><span class="cl">        autoscaling.knative.dev/target: <span class="s2">&#34;10&#34;</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">      creationTimestamp: null
+</span></span><span class="line"><span class="ln">32</span><span class="cl">      labels:
+</span></span><span class="line"><span class="ln">33</span><span class="cl">        app: helloworld-go
+</span></span><span class="line"><span class="ln">34</span><span class="cl">    spec:
+</span></span><span class="line"><span class="ln">35</span><span class="cl">      containerConcurrency: <span class="m">0</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">      containers:
+</span></span><span class="line"><span class="ln">37</span><span class="cl">      - env:
+</span></span><span class="line"><span class="ln">38</span><span class="cl">        - name: TARGET
+</span></span><span class="line"><span class="ln">39</span><span class="cl">          value: World
+</span></span><span class="line"><span class="ln">40</span><span class="cl">        image: registry.cn-hangzhou.aliyuncs.com/knative-sample/helloworld-go:160e4dc8
+</span></span><span class="line"><span class="ln">41</span><span class="cl">        name: user-container
+</span></span><span class="line"><span class="ln">42</span><span class="cl">        ports:
+</span></span><span class="line"><span class="ln">43</span><span class="cl">        - containerPort: <span class="m">8080</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">          name: http1
+</span></span><span class="line"><span class="ln">45</span><span class="cl">        readinessProbe:
+</span></span><span class="line"><span class="ln">46</span><span class="cl">          successThreshold: <span class="m">1</span>
+</span></span><span class="line"><span class="ln">47</span><span class="cl">          tcpSocket:
+</span></span><span class="line"><span class="ln">48</span><span class="cl">            port: <span class="m">0</span>
+</span></span><span class="line"><span class="ln">49</span><span class="cl">        resources: <span class="o">{}</span>
+</span></span><span class="line"><span class="ln">50</span><span class="cl">      timeoutSeconds: <span class="m">300</span>
+</span></span><span class="line"><span class="ln">51</span><span class="cl">status:
+</span></span><span class="line"><span class="ln">52</span><span class="cl">  conditions:
+</span></span><span class="line"><span class="ln">53</span><span class="cl">  - lastTransitionTime: <span class="s2">&#34;2021-08-19T14:12:39Z&#34;</span>
+</span></span><span class="line"><span class="ln">54</span><span class="cl">    status: <span class="s2">&#34;True&#34;</span>
+</span></span><span class="line"><span class="ln">55</span><span class="cl">    type: Ready
+</span></span><span class="line"><span class="ln">56</span><span class="cl">  latestCreatedRevisionName: helloworld-go-shphd
+</span></span><span class="line"><span class="ln">57</span><span class="cl">  latestReadyRevisionName: helloworld-go-shphd
+</span></span><span class="line"><span class="ln">58</span><span class="cl">  observedGeneration: <span class="m">3</span>
+</span></span></code></pre></div><p>创建Configuration 之后，就会创建出相应的Deployment、ReplicaSet 和 Pod。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln">1</span><span class="cl">➜  <span class="nb">test</span> kubectl get deployment -o name <span class="p">|</span> grep helloworld
+</span></span><span class="line"><span class="ln">2</span><span class="cl">deployment.apps/helloworld-go-shphd-deployment
+</span></span><span class="line"><span class="ln">3</span><span class="cl">➜  <span class="nb">test</span> kubectl get replicasets -o name <span class="p">|</span> grep helloworld
+</span></span><span class="line"><span class="ln">4</span><span class="cl">replicaset.apps/helloworld-go-shphd-deployment-776b6c5578
+</span></span><span class="line"><span class="ln">5</span><span class="cl">➜  <span class="nb">test</span> kubectl get pod <span class="p">|</span> grep helloworld
+</span></span><span class="line"><span class="ln">6</span><span class="cl">helloworld-go-shphd-deployment-776b6c5578-r4gpk          2/2     Running            <span class="m">0</span>          50s
+</span></span></code></pre></div><p>可以看到pod 已经创建成功， 我们该如何访问helloworld的服务呢？这正是 Route 的用武之地。<br>
 Knative 中的 Route 提供了一种将流量路由到正在运行的代码的机制。它将一个命名的,HTTP 可寻址端点映射到一个或者多个 Revision。Configuration 本身并不定义 Route。
 在上面的Route定义中 100% 流量发送到名称为helloworld-go的 Configuration 最新就绪的Revision ,即 latestReadyRevisionName: helloworld-go-shphd；</p>
 <h4 id="那么到底如何进行访问服务呢">那么到底如何进行访问服务呢？</h4>
 <p>首先看一下流量转发路径：
-<img src="/k8s/flow.png" alt="">
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/flow.png" alt="" loading="lazy" decoding="async" width="1476" height="744"  />
+      
+
+    </picture>
+  </figure>
+
+
 用户发起的请求首先会打到 Gateway 上面,然后 Istio 通过 VirtualService 再把请求转发到具体的 Revision 上面。当然用户的流量还会经过.
 Knative 的 queue 容器才能真正转发到业务容器, 这里我们直接使用 ClusterIP进行测试。</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span><span class="o">[</span>root@test ~<span class="o">]</span><span class="c1"># kubectl get svc istio-ingressgateway -n istio-system</span>
-<span class="ln"> 2</span>NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                                                                      AGE
-<span class="ln"> 3</span>istio-ingressgateway   NodePort   10.99.173.150   &lt;none&gt;        15021:31685/TCP,80:31376/TCP,443:30994/TCP,15012:31651/TCP,15443:30172/TCP   3d13h
-<span class="ln"> 4</span>
-<span class="ln"> 5</span><span class="c1"># Gateway 是通过 VirtualService 来进行流量转发的,这就要求访问者要知道目标服务的名字才行 ( 域名 ),所以要先获取helloworld-go的域名</span>
-<span class="ln"> 6</span><span class="o">[</span>root@test ~<span class="o">]</span><span class="c1"># kubectl get route helloworld-go</span>
-<span class="ln"> 7</span>NAME            URL                                        READY   REASON
-<span class="ln"> 8</span>helloworld-go   http://helloworld-go.default.example.com   True
-<span class="ln"> 9</span>
-<span class="ln">10</span><span class="c1"># 已经拿到.IP.地址和.Hostname,可以通过.curl.直接发起请求:</span>
-<span class="ln">11</span><span class="o">[</span>root@test ~<span class="o">]</span><span class="c1"># curl -H &#34;Host:  helloworld-go.default.example.com&#34; http://10.99.173.150</span>
-<span class="ln">12</span>Hello World!
-</code></pre></div><h4 id="如何进行扩缩容">如何进行扩缩容？</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">[</span>root@test ~<span class="o">]</span><span class="c1"># kubectl get svc istio-ingressgateway -n istio-system</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                                                                      AGE
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">istio-ingressgateway   NodePort   10.99.173.150   &lt;none&gt;        15021:31685/TCP,80:31376/TCP,443:30994/TCP,15012:31651/TCP,15443:30172/TCP   3d13h
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"># Gateway 是通过 VirtualService 来进行流量转发的,这就要求访问者要知道目标服务的名字才行 ( 域名 ),所以要先获取helloworld-go的域名</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="o">[</span>root@test ~<span class="o">]</span><span class="c1"># kubectl get route helloworld-go</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">NAME            URL                                        READY   REASON
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">helloworld-go   http://helloworld-go.default.example.com   True
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"># 已经拿到.IP.地址和.Hostname,可以通过.curl.直接发起请求:</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="o">[</span>root@test ~<span class="o">]</span><span class="c1"># curl -H &#34;Host:  helloworld-go.default.example.com&#34; http://10.99.173.150</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">Hello World!
+</span></span></code></pre></div><h4 id="如何进行扩缩容">如何进行扩缩容？</h4>
 <p>主要依靠两个组件 Autoscaler(自动伸缩器)和 Activator(激活器)， 具体如下所示：
-<img src="/k8s/scale.png" alt=""></p>
+
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/k8s/scale.png" alt="" loading="lazy" decoding="async" width="1406" height="560"  />
+      
+
+    </picture>
+  </figure>
+
+</p>
 <p>Autoscaler 收集打到 Revision 并发请求数量的有关信息。为了做到这一点,它在 Revision Pod 内运行一个称之为queue-proxy  的容器,该 Pod 中也运行用户提供的 (user-provided) 镜像。
 queue-proxy  检测该 Revision 上观察到的并发量,然后它每隔一秒将此数据发送到 Autoscaler。Autoscaler 每两秒对这些指标进行评估。基于评估的结果,它增加或者减少 Revision 部署的规模。
 Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接受请求。当一个 Revision 停止接受请求时, Autoscaler 将其置为 Reserve (待命) 状态,条件是每 Pod 平均并发必须持续 30 秒保持为 0 (这是默认设置,但可以配置)。
@@ -350,17 +708,42 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
 <p>《knative 云原生应用开发指南》<br>
 <a href="https://knative.dev/docs/serving/">Knative Serving</a></p>
 
+    </div>
+
+	<h2 class="post_related">Posts in this Series</h2>
+	<ul>
+	  
+	</ul>
+
+
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
+      
+	    <h2 class="mt-4">Posts in this series</h2>
+      <ul>
+        
+      </ul>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -383,6 +766,9 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
       <li>
@@ -402,9 +788,6 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" class="nav-link" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
       </li>
     </ul>
     <div>
@@ -465,6 +848,11 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -522,8 +910,18 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -567,16 +965,6 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -611,7 +999,7 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -671,7 +1059,7 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -787,7 +1175,7 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -812,6 +1200,9 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -820,14 +1211,16 @@ Autoscaler 也负责缩容至零。Revision 处于 Active (激活) 状态才接�
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>

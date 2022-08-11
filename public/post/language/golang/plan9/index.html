@@ -4,7 +4,6 @@
   <head>
 <title>golang 栈结构 | 有趣</title>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.75.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <script async src="https://www.googletagmanager.com/gtag/js?id=XXXXXXXXXX"></script>
@@ -14,6 +13,7 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+
 <meta property="og:locale" content="zh" />
 
 <meta property="og:type" content="article">
@@ -21,7 +21,7 @@
 动态数据：存放在堆区和栈区；
 静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
 可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
-寄存器 伪寄存器  FP(Frame pointer): 表示参数以及返回值的基地 …">
+寄存器 伪寄存器 FP(Frame pointer): 表示参数以及返回值的基地址； …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="">
 <meta name="twitter:title" content="golang 栈结构" />
@@ -31,14 +31,12 @@
 动态数据：存放在堆区和栈区；
 静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
 可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
-寄存器 伪寄存器  FP(Frame pointer): 表示参数以及返回值的基地 …" />
+寄存器 伪寄存器 FP(Frame pointer): 表示参数以及返回值的基地址； …" />
 <meta property="og:image" content="https://www.geekgame.site/images/thumbnail.png" />
-<link rel="apple-touch-icon" sizes="180x180" href='https://www.geekgame.site/icons/apple-touch-icon.png'>
-<link rel="icon" type="image/png" sizes="32x32" href='https://www.geekgame.site/icons/favicon-32x32.png'>
-<link rel="manifest" href='https://www.geekgame.site/icons/site.webmanifest'>
-<link rel="mask-icon" href='https://www.geekgame.site/safari-pinned-tab.svg' color="#002538">
-<meta name="msapplication-TileColor" content="#002538">
-<meta name="theme-color" content="#002538">
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.geekgame.site/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.geekgame.site/icons/favicon-32x32.png">
+<link rel="manifest" href="https://www.geekgame.site/icons/site.webmanifest">
 
 <link rel="canonical" href="https://www.geekgame.site/post/language/golang/plan9/">
 
@@ -46,12 +44,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity = "sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" as="script" integrity=
-    "sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
+    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.782bf96a82b3cc5b3cee4c47a42cc81321f16960a6d41fab3277c4abe047bc7ae044ea1bb7ae4d237c12baa0143e02f95969e5e8b6e68d9dcfd14158cfa244ac.css" integrity="sha512-eCv5aoKzzFs87kxHpCzIEyHxaWCm1B&#43;rMnfEq&#43;BHvHrgROobt65NI3wSuqAUPgL5WWnl6LbmjZ3P0UFYz6JErA==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
     
   </head>
   
@@ -64,12 +62,17 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
+
     <div class='nav_body nav_body_left'>
       
       
@@ -121,23 +124,22 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">golang 栈结构</h1><div class="post_meta">
-  
-    <svg class="icon">
+    <h1 class="post_title">golang 栈结构</h1>
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
 </svg>
+</span>
     <span class="post_date">
       Jun 15, 2019</span>
-      <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
-      </a>
-      <a href='https://www.geekgame.site/tags/stack' title="stack" class="post_tag button button_translucent">stack
-      </a>
-</div>
+    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+        </a><a href='https://www.geekgame.site/tags/stack' title="stack" class="post_tag button button_translucent">stack
+        </a>
+    </span>
+  </div>
 
-    
-
-    
-    <h1 id="程序组成">程序组成</h1>
+    <div class="post_body"><h1 id="程序组成">程序组成</h1>
 <p>程序由代码和数据组成，数据又有静态与动态之分；<br>
 动态数据：存放在堆区和栈区；<br>
 静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；<br>
@@ -161,107 +163,193 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
 <h3 id="栈结构">栈结构</h3>
 <h4 id="无参数无本地变量">无参数无本地变量</h4>
 <p>无参数无本地变量栈结果是如下所示</p>
-<p><img src="/fpspnoargs.png" alt="没有参数没有本地变量"></p>
+<p>
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_internal" src="https://www.geekgame.site/fpspnoargs.png" alt="没有参数没有本地变量" loading="lazy" decoding="async" width="1046" height="552"  />
+      
+
+    </picture>
+  </figure>
+
+</p>
 <p>通过如下函数来验证</p>
-<div class="highlight"><pre class="chroma"><code class="language-asm" data-lang="asm"><span class="ln"> 1</span><span class="c">#include &#34;textflag.h&#34; //
-</span><span class="ln"> 2</span><span class="c"></span>
-<span class="ln"> 3</span><span class="nf">TEXT</span> <span class="err">·</span><span class="no">SpFp</span><span class="p">(</span><span class="no">SB</span><span class="p">),</span><span class="no">NOSPLIT</span><span class="p">,</span><span class="no">$0-32</span>
-<span class="ln"> 4</span>    <span class="nf">LEAQ</span> <span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">AX</span>   <span class="err">//</span> <span class="err">将硬件</span><span class="no">SP地址存储到AX</span>
-<span class="ln"> 5</span>    <span class="nf">LEAQ</span> <span class="no">a</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">BX</span>  <span class="err">//</span> <span class="err">将伪</span><span class="no">SP地址存储到BX</span>
-<span class="ln"> 6</span>    <span class="nf">LEAQ</span> <span class="no">b</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">FP</span><span class="p">),</span> <span class="no">CX</span>  <span class="err">//</span> <span class="err">将</span><span class="no">FP地址存储到CX</span>
-<span class="ln"> 7</span>    <span class="nf">MOVQ</span> <span class="no">AX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span> <span class="err">//</span> <span class="err">将</span><span class="no">AX地址存储到第一个返回值</span>
-<span class="ln"> 8</span>    <span class="nf">MOVQ</span> <span class="no">BX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">8</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span> <span class="err">//</span> <span class="err">将</span><span class="no">BX地址存储到第二个返回值</span>
-<span class="ln"> 9</span>    <span class="nf">MOVQ</span> <span class="no">CX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">16</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span> <span class="err">//</span> <span class="err">将</span><span class="no">CX地址存储到第三个返回值</span>
-<span class="ln">10</span>    <span class="nf">MOVQ</span> <span class="no">a</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">AX</span>  <span class="err">//</span> <span class="err">将</span><span class="no">SP</span> <span class="err">存储的值存储到</span><span class="no">AX</span><span class="err">，</span> <span class="err">也就是该函数的返回值</span>
-<span class="ln">11</span>    <span class="nf">MOVQ</span> <span class="no">AX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">24</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>  <span class="err">//将</span><span class="no">AX</span> <span class="err">放到第四个返回值</span>
-<span class="ln">12</span>    <span class="nf">RET</span>
-<span class="ln">13</span>    
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
-<span class="ln"> 4</span>
-<span class="ln"> 5</span><span class="kd">func</span> <span class="nf">SpFp</span><span class="p">()</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="c1">// 汇编函数声明
-</span><span class="ln"> 6</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
-<span class="ln"> 7</span>	<span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">,</span><span class="nx">c</span><span class="p">,</span> <span class="nx">addr</span>  <span class="o">:=</span> <span class="nf">SpFp</span><span class="p">()</span>
-<span class="ln"> 8</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">,</span><span class="nx">c</span><span class="p">,</span><span class="nx">addr</span><span class="p">,</span><span class="nx">SpFp</span> <span class="p">)</span>
-<span class="ln"> 9</span><span class="p">}</span>
-<span class="ln">10</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>$ ./spfp
-<span class="ln">2</span>硬SP<span class="o">[</span>824634216112<span class="o">]</span> 伪SP<span class="o">[</span>824634216112<span class="o">]</span> FP<span class="o">[</span>824634216120<span class="o">]</span> addr<span class="o">[</span>17385428<span class="o">]</span> SpFp<span class="o">[</span>17385904<span class="o">]</span>
-</code></pre></div><p>由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>$ dlv <span class="nb">exec</span> ./fpsp
-<span class="ln">2</span>Type <span class="s1">&#39;help&#39;</span> <span class="k">for</span> list of commands.
-<span class="ln">3</span><span class="o">(</span>dlv<span class="o">)</span> b *17385428
-<span class="ln">4</span>Breakpoint <span class="m">1</span> <span class="nb">set</span> at 0x10947d4 <span class="k">for</span> main.main<span class="o">()</span> ./main.go:7
-<span class="ln">5</span><span class="o">(</span>dlv<span class="o">)</span>
-</code></pre></div><p>由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">#include &#34;textflag.h&#34; //
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c"></span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="nf">TEXT</span> <span class="err">·</span><span class="no">SpFp</span><span class="p">(</span><span class="no">SB</span><span class="p">),</span><span class="no">NOSPLIT</span><span class="p">,</span><span class="no">$0-32</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="nf">LEAQ</span> <span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">AX</span>   <span class="err">//</span> <span class="err">将硬件</span><span class="no">SP地址存储到AX</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nf">LEAQ</span> <span class="no">a</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">BX</span>  <span class="err">//</span> <span class="err">将伪</span><span class="no">SP地址存储到BX</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nf">LEAQ</span> <span class="no">b</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">FP</span><span class="p">),</span> <span class="no">CX</span>  <span class="err">//</span> <span class="err">将</span><span class="no">FP地址存储到CX</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">AX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span> <span class="err">//</span> <span class="err">将</span><span class="no">AX地址存储到第一个返回值</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">BX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">8</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span> <span class="err">//</span> <span class="err">将</span><span class="no">BX地址存储到第二个返回值</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">CX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">16</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span> <span class="err">//</span> <span class="err">将</span><span class="no">CX地址存储到第三个返回值</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">a</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">AX</span>  <span class="err">//</span> <span class="err">将</span><span class="no">SP</span> <span class="err">存储的值存储到</span><span class="no">AX</span><span class="err">，</span> <span class="err">也就是该函数的返回值</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">AX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">24</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>  <span class="err">//将</span><span class="no">AX</span> <span class="err">放到第四个返回值</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="nf">RET</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln">1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="kd">func</span> <span class="nf">SpFp</span><span class="p">()</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="c1">// 汇编函数声明
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">	<span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">,</span><span class="nx">c</span><span class="p">,</span> <span class="nx">addr</span>  <span class="o">:=</span> <span class="nf">SpFp</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;硬SP[%d] 伪SP[%d] FP[%d] addr[%d] SpFp[%d] \n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">,</span><span class="nx">c</span><span class="p">,</span><span class="nx">addr</span><span class="p">,</span><span class="nx">SpFp</span> <span class="p">)</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ ./spfp
+</span></span><span class="line"><span class="ln">2</span><span class="cl">硬SP<span class="o">[</span>824634216112<span class="o">]</span> 伪SP<span class="o">[</span>824634216112<span class="o">]</span> FP<span class="o">[</span>824634216120<span class="o">]</span> addr<span class="o">[</span>17385428<span class="o">]</span> SpFp<span class="o">[</span>17385904<span class="o">]</span>
+</span></span></code></pre></div><p>由输出可以看出在没有参数没有本地变量情况下硬件SP与伪SP相等，FP = 伪SP+8</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ dlv <span class="nb">exec</span> ./fpsp
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Type <span class="s1">&#39;help&#39;</span> <span class="k">for</span> list of commands.
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="o">(</span>dlv<span class="o">)</span> b *17385428
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Breakpoint <span class="m">1</span> <span class="nb">set</span> at 0x10947d4 <span class="k">for</span> main.main<span class="o">()</span> ./main.go:7
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="o">(</span>dlv<span class="o">)</span>
+</span></span></code></pre></div><p>由断点可以看出返回值就在main.go的第7行也就是 a,b,c, addr  := SpFp()</p>
 <h4 id="有参数无本地变量">有参数无本地变量</h4>
-<div class="highlight"><pre class="chroma"><code class="language-asm" data-lang="asm"><span class="ln"> 1</span><span class="c">#include &#34;textflag.h&#34; //
-</span><span class="ln"> 2</span><span class="c"></span>
-<span class="ln"> 3</span><span class="nf">TEXT</span> <span class="err">·</span><span class="no">SpFpArgs</span><span class="p">(</span><span class="no">SB</span><span class="p">),</span><span class="no">NOSPLIT</span><span class="p">,</span><span class="no">$0-24</span>
-<span class="ln"> 4</span>    <span class="nf">LEAQ</span> <span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">AX</span>
-<span class="ln"> 5</span>    <span class="nf">LEAQ</span> <span class="no">a</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">BX</span>
-<span class="ln"> 6</span>    <span class="nf">LEAQ</span> <span class="no">b</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">FP</span><span class="p">),</span> <span class="no">CX</span>
-<span class="ln"> 7</span>    <span class="nf">MOVQ</span> <span class="no">AX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">24</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>
-<span class="ln"> 8</span>    <span class="nf">MOVQ</span> <span class="no">BX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">32</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>
-<span class="ln"> 9</span>    <span class="nf">MOVQ</span> <span class="no">CX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">40</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>
-<span class="ln">10</span>    <span class="nf">RET</span>
-<span class="ln">11</span>    
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
-<span class="ln"> 4</span>
-<span class="ln"> 5</span><span class="kd">func</span> <span class="nf">SpFpArgs</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="c1">// 汇编函数声明
-</span><span class="ln"> 6</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
-<span class="ln"> 7</span>	<span class="nx">e</span><span class="p">,</span><span class="nx">f</span><span class="p">,</span><span class="nx">g</span>   <span class="o">:=</span> <span class="nf">SpFpArgs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="ln"> 8</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;硬SP[%d] 伪SP[%d] FP[%d]\n&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">g</span><span class="p">)</span>
-<span class="ln"> 9</span><span class="p">}</span>
-<span class="ln">10</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>$ ./spfp
-<span class="ln">2</span>硬SP<span class="o">[</span>824634216048<span class="o">]</span> 伪SP<span class="o">[</span>824634216048<span class="o">]</span> FP<span class="o">[</span>824634216056<span class="o">]</span>
-</code></pre></div><p>由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c">#include &#34;textflag.h&#34; //
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c"></span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="nf">TEXT</span> <span class="err">·</span><span class="no">SpFpArgs</span><span class="p">(</span><span class="no">SB</span><span class="p">),</span><span class="no">NOSPLIT</span><span class="p">,</span><span class="no">$0-24</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="nf">LEAQ</span> <span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">AX</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nf">LEAQ</span> <span class="no">a</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">SP</span><span class="p">),</span> <span class="no">BX</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nf">LEAQ</span> <span class="no">b</span><span class="err">+</span><span class="mi">0</span><span class="p">(</span><span class="no">FP</span><span class="p">),</span> <span class="no">CX</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">AX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">24</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">BX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">32</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nf">MOVQ</span> <span class="no">CX</span><span class="p">,</span> <span class="no">ret</span><span class="err">+</span><span class="mi">40</span><span class="p">(</span><span class="no">FP</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nf">RET</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln">1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="kd">func</span> <span class="nf">SpFpArgs</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="c1">// 汇编函数声明
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">	<span class="nx">e</span><span class="p">,</span><span class="nx">f</span><span class="p">,</span><span class="nx">g</span>   <span class="o">:=</span> <span class="nf">SpFpArgs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;硬SP[%d] 伪SP[%d] FP[%d]\n&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">g</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">$ ./spfp
+</span></span><span class="line"><span class="ln">2</span><span class="cl">硬SP<span class="o">[</span>824634216048<span class="o">]</span> 伪SP<span class="o">[</span>824634216048<span class="o">]</span> FP<span class="o">[</span>824634216056<span class="o">]</span>
+</span></span></code></pre></div><p>由此可以看出这种情况硬件SP与伪SP相等，FP = 伪SP+8</p>
 <h3 id="有本地变量">有本地变量</h3>
 <p>在有本地变量情况下，在X86 和 ARM 中栈结构是不同的，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln"> 1</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span>// Stack frame layout
-<span class="ln"> 4</span>//
-<span class="ln"> 5</span>// <span class="o">(</span>x86<span class="o">)</span>
-<span class="ln"> 6</span>// +------------------+
-<span class="ln"> 7</span>// <span class="p">|</span> args from <span class="nb">caller</span> <span class="p">|</span>
-<span class="ln"> 8</span>// +------------------+ &lt;- frame-&gt;argp
-<span class="ln"> 9</span>// <span class="p">|</span>  <span class="k">return</span> address  <span class="p">|</span>
-<span class="ln">10</span>// +------------------+
-<span class="ln">11</span>// <span class="p">|</span>  caller<span class="s1">&#39;s BP (*) | (*) if framepointer_enabled &amp;&amp; varp &lt; sp
-</span><span class="ln">12</span><span class="s1">// +------------------+ &lt;- frame-&gt;varp
-</span><span class="ln">13</span><span class="s1">// |     locals       |
-</span><span class="ln">14</span><span class="s1">// +------------------+
-</span><span class="ln">15</span><span class="s1">// |  args to callee  |
-</span><span class="ln">16</span><span class="s1">// +------------------+ &lt;- frame-&gt;sp
-</span><span class="ln">17</span><span class="s1">//
-</span><span class="ln">18</span><span class="s1">// (arm)
-</span><span class="ln">19</span><span class="s1">// +------------------+
-</span><span class="ln">20</span><span class="s1">// | args from caller |
-</span><span class="ln">21</span><span class="s1">// +------------------+ &lt;- frame-&gt;argp
-</span><span class="ln">22</span><span class="s1">// | caller&#39;</span>s retaddr <span class="p">|</span>
-<span class="ln">23</span>// +------------------+ &lt;- frame-&gt;varp
-<span class="ln">24</span>// <span class="p">|</span>     locals       <span class="p">|</span>
-<span class="ln">25</span>// +------------------+
-<span class="ln">26</span>// <span class="p">|</span>  args to callee  <span class="p">|</span>
-<span class="ln">27</span>// +------------------+
-<span class="ln">28</span>// <span class="p">|</span>  <span class="k">return</span> address  <span class="p">|</span>
-<span class="ln">29</span>// +------------------+ &lt;- frame-&gt;sp
-<span class="ln">30</span>
-</code></pre></div><p>我们在这里特别关注X86，会使用到BP寄存器，这个寄存器主要用来指示栈的起始位置，现在很多编译器并不需要这个，因为可以通过SP加Offset来寻找栈起始位置。在amd64平台上,会在函数返回值之后插入8byte来放置Caller BP。
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">// Stack frame layout
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">//
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">// <span class="o">(</span>x86<span class="o">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">// +------------------+
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">// <span class="p">|</span> args from <span class="nb">caller</span> <span class="p">|</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">// +------------------+ &lt;- frame-&gt;argp
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">// <span class="p">|</span>  <span class="k">return</span> address  <span class="p">|</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">// +------------------+
+</span></span><span class="line"><span class="ln">11</span><span class="cl">// <span class="p">|</span>  caller<span class="s1">&#39;s BP (*) | (*) if framepointer_enabled &amp;&amp; varp &lt; sp
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="s1">// +------------------+ &lt;- frame-&gt;varp
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="s1">// |     locals       |
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="s1">// +------------------+
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="s1">// |  args to callee  |
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="s1">// +------------------+ &lt;- frame-&gt;sp
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="s1">//
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="s1">// (arm)
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="s1">// +------------------+
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="s1">// | args from caller |
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="s1">// +------------------+ &lt;- frame-&gt;argp
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="s1">// | caller&#39;</span>s retaddr <span class="p">|</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">// +------------------+ &lt;- frame-&gt;varp
+</span></span><span class="line"><span class="ln">24</span><span class="cl">// <span class="p">|</span>     locals       <span class="p">|</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">// +------------------+
+</span></span><span class="line"><span class="ln">26</span><span class="cl">// <span class="p">|</span>  args to callee  <span class="p">|</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">// +------------------+
+</span></span><span class="line"><span class="ln">28</span><span class="cl">// <span class="p">|</span>  <span class="k">return</span> address  <span class="p">|</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">// +------------------+ &lt;- frame-&gt;sp
+</span></span></code></pre></div><p>我们在这里特别关注X86，会使用到BP寄存器，这个寄存器主要用来指示栈的起始位置，现在很多编译器并不需要这个，因为可以通过SP加Offset来寻找栈起始位置。在amd64平台上,会在函数返回值之后插入8byte来放置Caller BP。
 在有本地变量的情况，在本地变量和参数之间会插入函数返回值和 BP 寄存器，但是BP寄存器的插入必须满足两点要求：</p>
 <ol>
 <li>函数的栈帧大于0；</li>
 <li>满足条件</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-golang" data-lang="golang"><span class="ln">1</span><span class="kd">func</span> <span class="nf">Framepointer_enabled</span><span class="p">(</span><span class="nx">goos</span><span class="p">,</span> <span class="nx">goarch</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-<span class="ln">2</span>  <span class="k">return</span> <span class="nx">framepointer_enabled</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">goarch</span> <span class="o">==</span> <span class="s">&#34;amd64&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">goos</span> <span class="o">!=</span> <span class="s">&#34;nacl&#34;</span>
-<span class="ln">3</span><span class="p">}</span>
-</code></pre></div><p>另外此时 硬件SP与伪SP是不相同的。<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="nf">Framepointer_enabled</span><span class="p">(</span><span class="nx">goos</span><span class="p">,</span> <span class="nx">goarch</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="k">return</span> <span class="nx">framepointer_enabled</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">goarch</span> <span class="o">==</span> <span class="s">&#34;amd64&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">goos</span> <span class="o">!=</span> <span class="s">&#34;nacl&#34;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>另外此时 硬件SP与伪SP是不相同的。<br>
 硬件SP + locals = 伪SP</p>
 <h1 id="参考">参考</h1>
 <p><a href="https://9p.io/plan9/">https://9p.io/plan9/</a><br>
@@ -276,17 +364,42 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
 <a href="https://blog.cloudflare.com/how-stacks-are-handled-in-go/">How Stacks are Handled in Go</a><br>
 <a href="https://lrita.github.io/2017/12/12/golang-asm/#go%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">go函数调用</a></p>
 
+    </div>
+
+	<h2 class="post_related">Posts in this Series</h2>
+	<ul>
+	  
+	</ul>
+
+
+
+
+
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
     
-      <h2>Garfcat</h2>
-      <div class="sidebar_description">
+
+        <h2>Garfcat</h2>
+      <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
+
+    
+    
+      
+	    <h2 class="mt-4">Posts in this series</h2>
+      <ul>
+        
+      </ul>
+    
     <h2 class="mt-4">精选文章</h2>
     <ul>
+      <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
       <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
@@ -309,6 +422,9 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/container/docker/network_can_not_access/" class="nav-link" title="DOCKER 容器访问不通问题定位">DOCKER 容器访问不通问题定位</a>
       </li>
       <li>
@@ -328,9 +444,6 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" class="nav-link" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
       </li>
     </ul>
     <div>
@@ -391,6 +504,11 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
           <span class="button_tally">1</span>
         </a>
         
+        <a href='https://www.geekgame.site/categories/technology/' class="post_tag button button_translucent" title="technology">
+          TECHNOLOGY
+          <span class="button_tally">1</span>
+        </a>
+        
         
       </nav>
     </div>
@@ -448,8 +566,18 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
+          ES
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/extend/' class="post_tag button button_translucent" title="extend">
           EXTEND
+          <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/tags/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">2</span>
         </a>
         
@@ -493,16 +621,6 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/effective/' class="post_tag button button_translucent" title="effective">
-          EFFECTIVE
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
-          ES
-          <span class="button_tally">1</span>
-        </a>
-        
         
         <br>
         <div class="post_tags_toggle button">所有标签</div>
@@ -537,7 +655,7 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=1 title="es">ES<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
             
@@ -597,7 +715,7 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=1 title="mongodb">MONGODB<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/mongodb/' class=" post_tag button button_translucent" data-position=2 title="mongodb">MONGODB<span class="button_tally">2</span>
             </a>
             
             
@@ -713,7 +831,7 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -738,6 +856,9 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -746,14 +867,16 @@ FP 用来引用程序的参数，这些引用是由编译器维护，通过该�
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#open-menu"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.a01fd6d25a03266a1bb159ab60d7b007058bd9e9b257dd5a397a928a102ddf81a93e4eafbda5593da2ba25bd9dceeba8139ed13c5ee417c3a5a51d9c1d72528e.js" integrity="sha512-oB/W0loDJmobsVmrYNewBwWL2emyV91aOXqSihAt34GpPk6vvaVZPaK6Jb2dzuuoE57RPF7kF8OlpR2cHXJSjg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
     
   </body>
 </html>
