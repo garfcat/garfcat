@@ -1,7 +1,7 @@
 ---
 title: "es 与 mongodb比较，es 是否可以作为存储使用呢？" # Title of the blog post.
 date: 2022-08-11T14:08:18+08:00 # Date of post creation.
-description: "Article description." # Description used for search engine.
+description: "数据库技术选型" # Description used for search engine.
 featured: true # Sets if post is a featured post, making appear on the home page side bar.
 draft: false # Sets whether to render this page. Draft of true will not be rendered.
 toc: false # Controls if a table of contents should be generated for first-level links automatically.
@@ -19,15 +19,14 @@ tags:
   - mongodb
 # comment: false # Disable comment if false.
 ---
-
-两者对比
+(图片拍摄于千灵山风景区)
+## 两者对比
 
 
 ## 	mongodb	vs es
 |  对比   | mongodb  | es |
 |  ----  | ----  | ----  | 
 | 定位  | 解决关系数据库强 schema 约束的问题 |解决关系数据库的全文搜索性能问题 |
-| 主要解决的问题  | 单元格 |单元格 |
 | schema  | 无 |无 |
 | 事务  | 	4.0之后支持 |不支持 |
 | 索引  | B树 |LSM 倒排索引 |
