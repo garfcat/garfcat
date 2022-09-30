@@ -31,13 +31,77 @@ tags:
 - I(Isolation, 隔离性): 当数据库有多个事务并发读写数据时，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别,分为未提交读（Read uncommitted）、提交读（read committed）、可重复读（repeatable read）和串行化（Serializable）。；     
 - D(Durability, 持久性): 事务处理结束后，对数据的修改时永久的，即使系统故障也不会丢失;    
 - C(Consistency,一致性):  事务执行前后的结果依旧满足正确性的约束，即符合预期;  
-AID 都很好理解，但是C是需要多多加理解一下，可以理解AID时手段，C是结果，通过AID可以保证C。举个例子: 变量a=1，事务操作a+1，预期a=2，执行结果a=2，就满足了一致性。期间出现了脏读、不可重复读、幻读，结果就不符合预期了，一致性就没有得到保障。
+AID 都很好理解，但是C是需要多加理解一下，可以理解AID时手段，C是结果，通过AID可以保证C。举个例子: 变量a=1，事务操作a+1，预期a=2，执行结果a=2，就满足了一致性。期间出现了脏读、不可重复读、幻读，结果就不符合预期了，一致性就没有得到保障。
 
 
 ## mongodb 事务
-mongodb 的单个文档操作是原子的, 我们可以通过嵌入式文档或者数组在一个文档中组织数据间的关系从而避免多文档多集合的操作。当然在 mongodb 也提供了多文档的事务操作。  
+mongodb 的单个文档操作是原子的, 我们可以通过嵌入式文档或者数组在一个文档中组织数据间的关系从而避免多文档多集合的操作。当然在实际开发中单文档操作往往满足不了我们的需求，所以 mongodb 也提供了多文档的事务操作。  
 - 从 4.0 版本开始支持复制集的事务  
 - 从 4.2 开始开始支持分片集的事务。
+
+
+## 事务与会话  
+- 事务需要关联一个会话，会话本质上是一个上下文，是请求在处理过程中所需的信息: 请求耗时统计、请求占用的锁资源、请求使用的存储快照等信息。  
+- 一个会话只能关联一个事务，如果会话结束则事务会终止(abort)。   
+
+## 事务级别(transaction-level)  
+### 读事务
+读数据主要关心两件事情: 1. 从哪里读数据 2. 读什么样的数据。从哪里读数据由 read preference 指定，读什么样的数据由
+read concern 指定。
+#### read preference
+我们可以在事务开始时设置  read preference(read preference 定义客户端如何从哪里读取数据):  
+- 如果事务的 read preference 没有设置，则使用会话设置的 read preference;  
+- 如果会话也没有设置 read preference, 则使用客户端设置的 read preference， 默认为 primary;  
+可选择的值如下:
+- primary: 只从主节点读取数据;  
+- primaryPreferred：优先主节点,如果主节点不可用则从成员节点中读取数据;    
+- secondary: 只从从节点读取数据;  
+- secondaryPreferred: 优先从节点，如果只有一个节点则从主节点读取数据; [更多详情](https://www.mongodb.com/docs/manual/core/read-preference/#mongodb-readmode-secondaryPreferred);  
+- nearest: 只考虑节点延迟，不考虑主从;  
+
+#### read concern 
+read concern 以事务设置的为准，你可以在事务开始时设置:
+- 如果事务没有设置 read concern，则会使用会话设置的 read concern;  
+- 如果会话也没有设置，则使用客户端设置的 read concern，其默认值为 "local";  
+read concern 可以设置的值如下：  
+- local: 返回所有最近可用的数据，不过这些数据有可能会回滚;  
+- majority: 返回所有已经被大多数成员确认的数据，也就是数据不能被回滚的;  
+- snapshot:  从快照中返回所有被大多数成员确认的数据。
+
+
+### 写事务  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 总结
+如果有可能，尽量避免使用多文档事务。  
+
+## 参考
+[MongoDB 4.0 事务实现解析](https://mongoing.com/%3Fp%3D6084)  
+[Transactions](https://www.mongodb.com/docs/manual/core/transactions/#transactions-and-sessions)   
+
+
+
 
 
 
