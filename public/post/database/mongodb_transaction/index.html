@@ -171,19 +171,55 @@
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>网站链接: <a href='https://www.geekgame.site/images/path/file.jpg' title='在新选项卡中打开此网站链接' target='_blank' class='warning-link'>https://www.geekgame.site/images/path/file.jpg</a></p>
-    <p>链接到文件: static/images/path/file.jpg</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相关信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_featured image_internal" src="https://www.geekgame.site/images/sky.png" alt="" loading="lazy" decoding="async" width="1706" height="1279"  />
+      
+
+    </picture>
+  </figure>
 
 
       </div>
@@ -254,12 +290,20 @@ w 的值包含如下：</li>
 </ul>
 </li>
 </ul>
-<h2 id="事务限制">事务限制</h2>
+<h2 id="事务最佳实践">事务最佳实践</h2>
+<ul>
+<li>将长事务拆分成小的事务，这样事务不会达到60s超时的限制(超时时间可以调整)，确保操作都使用到了索引，这样可以更快地运行;</li>
+<li>每个事务中最多1000个文档修改;</li>
+<li>确保配置好 read and write concerns;</li>
+<li>合适的错误处理与重试;</li>
+<li>注意事务会对分片产生性能损耗;</li>
+</ul>
 <h2 id="总结">总结</h2>
-<p>，尽量避免使用多文档事务。</p>
+<p>使用事务之前，仔细思考是否需要事务，是否可以通过业务上的调整避免使用事务。</p>
 <h2 id="参考">参考</h2>
 <p><a href="https://mongoing.com/%3Fp%3D6084">MongoDB 4.0 事务实现解析</a><br>
-<a href="https://www.mongodb.com/docs/manual/core/transactions/#transactions-and-sessions">Transactions</a></p>
+<a href="https://www.mongodb.com/docs/manual/core/transactions/#transactions-and-sessions">Transactions</a><br>
+<a href="https://www.mongodb.com/blog/post/mongodb-multi-document-acid-transactions-general-availability">MongoDB 4 Update: Multi-Document ACID Transactions</a></p>
 
     </div>
 

@@ -6,7 +6,7 @@ featured: true # Sets if post is a featured post, making appear on the home page
 draft: false # Sets whether to render this page. Draft of true will not be rendered.
 toc: false # Controls if a table of contents should be generated for first-level links automatically.
 # menu: main
-featureImage: "/images/path/file.jpg" # Sets featured image on blog post.
+featureImage: "/images/sky.png" # Sets featured image on blog post.
 thumbnail: "/images/path/thumbnail.png" # Sets thumbnail image appearing inside card on homepage.
 shareImage: "/images/path/share.png" # Designate a separate image for social media sharing.
 codeMaxLines: 10 # Override global value for how many lines within a code block before auto-collapsing.
@@ -78,14 +78,20 @@ read concern 可以设置的值如下：
 w 的值包含如下：  
   - 1: 主节点写入成功则认为成功;  
   - majority: 写操作被复制到大多数节点才算成功;  
-## 事务限制  
+## 事务最佳实践  
+- 将长事务拆分成小的事务，这样事务不会达到60s超时的限制(超时时间可以调整)，确保操作都使用到了索引，这样可以更快地运行;  
+- 每个事务中最多1000个文档修改;  
+- 确保配置好 read and write concerns;  
+- 合适的错误处理与重试;
+- 注意事务会对分片产生性能损耗;  
     
 ## 总结
-，尽量避免使用多文档事务。  
+使用事务之前，仔细思考是否需要事务，是否可以通过业务上的调整避免使用事务。  
 
 ## 参考
 [MongoDB 4.0 事务实现解析](https://mongoing.com/%3Fp%3D6084)  
 [Transactions](https://www.mongodb.com/docs/manual/core/transactions/#transactions-and-sessions)   
+[MongoDB 4 Update: Multi-Document ACID Transactions](https://www.mongodb.com/blog/post/mongodb-multi-document-acid-transactions-general-availability)  
 
 
 
