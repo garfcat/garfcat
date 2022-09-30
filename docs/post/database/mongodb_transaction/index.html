@@ -227,7 +227,8 @@ read concern 指定。</p>
 <li>primaryPreferred：优先主节点,如果主节点不可用则从成员节点中读取数据;</li>
 <li>secondary: 只从从节点读取数据;</li>
 <li>secondaryPreferred: 优先从节点，如果只有一个节点则从主节点读取数据; <a href="https://www.mongodb.com/docs/manual/core/read-preference/#mongodb-readmode-secondaryPreferred">更多详情</a>;</li>
-<li>nearest: 只考虑节点延迟，不考虑主从;</li>
+<li>nearest: 只考虑节点延迟，不考虑主从;<br>
+所有事务的操作只能在同一个节点进行，而写操作只能在主节点执行，所以事务只能在主节点执行。</li>
 </ul>
 <h4 id="read-concern">read concern</h4>
 <p>read concern 以事务设置的为准，你可以在事务开始时设置:</p>
@@ -240,8 +241,22 @@ read concern 可以设置的值如下：</li>
 <li>snapshot:  从快照中返回所有被大多数成员确认的数据。</li>
 </ul>
 <h3 id="写事务">写事务</h3>
+<p>写事务主要通过  write concern 来配置，同样以事务设置的为准，你可以在事务开始时设置:</p>
+<ul>
+<li>如果事务没有设置 write concern，则会使用会话设置的 write concern;</li>
+<li>如果会话也没有设置，则使用客户端设置的 write concern，其默认值为:
+<ul>
+<li>w: 在MongoDB 5.0 以及之后的版本为 &quot;majority&quot;;</li>
+<li>w: 在MongoDB 4.4 以及之前的版本为 1;<br>
+w 的值包含如下：</li>
+<li>1: 主节点写入成功则认为成功;</li>
+<li>majority: 写操作被复制到大多数节点才算成功;</li>
+</ul>
+</li>
+</ul>
+<h2 id="事务限制">事务限制</h2>
 <h2 id="总结">总结</h2>
-<p>如果有可能，尽量避免使用多文档事务。</p>
+<p>，尽量避免使用多文档事务。</p>
 <h2 id="参考">参考</h2>
 <p><a href="https://mongoing.com/%3Fp%3D6084">MongoDB 4.0 事务实现解析</a><br>
 <a href="https://www.mongodb.com/docs/manual/core/transactions/#transactions-and-sessions">Transactions</a></p>
