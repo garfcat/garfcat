@@ -123,6 +123,101 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/database/mongodb_transaction/" title="mongodb 事务解析">mongodb 事务解析</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
+  <use xlink:href="#calendar"></use>
+</svg>
+</span>
+    <span class="post_date">
+      Sep 2, 2022</span>
+    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/transaction' title="transaction" class="post_tag button button_translucent">transaction
+        </a>
+    </span>
+  </div>
+
+    </div>
+    <div class="excerpt_footer partition">
+      <div class="excerpt_thumbnail">
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>网站链接: <a href='https://www.geekgame.site/images/path/thumbnail.png' title='在新选项卡中打开此网站链接' target='_blank' class='warning-link'>https://www.geekgame.site/images/path/thumbnail.png</a></p>
+    <p>链接到文件: static/images/path/thumbnail.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相关信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
+      </div>
+      
+        <div class="pale">
+          
+            <p>什么是事务 事务是数据库中的执行单元，包含一个或者多个操作，事务主要有以下几个主要作用:
+- 所有操作要么一起成功，要么一起失败;
+- 可以从失败即使是系统故障中正确恢复并保持数据库的一致性;
+- 提供数据隔离保障可以正确地并发访问数据库；
+事务的属性可以使用ACID来描述: A(Atomicity,原子性): 一个事务的所有操作要么成功，要么失败，没有中间状态,如果失败则会回滚到事务开始之前的状态。 I(Isolation, 隔离性): 当数据库有多个事务并发读写数据时，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别,分为未提交读（Read uncommitted）、提交读（read …</p>
+          
+          <br>
+          <a href="https://www.geekgame.site/post/database/mongodb_transaction/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+        <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
       </h3>
       
@@ -1101,43 +1196,6 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
     </div>
   </li>
 
-        <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" title="Kubernetes Controller runtime 详解">Kubernetes Controller runtime 详解</a>
-      </h3>
-      
-  <div class="post_meta">
-    <span><svg class="icon">
-  <title>calendar</title>
-  <use xlink:href="#calendar"></use>
-</svg>
-</span>
-    <span class="post_date">
-      Jun 17, 2021</span>
-    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubebuilder' title="kubebuilder" class="post_tag button button_translucent">kubebuilder
-        </a><a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
-        </a><a href='https://www.geekgame.site/tags/controller-runtime' title="controller runtime" class="post_tag button button_translucent">controller runtime
-        </a>
-    </span>
-  </div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
-概念 CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
-下面例子是定义了一个crontab 的自定 …</p>
-          
-          <br>
-          <a href="https://www.geekgame.site/post/k8s/extensions/controller_runtime/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
       <li>
     <ul class="pagination pagination-default">
       <li class="page-item disabled">
@@ -1181,6 +1239,9 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
+        <a href="https://www.geekgame.site/post/database/mongodb_transaction/" class="nav-link" title="mongodb 事务解析">mongodb 事务解析</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
       </li>
       <li>
@@ -1205,6 +1266,9 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/database/mongodb_transaction/" class="nav-link" title="mongodb 事务解析">mongodb 事务解析</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/database/ev_vs_mongodb/" class="nav-link" title="es 与 mongodb比较，es 是否可以作为存储使用呢？">es 与 mongodb比较，es 是否可以作为存储使用呢？</a>
       </li>
       <li>
@@ -1224,9 +1288,6 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" class="nav-link" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" class="nav-link" title="knative入门">knative入门</a>
       </li>
     </ul>
     <div>
@@ -1279,6 +1340,11 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
         
         <a href='https://www.geekgame.site/categories/linux/' class="post_tag button button_translucent" title="linux">
           LINUX
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/mongodb/' class="post_tag button button_translucent" title="mongodb">
+          MONGODB
           <span class="button_tally">1</span>
         </a>
         
@@ -1559,6 +1625,10 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
             
             
             <a href='https://www.geekgame.site/tags/testing/' class=" post_tag button button_translucent" data-position=1 title="testing">TESTING<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/transaction/' class=" post_tag button button_translucent" data-position=1 title="transaction">TRANSACTION<span class="button_tally">1</span>
             </a>
             
             
