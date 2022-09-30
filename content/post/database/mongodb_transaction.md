@@ -1,5 +1,5 @@
 ---
-title: "mongodb 事务解析" # Title of the blog post.   
+title: "mongodb 事务" # Title of the blog post.   
 date: 2022-09-02T11:53:16+08:00 # Date of post creation.
 description: "Article description." # Description used for search engine.
 featured: true # Sets if post is a featured post, making appear on the home page side bar.
