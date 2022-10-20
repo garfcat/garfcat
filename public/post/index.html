@@ -123,6 +123,99 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/linux/iptables/" title="一文读懂iptables/netfilter附带实战">一文读懂iptables/netfilter附带实战</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
+  <use xlink:href="#calendar"></use>
+</svg>
+</span>
+    <span class="post_date">
+      Oct 13, 2022</span>
+    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/iptables' title="iptables" class="post_tag button button_translucent">iptables
+        </a><a href='https://www.geekgame.site/tags/docker' title="docker" class="post_tag button button_translucent">docker
+        </a>
+    </span>
+  </div>
+
+    </div>
+    <div class="excerpt_footer partition">
+      <div class="excerpt_thumbnail">
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+<div class="notices warning image-warning">
+  <div class="label">Image not found</div>
+    <style>
+      a.warning-link {
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: underline !important;
+        border-bottom: none !important; }
+    </style>
+    <p>网站链接: <a href='https://www.geekgame.site/images/path/thumbnail.png' title='在新选项卡中打开此网站链接' target='_blank' class='warning-link'>https://www.geekgame.site/images/path/thumbnail.png</a></p>
+    <p>链接到文件: static/images/path/thumbnail.png</p>
+    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相关信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
+</div>
+
+
+      </div>
+      
+        <div class="pale">
+          
+            <p>简介 iptables 是一个命令行工具，用来配置包过滤的规则的，而真正实现这些规则的程序位于内核层，叫做 netfilter, 可以讲iptables理解为netfilter的客户端，iptables 与 netfilter 共同组成了包过滤软件。 平常工作交流中 iptables 也经常代指该内核级防火墙，iptables 用于 ipv4, 相应的 ip6tables 用于 IPv6。
+概念介绍 hook iptables 在内核是对数据包做修改、转发、丢弃等操作的，而这些操作都是在一个个 hook 上完成的，hook 就是注册数据包处理函数的地方。hook点都是预定义好的，一共划分了五个hook点，分别为: …</p>
+          
+          <br>
+          <a href="https://www.geekgame.site/post/linux/iptables/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+        <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/database/mongodb_transaction/" title="mongodb 事务">mongodb 事务</a>
       </h3>
       
@@ -1195,41 +1288,6 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
     </div>
   </li>
 
-        <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" title="Kubernetes 监控架构(译)">Kubernetes 监控架构(译)</a>
-      </h3>
-      
-  <div class="post_meta">
-    <span><svg class="icon">
-  <title>calendar</title>
-  <use xlink:href="#calendar"></use>
-</svg>
-</span>
-    <span class="post_date">
-      Jul 5, 2021</span>
-    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
-        </a><a href='https://www.geekgame.site/tags/kubernetes-monitoring' title="kubernetes monitoring" class="post_tag button button_translucent">kubernetes monitoring
-        </a>
-    </span>
-  </div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>概要 监控分为两个部分:
-核心监控流程由kubelet、资源评估器、metric-server(Heapster 精简版)以及API server 上的master metrics API 组成. 这些监控数据被系统核心组件使用,例如调度逻辑(调度器和基于系统指标的HPA) 和 开箱即用的UI组件(例如 kubectl top), 这条监控管道不适合与第三方监控系统集成. 另一个监控流程用于从系统收集各种指标并将这些指标导出到用户端、HPA(自定义指标)以及通过适配器到处到 infrastore. 用户可以从众多的监控系统中进行选择,也可以不运行监控系统. Kubernetes 不附带监控管道, 但是第三方的选项是很容易被安装的.  …</p>
-          
-          <br>
-          <a href="https://www.geekgame.site/post/k8s/monitoring_arch/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
       <li>
     <ul class="pagination pagination-default">
       <li class="page-item disabled">
@@ -1273,6 +1331,9 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
+        <a href="https://www.geekgame.site/post/linux/iptables/" class="nav-link" title="一文读懂iptables/netfilter附带实战">一文读懂iptables/netfilter附带实战</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/database/mongodb_transaction/" class="nav-link" title="mongodb 事务">mongodb 事务</a>
       </li>
       <li>
@@ -1292,14 +1353,14 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" class="nav-link" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
       </li>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/linux/iptables/" class="nav-link" title="一文读懂iptables/netfilter附带实战">一文读懂iptables/netfilter附带实战</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/database/mongodb_transaction/" class="nav-link" title="mongodb 事务">mongodb 事务</a>
       </li>
       <li>
@@ -1319,9 +1380,6 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" class="nav-link" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
       </li>
     </ul>
     <div>
@@ -1340,6 +1398,11 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
         <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
           KUBERNETES-EXTEND
           <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/linux/' class="post_tag button button_translucent" title="linux">
+          LINUX
+          <span class="button_tally">2</span>
         </a>
         
         <a href='https://www.geekgame.site/categories/storage/' class="post_tag button button_translucent" title="storage">
@@ -1369,11 +1432,6 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
         
         <a href='https://www.geekgame.site/categories/kubernetes-serverless/' class="post_tag button button_translucent" title="kubernetes-serverless">
           KUBERNETES-SERVERLESS
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/categories/linux/' class="post_tag button button_translucent" title="linux">
-          LINUX
           <span class="button_tally">1</span>
         </a>
         
@@ -1449,6 +1507,11 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/docker/' class="post_tag button button_translucent" title="docker">
+          DOCKER
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
           ES
           <span class="button_tally">2</span>
@@ -1489,11 +1552,6 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/docker/' class="post_tag button button_translucent" title="docker">
-          DOCKER
-          <span class="button_tally">1</span>
-        </a>
-        
         <a href='https://www.geekgame.site/tags/edgefs/' class="post_tag button button_translucent" title="edgefs">
           EDGEFS
           <span class="button_tally">1</span>
@@ -1522,7 +1580,7 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/docker/' class=" post_tag button button_translucent" data-position=1 title="docker">DOCKER<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/docker/' class=" post_tag button button_translucent" data-position=2 title="docker">DOCKER<span class="button_tally">2</span>
             </a>
             
             
@@ -1559,6 +1617,10 @@ NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中�
             
             
             <a href='https://www.geekgame.site/tags/informer/' class=" post_tag button button_translucent" data-position=1 title="informer">INFORMER<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/iptables/' class=" post_tag button button_translucent" data-position=1 title="iptables">IPTABLES<span class="button_tally">1</span>
             </a>
             
             

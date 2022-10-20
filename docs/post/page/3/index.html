@@ -123,6 +123,42 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/language/golang/sched/" title="golang 协程调度原理">golang 协程调度原理</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
+  <use xlink:href="#calendar"></use>
+</svg>
+</span>
+    <span class="post_date">
+      Aug 11, 2019</span>
+    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
+        </a><a href='https://www.geekgame.site/tags/sched' title="sched" class="post_tag button button_translucent">sched
+        </a>
+    </span>
+  </div>
+
+    </div>
+      <div class="excerpt_footer">
+        <div class="pale">
+          
+            <p>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
+GMP调度模型 Go采用的是GMP调度模型。
+核心概念 G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示： 1 go func() //创建协程来执行函数 M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通 …</p>
+          
+          <br>
+          <a href="https://www.geekgame.site/post/language/golang/sched/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+        <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/language/golang/start/" title="通过 hello world 寻找 golang 启动过程">通过 hello world 寻找 golang 启动过程</a>
       </h3>
       
@@ -382,6 +418,9 @@ sed 用法
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
+        <a href="https://www.geekgame.site/post/linux/iptables/" class="nav-link" title="一文读懂iptables/netfilter附带实战">一文读懂iptables/netfilter附带实战</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/database/mongodb_transaction/" class="nav-link" title="mongodb 事务">mongodb 事务</a>
       </li>
       <li>
@@ -401,14 +440,14 @@ sed 用法
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" class="nav-link" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
       </li>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/linux/iptables/" class="nav-link" title="一文读懂iptables/netfilter附带实战">一文读懂iptables/netfilter附带实战</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/database/mongodb_transaction/" class="nav-link" title="mongodb 事务">mongodb 事务</a>
       </li>
       <li>
@@ -428,9 +467,6 @@ sed 用法
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/storage/rook-edgefs/" class="nav-link" title="Rook Edgefs 介绍">Rook Edgefs 介绍</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" class="nav-link" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
       </li>
     </ul>
     <div>
@@ -449,6 +485,11 @@ sed 用法
         <a href='https://www.geekgame.site/categories/kubernetes-extend/' class="post_tag button button_translucent" title="kubernetes-extend">
           KUBERNETES-EXTEND
           <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/linux/' class="post_tag button button_translucent" title="linux">
+          LINUX
+          <span class="button_tally">2</span>
         </a>
         
         <a href='https://www.geekgame.site/categories/storage/' class="post_tag button button_translucent" title="storage">
@@ -478,11 +519,6 @@ sed 用法
         
         <a href='https://www.geekgame.site/categories/kubernetes-serverless/' class="post_tag button button_translucent" title="kubernetes-serverless">
           KUBERNETES-SERVERLESS
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://www.geekgame.site/categories/linux/' class="post_tag button button_translucent" title="linux">
-          LINUX
           <span class="button_tally">1</span>
         </a>
         
@@ -558,6 +594,11 @@ sed 用法
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://www.geekgame.site/tags/docker/' class="post_tag button button_translucent" title="docker">
+          DOCKER
+          <span class="button_tally">2</span>
+        </a>
+        
         <a href='https://www.geekgame.site/tags/es/' class="post_tag button button_translucent" title="es">
           ES
           <span class="button_tally">2</span>
@@ -598,11 +639,6 @@ sed 用法
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://www.geekgame.site/tags/docker/' class="post_tag button button_translucent" title="docker">
-          DOCKER
-          <span class="button_tally">1</span>
-        </a>
-        
         <a href='https://www.geekgame.site/tags/edgefs/' class="post_tag button button_translucent" title="edgefs">
           EDGEFS
           <span class="button_tally">1</span>
@@ -631,7 +667,7 @@ sed 用法
             </a>
             
             
-            <a href='https://www.geekgame.site/tags/docker/' class=" post_tag button button_translucent" data-position=1 title="docker">DOCKER<span class="button_tally">1</span>
+            <a href='https://www.geekgame.site/tags/docker/' class=" post_tag button button_translucent" data-position=2 title="docker">DOCKER<span class="button_tally">2</span>
             </a>
             
             
@@ -668,6 +704,10 @@ sed 用法
             
             
             <a href='https://www.geekgame.site/tags/informer/' class=" post_tag button button_translucent" data-position=1 title="informer">INFORMER<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/iptables/' class=" post_tag button button_translucent" data-position=1 title="iptables">IPTABLES<span class="button_tally">1</span>
             </a>
             
             
