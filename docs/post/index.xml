@@ -6,7 +6,28 @@
     <description>Recent content in Posts on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 13 Oct 2022 14:14:13 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Mar 2023 14:08:45 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>设备硬件信息获取</title>
+      <link>https://www.geekgame.site/post/linux/hardware/</link>
+      <pubDate>Tue, 07 Mar 2023 14:08:45 +0800</pubDate>
+      
+      <guid>https://www.geekgame.site/post/linux/hardware/</guid>
+      <description>
+        
+          
+            背景 有时我们需要基于设备的硬件信息来生成唯一的序列号，本文从物理机和容器两个角度描述获取硬件信息的几种方式。
+硬件信息 主要包括 cpu id, 主板序列号，
+CPU ID CPU ID指的是CPU标识，是指CPU芯片上存储的唯一标识符。CPU ID通常由CPU制造商提供，并包含了CPU型号、制造日期、频率和其他信息。 CPU ID通常由一段16字节的数据组成，其中包括了CPU的型号、制造商、核心频率等信息。CPU ID可以用于识别CPU型号，以及确定CPU的性能和特性，也可以用于验证CPU的真伪。
+主板序列号 主板序列号(board id)是一串唯一的数字和字母组合，用于标识计算机主板的身份和生产信息。每个主板都有一个唯一的序列号，类似于身份证号码或者汽车的车辆识别码（VIN）。主板序列号通常被存储在主板上的电子芯片中，并可以通过操作系统或者特定的软件程序来获取
+磁盘序列号 磁盘序列号是一个磁盘驱动器的唯一标识符。它是由硬盘制造商预先配置的，通常由一串数字或字母组成。
+宿主机下的获取方式 CPU ID 的获取方式 1[root ~]# dmidecode -t processor | grep ID 2	ID: E3 06 05 00 FF FB 8B 0F 3	ID: E3 06 05 00 FF FB 8B 0F 主板序列号 1[root ~]# dmidecode -t system | grep Serial 2	Serial Number: d0d39011-8a53-4046-a08b-aaca77b2e783 磁盘序列号 1[root ~]# lshw -class disk | grep serial 2 serial: ZA1CGDL0 注意： 虚拟硬盘是无法获取序列号的
+          
+          
+        
+      </description>
+    </item>
+    
     <item>
       <title>一文读懂iptables/netfilter附带实战</title>
       <link>https://www.geekgame.site/post/linux/iptables/</link>

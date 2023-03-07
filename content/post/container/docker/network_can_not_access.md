@@ -190,7 +190,7 @@ Jan 12 16:51:14 my-ti-johnkl06 kernel: TRACE: filter:INPUT:policy:1 IN=ppp0 OUT=
 
 ##  解决方案
 添加如下规则：  
-```shell
+```shell    
 # 当收到到达本机的报文时跳转到 DOCKER chain
 -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
 ```
