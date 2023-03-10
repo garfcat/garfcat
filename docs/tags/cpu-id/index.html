@@ -133,7 +133,7 @@
 </span>
     <span class="post_date">
       Mar 7, 2023</span>
-    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/cpu-id' title="cpu id" class="post_tag button button_translucent">cpu id
+    <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/cpu-id' title="cpu id" class="post_tag button button_translucent">cpu id
         </a><a href='https://www.geekgame.site/tags/%E4%B8%BB%E6%9D%BF%E5%BA%8F%E5%88%97%E5%8F%B7' title="主板序列号" class="post_tag button button_translucent">主板序列号
         </a>
     </span>
@@ -203,8 +203,8 @@
           
             <p>背景 有时我们需要基于设备的硬件信息来生成唯一的序列号，本文从物理机和容器两个角度描述获取硬件信息的几种方式。
 硬件信息 主要包括 cpu id, 主板序列号，
-CPU ID CPU ID指的是CPU标识，是指CPU芯片上存储的唯一标识符。CPU ID通常由CPU制造商提供，并包含了CPU型号、制造日期、频率和其他信息。 CPU ID通常由一段16字节的数据组成，其中包括了CPU的型号、制造商、核心频率等信息。CPU ID可以用于识别CPU型号，以及确定CPU的性能和特性，也可以用于验证CPU的真伪。
-主板序列号 主板序列号(board id)是一串唯一的数字和字母组合，用于标识计算机主板的身份和生产信息。每个主板都有一个唯一的序列 …</p>
+CPU ID 在2006年，Intel决定取消将唯一标识符（Unique Identifier，UID）分配给每个CPU的计划。在取消该计划后，没有任何一款Intel CPU具有可用的UID或类似的标识符。
+dmidecode -t processor | grep ID 命令获取的是处理器的ID号码，而不是CPU序列号。在过去，Intel的处理器ID号码与CPU序列号是相关的。但是，自从Intel取消了CPU序列号计划后，处理器ID号码已经成为处理器的唯一标识符。但是需要 …</p>
           
           <br>
           <a href="https://www.geekgame.site/post/linux/hardware/" title="阅读更多" class="excerpt_more button">阅读更多</a>
