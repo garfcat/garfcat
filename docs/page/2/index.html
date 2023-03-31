@@ -130,6 +130,136 @@
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
+        <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" title="NFS 通过 rook 进行部署">NFS 通过 rook 进行部署</a>
+      </h3>
+      
+  <div class="post_meta">
+    <span><svg class="icon">
+  <title>calendar</title>
+  <use xlink:href="#calendar"></use>
+</svg>
+</span>
+    <span class="post_date">
+      Sep 13, 2021</span>
+    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/nfs' title="NFS" class="post_tag button button_translucent">NFS
+        </a><a href='https://www.geekgame.site/tags/rook' title="rook" class="post_tag button button_translucent">rook
+        </a><a href='https://www.geekgame.site/tags/rook-nfs' title="rook-nfs" class="post_tag button button_translucent">rook-nfs
+        </a>
+    </span>
+  </div>
+
+    </div>
+    <div class="excerpt_footer partition">
+      <div class="excerpt_thumbnail">
+
+
+
+
+
+
+
+
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_thumbnail image_internal" src="https://www.geekgame.site/k8s/rook.png" alt="" loading="lazy" decoding="async" width="717" height="418"  />
+      
+
+    </picture>
+  </figure>
+
+
+      </div>
+      
+        <div class="pale">
+          
+            <p>NFS 介绍 NFS(Network File System)即网络文件系统, 是FreeBSD支持的文件系统中的一种。NFS是基于RPC(Remote Procedure Call)远程过程调用实现，其允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序就可以像访问本地文件一样访问远端系统上的文件。NFS是一个非常稳定的，可移植的网络文件系统。具备可扩展和高性能等特性，达到了企业级应用质量标准。由于网络速度的增加和延迟的降低，NFS系统一直是通过网络提供文件系统服务的有竞争力的选择。
+NFS 使用方式 已有NFS集群,例如公司QCE 申请的NFS集群, 在K8S中创建PVC和STorageClass , …</p>
+          
+          <br>
+          <a href="https://www.geekgame.site/post/k8s/storage/rook-nfs/" title="阅读更多" class="excerpt_more button">阅读更多</a>
+        </div>
+      </div>
+    </div>
+  </li>
+
+        <li class="post_item">
+  <div class="excerpt">
+    <div class="excerpt_header">
+      <h3 class="post_link">
         <a href="https://www.geekgame.site/post/k8s/serverless/knative/knative-%E5%85%A5%E9%97%A8/" title="knative入门">knative入门</a>
       </h3>
       
@@ -454,40 +584,6 @@ t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继 �
     </div>
   </li>
 
-        <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://www.geekgame.site/post/protocol/tcp_1/" title="TCP timewait 过多怎么办">TCP timewait 过多怎么办</a>
-      </h3>
-      
-  <div class="post_meta">
-    <span><svg class="icon">
-  <title>calendar</title>
-  <use xlink:href="#calendar"></use>
-</svg>
-</span>
-    <span class="post_date">
-      May 7, 2020</span>
-    <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/tcp' title="tcp" class="post_tag button button_translucent">tcp
-        </a>
-    </span>
-  </div>
-
-    </div>
-      <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
-TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; --&gt; SYN-RECEIVED 6 7 3. ESTABLISHED &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=SYN,ACK&gt; &lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&gt; …</p>
-          
-          <br>
-          <a href="https://www.geekgame.site/post/protocol/tcp_1/" title="阅读更多" class="excerpt_more button">阅读更多</a>
-        </div>
-      </div>
-    </div>
-  </li>
-
       <li>
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -531,6 +627,9 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
     <h2 class="mt-4">精选文章</h2>
     <ul>
       <li>
+        <a href="https://www.geekgame.site/post/language/golang/error/" class="nav-link" title="Golang 错误处理最佳实践">Golang 错误处理最佳实践</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/linux/hardware/" class="nav-link" title="设备硬件信息获取">设备硬件信息获取</a>
       </li>
       <li>
@@ -550,14 +649,14 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
       </li>
     </ul>
     <h2 class="mt-4">最新文章</h2>
     <ul class="flex-column">
       <li>
+        <a href="https://www.geekgame.site/post/language/golang/error/" class="nav-link" title="Golang 错误处理最佳实践">Golang 错误处理最佳实践</a>
+      </li>
+      <li>
         <a href="https://www.geekgame.site/post/linux/hardware/" class="nav-link" title="设备硬件信息获取">设备硬件信息获取</a>
       </li>
       <li>
@@ -577,9 +676,6 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
       </li>
       <li>
         <a href="https://www.geekgame.site/post/k8s/informer/" class="nav-link" title="Kubernetes Informer 机制">Kubernetes Informer 机制</a>
-      </li>
-      <li>
-        <a href="https://www.geekgame.site/post/k8s/karmada/scheduler/" class="nav-link" title="Karmada Scheduler核心实现">Karmada Scheduler核心实现</a>
       </li>
     </ul>
     <div>
@@ -622,6 +718,11 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
         
         <a href='https://www.geekgame.site/categories/container/' class="post_tag button button_translucent" title="container">
           CONTAINER
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://www.geekgame.site/categories/golang/' class="post_tag button button_translucent" title="golang">
+          GOLANG
           <span class="button_tally">1</span>
         </a>
         
@@ -800,6 +901,10 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
             </a>
             
             
+            <a href='https://www.geekgame.site/tags/error/' class=" post_tag button button_translucent" data-position=1 title="error">ERROR<span class="button_tally">1</span>
+            </a>
+            
+            
             <a href='https://www.geekgame.site/tags/es/' class=" post_tag button button_translucent" data-position=2 title="es">ES<span class="button_tally">2</span>
             </a>
             
@@ -929,6 +1034,10 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
             
             
             <a href='https://www.geekgame.site/tags/transaction/' class=" post_tag button button_translucent" data-position=1 title="transaction">TRANSACTION<span class="button_tally">1</span>
+            </a>
+            
+            
+            <a href='https://www.geekgame.site/tags/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/' class=" post_tag button button_translucent" data-position=1 title="错误处理最佳实践">错误处理最佳实践<span class="button_tally">1</span>
             </a>
             
             
