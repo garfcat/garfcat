@@ -172,22 +172,71 @@
 
 
 
-<div class="notices warning image-warning">
-  <div class="label">Image not found</div>
-    <style>
-      a.warning-link {
-        color: inherit !important;
-        font-weight: inherit !important;
-        text-decoration: underline !important;
-        border-bottom: none !important; }
-    </style>
-    <p>网站链接: <a href='https://www.geekgame.site/images/path/file.jpg' title='在新选项卡中打开此网站链接' target='_blank' class='warning-link'>https://www.geekgame.site/images/path/file.jpg</a></p>
-    <p>链接到文件: static/images/path/file.jpg</p>
-    <p>使用 <a href='https://gohugo.io/content-management/page-bundles/' title='相关信息 Hugo Page Bundles' target='_blank' class='warning-link'>Page Bundles</a>: false</p>
-</div>
+<figure>
+    <picture>
+
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        
+
+        <img class="image_figure image_featured image_internal" src="https://www.geekgame.site/images/cat.png" alt="" loading="lazy" decoding="async" width="1350" height="756"  />
+      
+
+    </picture>
+  </figure>
 
 
       </div>
+    <div class="post_toc">
+      <h2>文章目录</h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#我们应该定义哪些错误">我们应该定义哪些错误</a></li>
+    <li><a href="#基础设施层错误处理">基础设施层错误处理</a></li>
+    <li><a href="#业务层错误定义">业务层错误定义</a></li>
+    <li><a href="#接口层错误定义">接口层错误定义</a></li>
+    <li><a href="#错误处理最佳实践">错误处理最佳实践</a></li>
+  </ul>
+</nav>
+    </div>
+    
     <div class="post_body"><p>在程序开发中，错误处理是一个必不可少的环节。正确处理错误可以提高程序的稳定性、可靠性和安全性，同时提高用户体验，避免数据丢失和程序崩溃等问题。而在 Golang 开发中，错误处理是一个非常重要的主题，因为 Golang 本身就是一门以错误处理为基础的语言。在本文中，我们将探讨 Golang 中的错误处理机制，包括如何定义错误、如何处理错误、以及如何在不同层级之间转换错误。我们将以实例为基础，介绍 Golang 中错误处理的最佳实践，帮助读者更好地理解和应用 Golang 中的错误处理机制。</p>
 <h2 id="我们应该定义哪些错误">我们应该定义哪些错误</h2>
 <p>在定义错误时，可以按照不同的层次进行划分，主要是根据错误的发生位置和类型来划分，以便更好地处理和维护错误。<br>
