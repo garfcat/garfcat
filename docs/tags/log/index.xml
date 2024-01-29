@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>log on 有趣</title>
+    <link>https://www.geekgame.site/tags/log/</link>
+    <description>Recent content in log on 有趣</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Mon, 29 Jan 2024 14:20:46 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/log/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker 容器日志过大问题</title>
+      <link>https://www.geekgame.site/post/container/docker/log/</link>
+      <pubDate>Mon, 29 Jan 2024 14:20:46 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/container/docker/log/</guid>
+      <description>docker 日志文件存放哪些日志 Docker容器的标准输出（stdout）和标准错误输出（stderr）被发送到容器的日志驱动程序，这些日志可以通过 docker logs 命令来访问。默认情况下，Docker将这些日志存储在宿主机上的 /var/lib/docker/containers// 目录中，每个容器都有一个单独的目录。&#xA;如何清理 docker 日志文件 清理Docker日志文件的方法通常包括手动清理以及使用工具自动清理；&#xA;业务控制 减少业务的输出，可以控制日志量，但这并不是一个好的方法。&#xA;临时清理 可以通过以下命令临时清理，但这只是临时的方法，不能根治。&#xA;1logs=$(find /var/lib/docker/containers/ -name *-json.log*) ; for log in $logs ; do echo &amp;#34;clean logs : $log&amp;#34; ; cat /dev/null &amp;gt; $log ; done Docker日志驱动配置 使用Docker的日志驱动配置选项来限制日志文件大小和保留时间。你可以在运行容器时使用 --log-opt 选项来配置日志的最大大小和保留时间，从而使Docker自动清理过期的日志。 关于日志驱动配置可以分为以下两个方法：&#xA;启动容器时进行设置 1# max-size 最大数值 2# max-file 最大日志数 3$ docker run -it --log-opt max-size=10m --log-opt max-file=3 nginx 通过daemon.json 全局修改 1{ 2 &amp;#34;log-driver&amp;#34;:&amp;#34;json-file&amp;#34;, 3 &amp;#34;log-opts&amp;#34;:{ 4 &amp;#34;max-size&amp;#34; :&amp;#34;50m&amp;#34;,&amp;#34;max-file&amp;#34;:&amp;#34;1&amp;#34; 5 } 6} 这个需要重启docker .</description>
+    </item>
+  </channel>
+</rss>
