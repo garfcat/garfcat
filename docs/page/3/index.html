@@ -43,12 +43,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
-    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.20bab8c7c9064e3dbdb2a3b3c29465307f9cd45009d5234a2d08311347b7c73cc5e597ae9178059b869a67961cba1547fb7359029d893c51e585864f1f223de6.js" as="script" integrity=
+    "sha512-ILq4x8kGTj29sqOzwpRlMH&#43;c1FAJ1SNKLQgxE0e3xzzF5ZeukXgFm4aaZ5YcuhVH&#43;3NZAp2JPFHlhYZPHyI95g==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
@@ -61,14 +61,10 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
-  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg>
-<svg class="icon">
-  <title>closeme</title>
+</svg><svg class="icon">
   <use xlink:href="#closeme"></use>
-</svg>
-</div>
+</svg></div>
   </div>
 </a>
 
@@ -124,9 +120,8 @@
   
 
 <div class="grid-inverse wrap content">
-  <div>
-    <ul class="posts" id="posts">
-        <li class="post_item">
+  <ul class="posts" id="posts">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -135,10 +130,8 @@
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       Sep 27, 2020</span>
     <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
@@ -150,21 +143,22 @@
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
+        <div>
+          <p class="pale">
+            
+              单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
 功能测试（Test） 性能测试（Benchmark） 示例测试（Example） 测试文件名称一般是源代码文件加上 &quot;_test.go&quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
 在展开单元测试之前先讲下,testing包中的输出函数：
-t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继 …</p>
-          
-          <br>
+t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继 …
+            
+          </p>
           <a href="https://www.geekgame.site/post/language/golang/test/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -173,10 +167,8 @@ t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继 �
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       May 7, 2020</span>
     <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/tcp' title="tcp" class="post_tag button button_translucent">tcp
@@ -186,19 +178,20 @@ t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继 �
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
-TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; --&gt; SYN-RECEIVED 6 7 3. ESTABLISHED &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=SYN,ACK&gt; &lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&gt; …</p>
-          
-          <br>
+        <div>
+          <p class="pale">
+            
+              要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
+TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; --&gt; SYN-RECEIVED 6 7 3. ESTABLISHED &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=SYN,ACK&gt; &lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&gt; …
+            
+          </p>
           <a href="https://www.geekgame.site/post/protocol/tcp_1/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -207,10 +200,8 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       Oct 31, 2019</span>
     <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/kubernetes' title="kubernetes" class="post_tag button button_translucent">kubernetes
@@ -221,19 +212,20 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：
-可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。 Kubernetes …</p>
-          
-          <br>
+        <div>
+          <p class="pale">
+            
+              什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：
+可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。 Kubernetes …
+            
+          </p>
           <a href="https://www.geekgame.site/post/k8s/k8s/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -242,10 +234,8 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       Aug 11, 2019</span>
     <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
@@ -256,20 +246,21 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
+        <div>
+          <p class="pale">
+            
+              Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。
 GMP调度模型 Go采用的是GMP调度模型。
-核心概念 G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示： 1 go func() //创建协程来执行函数 M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通 …</p>
-          
-          <br>
+核心概念 G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示： 1 go func() //创建协程来执行函数 M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通 …
+            
+          </p>
           <a href="https://www.geekgame.site/post/language/golang/sched/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -278,10 +269,8 @@ GMP调度模型 Go采用的是GMP调度模型。
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       Jun 20, 2019</span>
     <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
@@ -292,19 +281,20 @@ GMP调度模型 Go采用的是GMP调度模型。
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
-找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&#34;fmt&#34; 5) 6 7func main() { 8	fmt.Println(&#34;hello world&#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6 …</p>
-          
-          <br>
+        <div>
+          <p class="pale">
+            
+              知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；
+找到启动点 1. 写一个hello world. 1package main 2 3import ( 4	&#34;fmt&#34; 5) 6 7func main() { 8	fmt.Println(&#34;hello world&#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4	Entry point: 0x1052720 5	0x0000000001001000 - 0x0000000001093074 is .text 6 …
+            
+          </p>
           <a href="https://www.geekgame.site/post/language/golang/start/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -313,10 +303,8 @@ GMP调度模型 Go采用的是GMP调度模型。
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       Jun 15, 2019</span>
     <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
@@ -327,23 +315,24 @@ GMP调度模型 Go采用的是GMP调度模型。
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>程序组成 程序由代码和数据组成，数据又有静态与动态之分；
+        <div>
+          <p class="pale">
+            
+              程序组成 程序由代码和数据组成，数据又有静态与动态之分；
 动态数据：存放在堆区和栈区；
 静态数据：静态只读数据可以放在代码区，也可以放在特定的只读数据区；
 可读写的已初始化的静态数据放在数据区，可读写的未初始化的静态数据放在bss区；
 寄存器 伪寄存器 FP(Frame pointer): 表示参数以及返回值的基地址； 通过 SYMBOL+/-ffset(FP) PC(Program counter): 跳转寄存器，存储下一条指令地址； SB(Static base pointer): 全局静态起始地址. SP(Stack pointer): 表示本地变量的起始地址；
-使用方式 symbol + offset(SP), 例如第一个变 …</p>
-          
-          <br>
+使用方式 symbol + offset(SP), 例如第一个变 …
+            
+          </p>
           <a href="https://www.geekgame.site/post/language/golang/plan9/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -352,10 +341,8 @@ GMP调度模型 Go采用的是GMP调度模型。
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       May 30, 2019</span>
     <span class="post_time"> · 2 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/go' title="go" class="post_tag button button_translucent">go
@@ -366,22 +353,23 @@ GMP调度模型 Go采用的是GMP调度模型。
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
+        <div>
+          <p class="pale">
+            
+              Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
 需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
 本文会介绍Go module的一些基本用法；
 常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令 常见命令 go mod 提供了以下命令
-download: 下载依赖包 …</p>
-          
-          <br>
+download: 下载依赖包 …
+            
+          </p>
           <a href="https://www.geekgame.site/post/language/golang/module/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -390,10 +378,8 @@ download: 下载依赖包 …</p>
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       May 16, 2019</span>
     <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/effective' title="effective" class="post_tag button button_translucent">effective
@@ -404,19 +390,20 @@ download: 下载依赖包 …</p>
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
-oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间； 命令 hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &gt;&gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里 </p>
-          
-          <br>
+        <div>
+          <p class="pale">
+            
+              shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
+oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间； 命令 hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &gt;&gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里 
+            
+          </p>
           <a href="https://www.geekgame.site/post/shell/effective_shell/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -425,10 +412,8 @@ oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，�
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       May 15, 2019</span>
     <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/mqtt' title="mqtt" class="post_tag button button_translucent">mqtt
@@ -438,19 +423,20 @@ oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，�
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
+        <div>
+          <p class="pale">
+            
+              <p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
 低开销、低带宽，在lot上应用较为广泛。</p>
-          
-          <br>
+            
+          </p>
           <a href="https://www.geekgame.site/post/protocol/mqtt/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -459,10 +445,8 @@ oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，�
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       May 13, 2019</span>
     <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/sed' title="sed" class="post_tag button button_translucent">sed
@@ -474,22 +458,23 @@ oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，�
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
+        <div>
+          <p class="pale">
+            
+              mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
 1$sed -i &#39;s/xxxx/yyy/g&#39; test 2sed: 1: &#34;test&#34;: extra characters at the end of p command 解决方法
 1sed -i &#34;&#34; &#34;s/XX/YY/g&#34; test ============================================
 sed 用法
-1sed: illegal option -- - 2usage: sed script [-Ealn] [-i …</p>
-          
-          <br>
+1sed: illegal option -- - 2usage: sed script [-Ealn] [-i …
+            
+          </p>
           <a href="https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-      <li>
+    <li>
     <ul class="pagination pagination-default">
       <li class="page-item">
         <a href="/" aria-label="First" class="page-link" role="button"><span aria-hidden="true">&laquo;&laquo;</span></a>
@@ -513,21 +498,15 @@ sed 用法
         <a aria-disabled="true" aria-label="Last" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul>
-      </li>
-    </ul>
-  </div>
+    </li>
+  </ul>
 <aside class="sidebar">
   <section class="sidebar_inner">
-    <br>
-    
-
         <h2>Garfcat</h2>
       <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
-
-    
     
     <h2 class="mt-4">精选文章</h2>
     <ul>
@@ -1082,7 +1061,7 @@ sed 用法
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -1107,9 +1086,6 @@ sed 用法
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
-    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
-  </symbol>
 </svg>
 
 
@@ -1118,16 +1094,14 @@ sed 用法
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <title>to-top</title>
-  <use xlink:href="#to-top"></use>
+  <use xlink:href="#arrow"></use>
 </svg>
-
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.20bab8c7c9064e3dbdb2a3b3c29465307f9cd45009d5234a2d08311347b7c73cc5e597ae9178059b869a67961cba1547fb7359029d893c51e585864f1f223de6.js" integrity="sha512-ILq4x8kGTj29sqOzwpRlMH&#43;c1FAJ1SNKLQgxE0e3xzzF5ZeukXgFm4aaZ5YcuhVH&#43;3NZAp2JPFHlhYZPHyI95g==" crossorigin="anonymous"></script>
     
   </body>
 </html>

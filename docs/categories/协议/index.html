@@ -37,12 +37,12 @@
 
     
     
-    <link rel="preload" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity = "sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" as="script" integrity=
-    "sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://www.geekgame.site/js/bundle.min.20bab8c7c9064e3dbdb2a3b3c29465307f9cd45009d5234a2d08311347b7c73cc5e597ae9178059b869a67961cba1547fb7359029d893c51e585864f1f223de6.js" as="script" integrity=
+    "sha512-ILq4x8kGTj29sqOzwpRlMH&#43;c1FAJ1SNKLQgxE0e3xzzF5ZeukXgFm4aaZ5YcuhVH&#43;3NZAp2JPFHlhYZPHyI95g==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.54eab6953ed04c3ee282968d1e1b85fed84d551aee762f927a0860811bc873413381a397ea6b9db08a0966e77b1ecf467680006010b3e82c4ba7efa8fec6656b.css" integrity="sha512-VOq2lT7QTD7igpaNHhuF/thNVRrudi&#43;SeghggRvIc0EzgaOX6mudsIoJZud7Hs9GdoAAYBCz6CxLp&#43;&#43;o/sZlaw==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.geekgame.site/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
@@ -55,14 +55,10 @@
   <nav class="nav"><a href='https://www.geekgame.site/' class="nav_brand nav_item" title="有趣">有趣
   <div class="nav_close">
     <div><svg class="icon">
-  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg>
-<svg class="icon">
-  <title>closeme</title>
+</svg><svg class="icon">
   <use xlink:href="#closeme"></use>
-</svg>
-</div>
+</svg></div>
   </div>
 </a>
 
@@ -116,9 +112,8 @@
     <main>
 
 <div class="grid-inverse wrap content">
-  <div>
-    <ul class="posts" id="posts">
-        <li class="post_item">
+  <ul class="posts" id="posts">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -127,10 +122,8 @@
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       May 7, 2020</span>
     <span class="post_time"> · 3 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/tcp' title="tcp" class="post_tag button button_translucent">tcp
@@ -140,19 +133,20 @@
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
-TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; --&gt; SYN-RECEIVED 6 7 3. ESTABLISHED &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=SYN,ACK&gt; &lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&gt; …</p>
-          
-          <br>
+        <div>
+          <p class="pale">
+            
+              要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；
+TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&gt; &lt;SEQ=100&gt;&lt;CTL=SYN&gt; --&gt; SYN-RECEIVED 6 7 3. ESTABLISHED &lt;-- &lt;SEQ=300&gt;&lt;ACK=101&gt;&lt;CTL=SYN,ACK&gt; &lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&gt; …
+            
+          </p>
           <a href="https://www.geekgame.site/post/protocol/tcp_1/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-        <li class="post_item">
+      <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -161,10 +155,8 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
       
   <div class="post_meta">
     <span><svg class="icon">
-  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg>
-</span>
+</svg></span>
     <span class="post_date">
       May 15, 2019</span>
     <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://www.geekgame.site/tags/mqtt' title="mqtt" class="post_tag button button_translucent">mqtt
@@ -174,34 +166,29 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
 
     </div>
       <div class="excerpt_footer">
-        <div class="pale">
-          
-            <p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
+        <div>
+          <p class="pale">
+            
+              <p>MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
 低开销、低带宽，在lot上应用较为广泛。</p>
-          
-          <br>
+            
+          </p>
           <a href="https://www.geekgame.site/post/protocol/mqtt/" title="阅读更多" class="excerpt_more button">阅读更多</a>
         </div>
       </div>
     </div>
   </li>
 
-      <li>
-      </li>
-    </ul>
-  </div>
+    <li>
+    </li>
+  </ul>
 <aside class="sidebar">
   <section class="sidebar_inner">
-    <br>
-    
-
         <h2>Garfcat</h2>
       <div class="author_bio">
         live and learn.
       </div>
       <a href='https://www.geekgame.site/about/' class="button mt-1" role="button" title='阅读更多'>阅读更多</a>
-
-    
     
     <h2 class="mt-4">精选文章</h2>
     <ul>
@@ -756,7 +743,7 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -781,9 +768,6 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
-    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
-  </symbol>
 </svg>
 
 
@@ -792,16 +776,14 @@ TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 
     <img src='https://www.geekgame.site/icons/copy.svg' class="icon icon_2 transparent" alt="有趣">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;有趣. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <title>to-top</title>
-  <use xlink:href="#to-top"></use>
+  <use xlink:href="#arrow"></use>
 </svg>
-
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://www.geekgame.site/zh/js/bundle.19668860ea177cfe8cad686c7464b57e39acde1a4c33f6a1a8c57f7ab127ac39e8330b38e7184422cf0e9351ef3efaf75d122eca818d38a929941b8a5c04b09e.js" integrity="sha512-GWaIYOoXfP6MrWhsdGS1fjms3hpMM/ahqMV/erEnrDnoMws45xhEIs8Ok1HvPvr3XRIuyoGNOKkplBuKXASwng==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.geekgame.site/js/bundle.min.20bab8c7c9064e3dbdb2a3b3c29465307f9cd45009d5234a2d08311347b7c73cc5e597ae9178059b869a67961cba1547fb7359029d893c51e585864f1f223de6.js" integrity="sha512-ILq4x8kGTj29sqOzwpRlMH&#43;c1FAJ1SNKLQgxE0e3xzzF5ZeukXgFm4aaZ5YcuhVH&#43;3NZAp2JPFHlhYZPHyI95g==" crossorigin="anonymous"></script>
     
   </body>
 </html>
