@@ -5,24 +5,16 @@
     <link>https://www.geekgame.site/tags/effective/</link>
     <description>Recent content in effective on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/effective/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 May 2019 19:34:57 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/effective/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>高效shell</title>
       <link>https://www.geekgame.site/post/shell/effective_shell/</link>
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/shell/effective_shell/</guid>
-      <description>
-        
-          
-            shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。
-oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间； 命令 hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里 
-          
-          
-        
-      </description>
+      <description>shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。&#xA;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间； 命令 hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里 </description>
     </item>
-    
   </channel>
 </rss>

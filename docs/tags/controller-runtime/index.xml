@@ -5,26 +5,16 @@
     <link>https://www.geekgame.site/tags/controller-runtime/</link>
     <description>Recent content in controller runtime on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 17 Jun 2021 13:40:20 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/controller-runtime/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Jun 2021 13:40:20 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/controller-runtime/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes Controller runtime 详解</title>
       <link>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</link>
       <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
-      <description>
-        
-          
-            controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
-概念 CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
-下面例子是定义了一个crontab 的自定义资源:
-1 apiVersion: apiextensions.k8s.io/v1 2 kind: CustomResourceDefinition 3 metadata: 4 # 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39; 5 name: crontabs.stable.example.com 6 spec: 7 # 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt; 8 group: stable.example.com 9 # 列举此 CustomResourceDefinition 所支持的版本 10 versions: 11 - name: v1 12 # 每个版本都可以通过 served 标志来独立启用或禁止 13 served: true 14 # 其中一个且只有一个版本必需被标记为存储版本 15 storage: true 16 schema: 17 openAPIV3Schema: 18 type: object 19 properties: 20 spec: 21 type: object 22 properties: 23 cronSpec: 24 type: string 25 image: 26 type: string 27 replicas: 28 type: integer 29 # 可以是 Namespaced 或 Cluster 30 scope: Namespaced 31 names: 32 # 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt; 33 plural: crontabs 34 # 名称的单数形式，作为命令行使用时和显示时的别名 35 singular: crontab 36 # kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。 37 kind: CronTab 38 # shortNames 允许你在命令行使用较短的字符串来匹配资源 39 shortNames: 40 - ct GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写
-          
-          
-        
-      </description>
+      <description>controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。&#xA;概念 CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。&#xA;下面例子是定义了一个crontab 的自定义资源:&#xA;1 apiVersion: apiextensions.k8s.io/v1 2 kind: CustomResourceDefinition 3 metadata: 4 # 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39; 5 name: crontabs.stable.example.com 6 spec: 7 # 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt; 8 group: stable.example.com 9 # 列举此 CustomResourceDefinition 所支持的版本 10 versions: 11 - name: v1 12 # 每个版本都可以通过 served 标志来独立启用或禁止 13 served: true 14 # 其中一个且只有一个版本必需被标记为存储版本 15 storage: true 16 schema: 17 openAPIV3Schema: 18 type: object 19 properties: 20 spec: 21 type: object 22 properties: 23 cronSpec: 24 type: string 25 image: 26 type: string 27 replicas: 28 type: integer 29 # 可以是 Namespaced 或 Cluster 30 scope: Namespaced 31 names: 32 # 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt; 33 plural: crontabs 34 # 名称的单数形式，作为命令行使用时和显示时的别名 35 singular: crontab 36 # kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。 37 kind: CronTab 38 # shortNames 允许你在命令行使用较短的字符串来匹配资源 39 shortNames: 40 - ct GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写</description>
     </item>
-    
   </channel>
 </rss>

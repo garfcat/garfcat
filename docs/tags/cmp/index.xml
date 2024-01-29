@@ -5,29 +5,16 @@
     <link>https://www.geekgame.site/tags/cmp/</link>
     <description>Recent content in cmp on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 15 Oct 2021 11:47:48 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/cmp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Oct 2021 11:47:48 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/cmp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Karmada Scheduler核心实现</title>
       <link>https://www.geekgame.site/post/k8s/karmada/scheduler/</link>
       <pubDate>Fri, 15 Oct 2021 11:47:48 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/karmada/scheduler/</guid>
-      <description>
-        
-          
-            Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。
-注意： 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1
-调度框架 karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；
-policyInformer/clusterPolicyInformer 是用来监听 policy/clusterPolicy 的Update事件，将关联的 binding/clusterBinding 添加到调度队列；
-memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。
-调度队列： 存储了待处理的 binding/clusterBinding 事件，使用的是先进先出队列。 调度缓存： 缓存了 cluster 的信息。 需要根据 binding/clusterBinding 当前状态决定下一步如何处理，共有如下几个状态，以 binding 为例:
-首次调度(FirstSchedule): resourceBinding 对象中的 spec.Clusters 字段为空，即从未被调度过。 调协调度(ReconcileSchedule)： policy 的 placement 发生变化时就需要进行调协调度。 扩缩容调度(ScaleSchedule): policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。 故障恢复调度(FailoverSchedule): 调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。 无需调度(AvoidSchedule): 默认行为，上面四个调度都未执行，则不进行任何调度。 首次调度（FirstSchedule） 主要通过 scheduleOne 函数来实现，分为以下几个步骤：
-          
-          
-        
-      </description>
+      <description>Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。&#xA;注意： 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1&#xA;调度框架 karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；&#xA;policyInformer/clusterPolicyInformer 是用来监听 policy/clusterPolicy 的Update事件，将关联的 binding/clusterBinding 添加到调度队列；&#xA;memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&#xA;调度队列： 存储了待处理的 binding/clusterBinding 事件，使用的是先进先出队列。 调度缓存： 缓存了 cluster 的信息。 需要根据 binding/clusterBinding 当前状态决定下一步如何处理，共有如下几个状态，以 binding 为例:&#xA;首次调度(FirstSchedule): resourceBinding 对象中的 spec.Clusters 字段为空，即从未被调度过。 调协调度(ReconcileSchedule)： policy 的 placement 发生变化时就需要进行调协调度。 扩缩容调度(ScaleSchedule): policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。 故障恢复调度(FailoverSchedule): 调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。 无需调度(AvoidSchedule): 默认行为，上面四个调度都未执行，则不进行任何调度。 首次调度（FirstSchedule） 主要通过 scheduleOne 函数来实现，分为以下几个步骤：</description>
     </item>
-    
   </channel>
 </rss>

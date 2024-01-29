@@ -5,27 +5,16 @@
     <link>https://www.geekgame.site/tags/mac/</link>
     <description>Recent content in mac on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 13 May 2019 12:36:43 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/mac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mac  sed 报错</title>
       <link>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
-      <description>
-        
-          
-            mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误
-1$sed -i &amp;#39;s/xxxx/yyy/g&amp;#39; test 2sed: 1: &amp;#34;test&amp;#34;: extra characters at the end of p command 解决方法
-1sed -i &amp;#34;&amp;#34; &amp;#34;s/XX/YY/g&amp;#34; test ============================================
-sed 用法
-1sed: illegal option -- - 2usage: sed script [-Ealn] [-i extension] [file ...] 3 sed [-Ealn] [-i extension] [-e script] ... [-f script_file] ... [file ...] 4 5 6-i 后边需要添加备份文件的后缀名,如果不需要可以使用&amp;#34;&amp;#34;,但是不可以忽略 7 8如 sed -i &amp;#34;.bak&amp;#34; &amp;#39;s/xxxx/yyy/g&amp;#39; test 会将替换后的文本写入test.bak 
-          
-          
-        
-      </description>
+      <description>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误&#xA;1$sed -i &amp;#39;s/xxxx/yyy/g&amp;#39; test 2sed: 1: &amp;#34;test&amp;#34;: extra characters at the end of p command 解决方法&#xA;1sed -i &amp;#34;&amp;#34; &amp;#34;s/XX/YY/g&amp;#34; test ============================================&#xA;sed 用法&#xA;1sed: illegal option -- - 2usage: sed script [-Ealn] [-i extension] [file ...] 3 sed [-Ealn] [-i extension] [-e script] ... [-f script_file] ... [file ...] 4 5 6-i 后边需要添加备份文件的后缀名,如果不需要可以使用&amp;#34;&amp;#34;,但是不可以忽略 7 8如 sed -i &amp;#34;.bak&amp;#34; &amp;#39;s/xxxx/yyy/g&amp;#39; test 会将替换后的文本写入test.bak </description>
     </item>
-    
   </channel>
 </rss>

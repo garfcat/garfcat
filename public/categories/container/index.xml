@@ -5,31 +5,16 @@
     <link>https://www.geekgame.site/categories/container/</link>
     <description>Recent content in container on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 13 Jan 2022 13:44:25 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/categories/container/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 13 Jan 2022 13:44:25 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/categories/container/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DOCKER 容器访问不通问题定位</title>
       <link>https://www.geekgame.site/post/container/docker/network_can_not_access/</link>
       <pubDate>Thu, 13 Jan 2022 13:44:25 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/container/docker/network_can_not_access/</guid>
-      <description>
-        
-          
-            现象 最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。
-分析 要定位该问题首先要确认以下几个事情：
-1. 服务是否正常启动
-2. 确认容器的网络模式
-3. 容器如何与外面的节点通讯
-4. 数据包在设备上实际流转
-定位过程 确认服务是否正常 查看容器运行是否正常: 1 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3cfde73945bf6 ***:1.0.7 &amp;#34;/bin/sh -c /opt/boo…&amp;#34; 27 hours ago Up 27 hours 0.0.0.0:7788-&amp;gt;7788/tcp *** 4 查看服务运行是否正常: 1[root@my-ti-johnkl06 ~]# curl 172.17.0.2:7788 2hello world 由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。
-确认容器的网络模式 通过命令 docker inspect &amp;lt;container_id&amp;gt; -f &amp;quot;{{json .NetworkSettings.Networks }}&amp;quot; 来查看容器的网络模式。
-1[root@my-ti-johnkl06 ~]# docker inspect cfde73945bf6 -f &amp;#34;{{json .NetworkSettings.Networks }}&amp;#34; 2{&amp;#34;bridge&amp;#34;:{&amp;#34;IPAMConfig&amp;#34;:null,&amp;#34;Links&amp;#34;:null,&amp;#34;Aliases&amp;#34;:null,&amp;#34;NetworkID&amp;#34;:&amp;#34;c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327&amp;#34;,&amp;#34;EndpointID&amp;#34;:&amp;#34;6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d&amp;#34;,&amp;#34;Gateway&amp;#34;:&amp;#34;172.17.0.1&amp;#34;,&amp;#34;IPAddress&amp;#34;:&amp;#34;172.17.0.2&amp;#34;,&amp;#34;IPPrefixLen&amp;#34;:16,&amp;#34;IPv6Gateway&amp;#34;:&amp;#34;&amp;#34;,&amp;#34;GlobalIPv6Address&amp;#34;:&amp;#34;&amp;#34;,&amp;#34;GlobalIPv6PrefixLen&amp;#34;:0,&amp;#34;MacAddress&amp;#34;:&amp;#34;02:42:ac:11:00:02&amp;#34;,&amp;#34;DriverOpts&amp;#34;:null}} 由上可以得出 容器网络模式是 bridge。
-          
-          
-        
-      </description>
+      <description>现象 最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。&#xA;分析 要定位该问题首先要确认以下几个事情：&#xA;1. 服务是否正常启动&#xA;2. 确认容器的网络模式&#xA;3. 容器如何与外面的节点通讯&#xA;4. 数据包在设备上实际流转&#xA;定位过程 确认服务是否正常 查看容器运行是否正常: 1 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3cfde73945bf6 ***:1.0.7 &amp;#34;/bin/sh -c /opt/boo…&amp;#34; 27 hours ago Up 27 hours 0.0.0.0:7788-&amp;gt;7788/tcp *** 4 查看服务运行是否正常: 1[root@my-ti-johnkl06 ~]# curl 172.17.0.2:7788 2hello world 由以上可以得出 容器运行正常，服务运行正常并且在宿主机上可以访问。&#xA;确认容器的网络模式 通过命令 docker inspect &amp;lt;container_id&amp;gt; -f &amp;quot;{{json .NetworkSettings.Networks }}&amp;quot; 来查看容器的网络模式。&#xA;1[root@my-ti-johnkl06 ~]# docker inspect cfde73945bf6 -f &amp;#34;{{json .NetworkSettings.Networks }}&amp;#34; 2{&amp;#34;bridge&amp;#34;:{&amp;#34;IPAMConfig&amp;#34;:null,&amp;#34;Links&amp;#34;:null,&amp;#34;Aliases&amp;#34;:null,&amp;#34;NetworkID&amp;#34;:&amp;#34;c52c24b417d9787fd1bf01d409dda7ecef2f519553f719eabe062a0a8132c327&amp;#34;,&amp;#34;EndpointID&amp;#34;:&amp;#34;6e65d42c44e553c953ca763ad5c1e4046374993bdf263358e10d45bdef891d8d&amp;#34;,&amp;#34;Gateway&amp;#34;:&amp;#34;172.17.0.1&amp;#34;,&amp;#34;IPAddress&amp;#34;:&amp;#34;172.17.0.2&amp;#34;,&amp;#34;IPPrefixLen&amp;#34;:16,&amp;#34;IPv6Gateway&amp;#34;:&amp;#34;&amp;#34;,&amp;#34;GlobalIPv6Address&amp;#34;:&amp;#34;&amp;#34;,&amp;#34;GlobalIPv6PrefixLen&amp;#34;:0,&amp;#34;MacAddress&amp;#34;:&amp;#34;02:42:ac:11:00:02&amp;#34;,&amp;#34;DriverOpts&amp;#34;:null}} 由上可以得出 容器网络模式是 bridge。</description>
     </item>
-    
   </channel>
 </rss>

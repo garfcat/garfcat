@@ -5,24 +5,16 @@
     <link>https://www.geekgame.site/tags/mqtt/</link>
     <description>Recent content in mqtt on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 15 May 2019 13:24:24 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/mqtt/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 May 2019 13:24:24 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/mqtt/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MQTT 基本概念</title>
       <link>https://www.geekgame.site/post/protocol/mqtt/</link>
       <pubDate>Wed, 15 May 2019 13:24:24 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/protocol/mqtt/</guid>
-      <description>
-        
-          
-            &lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是
-低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;
-          
-          
-        
-      </description>
+      <description>&lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是&#xA;低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

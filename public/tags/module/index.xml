@@ -5,30 +5,16 @@
     <link>https://www.geekgame.site/tags/module/</link>
     <description>Recent content in module on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/module/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 May 2019 17:12:47 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/module/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>golang module 使用教程</title>
       <link>https://www.geekgame.site/post/language/golang/module/</link>
       <pubDate>Thu, 30 May 2019 17:12:47 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/language/golang/module/</guid>
-      <description>
-        
-          
-            Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。
-需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。
-本文会介绍Go module的一些基本用法；
-常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令 常见命令 go mod 提供了以下命令
-download: 下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享; edit : 编辑go.mod; graph: 打印模块的依赖图; init: 在当前目录初始化mod; tidy : 添加缺失的依赖包并清理没有使用的包; vendor : 将依赖包复制到vendor目录; verify: 验证依赖是否正确; why : 解释为什么需要这个依赖; 创建一个模块 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;
-执行一下子命令
-1 ~/gomod/hello$ go mod init example.com/hello 2go: creating new go.mod: module example.com/hello 创建hello.go
-1package hello 2 3func Hello()string { 4	return &amp;#34;Hello, world.
-          
-          
-        
-      </description>
+      <description>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。&#xA;需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。&#xA;本文会介绍Go module的一些基本用法；&#xA;常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令 常见命令 go mod 提供了以下命令&#xA;download: 下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享; edit : 编辑go.mod; graph: 打印模块的依赖图; init: 在当前目录初始化mod; tidy : 添加缺失的依赖包并清理没有使用的包; vendor : 将依赖包复制到vendor目录; verify: 验证依赖是否正确; why : 解释为什么需要这个依赖; 创建一个模块 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;&#xA;执行一下子命令&#xA;1 ~/gomod/hello$ go mod init example.com/hello 2go: creating new go.mod: module example.com/hello 创建hello.go&#xA;1package hello 2 3func Hello()string { 4&#x9;return &amp;#34;Hello, world.</description>
     </item>
-    
   </channel>
 </rss>

@@ -5,52 +5,23 @@
     <link>https://www.geekgame.site/tags/extend/</link>
     <description>Recent content in extend on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 08 Jun 2021 16:18:40 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/extend/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Jun 2021 16:18:40 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/extend/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes 扩展</title>
       <link>https://www.geekgame.site/post/k8s/extensions/extend/</link>
       <pubDate>Tue, 08 Jun 2021 16:18:40 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/extensions/extend/</guid>
-      <description>
-        
-          
-            Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
-Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
-Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点： 变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响； API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。 自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。 调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。 控制器扩展：一般与自定义资源结合使用，成为 Operator 模式。 网络插件：用来扩展 Pod 网络的插件。 存储插件：用来扩展存储的插件。 Operator 模式 自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。
-在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。
-使用 Operator 可以自动化的事情包括：
-按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色 控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：
-1for { 2 expectState := GetExpectState() 3 actualState := GetActualState() 4 if expectState == actualState { 5 // do nothing 6 } else { 7 // adjust the state to the expect state 8 } 9} 调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。
-          
-          
-        
-      </description>
+      <description>Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。&#xA;Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：&#xA;Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点： 变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响； API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。 自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。 调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。 控制器扩展：一般与自定义资源结合使用，成为 Operator 模式。 网络插件：用来扩展 Pod 网络的插件。 存储插件：用来扩展存储的插件。 Operator 模式 自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。&#xA;在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。&#xA;使用 Operator 可以自动化的事情包括：&#xA;按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色 控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：&#xA;1for { 2 expectState := GetExpectState() 3 actualState := GetActualState() 4 if expectState == actualState { 5 // do nothing 6 } else { 7 // adjust the state to the expect state 8 } 9} 调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。</description>
     </item>
-    
     <item>
       <title>Kubebuilder 使用教程</title>
       <link>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</link>
       <pubDate>Tue, 08 Jun 2021 16:18:16 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</guid>
-      <description>
-        
-          
-            Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
-Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：
-创建一个项目 创建一个API 定义CRD 实现controller 测试 创建项目 创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。
-执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp
---domain: 项目的域名
-创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。
-1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：
-1 2在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.
-          
-          
-        
-      </description>
+      <description>Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。&#xA;Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：&#xA;创建一个项目 创建一个API 定义CRD 实现controller 测试 创建项目 创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。&#xA;执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp&#xA;--domain: 项目的域名&#xA;创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。&#xA;1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：&#xA;1 2在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.</description>
     </item>
-    
   </channel>
 </rss>

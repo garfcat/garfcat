@@ -5,147 +5,51 @@
     <link>https://www.geekgame.site/tags/kubernetes/</link>
     <description>Recent content in kubernetes on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 17 Nov 2021 20:43:56 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 17 Nov 2021 20:43:56 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes Informer 机制</title>
       <link>https://www.geekgame.site/post/k8s/informer/</link>
       <pubDate>Wed, 17 Nov 2021 20:43:56 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/informer/</guid>
-      <description>
-        
-          
-            概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 在Informer架构设计中,有多个核心组件,分别介绍如下。
-1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。
-3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。
-informer 中支持处理资源的三种回掉方法:
-AddFunc :当创建资源对象时触发的事件回调方法。 UpdateFunc :当更新资源对象时触发的事件回调方法。 DeleteFunc :当删除资源对象时触发的事件回调方法。 通过Informer机制可以很容易地监控我们所关心的资源事件.
-Reflector 1func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration) *Reflector { 2 return NewNamedReflector(naming.GetNameFromCallsite(internalPackages...), lw, expectedType, store, resyncPeriod) 3} 通过NewReflector实例化Reflector对象,实例化过程中须传入ListerWatcher数据接口对象,它拥有List和Watch方法,用于获取及监控资源列表。只要实现了List和Watch方法的对象都可以称为ListerWatcher。 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。
-1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。 a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。
-b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。
-c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。
-d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。
-e. r.setLastSyncResourceVersion用于设置最新的资源版本号。
-2.监控资源对象
-Watch(监控)操作通过HTTP协议与Kubernetes API Server建立长连接,接收Kubernetes API Server 发来的资源变更事件。Watch操作的实现机制使用HTTP协议的分块传输编码(Chunked Transfer Encoding)。当client-go调用Kubernetes API Server时,Kubernetes API Server在Response的HTTP Header中设置Transfer-Encoding的值为chunked,表示采用分块传输编码,客户端收到该信息后,便与服务端进行连接,并等待下一个数据块(即资源的事件信息)。
-          
-          
-        
-      </description>
+      <description>概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 在Informer架构设计中,有多个核心组件,分别介绍如下。&#xA;1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。&#xA;3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。&#xA;informer 中支持处理资源的三种回掉方法:&#xA;AddFunc :当创建资源对象时触发的事件回调方法。 UpdateFunc :当更新资源对象时触发的事件回调方法。 DeleteFunc :当删除资源对象时触发的事件回调方法。 通过Informer机制可以很容易地监控我们所关心的资源事件.&#xA;Reflector 1func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration) *Reflector { 2 return NewNamedReflector(naming.GetNameFromCallsite(internalPackages...), lw, expectedType, store, resyncPeriod) 3} 通过NewReflector实例化Reflector对象,实例化过程中须传入ListerWatcher数据接口对象,它拥有List和Watch方法,用于获取及监控资源列表。只要实现了List和Watch方法的对象都可以称为ListerWatcher。 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。&#xA;1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。 a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。&#xA;b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。&#xA;c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。&#xA;d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。&#xA;e. r.setLastSyncResourceVersion用于设置最新的资源版本号。&#xA;2.监控资源对象&#xA;Watch(监控)操作通过HTTP协议与Kubernetes API Server建立长连接,接收Kubernetes API Server 发来的资源变更事件。Watch操作的实现机制使用HTTP协议的分块传输编码(Chunked Transfer Encoding)。当client-go调用Kubernetes API Server时,Kubernetes API Server在Response的HTTP Header中设置Transfer-Encoding的值为chunked,表示采用分块传输编码,客户端收到该信息后,便与服务端进行连接,并等待下一个数据块(即资源的事件信息)。</description>
     </item>
-    
     <item>
       <title>Kubernetes 监控架构(译)</title>
       <link>https://www.geekgame.site/post/k8s/monitoring_arch/</link>
       <pubDate>Mon, 05 Jul 2021 11:09:37 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/monitoring_arch/</guid>
-      <description>
-        
-          
-            概要 监控分为两个部分:
-核心监控流程由kubelet、资源评估器、metric-server(Heapster 精简版)以及API server 上的master metrics API 组成. 这些监控数据被系统核心组件使用,例如调度逻辑(调度器和基于系统指标的HPA) 和 开箱即用的UI组件(例如 kubectl top), 这条监控管道不适合与第三方监控系统集成. 另一个监控流程用于从系统收集各种指标并将这些指标导出到用户端、HPA(自定义指标)以及通过适配器到处到 infrastore. 用户可以从众多的监控系统中进行选择,也可以不运行监控系统. Kubernetes 不附带监控管道, 但是第三方的选项是很容易被安装的. 我们希望第三方管道通常由每个节点的代理和一个集群级聚合器组成. 该架构在本文档附录中的图表中进行了说明。
-介绍和目标 本文档为Kubernetes 提出了一个高级监控架构. 它涵盖了 Kubernetes Monitoring Architecture 文档中提到的一些问题. 特别关注有望满足大量需求的监控架构(组件以及组件之间的交互), 我们没有为实现这个架构指定任何特定的时间,也没有规划路线图.
-术语 有两种指标系统指标和服务指标, 系统指标是一般的指标,通常可以从每个监控的实体获得(例如容器和节点的CPU和内存使用情况). 服务指标是在应用代码明确定义并导出的(例如API服务器状态码为500的请求数量), 系统指标和服务指标都是从用户的容器或者系统基础组件获取(主节点组件,比如API服务器, 运行在主节点的插件pod, 和运行在用户节点的插件pod)
-我们把系统指标分为:
-核心指标 这些指标都是Kubernetes理解并用于其内部组件和核心业务的指标 — 例如, 用于调度的指标(包括用于资源评估、初始资源/垂直自动缩放,集群自动缩放, 和Pod水平自动缩放(不包括自定义指标)), Kube 仪表盘, 和 “kubectl top”, 截至目前, 这包括cpu 累计使用情况, 内存瞬时使用情况, pod 磁盘使用情况, 容器的磁盘使用情况. 非核心指标，不被 Kubernetes 解读；我们通常假设它们包括核心指标（尽管不一定采用 Kubernetes 理解的格式）以及其他指标。 我们认为日志记录与监控是分开的，因此日志记录超出了本文档的范围。 要求 监控架构应该是下面这个样子：
-包括作为核心 Kubernetes 一部分的解决方案和 通过标准的主 API（今天的主指标 API）使有关节点、Pod 和容器的核心系统指标可用，从而使 Kubernetes 的核心功能不依赖于非核心组件 要求 Kubelet 仅导出一组有限的指标，即核心 Kubernetes 组件正确运行所需的指标（这与#18770相关） 可以扩展到至少 5000 个节点 足够小，我们可以要求它的所有组件在所有部署配置中运行 包括一个可以提供历史数据的开箱即用的解决方案，例如支持初始资源和垂直 pod 自动缩放以及集群分析查询，这仅依赖于核心 Kubernetes 允许不属于核心 Kubernetes 的第三方监控解决方案，并且可以与需要服务指标的 Horizo​​ntal Pod Autoscaler 等组件集成 架构 我们将长期架构计划的描述分为核心指标管道和监控管道。对于每个，有必要考虑如何处理来自 master 和 minion 的每种类型的指标（核心指标、非核心指标和服务指标）
-          
-          
-        
-      </description>
+      <description>概要 监控分为两个部分:&#xA;核心监控流程由kubelet、资源评估器、metric-server(Heapster 精简版)以及API server 上的master metrics API 组成. 这些监控数据被系统核心组件使用,例如调度逻辑(调度器和基于系统指标的HPA) 和 开箱即用的UI组件(例如 kubectl top), 这条监控管道不适合与第三方监控系统集成. 另一个监控流程用于从系统收集各种指标并将这些指标导出到用户端、HPA(自定义指标)以及通过适配器到处到 infrastore. 用户可以从众多的监控系统中进行选择,也可以不运行监控系统. Kubernetes 不附带监控管道, 但是第三方的选项是很容易被安装的. 我们希望第三方管道通常由每个节点的代理和一个集群级聚合器组成. 该架构在本文档附录中的图表中进行了说明。&#xA;介绍和目标 本文档为Kubernetes 提出了一个高级监控架构. 它涵盖了 Kubernetes Monitoring Architecture 文档中提到的一些问题. 特别关注有望满足大量需求的监控架构(组件以及组件之间的交互), 我们没有为实现这个架构指定任何特定的时间,也没有规划路线图.&#xA;术语 有两种指标系统指标和服务指标, 系统指标是一般的指标,通常可以从每个监控的实体获得(例如容器和节点的CPU和内存使用情况). 服务指标是在应用代码明确定义并导出的(例如API服务器状态码为500的请求数量), 系统指标和服务指标都是从用户的容器或者系统基础组件获取(主节点组件,比如API服务器, 运行在主节点的插件pod, 和运行在用户节点的插件pod)&#xA;我们把系统指标分为:&#xA;核心指标 这些指标都是Kubernetes理解并用于其内部组件和核心业务的指标 — 例如, 用于调度的指标(包括用于资源评估、初始资源/垂直自动缩放,集群自动缩放, 和Pod水平自动缩放(不包括自定义指标)), Kube 仪表盘, 和 “kubectl top”, 截至目前, 这包括cpu 累计使用情况, 内存瞬时使用情况, pod 磁盘使用情况, 容器的磁盘使用情况. 非核心指标，不被 Kubernetes 解读；我们通常假设它们包括核心指标（尽管不一定采用 Kubernetes 理解的格式）以及其他指标。 我们认为日志记录与监控是分开的，因此日志记录超出了本文档的范围。 要求 监控架构应该是下面这个样子：&#xA;包括作为核心 Kubernetes 一部分的解决方案和 通过标准的主 API（今天的主指标 API）使有关节点、Pod 和容器的核心系统指标可用，从而使 Kubernetes 的核心功能不依赖于非核心组件 要求 Kubelet 仅导出一组有限的指标，即核心 Kubernetes 组件正确运行所需的指标（这与#18770相关） 可以扩展到至少 5000 个节点 足够小，我们可以要求它的所有组件在所有部署配置中运行 包括一个可以提供历史数据的开箱即用的解决方案，例如支持初始资源和垂直 pod 自动缩放以及集群分析查询，这仅依赖于核心 Kubernetes 允许不属于核心 Kubernetes 的第三方监控解决方案，并且可以与需要服务指标的 Horizo​​ntal Pod Autoscaler 等组件集成 架构 我们将长期架构计划的描述分为核心指标管道和监控管道。对于每个，有必要考虑如何处理来自 master 和 minion 的每种类型的指标（核心指标、非核心指标和服务指标）</description>
     </item>
-    
     <item>
       <title>Kubernetes Controller runtime 详解</title>
       <link>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</link>
       <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
-      <description>
-        
-          
-            controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。
-概念 CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。
-下面例子是定义了一个crontab 的自定义资源:
-1 apiVersion: apiextensions.k8s.io/v1 2 kind: CustomResourceDefinition 3 metadata: 4 # 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39; 5 name: crontabs.stable.example.com 6 spec: 7 # 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt; 8 group: stable.example.com 9 # 列举此 CustomResourceDefinition 所支持的版本 10 versions: 11 - name: v1 12 # 每个版本都可以通过 served 标志来独立启用或禁止 13 served: true 14 # 其中一个且只有一个版本必需被标记为存储版本 15 storage: true 16 schema: 17 openAPIV3Schema: 18 type: object 19 properties: 20 spec: 21 type: object 22 properties: 23 cronSpec: 24 type: string 25 image: 26 type: string 27 replicas: 28 type: integer 29 # 可以是 Namespaced 或 Cluster 30 scope: Namespaced 31 names: 32 # 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt; 33 plural: crontabs 34 # 名称的单数形式，作为命令行使用时和显示时的别名 35 singular: crontab 36 # kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。 37 kind: CronTab 38 # shortNames 允许你在命令行使用较短的字符串来匹配资源 39 shortNames: 40 - ct GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写
-          
-          
-        
-      </description>
+      <description>controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。&#xA;概念 CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。&#xA;下面例子是定义了一个crontab 的自定义资源:&#xA;1 apiVersion: apiextensions.k8s.io/v1 2 kind: CustomResourceDefinition 3 metadata: 4 # 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39; 5 name: crontabs.stable.example.com 6 spec: 7 # 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt; 8 group: stable.example.com 9 # 列举此 CustomResourceDefinition 所支持的版本 10 versions: 11 - name: v1 12 # 每个版本都可以通过 served 标志来独立启用或禁止 13 served: true 14 # 其中一个且只有一个版本必需被标记为存储版本 15 storage: true 16 schema: 17 openAPIV3Schema: 18 type: object 19 properties: 20 spec: 21 type: object 22 properties: 23 cronSpec: 24 type: string 25 image: 26 type: string 27 replicas: 28 type: integer 29 # 可以是 Namespaced 或 Cluster 30 scope: Namespaced 31 names: 32 # 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt; 33 plural: crontabs 34 # 名称的单数形式，作为命令行使用时和显示时的别名 35 singular: crontab 36 # kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。 37 kind: CronTab 38 # shortNames 允许你在命令行使用较短的字符串来匹配资源 39 shortNames: 40 - ct GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写</description>
     </item>
-    
     <item>
       <title>Kubernetes 扩展</title>
       <link>https://www.geekgame.site/post/k8s/extensions/extend/</link>
       <pubDate>Tue, 08 Jun 2021 16:18:40 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/extensions/extend/</guid>
-      <description>
-        
-          
-            Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。
-Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：
-Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点： 变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响； API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。 自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。 调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。 控制器扩展：一般与自定义资源结合使用，成为 Operator 模式。 网络插件：用来扩展 Pod 网络的插件。 存储插件：用来扩展存储的插件。 Operator 模式 自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。
-在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。
-使用 Operator 可以自动化的事情包括：
-按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色 控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：
-1for { 2 expectState := GetExpectState() 3 actualState := GetActualState() 4 if expectState == actualState { 5 // do nothing 6 } else { 7 // adjust the state to the expect state 8 } 9} 调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。
-          
-          
-        
-      </description>
+      <description>Kubernetes 是Google开源的容器编排项目，是云原生时代最成功的项目之一，其本身也是高度可配置且可扩展的，这就可以让我们利用扩展开发出符合我们业务逻辑的软件，本文就其扩展展开讨论。&#xA;Kubernetes 扩展点 Kubernetes 在官网给出了7个扩展点：&#xA;Kubectl扩展: 以 kubectl- 开头的可执行文件，需要注意两点： 变量传递：所有环境变量也按原样传递给可执行文件； 命令最长匹配：插件机制总是为给定的用户命令选择尽可能长的插件名称; 影响范围： 只对本地环境造成影响； API访问扩展：请求到达API服务时都会经过：认证、鉴权、准入控制这几个阶段，API访问扩展就是对这几个阶段进行扩展,使用户可以对请求执行身份认证、基于其内容阻止请求、编辑请求内容、处理删除操作等等。 自定义资源：Kubernetes 内部有很多内置资源：Pods、Services、Deployments等等，这些资源有时满足不了我们的实际需求，此时我们可以定义满足业务需求的资源（CRD），自定义资源一般与自定义控制器结合使用。 调度器扩展：Kubernetes 调度器负责决定 Pod 要放置到哪些节点上执行，我们可以通过实现调度器扩展来实现我们自己的调度策略。 控制器扩展：一般与自定义资源结合使用，成为 Operator 模式。 网络插件：用来扩展 Pod 网络的插件。 存储插件：用来扩展存储的插件。 Operator 模式 自定义资源和控制器组成了 Operator 模式。在该模式下可以让你自动化完成应用部署、管理。&#xA;在 Kubernetes 中，Operator 是一个软件扩展，它利用自定义资源来管理应用程序及其组件。Operator 是 Kubernetes API 的客户端，用于控制自定义资源。Operator 是特定于应用程序的控制器，用于管理自定义资源的状态。&#xA;使用 Operator 可以自动化的事情包括：&#xA;按需部署应用 获取/还原应用状态的备份 处理应用代码的升级以及相关改动。例如，数据库 schema 或额外的配置设置 发布一个 service，要求不支持 Kubernetes API 的应用也能发现它 模拟整个或部分集群中的故障以测试其稳定性 在没有内部成员选举程序的情况下，为分布式应用选择首领角色 控制器 Reconcile loop 控制器与资源关联，并监听资源的变化，如果资源发生变化，则会进入一个循环即调协循环(Reconcile loop)，伪代码如下：&#xA;1for { 2 expectState := GetExpectState() 3 actualState := GetActualState() 4 if expectState == actualState { 5 // do nothing 6 } else { 7 // adjust the state to the expect state 8 } 9} 调协循环(Reconcile loop) 是通过事件驱动和定时执行来实现，不断对比实际状态与期望状态，并不断调整实际状态向实际状态靠拢。</description>
     </item>
-    
     <item>
       <title>Kubebuilder 使用教程</title>
       <link>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</link>
       <pubDate>Tue, 08 Jun 2021 16:18:16 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/extensions/kubebuilder/</guid>
-      <description>
-        
-          
-            Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。
-Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：
-创建一个项目 创建一个API 定义CRD 实现controller 测试 创建项目 创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。
-执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp
---domain: 项目的域名
-创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。
-1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：
-1 2在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.
-          
-          
-        
-      </description>
+      <description>Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。&#xA;Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：&#xA;创建一个项目 创建一个API 定义CRD 实现controller 测试 创建项目 创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。&#xA;执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp&#xA;--domain: 项目的域名&#xA;创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。&#xA;1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：&#xA;1 2在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.</description>
     </item>
-    
     <item>
       <title>kubernetes 架构</title>
       <link>https://www.geekgame.site/post/k8s/k8s/</link>
       <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/k8s/k8s/</guid>
-      <description>
-        
-          
-            什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：
-可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。 Kubernetes 架构 K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端，是控制节点主要控制和管理整个K8s集群;node是客户端,是工作节点，主要处理来自于master的任务。K8s可以设置多master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。
-master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler, cloud-controller-manager; node 包含的组件有: kubelet, kube-proxy;
-图片来源
-master 组件 kube-apiserver: 提供集群HTTP REST API, 是集群控制的唯一入口,提供访问控制、注册、信息存储功能, 同时也是集群内部模块之间数据交换的枢纽。 etcd: 兼具一致性和高可用性的键值数据库,保存 K8s 所有集群数据;
-kube-scheduler: 对K8s中的Pod资源进行监控调度，为Pod选择合适的工作节点； kube-controller-manager: K8s实现自动化的关键组件，是集群中所有资源的自动化控制中心；
-cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻辑的控制平面组件,使得 K8s 可以直接利用云平台实现持久化卷、负载均衡、网络路由、DNS 解析以及横向扩展等功能。
-node 组件 kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; kube-proxy: 负责K8s集群服务的通信以及负载均衡；
-数据流转 我们以 ReplicaSet 为例，讲述一下K8s的数据流转：
-0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；
-API作为集群入口，接收命令请求； Deployment 控制器通过 watch 获取到 Deployment 的创建事件; Deployment 控制器创建 ReplicaSet 资源; ReplicaSet 控制器通过 watch 获取到 ReplicaSet 的创建事件; ReplicaSet 控制器创建 POD 资源； Scheduler 通过 watch 获取 Pod 创建事件以及获取未绑定Node的Pod； Scheduler 通过调度算法为 Pod 选择合适的Node； kubelet 通过 watch 获取部署在当前Node的 Pod; kubelet 通过 CRI 通知container runtime 创建 Pod； container runtime 成功创建Pod； 观察POD创建过程相关事件 我们可以通过kubectl get events --watch 来观察POD创建过程所产生的事件。使用watch 选项可以监听整个过程。 以下是创建nginx的过程：
-          
-          
-        
-      </description>
+      <description>什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：&#xA;可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。 Kubernetes 架构 K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端，是控制节点主要控制和管理整个K8s集群;node是客户端,是工作节点，主要处理来自于master的任务。K8s可以设置多master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。&#xA;master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler, cloud-controller-manager; node 包含的组件有: kubelet, kube-proxy;&#xA;图片来源&#xA;master 组件 kube-apiserver: 提供集群HTTP REST API, 是集群控制的唯一入口,提供访问控制、注册、信息存储功能, 同时也是集群内部模块之间数据交换的枢纽。 etcd: 兼具一致性和高可用性的键值数据库,保存 K8s 所有集群数据;&#xA;kube-scheduler: 对K8s中的Pod资源进行监控调度，为Pod选择合适的工作节点； kube-controller-manager: K8s实现自动化的关键组件，是集群中所有资源的自动化控制中心；&#xA;cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻辑的控制平面组件,使得 K8s 可以直接利用云平台实现持久化卷、负载均衡、网络路由、DNS 解析以及横向扩展等功能。&#xA;node 组件 kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; kube-proxy: 负责K8s集群服务的通信以及负载均衡；&#xA;数据流转 我们以 ReplicaSet 为例，讲述一下K8s的数据流转：&#xA;0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；&#xA;API作为集群入口，接收命令请求； Deployment 控制器通过 watch 获取到 Deployment 的创建事件; Deployment 控制器创建 ReplicaSet 资源; ReplicaSet 控制器通过 watch 获取到 ReplicaSet 的创建事件; ReplicaSet 控制器创建 POD 资源； Scheduler 通过 watch 获取 Pod 创建事件以及获取未绑定Node的Pod； Scheduler 通过调度算法为 Pod 选择合适的Node； kubelet 通过 watch 获取部署在当前Node的 Pod; kubelet 通过 CRI 通知container runtime 创建 Pod； container runtime 成功创建Pod； 观察POD创建过程相关事件 我们可以通过kubectl get events --watch 来观察POD创建过程所产生的事件。使用watch 选项可以监听整个过程。 以下是创建nginx的过程：</description>
     </item>
-    
   </channel>
 </rss>

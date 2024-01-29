@@ -5,7 +5,114 @@
     <link>https://www.geekgame.site/categories/</link>
     <description>Recent content in Categories on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 04 Apr 2023 10:16:04 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Apr 2023 10:16:04 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>borg</title>
+      <link>https://www.geekgame.site/categories/borg/</link>
+      <pubDate>Tue, 04 Apr 2023 10:16:04 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/borg/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>golang</title>
+      <link>https://www.geekgame.site/categories/golang/</link>
+      <pubDate>Fri, 31 Mar 2023 17:48:28 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/golang/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>linux</title>
+      <link>https://www.geekgame.site/categories/linux/</link>
+      <pubDate>Tue, 07 Mar 2023 14:08:45 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>mongodb</title>
+      <link>https://www.geekgame.site/categories/mongodb/</link>
+      <pubDate>Fri, 02 Sep 2022 11:53:16 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/mongodb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Technology</title>
+      <link>https://www.geekgame.site/categories/technology/</link>
+      <pubDate>Thu, 11 Aug 2022 14:08:18 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/technology/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>container</title>
+      <link>https://www.geekgame.site/categories/container/</link>
+      <pubDate>Thu, 13 Jan 2022 13:44:25 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/container/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>kubernetes</title>
+      <link>https://www.geekgame.site/categories/kubernetes/</link>
+      <pubDate>Wed, 17 Nov 2021 20:43:56 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/kubernetes/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>karmada</title>
+      <link>https://www.geekgame.site/categories/karmada/</link>
+      <pubDate>Fri, 15 Oct 2021 11:47:48 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/karmada/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Storage</title>
+      <link>https://www.geekgame.site/categories/storage/</link>
+      <pubDate>Fri, 17 Sep 2021 10:29:11 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/storage/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>kubernetes serverless</title>
+      <link>https://www.geekgame.site/categories/kubernetes-serverless/</link>
+      <pubDate>Wed, 18 Aug 2021 15:26:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/kubernetes-serverless/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>kubernetes extend</title>
+      <link>https://www.geekgame.site/categories/kubernetes-extend/</link>
+      <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/kubernetes-extend/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>nosql</title>
+      <link>https://www.geekgame.site/categories/nosql/</link>
+      <pubDate>Sat, 13 Mar 2021 20:58:49 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/nosql/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>编程语言</title>
+      <link>https://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
+      <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>协议</title>
+      <link>https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</link>
+      <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>工具命令</title>
+      <link>https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
+      <guid>https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

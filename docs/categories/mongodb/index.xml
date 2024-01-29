@@ -5,29 +5,16 @@
     <link>https://www.geekgame.site/categories/mongodb/</link>
     <description>Recent content in mongodb on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 02 Sep 2022 11:53:16 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/categories/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Sep 2022 11:53:16 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/categories/mongodb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mongodb 事务</title>
       <link>https://www.geekgame.site/post/database/mongodb_transaction/</link>
       <pubDate>Fri, 02 Sep 2022 11:53:16 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/database/mongodb_transaction/</guid>
-      <description>
-        
-          
-            什么是事务 事务是数据库中的执行单元，包含一个或者多个操作，事务主要有以下几个主要作用:
-所有操作要么一起成功，要么一起失败（all-or-nothing）; 可以从失败即使是系统故障中正确恢复并保持数据库的一致性; 提供数据隔离保障可以正确地并发访问数据库； 事务的属性可以使用ACID来描述:
-A(Atomicity,原子性): 一个事务的所有操作要么成功，要么失败，没有中间状态,如果失败则会回滚到事务开始之前的状态。 I(Isolation, 隔离性): 当数据库有多个事务并发读写数据时，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别,分为未提交读（Read uncommitted）、提交读（read committed）、可重复读（repeatable read）和串行化（Serializable）。； D(Durability, 持久性): 事务处理结束后，对数据的修改时永久的，即使系统故障也不会丢失; C(Consistency,一致性): 事务执行前后的结果依旧满足正确性的约束，即符合预期;
-AID 都很好理解，但是C是需要多加理解一下，可以理解AID时手段，C是结果，通过AID可以保证C。举个例子: 变量a=1，事务操作a+1，预期a=2，执行结果a=2，就满足了一致性。期间出现了脏读、不可重复读、幻读，结果就不符合预期了，一致性就没有得到保障。 mongodb 事务 mongodb 的单个文档操作是原子的, 我们可以通过嵌入式文档或者数组在一个文档中组织数据间的关系从而避免多文档多集合的操作。当然在实际开发中单文档操作往往满足不了我们的需求，所以 mongodb 也提供了多文档的事务操作。
-从 4.0 版本开始支持复制集的事务 从 4.2 开始开始支持分片集的事务。 事务与会话 事务需要关联一个会话，会话本质上是一个上下文，是请求在处理过程中所需的信息: 请求耗时统计、请求占用的锁资源、请求使用的存储快照等信息。 一个会话只能关联一个事务，如果会话结束则事务会终止(abort)。 事务级别(transaction-level) 读事务 读数据主要关心两件事情: 1. 从哪里读数据 2. 读什么样的数据。从哪里读数据由 read preference 指定，读什么样的数据由 read concern 指定。
-read preference 我们可以在事务开始时设置 read preference(read preference 定义客户端如何从哪里读取数据):
-如果事务的 read preference 没有设置，则使用会话设置的 read preference; 如果会话也没有设置 read preference, 则使用客户端设置的 read preference， 默认为 primary;
-          
-          
-        
-      </description>
+      <description>什么是事务 事务是数据库中的执行单元，包含一个或者多个操作，事务主要有以下几个主要作用:&#xA;所有操作要么一起成功，要么一起失败（all-or-nothing）; 可以从失败即使是系统故障中正确恢复并保持数据库的一致性; 提供数据隔离保障可以正确地并发访问数据库； 事务的属性可以使用ACID来描述:&#xA;A(Atomicity,原子性): 一个事务的所有操作要么成功，要么失败，没有中间状态,如果失败则会回滚到事务开始之前的状态。 I(Isolation, 隔离性): 当数据库有多个事务并发读写数据时，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别,分为未提交读（Read uncommitted）、提交读（read committed）、可重复读（repeatable read）和串行化（Serializable）。； D(Durability, 持久性): 事务处理结束后，对数据的修改时永久的，即使系统故障也不会丢失; C(Consistency,一致性): 事务执行前后的结果依旧满足正确性的约束，即符合预期;&#xA;AID 都很好理解，但是C是需要多加理解一下，可以理解AID时手段，C是结果，通过AID可以保证C。举个例子: 变量a=1，事务操作a+1，预期a=2，执行结果a=2，就满足了一致性。期间出现了脏读、不可重复读、幻读，结果就不符合预期了，一致性就没有得到保障。 mongodb 事务 mongodb 的单个文档操作是原子的, 我们可以通过嵌入式文档或者数组在一个文档中组织数据间的关系从而避免多文档多集合的操作。当然在实际开发中单文档操作往往满足不了我们的需求，所以 mongodb 也提供了多文档的事务操作。&#xA;从 4.0 版本开始支持复制集的事务 从 4.2 开始开始支持分片集的事务。 事务与会话 事务需要关联一个会话，会话本质上是一个上下文，是请求在处理过程中所需的信息: 请求耗时统计、请求占用的锁资源、请求使用的存储快照等信息。 一个会话只能关联一个事务，如果会话结束则事务会终止(abort)。 事务级别(transaction-level) 读事务 读数据主要关心两件事情: 1. 从哪里读数据 2. 读什么样的数据。从哪里读数据由 read preference 指定，读什么样的数据由 read concern 指定。&#xA;read preference 我们可以在事务开始时设置 read preference(read preference 定义客户端如何从哪里读取数据):&#xA;如果事务的 read preference 没有设置，则使用会话设置的 read preference; 如果会话也没有设置 read preference, 则使用客户端设置的 read preference， 默认为 primary;</description>
     </item>
-    
   </channel>
 </rss>

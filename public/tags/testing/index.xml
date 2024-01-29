@@ -5,27 +5,16 @@
     <link>https://www.geekgame.site/tags/testing/</link>
     <description>Recent content in testing on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate><atom:link href="https://www.geekgame.site/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Sep 2020 16:15:18 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/tags/testing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>golang testing 使用教程</title>
       <link>https://www.geekgame.site/post/language/golang/test/</link>
       <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
-      
       <guid>https://www.geekgame.site/post/language/golang/test/</guid>
-      <description>
-        
-          
-            单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：
-功能测试（Test） 性能测试（Benchmark） 示例测试（Example） 测试文件名称一般是源代码文件加上 &amp;quot;_test.go&amp;quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。
-在展开单元测试之前先讲下,testing包中的输出函数：
-t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继续运行; t.Fatalf(): 错误日志输出，当前函数立刻退出； 功能测试 测试函数有两点约定：
-函数名必需以Test为前缀，如需要测试Add函数则名称应该为 TestAdd; 函数参数必需为 t * testing.T; 完整的功能测试如下所示： 1// add.go 2func Add(a int, b int) int { 3 return a + b 4} 5 6// add_tesg.go 7func TestAdd(t *testing.T){ 8 a := 1 9 b := 2 10 want := a + b 11 got := Add(a, b) 12 if want !
-          
-          
-        
-      </description>
+      <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：&#xA;功能测试（Test） 性能测试（Benchmark） 示例测试（Example） 测试文件名称一般是源代码文件加上 &amp;quot;_test.go&amp;quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。&#xA;在展开单元测试之前先讲下,testing包中的输出函数：&#xA;t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继续运行; t.Fatalf(): 错误日志输出，当前函数立刻退出； 功能测试 测试函数有两点约定：&#xA;函数名必需以Test为前缀，如需要测试Add函数则名称应该为 TestAdd; 函数参数必需为 t * testing.T; 完整的功能测试如下所示： 1// add.go 2func Add(a int, b int) int { 3 return a + b 4} 5 6// add_tesg.go 7func TestAdd(t *testing.T){ 8 a := 1 9 b := 2 10 want := a + b 11 got := Add(a, b) 12 if want !</description>
     </item>
-    
   </channel>
 </rss>

@@ -5,6 +5,8 @@
     <link>https://www.geekgame.site/en/categories/</link>
     <description>Recent content in Categories on Funny</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright><atom:link href="https://www.geekgame.site/en/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <atom:link href="https://www.geekgame.site/en/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
