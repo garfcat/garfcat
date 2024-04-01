@@ -44,6 +44,9 @@
     <loc>https://www.geekgame.site/post/container/docker/log/</loc>
     <lastmod>2024-01-29T14:20:46+08:00</lastmod>
   </url><url>
+    <loc>https://www.geekgame.site/tags/index/</loc>
+    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+  </url><url>
     <loc>https://www.geekgame.site/tags/log/</loc>
     <lastmod>2024-01-29T14:20:46+08:00</lastmod>
   </url><url>
@@ -389,8 +392,6 @@
                 hreflang="zh"
                 href="https://www.geekgame.site/about/"
                 />
-  </url><url>
-    <loc>https://www.geekgame.site/tags/index/</loc>
   </url><url>
     <loc>https://www.geekgame.site/search/</loc>
   </url>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>borg on 有趣</title>
+    <title>Borg on 有趣</title>
     <link>https://www.geekgame.site/categories/borg/</link>
-    <description>Recent content in borg on 有趣</description>
+    <description>Recent content in Borg on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
     <lastBuildDate>Tue, 04 Apr 2023 10:16:04 +0800</lastBuildDate>
     <atom:link href="https://www.geekgame.site/categories/borg/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Google 的 Borg 大规模集群管理&lt;译&gt;</title>
+      <title>Google 的 Borg 大规模集群管理&lt;译&gt; tt</title>
       <link>https://www.geekgame.site/post/borg/paper1/</link>
       <pubDate>Tue, 04 Apr 2023 10:16:04 +0800</pubDate>
       <guid>https://www.geekgame.site/post/borg/paper1/</guid>

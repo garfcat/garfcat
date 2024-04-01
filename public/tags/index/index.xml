@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>index on 有趣</title>
+    <title>Index on 有趣</title>
     <link>https://www.geekgame.site/tags/index/</link>
-    <description>Recent content in index on 有趣</description>
+    <description>Recent content in Index on 有趣</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Mon, 29 Jan 2024 14:20:46 +0800</lastBuildDate>
     <atom:link href="https://www.geekgame.site/tags/index/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Posts</title>
