@@ -31,11 +31,32 @@
       <description>在程序开发中，错误处理是一个必不可少的环节。正确处理错误可以提高程序的稳定性、可靠性和安全性，同时提高用户体验，避免数据丢失和程序崩溃等问题。而在 Golang 开发中，错误处理是一个非常重要的主题，因为 Golang 本身就是一门以错误处理为基础的语言。 当前我们在开发中大多使用框架，这些框架或者库已经定义了错误定义的目录，以帮助开发者更好地管理错误。在本文中，我们将探讨 Golang 中的错误处理机制其实也不限于golang，包括如何定义错误、如何处理错误、以及如何在不同层级之间转换错误。我们将以实例为基础，介绍 Golang 中错误处理的最佳实践，帮助读者更好地理解和应用 Golang 中的错误处理机制。&#xA;我们应该定义哪些错误 在定义错误时，可以按照不同的层次进行划分，主要是根据错误的发生位置和类型来划分，以便更好地处理和维护错误。&#xA;通常情况下，我们可以定义以下几个层次的错误：&#xA;基础层错误：主要包括数据库操作错误、第三方服务错误等。这些错误通常发生在系统的基础设施层面，对系统的正常运行产生较大影响。 业务层错误：主要包括业务规则验证错误、业务操作错误等。这些错误通常发生在业务处理的过程中，对业务逻辑产生影响。 接口层错误：主要包括请求参数错误、认证授权错误等。这些错误通常发生在系统与外部交互的过程中，对系统的安全性和稳定性产生影响。 需要注意的是，错误的划分应该遵循单一职责原则，即每个错误只负责自己层次的问题。同时，错误的定义应该足够明确和具体，以便在错误发生时能够快速定位和解决问题。 基础设施层错误处理 基础层错误通常指由底层的系统组件、第三方库或操作系统本身返回的错误。这些错误通常是由于底层组件的问题导致的，例如网络连接失败、磁盘读写错误、数据库连接异常等。在应用程序中，这些错误应该被及时捕获并处理，以避免程序崩溃、数据丢失等问题的发生。 对于基础层错误的定义，可以考虑在代码中定义一个基础层错误类型，例如:&#xA;1type BaseError struct { 2 errType string // 错误类型 3 errCode int // 错误码 4 errMsg string // 错误信息 5 errDetails string // 错误详细信息 6 errCause error // 错误原因 7} 定义基础层错误时，建议包含以下字段：&#xA;错误类型：指错误发生的具体类型，例如数据库连接错误、磁盘读写错误等。 错误码：指错误的具体码值，用于快速定位和识别错误。 错误信息：指错误的概要信息，用于在日志或终端中显示。 错误详细信息：指错误的详细信息，例如错误发生的位置、调用栈信息等，用于排查问题。 错误原因：指导致错误的原因，通常是一个 error 类型的值。&#xA;通过定义一个 BaseError 类型，我们可以方便地表示和处理基础层错误，并且在需要转换错误时，也可以通过定义适当的方法来实现错误的转换。 业务层错误定义 业务层错误通常指与业务逻辑相关的错误。这些错误通常是由于业务规则或数据校验失败导致的，例如用户输入不合法、订单状态不正确等。在应用程序中，这些错误也应该被及时捕获并处理，以便及时地提示用户或者进行必要的处理。&#xA;在 Golang 中，通常可以通过自定义一个业务错误类型来表示业务层错误，例如：&#xA;1type BusinessError struct { 2 errCode int // 错误码 3 errMsg string // 错误信息 4} 在定义业务错误时，建议包含以下字段：</description>
     </item>
     <item>
+      <title>Docker Proxy</title>
+      <link>https://www.geekgame.site/post/container/docker/docker-proxy/</link>
+      <pubDate>Mon, 27 Mar 2023 13:55:01 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/container/docker/docker-proxy/</guid>
+      <description>docker-proxy Docker Proxy（docker-proxy）是 Docker 中的一个组件，它允许 Docker 容器通过代理服务器进行网络通信。当 Docker 容器需要访问互联网或者其他容器时，Docker 会使用 docker-proxy 作为代理服务器来转发请求和响应。</description>
+    </item>
+    <item>
       <title>设备硬件信息获取</title>
       <link>https://www.geekgame.site/post/linux/hardware/</link>
       <pubDate>Tue, 07 Mar 2023 14:08:45 +0800</pubDate>
       <guid>https://www.geekgame.site/post/linux/hardware/</guid>
       <description>背景 有时我们需要基于设备的硬件信息来生成唯一的序列号，本文从物理机和容器两个角度描述获取硬件信息的几种方式。&#xA;硬件信息 主要包括 cpu id, 主板序列号，&#xA;CPU ID 在2006年，Intel决定取消将唯一标识符（Unique Identifier，UID）分配给每个CPU的计划。在取消该计划后，没有任何一款Intel CPU具有可用的UID或类似的标识符。&#xA;dmidecode -t processor | grep ID 命令获取的是处理器的ID号码，而不是CPU序列号。在过去，Intel的处理器ID号码与CPU序列号是相关的。但是，自从Intel取消了CPU序列号计划后，处理器ID号码已经成为处理器的唯一标识符。但是需要注意的是，处理器ID号码仅用于识别处理器的型号和版本，而不是用作安全或加密目的。处理器ID是一个用于唯一标识处理器型号和版本的数字或字符串。每个处理器型号都有一个唯一的处理器ID，该ID包含有关处理器的各种信息，例如生产商、处理器系列、制造工艺、特性等等。&#xA;处理器ID是一个用于唯一标识处理器型号和版本的数字或字符串。每个处理器型号都有一个唯一的处理器ID，该ID包含有关处理器的各种信息，例如生产商、处理器系列、制造工艺、特性等等。&#xA;以下是一个举例：&#xA;假设您有一台计算机，其处理器型号为“Intel(R) Core(TM) i7-10700K CPU @ 3.80GHz”。您可以使用 dmidecode -t processor | grep ID 命令来获取该处理器的ID。对于这个处理器，处理器ID可能会显示为&amp;quot;0x906E9&amp;quot;。这个处理器ID包含有关处理器的信息，例如：&#xA;&amp;quot;0x9&amp;quot;表示该处理器是第9代英特尔酷睿处理器（Intel Core Processor）。 &amp;quot;0x06&amp;quot;表示该处理器的系列为酷睿i7系列（Core i7 Series）。 &amp;quot;0xE9&amp;quot;表示该处理器的型号为i7-10700K。&#xA;其他数字和字母则包含有关制造工艺、特性等方面的信息。&#xA;处理器ID是一个用于唯一标识处理器的数字或字符串，它包含有关处理器型号和版本的各种信息，这些信息可以用于确定处理器的特性、性能和兼容性等方面。 主板序列号 主板序列号(board id)是一串唯一的数字和字母组合，用于标识计算机主板的身份和生产信息。每个主板都有一个唯一的序列号，类似于身份证号码或者汽车的车辆识别码（VIN）。主板序列号通常被存储在主板上的电子芯片中，并可以通过操作系统或者特定的软件程序来获取&#xA;磁盘序列号 磁盘序列号是一个磁盘驱动器的唯一标识符。它是由硬盘制造商预先配置的，通常由一串数字或字母组成。&#xA;宿主机下的获取方式 CPU ID 的获取方式 1[root ~]# dmidecode -t processor | grep ID 2&#x9;ID: E3 06 05 00 FF FB 8B 0F 3&#x9;ID: E3 06 05 00 FF FB 8B 0F 主板序列号 1[root ~]# dmidecode -t system | grep Serial 2&#x9;Serial Number: d0d39011-8a53-4046-a08b-aaca77b2e783 磁盘序列号 1[root ~]# lshw -class disk | grep serial 2 serial: ZA1CGDL0 注意： 虚拟硬盘是无法获取序列号的</description>
+    </item>
+    <item>
+      <title>Wc</title>
+      <link>https://www.geekgame.site/post/linux/wc/</link>
+      <pubDate>Mon, 24 Oct 2022 14:01:37 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/linux/wc/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>Workflow</title>
+      <link>https://www.geekgame.site/post/workflow/workflow/</link>
+      <pubDate>Mon, 17 Oct 2022 11:15:13 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/workflow/workflow/</guid>
+      <description>Insert Lead paragraph here.</description>
     </item>
     <item>
       <title>一文读懂iptables/netfilter附带实战</title>
@@ -45,6 +66,13 @@
       <description>简介 iptables 是一个命令行工具，用来配置包过滤的规则的，而真正实现这些规则的程序位于内核层，叫做 netfilter, 可以讲iptables理解为netfilter的客户端，iptables 与 netfilter 共同组成了包过滤软件。 平常工作交流中 iptables 也经常代指该内核级防火墙，iptables 用于 ipv4, 相应的 ip6tables 用于 IPv6。&#xA;概念介绍 （图片引用）&#xA;hook iptables 在内核是对数据包做修改、转发、丢弃等操作的，而这些操作都是在一个个 hook 上完成的，hook 就是注册数据包处理函数的地方。hook点都是预定义好的，一共划分了五个hook点，分别为:&#xA;NF_IP_PRE_ROUTING: 接收到的包进入协议栈后由该hook上注册的函数来处理，这是在查询路由之前; NF_IP_LOCAL_IN: 查询路由后判断数据包是发往本机的，则首先进入该hook点，由该hook点上注册的函数来处理; NF_IP_FORWARD: 查询路由后判断数据包是不是本机的，则进入该hook点，由该hook点上注册的函数来处理; NF_IP_LOCAL_OUT: 本机发出的数据包首先进入该hook点，由该hook点上注册的函数来处理; NF_IP_POST_ROUTING: 数据包在发出本机之前，路由判断之后， 进入该hook点，由该hook点上注册的函数来处理; 表、链、规则 iptables 是由表(table)来组织的，而表又是由链(chain) 组成，链中包含了一个或者多个规则(rule)，规则既是对数据包处理的具体定义，所以总体来看 iptables -&amp;gt; table -&amp;gt; chain -&amp;gt; rule。&#xA;表 iptables 一共有五个table,分别为：&#xA;raw 用于配置数据包，提供一个让数据包不被系统跟踪的机制; filter 判断是否允许一个包通过; nat 用于 网络地址转换（例如：端口转发）; mangle 修改包的 IP 头，例如TTL，增加或减少包可以经过的跳数; security 用于 强制访问控制 网络规则; 链 链中包含了具体的规则，按照顺序进行匹配,内置了五个chain 与 hook 一一对应:</description>
     </item>
     <item>
+      <title>mongodb snapshot</title>
+      <link>https://www.geekgame.site/post/database/mongodb_snapshot/</link>
+      <pubDate>Fri, 30 Sep 2022 09:52:34 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/database/mongodb_snapshot/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
       <title>mongodb 事务</title>
       <link>https://www.geekgame.site/post/database/mongodb_transaction/</link>
       <pubDate>Fri, 02 Sep 2022 11:53:16 +0800</pubDate>
@@ -52,11 +80,46 @@
       <description>什么是事务 事务是数据库中的执行单元，包含一个或者多个操作，事务主要有以下几个主要作用:&#xA;所有操作要么一起成功，要么一起失败（all-or-nothing）; 可以从失败即使是系统故障中正确恢复并保持数据库的一致性; 提供数据隔离保障可以正确地并发访问数据库； 事务的属性可以使用ACID来描述:&#xA;A(Atomicity,原子性): 一个事务的所有操作要么成功，要么失败，没有中间状态,如果失败则会回滚到事务开始之前的状态。 I(Isolation, 隔离性): 当数据库有多个事务并发读写数据时，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别,分为未提交读（Read uncommitted）、提交读（read committed）、可重复读（repeatable read）和串行化（Serializable）。； D(Durability, 持久性): 事务处理结束后，对数据的修改时永久的，即使系统故障也不会丢失; C(Consistency,一致性): 事务执行前后的结果依旧满足正确性的约束，即符合预期;&#xA;AID 都很好理解，但是C是需要多加理解一下，可以理解AID时手段，C是结果，通过AID可以保证C。举个例子: 变量a=1，事务操作a+1，预期a=2，执行结果a=2，就满足了一致性。期间出现了脏读、不可重复读、幻读，结果就不符合预期了，一致性就没有得到保障。 mongodb 事务 mongodb 的单个文档操作是原子的, 我们可以通过嵌入式文档或者数组在一个文档中组织数据间的关系从而避免多文档多集合的操作。当然在实际开发中单文档操作往往满足不了我们的需求，所以 mongodb 也提供了多文档的事务操作。&#xA;从 4.0 版本开始支持复制集的事务 从 4.2 开始开始支持分片集的事务。 事务与会话 事务需要关联一个会话，会话本质上是一个上下文，是请求在处理过程中所需的信息: 请求耗时统计、请求占用的锁资源、请求使用的存储快照等信息。 一个会话只能关联一个事务，如果会话结束则事务会终止(abort)。 事务级别(transaction-level) 读事务 读数据主要关心两件事情: 1. 从哪里读数据 2. 读什么样的数据。从哪里读数据由 read preference 指定，读什么样的数据由 read concern 指定。&#xA;read preference 我们可以在事务开始时设置 read preference(read preference 定义客户端如何从哪里读取数据):&#xA;如果事务的 read preference 没有设置，则使用会话设置的 read preference; 如果会话也没有设置 read preference, 则使用客户端设置的 read preference， 默认为 primary;</description>
     </item>
     <item>
+      <title>当执行 docker run 时会发生什么事情...</title>
+      <link>https://www.geekgame.site/post/container/docker/component/</link>
+      <pubDate>Mon, 29 Aug 2022 22:41:05 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/container/docker/component/</guid>
+      <description>当我们执行 docker 命令(例如 docker run , docker pull )时发生了什么，解答这个问题，我们需要了解 docker 是由哪几个组件组成的，请看下图:</description>
+    </item>
+    <item>
+      <title>Release_mysql_disk</title>
+      <link>https://www.geekgame.site/post/database/release_mysql_disk/</link>
+      <pubDate>Tue, 23 Aug 2022 10:18:36 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/database/release_mysql_disk/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
       <title>es 与 mongodb比较，es 是否可以作为存储使用呢？</title>
       <link>https://www.geekgame.site/post/database/ev_vs_mongodb/</link>
       <pubDate>Thu, 11 Aug 2022 14:08:18 +0800</pubDate>
       <guid>https://www.geekgame.site/post/database/ev_vs_mongodb/</guid>
       <description>(图片拍摄于千灵山风景区,云山相印，云彩仿佛是山的倒影，让人心旷神怡。)&#xA;两者对比 mongodb&#x9;vs es 对比 mongodb es 定位 解决关系数据库强 schema 约束的问题 解决关系数据库的全文搜索性能问题 schema 无 无 事务 4.0之后支持 不支持 索引 B树 LSM 倒排索引 时效性 高 有延迟(秒级) 可靠性 高 有丢数据风险 性能 读写均衡 性能较低 可扩展性 方便 非常方便 mongodb和es 虽然都是文档数据存储,但是两者的定位确是不同: mongodb 主要定位是文档数据库,提供数据存储, 倾向与OLTP; es 主要定位是文档搜索引擎,提供搜索服务, 倾向于OLAP; 所以mongodb 主要用于数据的管理, es用于数据的检索服务;&#xA;那么是否可以用es来作为数据存储服务呢? es作为存储面临最大的一个问题就是mapping 是不可变的, 如果非要改变可以通过新增字段或者重建索引来实现; 如果是新增加的字段，根据 Dynamic 的设置分为以下三种状况：&#xA;当 Dynamic 设置为 true 时，一旦有新增字段的文档写入，Mapping 也同时被更新。 当 Dynamic 设置为 false 时，索引的 Mapping 是不会被更新的，新增字段的数据无法被索引，也就是无法被搜索，但是信息会出现在 _source 中。 当 Dynamic 设置为 strict 时，文档写入会失败。 如果字段已经存在，这种情况下，es 是不允许修改字段的类型的，因为 es 是根据 Lucene 实现的倒排索引，一旦生成后就不允许修改，如果希望改变字段类型，必须使用 Reindex API 重建索引。</description>
+    </item>
+    <item>
+      <title>Ebpf</title>
+      <link>https://www.geekgame.site/post/linux/ebpf/ebpf/</link>
+      <pubDate>Wed, 27 Jul 2022 09:53:56 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/linux/ebpf/ebpf/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>Dht</title>
+      <link>https://www.geekgame.site/post/p2p/dht/</link>
+      <pubDate>Tue, 26 Jul 2022 18:07:07 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/p2p/dht/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>Http_eof</title>
+      <link>https://www.geekgame.site/post/protocol/http_eof/</link>
+      <pubDate>Tue, 05 Jul 2022 14:45:08 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/protocol/http_eof/</guid>
+      <description>最近迁移服务，发现客户端 http 投递数据经常失败，报错为EOF错误。分析该问题</description>
     </item>
     <item>
       <title>DOCKER 容器访问不通问题定位</title>
@@ -80,11 +143,53 @@
       <description>概述 Kubernetes的其他组件都是通过client-go的Informer机制与Kubernetes API Server进行通信的。 在Informer架构设计中,有多个核心组件,分别介绍如下。&#xA;1.Reflector Reflector用于监控(Watch)指定的Kubernetes资源,当监控的资源发生变化时,触发相应的变更事件,例如Added(资源添加)事件、Updated(资源更新)事件、Deleted(资源删除)事件,并将其资源对象存放到本地缓存DeltaFIFO中。 2.DeltaFIFO DeltaFIFO可以分开理解,FIFO是一个先进先出的队列,它拥有队列操作的基本方法,例如Add、Update、Delete、List、Pop、Close等,而Delta是一个资源对象存储,它可以保存资源对象的操作类型,例如Added(添加)操作类型、Updated(更新)操作类型、Deleted(删除)操作类型、Sync(同步)操作类型等。&#xA;3.Indexer Indexer是client-go用来存储资源对象并自带索引功能的本地存储,Reflector从DeltaFIFO中将消费出来的资源对象存储至Indexer。Indexer与Etcd集群中的数据完全保持一致。client-go可以很方便地从本地存储中读取相应的资源对象数据,而无须每次从远程Etcd集群中读取,以减轻Kubernetes API Server和Etcd集群的压力。&#xA;informer 中支持处理资源的三种回掉方法:&#xA;AddFunc :当创建资源对象时触发的事件回调方法。 UpdateFunc :当更新资源对象时触发的事件回调方法。 DeleteFunc :当删除资源对象时触发的事件回调方法。 通过Informer机制可以很容易地监控我们所关心的资源事件.&#xA;Reflector 1func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration) *Reflector { 2 return NewNamedReflector(naming.GetNameFromCallsite(internalPackages...), lw, expectedType, store, resyncPeriod) 3} 通过NewReflector实例化Reflector对象,实例化过程中须传入ListerWatcher数据接口对象,它拥有List和Watch方法,用于获取及监控资源列表。只要实现了List和Watch方法的对象都可以称为ListerWatcher。 Reflector对象通过Run函数启动监控并处理监控事件。而在Reflector源码实现中,其中最主要的是ListAndWatch函数,它负责获取资源列表(List)和监控(Watch)指定的Kubernetes API Server资源。 ListAndWatch函数实现可分为两部分:第1部分获取资源列表数据,第2部分监控资源对象。&#xA;1.获取资源列表数据ListAndWatch List在程序第一次运行时获取该资源下所有的对象数据并将其存储至DeltaFIFO中。 a. r.listerWatcher.List用于获取资源下的所有对象的数据,例如,获取所有Pod的资源数据。获取资源数据是由options的ResourceVersion(资源版本号)参数控制的,如果ResourceVersion为0,则表示获取所有Pod的资源数据;如果ResourceVersion非0,则表示根据资源版本号继续获取,功能有些类似于文件传输过程中的“断点续传”,当传输过程中遇到网络故障导致中断,下次再连接时,会根据资源版本号继续传输未完成的部分。可以使本地缓存中的数据与Etcd集群中的数据保持一致。&#xA;b. listMetaInterface.GetResourceVersion用于获取资源版本号,ResourceVersion (资源版本号)非常重要,Kubernetes中所有的资源都拥有该字段,它标识当前资源对象的版本号。每次修改当前资源对象时, Kubernetes API Server都会更改ResourceVersion,使得client-go执行Watch操作时可以根据ResourceVersion来确定当前资源对象是否发生变化。&#xA;c. meta.ExtractList用于将资源数据转换成资源对象列表,将runtime.Object对象转换成[]runtime.Object对象。因为r.listerWatcher.List获取的是资源下的所有对象的数据,例如所有的Pod资源数据, 所以它是一个资源列表。&#xA;d. r.syncWith用于将资源对象列表中的资源对象和资源版本号存储至DeltaFIFO中,并会替换已存在的对象。&#xA;e. r.setLastSyncResourceVersion用于设置最新的资源版本号。&#xA;2.监控资源对象&#xA;Watch(监控)操作通过HTTP协议与Kubernetes API Server建立长连接,接收Kubernetes API Server 发来的资源变更事件。Watch操作的实现机制使用HTTP协议的分块传输编码(Chunked Transfer Encoding)。当client-go调用Kubernetes API Server时,Kubernetes API Server在Response的HTTP Header中设置Transfer-Encoding的值为chunked,表示采用分块传输编码,客户端收到该信息后,便与服务端进行连接,并等待下一个数据块(即资源的事件信息)。</description>
     </item>
     <item>
+      <title>Controller</title>
+      <link>https://www.geekgame.site/post/k8s/karmada/controller/</link>
+      <pubDate>Thu, 21 Oct 2021 16:23:06 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/karmada/controller/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>Bgp</title>
+      <link>https://www.geekgame.site/post/protocol/bgp/</link>
+      <pubDate>Tue, 19 Oct 2021 22:31:50 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/protocol/bgp/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>Arch</title>
+      <link>https://www.geekgame.site/post/k8s/network/calico/arch/</link>
+      <pubDate>Tue, 19 Oct 2021 22:19:15 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/network/calico/arch/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>容器网络加速 dpdk ebpf</title>
+      <link>https://www.geekgame.site/post/container/network/</link>
+      <pubDate>Tue, 19 Oct 2021 20:09:14 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/container/network/</guid>
+      <description>如何通过 DPDK 对容器进行网络加速？</description>
+    </item>
+    <item>
       <title>Karmada Scheduler核心实现</title>
       <link>https://www.geekgame.site/post/k8s/karmada/scheduler/</link>
       <pubDate>Fri, 15 Oct 2021 11:47:48 +0800</pubDate>
       <guid>https://www.geekgame.site/post/k8s/karmada/scheduler/</guid>
       <description>Karmada(Kubernetes Armada) 是一个多集群管理系统，在原生 Kubernetes 的基础上增加对于多集群应用资源编排控制的API和组件，从而实现多集群的高级调度，本文就详细分析一下 karmada 层面多集群调度的具体实现逻辑。 Karmada Scheduler（ Karmada 调度组件）主要是负责处理添加到队列中的 ResourceBinding 资源，通过内置的调度算法为资源选出一个或者多个合适的集群以及 replica 数量。&#xA;注意： 本文使用 karmada 版本为 tag:v0.8.0 commit: c37bedc1&#xA;调度框架 karmada-scheduler 在启动过程中实例化并运行了多个资源的 Informer（如图所示有bindingInformer, policyInformer,clusterBindingInformer, clusterPolicyInformer, memberClusterInformer）。 bindingInformer, clusterBindingInformer 是直接监听binding/clusterBinding 的Add/Update事件存储到调度队列；&#xA;policyInformer/clusterPolicyInformer 是用来监听 policy/clusterPolicy 的Update事件，将关联的 binding/clusterBinding 添加到调度队列；&#xA;memberClusterInformer 将监控到的 cluster 资源存储到调度缓存中。&#xA;调度队列： 存储了待处理的 binding/clusterBinding 事件，使用的是先进先出队列。 调度缓存： 缓存了 cluster 的信息。 需要根据 binding/clusterBinding 当前状态决定下一步如何处理，共有如下几个状态，以 binding 为例:&#xA;首次调度(FirstSchedule): resourceBinding 对象中的 spec.Clusters 字段为空，即从未被调度过。 调协调度(ReconcileSchedule)： policy 的 placement 发生变化时就需要进行调协调度。 扩缩容调度(ScaleSchedule): policy ReplicaSchedulingStrategy 中 replica 与实际运行的不一致时就需需要进行扩缩容调度。 故障恢复调度(FailoverSchedule): 调度结果集合中 cluster 的状态如果有未就绪的就需要进行故障恢复调度。 无需调度(AvoidSchedule): 默认行为，上面四个调度都未执行，则不进行任何调度。 首次调度（FirstSchedule） 主要通过 scheduleOne 函数来实现，分为以下几个步骤：</description>
+    </item>
+    <item>
+      <title>How_to_access_k8s_from_outside</title>
+      <link>https://www.geekgame.site/post/k8s/how_to_access_k8s_from_outside/</link>
+      <pubDate>Wed, 13 Oct 2021 10:49:48 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/how_to_access_k8s_from_outside/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>Ports</title>
+      <link>https://www.geekgame.site/post/k8s/ports/</link>
+      <pubDate>Sun, 26 Sep 2021 19:29:25 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/ports/</guid>
+      <description>学习 K8S 过程中会遇到各种 port,如 port、targetPort、containerPort、NodePort、hostPort</description>
     </item>
     <item>
       <title>Rook Edgefs 介绍</title>
@@ -108,6 +213,20 @@
       <description>什么是knative knative 是一个基于 Kubernetes 的 serverless 框架,其主要目标是在基于Kubernetes之上为整个开发生命周期提供帮助. 不仅可以部署和伸缩应用程序,还可以构建和打包应用程序. Knative 使开发者能够专注于编写代码，而无需担心构建、部署和管理应用等“单调而棘手”的工作。&#xA;如下图所示, knative是建立在 kubernetes和 isto平台之上的,使用 kubernetes提供的容器管理能力( deployment、 replicase 和 pods等),以及 isto提供的网络管理功能( Ingress、LB、 dynamic route等)。 各个角色之间的关系,如上图所示:&#xA;何为serverless serverless 中文可以翻译为无服务器架构, 有两个方面的定义: 狭义讲就是你的服务是很少的一段代码或者是一个函数,这个代码或者函数可以通过事件(一个http请求或者消息队列的消息)来触发,总结下来就是 Trigger + FAAS + BAAS(高可用免运维的后端服务);&#xA;广义上来讲serverless是简化运维的一种方案,即服务免运维,可实现 CI/CD,自动扩缩容,灰度等自动化操作;&#xA;knative 就是属于广义上定义的serverless, 它构建在 Kubernetes 的基础上,并为构建和部署无服务器架构(serverless)和基于事件驱动的应用程序提供了一致的标准模式。Knative 减少了这种新的软件开发方法所产生的开销,同时还把路由(routing)和事件(eventing)的复杂性抽象出来。&#xA;核心组件: 为了实现对serverless 的管理, knative 将整个系统划分为三个部分, 主要由三个组件来实现&#xA;构建: 通过灵活的可配置方法将源代码构建为容器;&#xA;服务: 管理应用的部署和服务支持;&#xA;事件: 用户自动完成事件的绑定和触发;&#xA;Knative 服务(kantive Serving) knative serving 主要是用来部署serverless 应用以及为其提供服务支持.其主要特性如下:&#xA;快速部署Serverless 容器 自动缩放包括将pod缩放到0 支持多个网络组件来提供路由和网络编程, 例如 Ambassador、Contour、Kourier、Gloo 和 Istio。 支持部署快照。 Knative Serving 通过 Kubernetes 自定义资源 (CRD) 来控制serverless 应用在集群中的行为 ：</description>
     </item>
     <item>
+      <title>Flannel</title>
+      <link>https://www.geekgame.site/post/protocol/flannel/</link>
+      <pubDate>Tue, 17 Aug 2021 19:11:57 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/protocol/flannel/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>Rbac</title>
+      <link>https://www.geekgame.site/post/k8s/rbac/</link>
+      <pubDate>Thu, 05 Aug 2021 16:53:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/rbac/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
       <title>Kubernetes 监控架构(译)</title>
       <link>https://www.geekgame.site/post/k8s/monitoring_arch/</link>
       <pubDate>Mon, 05 Jul 2021 11:09:37 +0800</pubDate>
@@ -115,11 +234,53 @@
       <description>概要 监控分为两个部分:&#xA;核心监控流程由kubelet、资源评估器、metric-server(Heapster 精简版)以及API server 上的master metrics API 组成. 这些监控数据被系统核心组件使用,例如调度逻辑(调度器和基于系统指标的HPA) 和 开箱即用的UI组件(例如 kubectl top), 这条监控管道不适合与第三方监控系统集成. 另一个监控流程用于从系统收集各种指标并将这些指标导出到用户端、HPA(自定义指标)以及通过适配器到处到 infrastore. 用户可以从众多的监控系统中进行选择,也可以不运行监控系统. Kubernetes 不附带监控管道, 但是第三方的选项是很容易被安装的. 我们希望第三方管道通常由每个节点的代理和一个集群级聚合器组成. 该架构在本文档附录中的图表中进行了说明。&#xA;介绍和目标 本文档为Kubernetes 提出了一个高级监控架构. 它涵盖了 Kubernetes Monitoring Architecture 文档中提到的一些问题. 特别关注有望满足大量需求的监控架构(组件以及组件之间的交互), 我们没有为实现这个架构指定任何特定的时间,也没有规划路线图.&#xA;术语 有两种指标系统指标和服务指标, 系统指标是一般的指标,通常可以从每个监控的实体获得(例如容器和节点的CPU和内存使用情况). 服务指标是在应用代码明确定义并导出的(例如API服务器状态码为500的请求数量), 系统指标和服务指标都是从用户的容器或者系统基础组件获取(主节点组件,比如API服务器, 运行在主节点的插件pod, 和运行在用户节点的插件pod)&#xA;我们把系统指标分为:&#xA;核心指标 这些指标都是Kubernetes理解并用于其内部组件和核心业务的指标 — 例如, 用于调度的指标(包括用于资源评估、初始资源/垂直自动缩放,集群自动缩放, 和Pod水平自动缩放(不包括自定义指标)), Kube 仪表盘, 和 “kubectl top”, 截至目前, 这包括cpu 累计使用情况, 内存瞬时使用情况, pod 磁盘使用情况, 容器的磁盘使用情况. 非核心指标，不被 Kubernetes 解读；我们通常假设它们包括核心指标（尽管不一定采用 Kubernetes 理解的格式）以及其他指标。 我们认为日志记录与监控是分开的，因此日志记录超出了本文档的范围。 要求 监控架构应该是下面这个样子：&#xA;包括作为核心 Kubernetes 一部分的解决方案和 通过标准的主 API（今天的主指标 API）使有关节点、Pod 和容器的核心系统指标可用，从而使 Kubernetes 的核心功能不依赖于非核心组件 要求 Kubelet 仅导出一组有限的指标，即核心 Kubernetes 组件正确运行所需的指标（这与#18770相关） 可以扩展到至少 5000 个节点 足够小，我们可以要求它的所有组件在所有部署配置中运行 包括一个可以提供历史数据的开箱即用的解决方案，例如支持初始资源和垂直 pod 自动缩放以及集群分析查询，这仅依赖于核心 Kubernetes 允许不属于核心 Kubernetes 的第三方监控解决方案，并且可以与需要服务指标的 Horizo​​ntal Pod Autoscaler 等组件集成 架构 我们将长期架构计划的描述分为核心指标管道和监控管道。对于每个，有必要考虑如何处理来自 master 和 minion 的每种类型的指标（核心指标、非核心指标和服务指标）</description>
     </item>
     <item>
+      <title>我的 UDP 数据包丢在哪里了？</title>
+      <link>https://www.geekgame.site/post/linux/where_my_packet_drop/</link>
+      <pubDate>Mon, 21 Jun 2021 19:53:41 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/linux/where_my_packet_drop/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
       <title>Kubernetes Controller runtime 详解</title>
       <link>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</link>
       <pubDate>Thu, 17 Jun 2021 13:40:20 +0800</pubDate>
       <guid>https://www.geekgame.site/post/k8s/extensions/controller_runtime/</guid>
       <description>controller-runtime(https://github.com/kubernetes-sigs/controller-runtime) 框架是社区封装的一个控制器处理的框架，Kubebuilder、Operator-sdk 这两个框架也是基于controller-runtime做了一层封装，目的是快速生成operator项目代码。下面我们就来具体分析一下下 controller-runtime 原理以及实现 。&#xA;概念 CRD: 自定义资源(CustomResourceDefinition), K8s允许你定义自己的定制资源，K8s API 负责为你的定制资源提供存储和访问服务。&#xA;下面例子是定义了一个crontab 的自定义资源:&#xA;1 apiVersion: apiextensions.k8s.io/v1 2 kind: CustomResourceDefinition 3 metadata: 4 # 名字必需与下面的 spec 字段匹配，并且格式为 &amp;#39;&amp;lt;名称的复数形式&amp;gt;.&amp;lt;组名&amp;gt;&amp;#39; 5 name: crontabs.stable.example.com 6 spec: 7 # 组名称，用于 REST API: /apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt; 8 group: stable.example.com 9 # 列举此 CustomResourceDefinition 所支持的版本 10 versions: 11 - name: v1 12 # 每个版本都可以通过 served 标志来独立启用或禁止 13 served: true 14 # 其中一个且只有一个版本必需被标记为存储版本 15 storage: true 16 schema: 17 openAPIV3Schema: 18 type: object 19 properties: 20 spec: 21 type: object 22 properties: 23 cronSpec: 24 type: string 25 image: 26 type: string 27 replicas: 28 type: integer 29 # 可以是 Namespaced 或 Cluster 30 scope: Namespaced 31 names: 32 # 名称的复数形式，用于 URL：/apis/&amp;lt;组&amp;gt;/&amp;lt;版本&amp;gt;/&amp;lt;名称的复数形式&amp;gt; 33 plural: crontabs 34 # 名称的单数形式，作为命令行使用时和显示时的别名 35 singular: crontab 36 # kind 通常是单数形式的驼峰编码（CamelCased）形式。你的资源清单会使用这一形式。 37 kind: CronTab 38 # shortNames 允许你在命令行使用较短的字符串来匹配资源 39 shortNames: 40 - ct GVK GVR: GVK是 Group Version Kind 的缩写，GVR 是 Group Version Resource 的缩写</description>
+    </item>
+    <item>
+      <title>Samll_packet2</title>
+      <link>https://www.geekgame.site/post/issues/samll_packet2/</link>
+      <pubDate>Wed, 16 Jun 2021 23:00:51 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/issues/samll_packet2/</guid>
+      <description>Insert Lead paragraph here.</description>
+    </item>
+    <item>
+      <title>网络传输小包引起的性能问题</title>
+      <link>https://www.geekgame.site/post/issues/samll_packet/</link>
+      <pubDate>Wed, 16 Jun 2021 23:00:29 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/issues/samll_packet/</guid>
+      <description>最近优化了一个服务，借这次优化顺便总结一下性能优化的相关的知识点。&#xA;背景 线上有个服务负载较高，但是CPU利用率相对来说不是很高，该服务主要作用是将数据解析后通过 trift 写入到hbase.&#xA;问题定位 首先通过 top 查看系统运行情况，如下图所示 从 top 上来可以看到几点可疑之处：&#xA;平均负载为8.52 : 8核机器上负载超过了8,说明系统负载已经很高； CPU利用率: </description>
+    </item>
+    <item>
+      <title>Anycast</title>
+      <link>https://www.geekgame.site/post/linux/anycast/</link>
+      <pubDate>Tue, 08 Jun 2021 22:05:12 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/linux/anycast/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lvs</title>
+      <link>https://www.geekgame.site/post/linux/lvs/</link>
+      <pubDate>Tue, 08 Jun 2021 22:04:56 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/linux/lvs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Load_balance</title>
+      <link>https://www.geekgame.site/post/linux/load_balance/</link>
+      <pubDate>Tue, 08 Jun 2021 22:03:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/linux/load_balance/</guid>
+      <description></description>
     </item>
     <item>
       <title>Kubernetes 扩展</title>
@@ -136,11 +297,32 @@
       <description>Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。&#xA;Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：&#xA;创建一个项目 创建一个API 定义CRD 实现controller 测试 创建项目 创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。&#xA;执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp&#xA;--domain: 项目的域名&#xA;创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。&#xA;1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：&#xA;1 2在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.</description>
     </item>
     <item>
+      <title>Go_generate</title>
+      <link>https://www.geekgame.site/post/language/golang/go_generate/</link>
+      <pubDate>Tue, 08 Jun 2021 15:54:25 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/language/golang/go_generate/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Schema</title>
+      <link>https://www.geekgame.site/post/k8s/schema/</link>
+      <pubDate>Tue, 08 Jun 2021 10:57:21 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/schema/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>阻塞/非阻塞与同步/异步I/O</title>
       <link>https://www.geekgame.site/post/linux/io/</link>
       <pubDate>Mon, 07 Jun 2021 10:15:54 +0800</pubDate>
       <guid>https://www.geekgame.site/post/linux/io/</guid>
       <description>阻塞/非阻塞与同步/异步I/O区别 阻塞/非阻塞与同步/异步I/O 最大区别是作用的对象不同：阻塞非阻塞是针对应用程序，同步异步是针对系统。&#xA;阻塞/非阻塞I/O 是针对应用程序在处理I/O操作时是否被阻塞来划分： 阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程就会被阻塞，不能执行其他任务。&#xA;阻塞I/O 是指应用程序在进行I/O操作时，如果没有得到响应，当前线程不会被阻塞，还能继续执行其他任务。&#xA;同步/异步I/O 是根据I/O响应方式而划分的：&#xA;同步I/O 是指系统收到I/O请求后，不会立刻响应，而是处理玩成之后才会响应。&#xA;异步I/O 是指系统收到I/O请求后，立刻响应告诉程序已经收到请求，随后再去异步处理，处理完成之后，通过事件通知的方式通知应用该程序I/O处理结果。&#xA;参考 linux 性能优化实战&#xA;Linux中的异步I/O模型</description>
+    </item>
+    <item>
+      <title>Service</title>
+      <link>https://www.geekgame.site/post/k8s/service/</link>
+      <pubDate>Wed, 26 May 2021 15:08:35 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/service/</guid>
+      <description></description>
     </item>
     <item>
       <title>Golang程序性能pprof使用介绍</title>
@@ -157,11 +339,102 @@
       <description>Nosql 目前主流说法已经从 no sql 变为现在的 not only sql,这个不仅仅是因为 nosql 数据库提供了类似 sql 的查询语言,更是因为它为我们解决复杂场景下业务需求和分布式数据处理提供了有效解决方法。&#xA;目前nosql数据库已经有200多个(从 https://hostingdata.co.uk/nosql-database/ 可以看到已经有225个)，但是我们目前常用的数据库有以下四类: KV数据库、文档数据库、列式数据库、全文搜索引擎。本文就以redis、mongodb、hbase、ES为例说明这几种数据的区别以及各自的适用场景。&#xA;Redis 以redis 为代表的键/值对存储数据库，可以允许你将键/值存储到数据库中，并将可以按照键读取数据。&#xA;优点:&#xA;轻量且高性能； 支持集群（主从集群，切片集群）； 不仅支持简单的字符串键值对， 它还提供了一系列数据结构类型值，如list、hash、set、sorted set、bitmap、hyperloglog. 缺点:&#xA;主要缺点是事务支持不完整：保证了 ACID 中的一致性（C）和隔离性（I），但并不保证原子性（A）和持久性（D）； 集群使用Slot映射表来决定数据分布，规模有一定限制； 主要场景&#xA;缓存： 其高性能最适合用来做缓存，这也是redis最常用的场景之一; 分布式锁：redis 提供了 Redlock 算法,用来实现基于多个实例的分布式锁; 消息队列：redis 通过list和stream来实现消息队列，数据不大的情况下redis不失为一个好的消息队列方案； 排行榜/计数：redis提供了一些统计模式，常见的有聚合统计、排序统计、二值状态统计和基数统计； Mongodb MongoDB 是文档数据库，主要提供数据存储和管理服务。最大的特点就是free-schema,可以将存储任意数据，多种信息存储在一个文档中，而不像关系型数据库那样存储在不同的表中。目前最常用的文档格式是JSON.&#xA;优点&#xA;灵活的查询语言； 易于水平扩展，高可用复制集，可扩展分片集群； 字段增加简单，可以存储复杂的数据格式； 缺点或者限制&#xA;由于没有像关系型数据库的范式要求，所以数据可能会有冗余存储； 每个文档大小限制为16MB; 事务MVCC的旧数据保存在内存中，所以如果涉及大量文档的数据会带来性能问题，而且mongodb 也提供了默认清理时间transactionLifetimeLimitSeconds，指定多文档事务的生存期。超过此限制的事务将被视为已过期，并且将通过定期清理过程中止； 虽然事务锁定了正在修改的文档，但是其他会话修改该文档并不会被block，而是要求终止该事务然后重试，这会造成浪费因为事务中的其他操作也会重新执行； 适用场景 电商、游戏、物流、内容管理、社交、物联网、视频直播等领域都可以使用mongodb;&#xA;hbase hbase是一种key/value分布式存储系统，仅能按照主键(row key)和主键的range来检索数据，属于列式数据库，是按照列来存储数据的；&#xA;优点&#xA;海量数据存储： 一个表可以有上亿行数据，上百万列； 准实时查询：1s内或者百毫秒内返回查询结果； 横向扩展能力强； 缺点&#xA;仅能按照主键(row key)和主键的range来检索数据，这样无法实现复杂的查询； 适用场景&#xA;主要解决海量数据量场景下I/O较高的问题，可以存储海量数据，因此非常适合数据量极大，但是查询条件比较简单的场景； 比如： 交通GPS、物流（快递员轨迹）、金融（取款信息/消费信息）、电商（浏览日志信息）；</description>
     </item>
     <item>
+      <title>Logrotate</title>
+      <link>https://www.geekgame.site/post/linux/logrotate/</link>
+      <pubDate>Tue, 17 Nov 2020 19:22:20 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/linux/logrotate/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>golang testing 使用教程</title>
       <link>https://www.geekgame.site/post/language/golang/test/</link>
       <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
       <guid>https://www.geekgame.site/post/language/golang/test/</guid>
       <description>单测是提高代码质量的重要一环,在提交代码尤其是开源社区单测一般是必需要随代码一起提交的,下面我们来看一下Golang中是如何写单元测试的。 Go中提供了专门用来写单元测试的包 testing， 运行时只需要 go test 即可。 单元测试主要分为以下三类：&#xA;功能测试（Test） 性能测试（Benchmark） 示例测试（Example） 测试文件名称一般是源代码文件加上 &amp;quot;_test.go&amp;quot;, 比如 源代码文件为 add.go ，则测试文件名称为add_test.go。&#xA;在展开单元测试之前先讲下,testing包中的输出函数：&#xA;t.Log() : 正常日志输出; t.Errorf(): 错误日志输出，当前函数继续运行; t.Fatalf(): 错误日志输出，当前函数立刻退出； 功能测试 测试函数有两点约定：&#xA;函数名必需以Test为前缀，如需要测试Add函数则名称应该为 TestAdd; 函数参数必需为 t * testing.T; 完整的功能测试如下所示： 1// add.go 2func Add(a int, b int) int { 3 return a + b 4} 5 6// add_tesg.go 7func TestAdd(t *testing.T){ 8 a := 1 9 b := 2 10 want := a + b 11 got := Add(a, b) 12 if want !</description>
+    </item>
+    <item>
+      <title>Unit_test</title>
+      <link>https://www.geekgame.site/post/language/golang/unit_test/</link>
+      <pubDate>Fri, 29 May 2020 10:54:45 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/language/golang/unit_test/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GitLab CI/CD 入门篇</title>
+      <link>https://www.geekgame.site/post/devops/1/</link>
+      <pubDate>Thu, 28 May 2020 22:19:03 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/devops/1/</guid>
+      <description>GitLab CI/CD 是GitLab 内置的持续集成工具，开启此功能需要在仓库的根目录配置.gitlab-ci.yml文件，并配置GitLab Runner，每次提交代码的时候GitLab 就会出发CI/CD流程， 首先找到合适的 Runner , 然后在runner 上执行该脚本。&#xA;为项目创建 .gitlab-ci.yml 文件 Job 是.gitlab-ci.yml的最基本元素， 其实就是runner 要执行的指令集合。Job 可以按照阶段(stage)来划分执行，每个阶段可以包含一个或者多个Job,比如一个完整的流程可以划分为build -&amp;gt;test -&amp;gt;deploy 三个阶段；阶段之间是串行的，阶段内部的Job是并行的； 如果有任一一个Job失败，那么本次CI就被认为是失败的。&#xA;Job 与 Stage 的关系如下所示：&#xA;1stages: ## 定义stages 2 - build 3 - test 4 - deploy 5job_build: ## 定义Job 6 stage: build ## 关联 stage 7 script: do something 8job_test: 9 stage: test 10 script: do something 11job_deploy: 12 stage: deploy 13 script: do something 需要注意一下几点：&#xA;每个Job都需要有一个唯一的名字，但这个名字不能使用预留的字段image，services，stages，types，before_script，after_script，variables，cache。 如果不定义stages 或者不关联stage, 都属于默认stage: test。 script 是需要runner 执行的脚本。 </description>
+    </item>
+    <item>
+      <title>Staticcheck</title>
+      <link>https://www.geekgame.site/post/language/golang/staticcheck/</link>
+      <pubDate>Tue, 26 May 2020 16:19:33 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/language/golang/staticcheck/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>1</title>
+      <link>https://www.geekgame.site/post/push/1/</link>
+      <pubDate>Tue, 26 May 2020 13:43:33 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/push/1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>1</title>
+      <link>https://www.geekgame.site/post/nosql/redis/1/</link>
+      <pubDate>Tue, 26 May 2020 13:41:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/nosql/redis/1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>1</title>
+      <link>https://www.geekgame.site/post/nosql/mongodb/1/</link>
+      <pubDate>Tue, 26 May 2020 13:41:24 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/nosql/mongodb/1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>1</title>
+      <link>https://www.geekgame.site/post/database/nosql/mongodb/1/</link>
+      <pubDate>Tue, 26 May 2020 13:41:01 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/database/nosql/mongodb/1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>1</title>
+      <link>https://www.geekgame.site/post/database/mysql/1/</link>
+      <pubDate>Tue, 26 May 2020 13:40:48 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/database/mysql/1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>docker 容器中的孤儿进程 僵尸进程</title>
+      <link>https://www.geekgame.site/post/container/docker/2/</link>
+      <pubDate>Tue, 26 May 2020 13:38:21 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/container/docker/2/</guid>
+      <description>https://zhangeamon.top/docker/dumb-init/ https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html https://www.oschina.net/translate/docker-and-the-pid-1-zombie-reaping-problem?cmp&amp;p=2 https://juejin.im/post/5e0002adf265da33dc7a3a1f</description>
+    </item>
+    <item>
+      <title>Sort</title>
+      <link>https://www.geekgame.site/post/algorithm/sort/</link>
+      <pubDate>Tue, 12 May 2020 21:50:46 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/algorithm/sort/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>K8s_arch</title>
+      <link>https://www.geekgame.site/post/container/k8s/k8s_arch/</link>
+      <pubDate>Mon, 11 May 2020 15:59:35 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/container/k8s/k8s_arch/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TCP SYN flood 攻击以及解决方法</title>
+      <link>https://www.geekgame.site/post/protocol/tcp_syn_flood/</link>
+      <pubDate>Mon, 11 May 2020 09:25:42 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/protocol/tcp_syn_flood/</guid>
+      <description>syn flood 攻击是一种拒绝服务攻击，主要有两种方法：&#xA;一种是只发 SYN 不回ACK ； 一种是在SYN包中欺骗透过欺骗来源IP，让SYN-ACK发送到假的IP地址，从而收不到ACK； 如下图所示： 由上可以看出SYN flood 攻击都是收不到ACK导致的。收不到ACK就服务完成连接建立，这些半连接会耗费大量资源，当资源耗尽，就会导致拒绝服务；&#xA;一般处理方式调整内核参数， 主要参数如下：&#xA;tcp_synack_retries : 如果收不到第三次握手的ack ，需要重试的次数，默认是为5， 设置为0 不进行重试，从而可以加快半连接的回收； tcp_max_syn_backlog : 半连接的上限； tcp_syncookies: 默认开启；它的原理是，在TCP服务器接收到TCP SYN包并返回TCP SYN + ACK包时，不分配一个专门的数据区，而是根据这个SYN包计算出一个cookie值。这个 cookie作为将要返回的SYN ACK包的初始序列号。当客户端返回一个ACK包时，根据包头信息计算cookie，与返回的确认序列号(初始序列号 + 1)进行对比，如果相同，则是一个正常连接，然后，分配资源，建立连接。 </description>
     </item>
     <item>
       <title>TCP timewait 过多怎么办</title>
@@ -171,11 +444,39 @@
       <description>要处理timewait 过多的问题，首先应该清楚这个状态是由来，即需要了解TCP 状态迁移的过程；&#xA;TCP 三次握手四次挥手状态迁移 1 TCP A TCP B 2 3 1. CLOSED LISTEN 4 5 2. SYN-SENT --&amp;gt; &amp;lt;SEQ=100&amp;gt;&amp;lt;CTL=SYN&amp;gt; --&amp;gt; SYN-RECEIVED 6 7 3. ESTABLISHED &amp;lt;-- &amp;lt;SEQ=300&amp;gt;&amp;lt;ACK=101&amp;gt;&amp;lt;CTL=SYN,ACK&amp;gt; &amp;lt;-- SYN-RECEIVED 8 9 4. ESTABLISHED --&amp;gt; &amp;lt;SEQ=101&amp;gt;&amp;lt;ACK=301&amp;gt;&amp;lt;CTL=ACK&amp;gt; --&amp;gt; ESTABLISHED 10 11 5. ESTABLISHED --&amp;gt; &amp;lt;SEQ=101&amp;gt;&amp;lt;ACK=301&amp;gt;&amp;lt;CTL=ACK&amp;gt;&amp;lt;DATA&amp;gt; --&amp;gt; ESTABLISHED 一般的关闭流程如下所示：&#xA;1 TCP A TCP B 2 3 1. ESTABLISHED ESTABLISHED 4 5 2. (Close) 6 FIN-WAIT-1 --&amp;gt; &amp;lt;SEQ=100&amp;gt;&amp;lt;ACK=300&amp;gt;&amp;lt;CTL=FIN,ACK&amp;gt; --&amp;gt; CLOSE-WAIT 7 8 3.</description>
     </item>
     <item>
+      <title>knative</title>
+      <link>https://www.geekgame.site/post/k8s/serverless/knative/install/</link>
+      <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/serverless/knative/install/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>kubernetes 架构</title>
       <link>https://www.geekgame.site/post/k8s/k8s/</link>
       <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
       <guid>https://www.geekgame.site/post/k8s/k8s/</guid>
       <description>什么是 Kubernetes Kubernetes(简称K8s) 是由 Google 在2014年开源的容器编排与调度管理框架，主要是为用户提供一个具有普遍意义的容器编排工具。该项目是Google内部大规模集群管理系统-Borg的一个开源版本，目前是由CNCF(Cloud Native Computing Foundation)托管项目。 Kubernetes 的主要特点：&#xA;可扩展：Kubernetes 是高度可配置且可扩展的。 可移植：Kubernetes 不限于特定平台，可以在各种公共或者私有云平台上运行。 自动化：Kubernetes 是一个高度自动化的平台：可自动部署/回滚、自我修复、自动扩缩容。 Kubernetes 架构 K8s 遵循服务器/客户端(C/S)架构,分为两部分master和node，其中master是服务端，是控制节点主要控制和管理整个K8s集群;node是客户端,是工作节点，主要处理来自于master的任务。K8s可以设置多master来实现高可用，但是默认情况下单个master 就可以完成所有的工作。&#xA;master包含的组件有：kube-apiserver, etcd, kube-controller-manager, kube-scheduler, cloud-controller-manager; node 包含的组件有: kubelet, kube-proxy;&#xA;图片来源&#xA;master 组件 kube-apiserver: 提供集群HTTP REST API, 是集群控制的唯一入口,提供访问控制、注册、信息存储功能, 同时也是集群内部模块之间数据交换的枢纽。 etcd: 兼具一致性和高可用性的键值数据库,保存 K8s 所有集群数据;&#xA;kube-scheduler: 对K8s中的Pod资源进行监控调度，为Pod选择合适的工作节点； kube-controller-manager: K8s实现自动化的关键组件，是集群中所有资源的自动化控制中心；&#xA;cloud-controller-manager: 云控制器管理器是指嵌入特定云的控制逻辑的控制平面组件,使得 K8s 可以直接利用云平台实现持久化卷、负载均衡、网络路由、DNS 解析以及横向扩展等功能。&#xA;node 组件 kubelet: 负责与master节点通信，处理master下发的任务，管理节点上容器的创建、停止与删除等; kube-proxy: 负责K8s集群服务的通信以及负载均衡；&#xA;数据流转 我们以 ReplicaSet 为例，讲述一下K8s的数据流转：&#xA;0. 在集群组件一启动 kube-scheduler，kube-controller-manager，kubelet就会通过list-watch机制监听自己关心的事件；&#xA;API作为集群入口，接收命令请求； Deployment 控制器通过 watch 获取到 Deployment 的创建事件; Deployment 控制器创建 ReplicaSet 资源; ReplicaSet 控制器通过 watch 获取到 ReplicaSet 的创建事件; ReplicaSet 控制器创建 POD 资源； Scheduler 通过 watch 获取 Pod 创建事件以及获取未绑定Node的Pod； Scheduler 通过调度算法为 Pod 选择合适的Node； kubelet 通过 watch 获取部署在当前Node的 Pod; kubelet 通过 CRI 通知container runtime 创建 Pod； container runtime 成功创建Pod； 观察POD创建过程相关事件 我们可以通过kubectl get events --watch 来观察POD创建过程所产生的事件。使用watch 选项可以监听整个过程。 以下是创建nginx的过程：</description>
+    </item>
+    <item>
+      <title>Jwt</title>
+      <link>https://www.geekgame.site/post/protocol/jwt/</link>
+      <pubDate>Thu, 31 Oct 2019 14:26:37 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/protocol/jwt/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Awk</title>
+      <link>https://www.geekgame.site/post/shell/awk/</link>
+      <pubDate>Mon, 14 Oct 2019 17:24:01 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/shell/awk/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Http Auth Digest Access</title>
+      <link>https://www.geekgame.site/post/protocol/http-auth-digest-access/</link>
+      <pubDate>Mon, 12 Aug 2019 15:16:37 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/protocol/http-auth-digest-access/</guid>
+      <description>digest access </description>
     </item>
     <item>
       <title>golang 协程调度原理</title>
@@ -185,11 +486,32 @@
       <description>Go语言 最大的特点是提供简单易用的并发编程,这个并发的执行单元就是goroutine, 这个goroutine 是运行在用户态,并由GO自身来调度。调度器来决定谁来使用CPU资源，谁该让出CPU资源。 本文就来深入探讨一下Go的调度原理。&#xA;GMP调度模型 Go采用的是GMP调度模型。&#xA;核心概念 G ：即Goroutine ,使用关键字 go 即可创建一个协程来处理用户程序，如下所示： 1 go func() //创建协程来执行函数 M ：Machine 系统抽象的线程，代表真正的机器资源，目前最多10000，超过这个数量会panic. P ：Process,虚拟处理器，代表goroutine的上下文，用于关联G和M；P的数量可以通过GOMAXPROCS设置，默认为CPU核数； 本地队列（local queue）: 每个P关联有一个协程队列，该队列就是P的本地队列，新生成的协程放在该队列中，当该队列达到最大数量时，会将该队列的一般协程存入到全局队列中； 全局队列（global queue）: 当本地队列达到最大数量时，多余的协程就会存在全局队列中； 调度原理 1 +-------------------- sysmon ---------------//------+ 2 | | 3 | | 4 +---+ +---+-------+ +--------+ +---+---+ 5 go func() ---&amp;gt; | G | ---&amp;gt; | P | local | &amp;lt;=== balance ===&amp;gt; | global | &amp;lt;--//--- | P | M | 6 +---+ +---+-------+ +--------+ +---+---+ 7 | | | 8 | +---+ | | 9 +----&amp;gt; | M | &amp;lt;--- findrunnable ---+--- steal &amp;lt;--//--+ 10 +---+ 11 | 12 mstart 13 | 14 +--- execute &amp;lt;----- schedule 15 | | 16 | | 17 +--&amp;gt; G.</description>
     </item>
     <item>
+      <title>Mem</title>
+      <link>https://www.geekgame.site/post/language/golang/mem/</link>
+      <pubDate>Sun, 11 Aug 2019 10:22:56 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/language/golang/mem/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>通过 hello world 寻找 golang 启动过程</title>
       <link>https://www.geekgame.site/post/language/golang/start/</link>
       <pubDate>Thu, 20 Jun 2019 22:51:54 +0800</pubDate>
       <guid>https://www.geekgame.site/post/language/golang/start/</guid>
       <description>知其然，也要知其所以然，从今天开始研究一下golang的底层实现，首先从其启动开始；&#xA;找到启动点 1. 写一个hello world. 1package main 2 3import ( 4&#x9;&amp;#34;fmt&amp;#34; 5) 6 7func main() { 8&#x9;fmt.Println(&amp;#34;hello world&amp;#34;) 9} 2.编译后使用gdb找到entry point 1$ gdb hello 2 ..... 3 file type mach-o-x86-64. 4&#x9;Entry point: 0x1052720 5&#x9;0x0000000001001000 - 0x0000000001093074 is .text 6&#x9;0x0000000001093080 - 0x00000000010e19cd is __TEXT.__rodata 7&#x9;0x00000000010e19e0 - 0x00000000010e1ae2 is __TEXT.__symbol_stub1 8&#x9;0x00000000010e1b00 - 0x00000000010e2764 is __TEXT.__typelink 9&#x9;0x00000000010e2768 - 0x00000000010e27d0 is __TEXT.__itablink 10&#x9;0x00000000010e27d0 - 0x00000000010e27d0 is __TEXT.</description>
+    </item>
+    <item>
+      <title>Command</title>
+      <link>https://www.geekgame.site/post/container/docker/command/</link>
+      <pubDate>Thu, 20 Jun 2019 15:52:31 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/container/docker/command/</guid>
+      <description>镜像 1.显示&#xA;1docker images 相当于 docker image list 2 3$ docker images 4REPOSITORY TAG IMAGE ID CREATED SIZE 5busybox latest 59788edf1f3e 8 months ago 1.15MB 6golang 1.9-stretch ef89ef5c42a9 11 months ago 750MB 7swarm latest ff454b4a0e84 12 months ago 12.7MB 2.删除&#xA;1 docker rmi [OPTIONS] IMAGE [IMAGE...] 2 docker image rm [OPTIONS] IMAGE [IMAGE...] 可以使用一些组合命令来删除；&#xA;以下是删除所有的镜像&#xA;1docker image rm $(docker images) 3.保存&#xA;1docker save 0bd81a8c93f7 -o test.tar 4.导入&#xA;1docker load &amp;lt; test.</description>
+    </item>
+    <item>
+      <title>Go 汇编</title>
+      <link>https://www.geekgame.site/post/language/golang/go-%E6%B1%87%E7%BC%96/</link>
+      <pubDate>Sun, 16 Jun 2019 16:41:11 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/language/golang/go-%E6%B1%87%E7%BC%96/</guid>
+      <description></description>
     </item>
     <item>
       <title>golang 栈结构</title>
@@ -206,11 +528,39 @@
       <description>Go module 是golang最新的包管理工具，可以使依赖包版本信息更明确与可控。module 是关于Go packages的集合，存储在根目录下的go.mod文件中，go.mod 定义了模块的模块路径以及模块的依赖属性，依赖属性包含模块路径以及特定寓意的版本信息。&#xA;需要注意的是：在Go 1.13之前go module 在GOPATH下是默认不开启的，这是为了兼容的需要，如果需要使用go module可以在GOPATH/src外的路径创建go.mod文件。&#xA;本文会介绍Go module的一些基本用法；&#xA;常见命令 创建一个模块 添加一个依赖 升级依赖 其他命令 常见命令 go mod 提供了以下命令&#xA;download: 下载依赖包到本地缓存 ($GOPATH/pkg/mod), 该目录下的包所有项目共享; edit : 编辑go.mod; graph: 打印模块的依赖图; init: 在当前目录初始化mod; tidy : 添加缺失的依赖包并清理没有使用的包; vendor : 将依赖包复制到vendor目录; verify: 验证依赖是否正确; why : 解释为什么需要这个依赖; 创建一个模块 如前文所说在GOPATH外的创建一个目录，例如 ～/gomod/hello;&#xA;执行一下子命令&#xA;1 ~/gomod/hello$ go mod init example.com/hello 2go: creating new go.mod: module example.com/hello 创建hello.go&#xA;1package hello 2 3func Hello()string { 4&#x9;return &amp;#34;Hello, world.</description>
     </item>
     <item>
+      <title></title>
+      <link>https://www.geekgame.site/archives/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      <guid>https://www.geekgame.site/archives/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mq</title>
+      <link>https://www.geekgame.site/post/mq/mq/</link>
+      <pubDate>Mon, 20 May 2019 14:17:38 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/mq/mq/</guid>
+      <description>消息队列 消息队列(Message queue) 是一种异步的服务间（不同进程）或者同一进程不同现成间通信方式，主要用于解耦服务、流量削峰、消息异步处理；&#xA;消息队列使用场景 消息异步处理 针对与流量较高但是对处理时效性要求不高的场景可以使用消息队列进行异步处理，例如 app push(消息推送)、短信推送； 使用&#xA;应用解耦&#xA;流量削峰&#xA;目前常用的消息队列 如何选择合适的消息队列 </description>
+    </item>
+    <item>
       <title>高效shell</title>
       <link>https://www.geekgame.site/post/shell/effective_shell/</link>
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       <guid>https://www.geekgame.site/post/shell/effective_shell/</guid>
       <description>shell 使用超强组合 oh-my-zsh + zsh-autosuggestions + z - jump around。&#xA;oh-my-zsh : 目前非常火的终端配置，只需要简单下载到本地，就可以使用； autosuggestions: 补全已经输入过的命令； jump around : 感觉这个非常有用，在目录的跳转之间节省大量的时间； 命令 hstr: 查找历史命令，比Ctrl+R 方便太多，如果使用zsh 需要执行hstr --show-configuration &amp;gt;&amp;gt; ~/.zshrc , source ~/.zshrc ； htop: 加强版的top, 安装与介绍可以看一下这里 </description>
+    </item>
+    <item>
+      <title>Defer</title>
+      <link>https://www.geekgame.site/post/language/golang/defer/</link>
+      <pubDate>Wed, 15 May 2019 18:07:01 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/language/golang/defer/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Atomic</title>
+      <link>https://www.geekgame.site/post/language/golang/atomic/</link>
+      <pubDate>Wed, 15 May 2019 18:06:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/language/golang/atomic/</guid>
+      <description></description>
     </item>
     <item>
       <title>MQTT 基本概念</title>
@@ -220,18 +570,18 @@
       <description>&lt;p&gt;MQTT(Message Queuing Telemetry Transport，消息队列遥测传输协议)是最初由IBM开发的一种基于发布/订阅模式的轻量级通信协议,工作在tcp/ip协议簇上。主要优势是&#xA;低开销、低带宽，在lot上应用较为广泛。&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Ipfs基本概念</title>
+      <link>https://www.geekgame.site/post/blockchain/ipfs/ipfs%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</link>
+      <pubDate>Tue, 14 May 2019 10:10:35 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/blockchain/ipfs/ipfs%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</guid>
+      <description>什么是 ipfs&#xA;ipfs</description>
+    </item>
+    <item>
       <title>mac  sed 报错</title>
       <link>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</link>
       <pubDate>Mon, 13 May 2019 12:36:43 +0800</pubDate>
       <guid>https://www.geekgame.site/post/shell/mac%E4%B8%8B%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97/</guid>
       <description>mac 下的sed使用方法与linux略有不同，如果按照Linux方式使用sed -i替换文本时会报如下错误&#xA;1$sed -i &amp;#39;s/xxxx/yyy/g&amp;#39; test 2sed: 1: &amp;#34;test&amp;#34;: extra characters at the end of p command 解决方法&#xA;1sed -i &amp;#34;&amp;#34; &amp;#34;s/XX/YY/g&amp;#34; test ============================================&#xA;sed 用法&#xA;1sed: illegal option -- - 2usage: sed script [-Ealn] [-i extension] [file ...] 3 sed [-Ealn] [-i extension] [-e script] ... [-f script_file] ... [file ...] 4 5 6-i 后边需要添加备份文件的后缀名,如果不需要可以使用&amp;#34;&amp;#34;,但是不可以忽略 7 8如 sed -i &amp;#34;.bak&amp;#34; &amp;#39;s/xxxx/yyy/g&amp;#39; test 会将替换后的文本写入test.bak </description>
-    </item>
-    <item>
-      <title>Archive</title>
-      <link>https://www.geekgame.site/archives/</link>
-      <pubDate>Mon, 13 May 2019 12:22:44 +0800</pubDate>
-      <guid>https://www.geekgame.site/archives/</guid>
-      <description></description>
     </item>
     <item>
       <title>About</title>

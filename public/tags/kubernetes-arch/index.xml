@@ -10,6 +10,13 @@
     <lastBuildDate>Thu, 31 Oct 2019 15:26:32 +0800</lastBuildDate>
     <atom:link href="https://www.geekgame.site/tags/kubernetes-arch/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>knative</title>
+      <link>https://www.geekgame.site/post/k8s/serverless/knative/install/</link>
+      <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/serverless/knative/install/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>kubernetes 架构</title>
       <link>https://www.geekgame.site/post/k8s/k8s/</link>
       <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>

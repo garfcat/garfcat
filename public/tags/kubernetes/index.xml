@@ -45,6 +45,13 @@
       <description>Kubebuilder 是什么 kubebuilder 是使用自定义资源（CRD）构建 Kubernetes API 的框架。Kubebuilder提高了开发人员在Go中快速构建和发布Kubernetes api的速度，降低了开发管理的复杂性。&#xA;Kubebuilder 如何使用 我们通过向 Kubernetes 集群添加一个自定义 Cluster 来了解 Kubebuilder 如何使用。 其主要步骤如下：&#xA;创建一个项目 创建一个API 定义CRD 实现controller 测试 创建项目 创建目录ipes-cmp 并进入执行 go mod init ipes-cmp 来告诉 kubebuilder 和 Go module 的基本导入路径。&#xA;执行 kubebuilder init 命令，初始化一个新项目。示例如下。 kubebuilder init --domain ipes-cmp&#xA;--domain: 项目的域名&#xA;创建一个API 运行下面的命令，创建一个新的 API（组/版本）为 “cluster/v1”，并在上面创建新的 Kind(CRD) “Cluster”。&#xA;1 kubebuilder create api --group cluster --version v1 --kind Cluster 目录结构：&#xA;1 2在 Create Resource [y/n] 和 Create Controller [y/n] 中按y，创建文件 api/v1/cluster_types.</description>
     </item>
     <item>
+      <title>knative</title>
+      <link>https://www.geekgame.site/post/k8s/serverless/knative/install/</link>
+      <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/serverless/knative/install/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>kubernetes 架构</title>
       <link>https://www.geekgame.site/post/k8s/k8s/</link>
       <pubDate>Thu, 31 Oct 2019 15:26:32 +0800</pubDate>
