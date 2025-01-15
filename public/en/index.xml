@@ -4,7 +4,7 @@
     <title>Funny</title>
     <link>https://www.geekgame.site/en/</link>
     <description>Recent content on Funny</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
     <lastBuildDate>Thu, 28 Feb 2019 00:00:00 +0000</lastBuildDate>
@@ -14,7 +14,7 @@
       <link>https://www.geekgame.site/en/about/</link>
       <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
       <guid>https://www.geekgame.site/en/about/</guid>
-      <description>I am a programmer This blog is the place were I put into words a portion of my knowledge.&#xA;focus on: cloud native、edge computing、container.</description>
+      <description>&lt;p&gt;I am a programmer&#xA;This blog is the place were I put into words a portion of my knowledge.&lt;/p&gt;&#xA;&lt;p&gt;focus on: cloud native、edge computing、container.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

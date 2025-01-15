@@ -4,7 +4,7 @@
     <title>Categories on 有趣</title>
     <link>https://www.geekgame.site/categories/</link>
     <description>Recent content in Categories on 有趣</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
     <lastBuildDate>Mon, 29 Jan 2024 14:20:46 +0800</lastBuildDate>
@@ -103,7 +103,7 @@
     <item>
       <title>协议</title>
       <link>https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</link>
-      <pubDate>Mon, 11 May 2020 09:25:42 +0800</pubDate>
+      <pubDate>Thu, 07 May 2020 09:53:51 +0800</pubDate>
       <guid>https://www.geekgame.site/categories/%E5%8D%8F%E8%AE%AE/</guid>
       <description></description>
     </item>
@@ -112,13 +112,6 @@
       <link>https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</link>
       <pubDate>Thu, 16 May 2019 19:34:57 +0800</pubDate>
       <guid>https://www.geekgame.site/categories/%E5%B7%A5%E5%85%B7%E5%91%BD%E4%BB%A4/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>区块链</title>
-      <link>https://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</link>
-      <pubDate>Tue, 14 May 2019 10:10:35 +0800</pubDate>
-      <guid>https://www.geekgame.site/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</guid>
       <description></description>
     </item>
   </channel>

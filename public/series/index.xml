@@ -4,7 +4,7 @@
     <title>Series on 有趣</title>
     <link>https://www.geekgame.site/series/</link>
     <description>Recent content in Series on 有趣</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
     <lastBuildDate>Wed, 18 Aug 2021 15:26:32 +0800</lastBuildDate>
@@ -42,13 +42,6 @@
       <link>https://www.geekgame.site/series/golang/</link>
       <pubDate>Sun, 27 Sep 2020 16:15:18 +0800</pubDate>
       <guid>https://www.geekgame.site/series/golang/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>IPFS</title>
-      <link>https://www.geekgame.site/series/ipfs/</link>
-      <pubDate>Tue, 14 May 2019 10:10:35 +0800</pubDate>
-      <guid>https://www.geekgame.site/series/ipfs/</guid>
       <description></description>
     </item>
     <item>
