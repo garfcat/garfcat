@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
-    <lastBuildDate>Mon, 29 Jan 2024 14:20:46 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jan 2025 10:33:42 +0800</lastBuildDate>
     <atom:link href="https://www.geekgame.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何利用宿主机工具进行 Kubernetes Pod 网络调试</title>
+      <link>https://www.geekgame.site/post/k8s/network/1/</link>
+      <pubDate>Thu, 16 Jan 2025 10:33:42 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/network/1/</guid>
+      <description>&lt;p&gt;在 Kubernetes 管理中，有时需要深入到容器的网络命名空间进行网络调试或排查问题。但如果容器内没有相关命令工具，也无法安装，则需要再宿主机进行网络调试。本文将介绍一种通过 &lt;code&gt;kubectl exec&lt;/code&gt; 命令结合 Docker 命令链来获取容器的网络命名空间的方法。&lt;/p&gt;&#xA;&lt;h4 id=&#34;步骤一获取-pod-的容器-id&#34;&gt;步骤一：获取 Pod 的容器 ID&lt;/h4&gt;&#xA;&lt;p&gt;首先，我们需要获取目标 Pod 中的容器 ID。可以通过 &lt;code&gt;kubectl&lt;/code&gt; 命令获取指定 Pod 的容器 ID。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;kubectl get pod &amp;lt;POD_NAME&amp;gt; -n &amp;lt;namespace&amp;gt; -o &lt;span class=&#34;nv&#34;&gt;jsonpath&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;{.status.containerStatuses[0].containerID}&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;&#xA;&lt;p&gt;注意：将 &lt;code&gt;&amp;lt;namespace&amp;gt;&lt;/code&gt; 替换为实际的命名空间名称，将 &lt;code&gt;&amp;lt;POD_NAME&amp;gt;&lt;/code&gt; 替换为实际的 Pod 名称。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h4 id=&#34;示例输出&#34;&gt;示例输出：&lt;/h4&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;docker://f4b8d5d882bce5c8c10a660fad5d3f5f8a82b8d5c8d87a8f193d&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;步骤二获取容器的-pid&#34;&gt;步骤二：获取容器的 PID&lt;/h4&gt;&#xA;&lt;p&gt;接下来，通过容器 ID 获取其在宿主机上的 PID。使用 &lt;code&gt;docker inspect&lt;/code&gt; 命令可以实现这一点。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>docker 容器日志过大问题</title>
       <link>https://www.geekgame.site/post/container/docker/log/</link>

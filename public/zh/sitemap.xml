@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.geekgame.site/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -21,7 +21,7 @@
                 />
   </url><url>
     <loc>https://www.geekgame.site/categories/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -38,23 +38,23 @@
                 href="https://www.geekgame.site/categories/"
                 />
   </url><url>
-    <loc>https://www.geekgame.site/tags/docker/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
-  </url><url>
-    <loc>https://www.geekgame.site/post/container/docker/log/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+    <loc>https://www.geekgame.site/tags/debug/</loc>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/tags/index/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
   </url><url>
-    <loc>https://www.geekgame.site/tags/log/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+    <loc>https://www.geekgame.site/categories/kubernetes/</loc>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/tags/network/</loc>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/post/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/tags/</loc>
-    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -70,6 +70,18 @@
                 hreflang="zh"
                 href="https://www.geekgame.site/tags/"
                 />
+  </url><url>
+    <loc>https://www.geekgame.site/post/k8s/network/1/</loc>
+    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/tags/docker/</loc>
+    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/post/container/docker/log/</loc>
+    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/tags/log/</loc>
+    <lastmod>2024-01-29T14:20:46+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/categories/technology/</loc>
     <lastmod>2024-01-29T14:20:46+08:00</lastmod>
@@ -128,9 +140,6 @@
     <loc>https://www.geekgame.site/post/container/docker/network_can_not_access/</loc>
     <lastmod>2022-01-13T13:44:25+08:00</lastmod>
   </url><url>
-    <loc>https://www.geekgame.site/tags/network/</loc>
-    <lastmod>2022-01-13T13:44:25+08:00</lastmod>
-  </url><url>
     <loc>https://www.geekgame.site/tags/command/</loc>
     <lastmod>2022-01-11T10:47:48+08:00</lastmod>
   </url><url>
@@ -141,9 +150,6 @@
     <lastmod>2021-11-17T20:43:56+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/tags/kubernetes/</loc>
-    <lastmod>2021-11-17T20:43:56+08:00</lastmod>
-  </url><url>
-    <loc>https://www.geekgame.site/categories/kubernetes/</loc>
     <lastmod>2021-11-17T20:43:56+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/post/k8s/informer/</loc>

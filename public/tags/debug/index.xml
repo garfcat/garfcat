@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Network on 有趣</title>
-    <link>https://www.geekgame.site/tags/network/</link>
-    <description>Recent content in Network on 有趣</description>
+    <title>Debug on 有趣</title>
+    <link>https://www.geekgame.site/tags/debug/</link>
+    <description>Recent content in Debug on 有趣</description>
     <generator>Hugo</generator>
     <language>zh</language>
     <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
     <lastBuildDate>Thu, 16 Jan 2025 10:33:42 +0800</lastBuildDate>
-    <atom:link href="https://www.geekgame.site/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.geekgame.site/tags/debug/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>如何利用宿主机工具进行 Kubernetes Pod 网络调试</title>
       <link>https://www.geekgame.site/post/k8s/network/1/</link>
       <pubDate>Thu, 16 Jan 2025 10:33:42 +0800</pubDate>
       <guid>https://www.geekgame.site/post/k8s/network/1/</guid>
       <description>&lt;p&gt;在 Kubernetes 管理中，有时需要深入到容器的网络命名空间进行网络调试或排查问题。但如果容器内没有相关命令工具，也无法安装，则需要再宿主机进行网络调试。本文将介绍一种通过 &lt;code&gt;kubectl exec&lt;/code&gt; 命令结合 Docker 命令链来获取容器的网络命名空间的方法。&lt;/p&gt;&#xA;&lt;h4 id=&#34;步骤一获取-pod-的容器-id&#34;&gt;步骤一：获取 Pod 的容器 ID&lt;/h4&gt;&#xA;&lt;p&gt;首先，我们需要获取目标 Pod 中的容器 ID。可以通过 &lt;code&gt;kubectl&lt;/code&gt; 命令获取指定 Pod 的容器 ID。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;kubectl get pod &amp;lt;POD_NAME&amp;gt; -n &amp;lt;namespace&amp;gt; -o &lt;span class=&#34;nv&#34;&gt;jsonpath&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;{.status.containerStatuses[0].containerID}&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;&#xA;&lt;p&gt;注意：将 &lt;code&gt;&amp;lt;namespace&amp;gt;&lt;/code&gt; 替换为实际的命名空间名称，将 &lt;code&gt;&amp;lt;POD_NAME&amp;gt;&lt;/code&gt; 替换为实际的 Pod 名称。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h4 id=&#34;示例输出&#34;&gt;示例输出：&lt;/h4&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;docker://f4b8d5d882bce5c8c10a660fad5d3f5f8a82b8d5c8d87a8f193d&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;步骤二获取容器的-pid&#34;&gt;步骤二：获取容器的 PID&lt;/h4&gt;&#xA;&lt;p&gt;接下来，通过容器 ID 获取其在宿主机上的 PID。使用 &lt;code&gt;docker inspect&lt;/code&gt; 命令可以实现这一点。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>DOCKER 容器访问不通问题定位</title>
-      <link>https://www.geekgame.site/post/container/docker/network_can_not_access/</link>
-      <pubDate>Thu, 13 Jan 2022 13:44:25 +0800</pubDate>
-      <guid>https://www.geekgame.site/post/container/docker/network_can_not_access/</guid>
-      <description>&lt;h2 id=&#34;现象&#34;&gt;现象&lt;/h2&gt;&#xA;&lt;p&gt;最近有一台设备上部署的容器服务无法从宿主机之外的节点进行访问。&lt;/p&gt;&#xA;&lt;h2 id=&#34;分析&#34;&gt;分析&lt;/h2&gt;&#xA;&lt;p&gt;要定位该问题首先要确认以下几个事情：&lt;br&gt;&#xA;1. 服务是否正常启动&lt;br&gt;&#xA;2. 确认容器的网络模式&lt;br&gt;&#xA;3. 容器如何与外面的节点通讯&lt;br&gt;&#xA;4. 数据包在设备上实际流转&lt;/p&gt;&#xA;&lt;h2 id=&#34;定位过程&#34;&gt;定位过程&lt;/h2&gt;&#xA;&lt;h3 id=&#34;确认服务是否正常&#34;&gt;确认服务是否正常&lt;/h3&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;查看容器运行是否正常:&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;CONTAINER ID        IMAGE                                                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;cfde73945bf6        ***:1.0.7   &lt;span class=&#34;s2&#34;&gt;&amp;#34;/bin/sh -c /opt/boo…&amp;#34;&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; hours ago        Up &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; hours         0.0.0.0:7788-&amp;gt;7788/tcp   ***&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt; &#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
   </channel>
 </rss>
