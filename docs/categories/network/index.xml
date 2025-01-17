@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Network on 有趣</title>
+    <link>https://www.geekgame.site/categories/network/</link>
+    <description>Recent content in Network on 有趣</description>
+    <generator>Hugo</generator>
+    <language>zh</language>
+    <copyright>Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Fri, 17 Jan 2025 16:09:45 +0800</lastBuildDate>
+    <atom:link href="https://www.geekgame.site/categories/network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux查看网络接口带宽常用命令</title>
+      <link>https://www.geekgame.site/post/k8s/network/2/</link>
+      <pubDate>Fri, 17 Jan 2025 16:09:45 +0800</pubDate>
+      <guid>https://www.geekgame.site/post/k8s/network/2/</guid>
+      <description>&lt;p&gt;在管理和监控网络性能时，查看网络接口的带宽使用情况是一个基本且重要的任务。Linux 提供了一些强大的工具来帮助我们完成这项任务，例如 &lt;code&gt;dstat&lt;/code&gt;、&lt;code&gt;iftop&lt;/code&gt;、&lt;code&gt;vnstat&lt;/code&gt;、&lt;code&gt;nload&lt;/code&gt; 和 &lt;code&gt;iptraf-ng&lt;/code&gt;。本文将介绍如何使用这些工具来检查和监控网络接口的带宽使用情况。&lt;/p&gt;&#xA;&lt;h2 id=&#34;使用-dstat-监控带宽&#34;&gt;使用 dstat 监控带宽&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;dstat&lt;/code&gt; 是一个强大的系统资源统计工具，它可以同时显示 CPU、内存、磁盘、网络等多个系统资源的实时使用情况。使用 &lt;code&gt;dstat&lt;/code&gt;，你可以详细了解每个网络接口的带宽使用情况。&lt;/p&gt;&#xA;&lt;h3 id=&#34;安装-dstat&#34;&gt;安装 dstat&lt;/h3&gt;&#xA;&lt;p&gt;如果你的系统尚未安装 &lt;code&gt;dstat&lt;/code&gt;，可以使用以下命令来安装：&#xA;对于 Debian/Ubuntu 系统：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt-get install dstat&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;对于 RHEL/CentOS 系统：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;sudo yum install dstat&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使用-dstat-监控特定网络接口&#34;&gt;使用 dstat 监控特定网络接口&lt;/h3&gt;&#xA;&lt;p&gt;我们可以使用以下命令来监控特定接口（如 &lt;code&gt;eth1&lt;/code&gt;）的带宽使用情况：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;dstat -fn -N eth1&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
+    </item>
+  </channel>
+</rss>

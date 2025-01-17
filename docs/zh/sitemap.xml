@@ -20,7 +20,46 @@
                 href="https://www.geekgame.site/"
                 />
   </url><url>
+    <loc>https://www.geekgame.site/categories/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.geekgame.site/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://www.geekgame.site/pt/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.geekgame.site/categories/"
+                />
+  </url><url>
+    <loc>https://www.geekgame.site/tags/dstat/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/tags/iftop/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+  </url><url>
     <loc>https://www.geekgame.site/tags/index/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/tags/iptraf-ng/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/categories/linux/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/post/k8s/network/2/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/categories/network/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
+  </url><url>
+    <loc>https://www.geekgame.site/tags/nload/</loc>
     <lastmod>2025-01-17T16:09:45+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/post/</loc>
@@ -44,23 +83,8 @@
                 href="https://www.geekgame.site/tags/"
                 />
   </url><url>
-    <loc>https://www.geekgame.site/categories/</loc>
-    <lastmod>2025-01-16T10:33:42+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.geekgame.site/en/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://www.geekgame.site/pt/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.geekgame.site/categories/"
-                />
+    <loc>https://www.geekgame.site/tags/vnstat/</loc>
+    <lastmod>2025-01-17T16:09:45+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/tags/debug/</loc>
     <lastmod>2025-01-16T10:33:42+08:00</lastmod>
@@ -99,9 +123,6 @@
     <lastmod>2023-03-31T17:48:28+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/tags/cpu-id/</loc>
-    <lastmod>2023-03-07T14:08:45+08:00</lastmod>
-  </url><url>
-    <loc>https://www.geekgame.site/categories/linux/</loc>
     <lastmod>2023-03-07T14:08:45+08:00</lastmod>
   </url><url>
     <loc>https://www.geekgame.site/post/linux/hardware/</loc>
