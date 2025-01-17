@@ -14,7 +14,7 @@
       <link>https://www.geekgame.site/en/about/</link>
       <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
       <guid>https://www.geekgame.site/en/about/</guid>
-      <description>&lt;p&gt;I am a programmer&#xA;This blog is the place were I put into words a portion of my knowledge.&lt;/p&gt;&#xA;&lt;p&gt;focus on: cloud native、edge computing、container.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Welcome to my blog! As a programmer, I am enthusiastic about documenting and sharing the challenges I encounter and the knowledge I acquire in my work.&lt;/p&gt;&#xA;&lt;p&gt;The main purpose of this blog is to record my technical growth journey, and I hope these contents can help fellow technology enthusiasts like me. Here are the main areas I focus on:&lt;/p&gt;&#xA;&lt;p&gt;Cloud Native: From architecture design to practical applications, I am dedicated to exploring how cloud native technologies can enhance the scalability, reliability, and resilience of systems.&#xA;Edge Computing: Investigating the applications and technical implementations of edge computing, and how performing computation and storage near data sources can reduce latency and increase efficiency.&#xA;Containers: Researching the latest developments in container technology, including tips and best practices for using Docker and Kubernetes to achieve more efficient application deployment and management.&#xA;Here, you will find detailed technical articles, practical experiences, case studies, and my insights on the latest technology trends. I believe that as long as we keep learning and sharing, we can all find our own path in the ocean of technology.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
